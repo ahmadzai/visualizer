@@ -1,0 +1,117 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TempCatchupData
+ *
+ * @ORM\Table(name="temp_catchup_data")
+ * @ORM\Entity
+ */
+class TempCatchupData
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
+     */
+    private $subDistrictName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="district_code", type="integer", nullable=true)
+     */
+    private $districtCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
+     */
+    private $clusterName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster_no", type="text", length=65535, nullable=true)
+     */
+    private $clusterNo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_absent", type="integer", nullable=true)
+     */
+    private $regAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_absent", type="integer", nullable=true)
+     */
+    private $vaccAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_sleep", type="integer", nullable=true)
+     */
+    private $regSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_sleep", type="integer", nullable=true)
+     */
+    private $vaccSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_refusal", type="integer", nullable=true)
+     */
+    private $regRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_refusal", type="integer", nullable=true)
+     */
+    private $vaccRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="new_missed", type="integer", nullable=true)
+     */
+    private $newMissed;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="new_vaccinated", type="integer", nullable=true)
+     */
+    private $newVaccinated;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign_id", type="integer", nullable=true)
+     */
+    private $campaignId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

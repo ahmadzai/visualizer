@@ -1,0 +1,68 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Province
+ *
+ * @ORM\Table(name="province", uniqueConstraints={@ORM\UniqueConstraint(name="province_code_UNIQUE", columns={"id"})})
+ * @ORM\Entity
+ */
+class Province
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_region", type="string", length=10, nullable=true)
+     */
+    private $provinceRegion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_name", type="string", length=30, nullable=true)
+     */
+    private $provinceName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_name_pashtu", type="string", length=45, nullable=true)
+     */
+    private $provinceNamePashtu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_name_dari", type="string", length=45, nullable=true)
+     */
+    private $provinceNameDari;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_rhizome_code", type="string", length=45, nullable=true)
+     */
+    private $provinceRhizomeCode;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="entry_date", type="datetime", nullable=true)
+     */
+    private $entryDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

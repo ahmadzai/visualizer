@@ -1,0 +1,110 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TablesManager
+ *
+ * @ORM\Table(name="tables_manager")
+ * @ORM\Entity
+ */
+class TablesManager
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="table_name", type="string", length=100, nullable=false)
+     */
+    private $tableName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="table_long_name", type="string", length=100, nullable=false)
+     */
+    private $tableLongName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="table_type", type="string", length=100, nullable=false)
+     */
+    private $tableType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="source", type="string", length=100, nullable=true)
+     */
+    private $source;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="dashboard", type="boolean", nullable=false)
+     */
+    private $dashboard;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="upload_form", type="boolean", nullable=false)
+     */
+    private $uploadForm;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="entry_form", type="boolean", nullable=false)
+     */
+    private $entryForm;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="download_form", type="boolean", nullable=false)
+     */
+    private $downloadForm;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="data_level", type="string", length=100, nullable=false)
+     */
+    private $dataLevel;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sort_no", type="integer", nullable=false)
+     */
+    private $sortNo;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     */
+    private $enabled;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="entry_date", type="datetime", nullable=true)
+     */
+    private $entryDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

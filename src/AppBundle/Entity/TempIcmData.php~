@@ -1,0 +1,131 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TempIcmData
+ *
+ * @ORM\Table(name="temp_icm_data")
+ * @ORM\Entity
+ */
+class TempIcmData
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="district_code", type="integer", nullable=true)
+     */
+    private $districtCode;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_team_monitored", type="integer", nullable=true)
+     */
+    private $noTeamMonitored;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_resident_area", type="integer", nullable=true)
+     */
+    private $teamResidentArea;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vaccinator_trained", type="integer", nullable=true)
+     */
+    private $vaccinatorTrained;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_stage_3", type="integer", nullable=true)
+     */
+    private $vaccStage3;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_supervised", type="integer", nullable=true)
+     */
+    private $teamSupervised;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_with_chw", type="integer", nullable=true)
+     */
+    private $teamWithChw;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_with_female", type="integer", nullable=true)
+     */
+    private $teamWithFemale;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_accom_sm", type="integer", nullable=true)
+     */
+    private $teamAccomSm;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_missed_no_team_visit", type="integer", nullable=true)
+     */
+    private $noMissedNoTeamVisit;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_child_seen", type="integer", nullable=true)
+     */
+    private $noChildSeen;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_child_with_fm", type="integer", nullable=true)
+     */
+    private $noChildWithFm;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_missed_child", type="integer", nullable=true)
+     */
+    private $noMissedChild;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="no_missed_10", type="integer", nullable=true)
+     */
+    private $noMissed10;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign_id", type="integer", nullable=true)
+     */
+    private $campaignId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="data_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $dataId;
+
+
+}
+

@@ -1,0 +1,193 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AdminData
+ *
+ * @ORM\Table(name="admin_data", indexes={@ORM\Index(name="fk_camp_adm_idx", columns={"campaign"}), @ORM\Index(name="district_admindata_idx", columns={"district"})})
+ * @ORM\Entity
+ */
+class AdminData
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
+     */
+    private $clusterName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster_no", type="text", length=65535, nullable=true)
+     */
+    private $clusterNo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster", type="string", length=30, nullable=true)
+     */
+    private $cluster;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
+     */
+    private $subDistrictName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="target_population", type="integer", nullable=true)
+     */
+    private $targetPopulation;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="received_vials", type="integer", nullable=true)
+     */
+    private $receivedVials;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="used_vials", type="integer", nullable=true)
+     */
+    private $usedVials;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="child_0_11", type="integer", nullable=true)
+     */
+    private $child011;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="child_12_59", type="integer", nullable=true)
+     */
+    private $child1259;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_absent", type="integer", nullable=true)
+     */
+    private $regAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_absent", type="integer", nullable=true)
+     */
+    private $vaccAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_sleep", type="integer", nullable=true)
+     */
+    private $regSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_sleep", type="integer", nullable=true)
+     */
+    private $vaccSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_refusal", type="integer", nullable=true)
+     */
+    private $regRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_refusal", type="integer", nullable=true)
+     */
+    private $vaccRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="new_polio_case", type="integer", nullable=true)
+     */
+    private $newPolioCase;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_day", type="integer", nullable=true)
+     */
+    private $vaccDay;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="entry_date", type="datetime", nullable=true)
+     */
+    private $entryDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="missed", type="integer", nullable=true)
+     */
+    private $missed;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sleep", type="integer", nullable=true)
+     */
+    private $sleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="refusal", type="integer", nullable=true)
+     */
+    private $refusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Campaign
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="campaign", referencedColumnName="id")
+     * })
+     */
+    private $campaign;
+
+    /**
+     * @var \AppBundle\Entity\District
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="district", referencedColumnName="id")
+     * })
+     */
+    private $district;
+
+
+}
+
