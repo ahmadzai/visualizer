@@ -1,0 +1,49 @@
+{#{% extends 'base.html.twig' %}#}
+{% extends 'template.html.twig' %}
+{% block content %}
+    <h1>Uploadmanagers list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tablename</th>
+                <th>Excludedcolumns</th>
+                <th>Entitycolumns</th>
+                <th>Enabled</th>
+                <th>Hastemp</th>
+                <th>Modifiedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for uploadManager in uploadManagers %}
+            <tr>
+                <td><a href="{{ path('uploadmanager_show', { 'id': uploadManager.id }) }}">{{ uploadManager.id }}</a></td>
+                <td>{{ uploadManager.tableName }}</td>
+                <td>{% if uploadManager.excludedColumns %}{{ uploadManager.excludedColumns|join(', ') }}{% endif %}</td>
+                <td>{% if uploadManager.entityColumns %}{{ uploadManager.entityColumns|join(', ') }}{% endif %}</td>
+                <td>{% if uploadManager.enabled %}Yes{% else %}No{% endif %}</td>
+                <td>{% if uploadManager.hasTemp %}Yes{% else %}No{% endif %}</td>
+                <td>{% if uploadManager.modifiedAt %}{{ uploadManager.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('uploadmanager_show', { 'id': uploadManager.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('uploadmanager_edit', { 'id': uploadManager.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('uploadmanager_new') }}">Create a new uploadManager</a>
+        </li>
+    </ul>
+{% endblock %}

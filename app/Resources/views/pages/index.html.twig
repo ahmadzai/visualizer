@@ -1,0 +1,273 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+    <script src="{{ asset('charts/highcharts.js') }}"></script>
+    <script src="{{ asset('charts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('charts/modules/grouped-categories.js') }}"></script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                {#<div class="box-header with-border">#}
+                    {#<h3 class="box-title">Area Chart</h3>#}
+
+                    {#<div class="box-tools pull-right">#}
+                        {#<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>#}
+                        {#</button>#}
+                        {#<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>#}
+                    {#</div>#}
+                {#</div>#}
+                <div class="box-body">
+                    <div id="chart1" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+
+                <div class="box-body">
+                    <div id="chart-absent" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-warning box">
+                <div class="box-body">
+                    <div id="chart-nss" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-default box">
+                <div class="box-body">
+                    <div id="chart-refusal" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-danger box">
+
+                <div class="box-body">
+                    <div id="vaccine-usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js_head %}
+    <script src="{{ asset('template/bower_components/jquery/dist/jquery.min.js')}}"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+{% endblock %}
+{% block js %}
+    <script src="{{ asset('custom_js_css/charts.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+
+            var checkElement = $('.menu-open .treeview-menu');
+            if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
+                //Get the parent menu
+                var parent = checkElement.parents('ul').first();
+                //Close all open menus within the parent
+                var ul = parent.find('ul:visible').slideUp(500);
+                //Remove the menu-open class from the parent
+                ul.removeClass('menu-open');
+                //Get the parent li
+                var parent_li = checkElement.parent("li");
+
+                //Open the target menu and add the menu-open class
+                checkElement.slideDown(500, function () {
+                    //Add the class active to the parent li
+                    checkElement.addClass('menu-open');
+                    //parent.find('li.active').removeClass('active');
+                    parent_li.addClass('active');
+                    //Fix the layout in case the sidebar stretches over the height of the window
+                    //_this.layout.fix();
+                });
+            }
+
+            $('.loading, .loading-top').hide();
+
+            colmnChart('chart1', 'url', '{{ chart1data|raw }}', 'No of missed children');
+            colmnChart('chart-absent', 'url', '{{ chartDataAbsent|raw }}', 'No of absent children', null, ['#FFFF00', '#43AB0D']);
+            colmnChart('chart-nss', 'url', '{{ chartDataNss|raw }}', 'No of NSS children', null, ['#C99900', '#43AB0D']);
+            colmnChart('chart-refusal', 'url', '{{ chartDataRefusal|raw }}', 'No of refusal children', null, ['#FF0000', '#43AB0D']);
+            threeAxisChart('vaccine-usage', 'url', '{{ chartVaccineUsage|raw }}', ['Received vials', 'Used vials', 'Wastage'],
+                ['ReceivedVials', 'UsedVials', 'Wastage']);
+
+
+
+            {#$('#filterButton').click(function () {#}
+                {#var campaigns = $('#filterCampaign option:selected');#}
+                {#var selectedCampaigns = [];#}
+                {#$(campaigns).each(function (index, campaigns) {#}
+                    {#selectedCampaigns.push([$(this).val()]);#}
+                {#});#}
+
+                {#var region = $('#filterRegion option:selected');#}
+                {#var selectedRegions = [];#}
+                {#$(region).each(function (index, region) {#}
+                    {#selectedRegions.push([$(this).val()]);#}
+                {#});#}
+
+                {#var provinces = $('#filterProvince option:selected');#}
+                {#var selectedProvinces = [];#}
+                {#$(provinces).each(function (index, provinces) {#}
+                    {#selectedProvinces.push([$(this).val()]);#}
+                {#});#}
+
+                {#var districts = $('#filterDistrict option:selected');#}
+                {#var selectedDistricts = [];#}
+                {#$(districts).each(function (index, districts) {#}
+                    {#selectedDistricts.push([$(this).val()]);#}
+                {#});#}
+
+                {#var data = {'campaign':selectedCampaigns, 'region':selectedRegions, 'province': selectedProvinces, 'district': selectedDistricts};#}
+
+                {#console.log(data);#}
+
+                {#/**#}
+                 {#* Todo: to write ajax request#}
+                 {#*/#}
+                {#//$(".loading").html("Loading filtered contents <img src='{{ asset('ajax-loader-arrow.gif')}}' />");#}
+                {#//$(".loading-top").html("Updating page's contents <img src='{{ asset('ajax-loader-arrow.gif')}}' />");#}
+                {#$('.loading, .loading-top').show();#}
+
+
+                {#$.ajax({#}
+                    {#url: Routing.generate('ajax_admin_data'),#}
+                    {#data: data,#}
+                    {#type: 'POST',#}
+                    {#success: function (data) {#}
+                        {#//console.log(data);#}
+                        {#var jsonData = JSON.parse(data);#}
+                        {#/*#}
+                         {#this is how the data is comming#}
+                         {#'allMissedChildren'#}
+                         {#'absentChildren'#}
+                         {#'nssChildren'#}
+                         {#'refusalChildren#}
+                         {#'vaccineUsage'#}
+
+                         {#*/#}
+                        {#colmnChart('chart1', 'url', JSON.stringify(jsonData.allMissedChildren), 'No of missed children');#}
+                        {#colmnChart('chart-absent', 'url', JSON.stringify(jsonData.absentChildren), 'No of absent children', null, ['#FFFF00', '#43AB0D']);#}
+                        {#colmnChart('chart-nss', 'url', JSON.stringify(jsonData.nssChildren), 'No of NSS children', null, ['#C99900', '#43AB0D']);#}
+                        {#colmnChart('chart-refusal', 'url', JSON.stringify(jsonData.refusalChildren), 'No of refusal children', null, ['#FF0000', '#43AB0D']);#}
+                        {#threeAxisChart('vaccine-usage', 'url', JSON.stringify(jsonData.vaccineUsage), ['Received vials', 'Used vials', 'Wastage'],#}
+                            {#['ReceivedVials', 'UsedVials', 'Wastage']);#}
+
+                        {#$('.loading, .loading-top').hide();#}
+                    {#},#}
+                    {#cache: false#}
+                {#});#}
+
+            {#})#}
+        });
+
+        function threeAxisChart(renderTo, url, staticData, threeTitles, threeIndicators, threeColors, ajaxPrams) {
+            var colors = typeof threeColors === 'undefined' ? ['#048aff', '#43AB0D', '#F00000'] : threeColors;
+            var titles = typeof threeTitles === 'undefined' ? ['Title1', 'Title2', 'Title3'] : threeTitles;
+            var indicators = typeof threeIndicators === 'undefined' ? ['Indicator1', 'Indicator1', 'Indicator1'] : threeIndicators;
+            var vaccineUsage = {apiUrl:url,
+                urlParams: ajaxPrams,
+                renderTo: renderTo,
+                chartData: staticData,
+                legend: {
+                    layout: 'vertical',
+                    align: 'left',
+                    vAlign: 'top',
+                    x: 80,
+                    y: 55,
+                    color: '#FFFFFF'
+                },
+                axises: [
+                    {
+                        format:'',
+                        color: colors[1],
+                        opposite: true,
+                        title:titles[1]
+
+                    },
+                    {
+                        format:'',
+                        color: colors[0],
+                        opposite: false,
+                        title:titles[0],
+                        lineWidth: 1
+                    },
+                    {
+                        format:' %',
+                        color: colors[2],
+                        opposite: true,
+                        title:titles[2],
+                        lineWidth: 0
+                    },
+                ],
+                yAxises: [
+                    {
+                        color: colors[0],
+                        indicator:indicators[0],
+                        type: 'column',
+                        tooltip: '',
+                        yAxis: 1
+                    },
+                    {
+                        color: colors[1],
+                        yAxis: 0,
+                        indicator:indicators[1],
+                        type: 'spline',
+                        tooltip: ''
+
+                    },
+                    {
+                        color: colors[2],
+                        indicator:indicators[2],
+                        yAxis: 2,
+                        type: 'spline',
+                        tooltip: ' %'
+                    },
+
+
+                ]
+            };
+
+            multiAxisColumnChart(vaccineUsage);
+        }
+        function colmnChart(renderTo, url, staticData, title, ajaxPrams, colors) {
+            var colors = typeof colors === 'undefined' ? ['#FF0000', '#C99900', '#FFFF00'] : colors;
+            var title = typeof title === 'undefined' ? 'No of children' : title;
+            var settings = {apiUrl:url,
+                urlParams: ajaxPrams,
+                renderTo: renderTo,
+                chartData: staticData,
+                menu:[{chart:'', title:'Bar Chart'},
+                    {chart: 'normal', title:'Back to Stack'}],
+                stacking:'normal',
+                yAxisTitle: title,
+                colors: colors
+//                combination:[{type:'pie', method:'sum'}],
+//                label:{title:'Total Vaccine Usage',
+//                    position:{top:'18px', left:'170px'}}
+            };
+            columnChart(settings);
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,6 @@
+services:
+    app.admin.admin_data:
+        class: AppBundle\Admin\AdminDataAdmin
+        arguments: [~, AppBundle\Entity\AdminData, AppBundle:AdminDataAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: AdminData }

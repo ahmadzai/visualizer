@@ -1,0 +1,32 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{#<div class="fos_user_user_show">#}
+    {#<p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>#}
+    {#<p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>#}
+{#</div>#}
+
+<div class="row">
+
+    <div class="col-md-6">
+        <!-- Widget: user widget style 1 -->
+        <div class="box box-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-aqua-active">
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username">{{ user.firstName }} {{ user.lastName }} ({{ user.username }})</h3>
+                <h5 class="widget-user-desc">{{ user.position }}</h5>
+                <h5 class="widget-user-desc"><a href="mailto:{{ user.email }}" style="color:#ffffff">{{ user.email }}</a></h5>
+            </div>
+            <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                    <li><a href="#">Level <span class="pull-right badge bg-blue">{{ user.level }}</span></a></li>
+                    <li><a href="#">Region <span class="pull-right badge bg-aqua">{{ user.region }}</span></a></li>
+                    <li><a href="#">Province <span class="pull-right badge bg-green">{% if user.province %}{{ user.province.provinceName }}{% endif %}</span></a></li>
+                    <li><a href="#">Mobile Number <span class="pull-right badge bg-orange">{{ user.mobileNumber }}</span></a></li>
+                    <li><a href="#">Roles <span class="pull-right badge bg-red">{{ user.roles|join('|') }}</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.widget-user -->
+    </div>
+</div>

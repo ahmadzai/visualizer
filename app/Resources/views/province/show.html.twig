@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Province</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Provinceregion</th>
+                <td>{{ province.provinceRegion }}</td>
+            </tr>
+            <tr>
+                <th>Provincename</th>
+                <td>{{ province.provinceName }}</td>
+            </tr>
+            <tr>
+                <th>Provincenamepashtu</th>
+                <td>{{ province.provinceNamePashtu }}</td>
+            </tr>
+            <tr>
+                <th>Provincenamedari</th>
+                <td>{{ province.provinceNameDari }}</td>
+            </tr>
+            <tr>
+                <th>Provincerhizomecode</th>
+                <td>{{ province.provinceRhizomeCode }}</td>
+            </tr>
+            <tr>
+                <th>Entrydate</th>
+                <td>{% if province.entryDate %}{{ province.entryDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ province.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('province_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('province_edit', { 'id': province.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

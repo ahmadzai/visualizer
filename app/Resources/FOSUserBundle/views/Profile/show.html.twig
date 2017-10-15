@@ -1,0 +1,42 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+{% include "@FOSUser/Profile/show_content.html.twig" %}
+{% endblock fos_user_content %}
+{% block breadcrumb %}
+    <h1>
+        Profile
+        <small>of {{ app.user.firstName }} {{ app.user.lastName }} ({{ app.user.username }})
+        <a class="btn btn-xs btn-info" href="{{ path('fos_user_profile_edit') }}">
+            <i class="fa fa-edit"></i>
+            Edit
+        </a>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+
+        <li>
+            <a href="{{ path("home") }}">
+                <i class="fa fa-home"></i>
+                Home
+            </a>
+        </li>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <li>
+                <a href="{{ path('fos_user_security_logout') }}">
+                    <i class="fa fa-sign-out"></i>
+                    Logout
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('fos_user_security_login') }}">
+                    <i class="fa fa-sign-in"></i>
+                    {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                </a>
+            </li>
+
+        {% endif %}
+
+    </ol>
+{% endblock %}

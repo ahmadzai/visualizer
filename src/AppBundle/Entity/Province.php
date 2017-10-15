@@ -218,4 +218,8 @@ class Province
     {
         return $this->id;
     }
+
+    public function __toString() {
+        return (string) $this->id;
+    }
 }

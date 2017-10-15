@@ -1,0 +1,52 @@
+{#{% extends 'base.html.twig' %}#}
+{% extends 'template.html.twig' %}
+{% block content %}
+    <h1>Uploadmanager</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ uploadManager.id }}</td>
+            </tr>
+            <tr>
+                <th>Tablename</th>
+                <td>{{ uploadManager.tableName }}</td>
+            </tr>
+            <tr>
+                <th>Excludedcolumns</th>
+                <td>{% if uploadManager.excludedColumns %}{{ uploadManager.excludedColumns|join(', ') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Entitycolumns</th>
+                <td>{% if uploadManager.entityColumns %}{{ uploadManager.entityColumns|join(', ') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Enabled</th>
+                <td>{% if uploadManager.enabled %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Hastemp</th>
+                <td>{% if uploadManager.hasTemp %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Modifiedat</th>
+                <td>{% if uploadManager.modifiedAt %}{{ uploadManager.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('uploadmanager_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('uploadmanager_edit', { 'id': uploadManager.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

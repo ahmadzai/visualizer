@@ -22,16 +22,9 @@ class TempAdminData
     /**
      * @var string
      *
-     * @ORM\Column(name="sub_dist_name", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="cluster_type", type="text", length=65535, nullable=true)
      */
-    private $subDistName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
-     */
-    private $clusterName;
+    private $clusterType;
 
     /**
      * @var string
@@ -43,23 +36,30 @@ class TempAdminData
     /**
      * @var string
      *
-     * @ORM\Column(name="cluster", type="string", length=45, nullable=true)
+     * @ORM\Column(name="cluster", type="string", length=30, nullable=true)
      */
     private $cluster;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="target_pop", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
      */
-    private $targetPop;
+    private $subDistrictName;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="given_vials", type="integer", nullable=true)
+     * @ORM\Column(name="target_population", type="integer", nullable=true)
      */
-    private $givenVials;
+    private $targetPopulation;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="received_vials", type="integer", nullable=true)
+     */
+    private $receivedVials;
 
     /**
      * @var integer
@@ -148,32 +148,21 @@ class TempAdminData
     /**
      * @var integer
      *
+     * @ORM\Column(name="file", type="integer", nullable=true)
+     */
+    private $file;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
-
-
     /**
-     * Set district
-     *
-     * @param integer $district
-     *
-     * @return TempAdminData
-     */
-    public function setDistrict($district)
-    {
-        $this->district = $district;
-
-        return $this;
-    }
-
-    /**
-     * Get district
-     *
-     * @return integer
+     * @return int
      */
     public function getDistrict()
     {
@@ -181,70 +170,30 @@ class TempAdminData
     }
 
     /**
-     * Set subDistName
-     *
-     * @param string $subDistName
-     *
-     * @return TempAdminData
+     * @param int $district
      */
-    public function setSubDistName($subDistName)
+    public function setDistrict($district)
     {
-        $this->subDistName = $subDistName;
-
-        return $this;
+        $this->district = $district;
     }
 
     /**
-     * Get subDistName
-     *
      * @return string
      */
-    public function getSubDistName()
+    public function getClusterType()
     {
-        return $this->subDistName;
+        return $this->clusterType;
     }
 
     /**
-     * Set clusterName
-     *
-     * @param string $clusterName
-     *
-     * @return TempAdminData
+     * @param string $clusterType
      */
-    public function setClusterName($clusterName)
+    public function setClusterType($clusterType)
     {
-        $this->clusterName = $clusterName;
-
-        return $this;
+        $this->clusterType = $clusterType;
     }
 
     /**
-     * Get clusterName
-     *
-     * @return string
-     */
-    public function getClusterName()
-    {
-        return $this->clusterName;
-    }
-
-    /**
-     * Set clusterNo
-     *
-     * @param string $clusterNo
-     *
-     * @return TempAdminData
-     */
-    public function setClusterNo($clusterNo)
-    {
-        $this->clusterNo = $clusterNo;
-
-        return $this;
-    }
-
-    /**
-     * Get clusterNo
-     *
      * @return string
      */
     public function getClusterNo()
@@ -253,22 +202,14 @@ class TempAdminData
     }
 
     /**
-     * Set cluster
-     *
-     * @param string $cluster
-     *
-     * @return TempAdminData
+     * @param string $clusterNo
      */
-    public function setCluster($cluster)
+    public function setClusterNo($clusterNo)
     {
-        $this->cluster = $cluster;
-
-        return $this;
+        $this->clusterNo = $clusterNo;
     }
 
     /**
-     * Get cluster
-     *
      * @return string
      */
     public function getCluster()
@@ -277,71 +218,63 @@ class TempAdminData
     }
 
     /**
-     * Set targetPop
-     *
-     * @param string $targetPop
-     *
-     * @return TempAdminData
+     * @param string $cluster
      */
-    public function setTargetPop($targetPop)
+    public function setCluster($cluster)
     {
-        $this->targetPop = $targetPop;
-
-        return $this;
+        $this->cluster = $cluster;
     }
 
     /**
-     * Get targetPop
-     *
      * @return string
      */
-    public function getTargetPop()
+    public function getSubDistrictName()
     {
-        return $this->targetPop;
+        return $this->subDistrictName;
     }
 
     /**
-     * Set givenVials
-     *
-     * @param integer $givenVials
-     *
-     * @return TempAdminData
+     * @param string $subDistrictName
      */
-    public function setGivenVials($givenVials)
+    public function setSubDistrictName($subDistrictName)
     {
-        $this->givenVials = $givenVials;
-
-        return $this;
+        $this->subDistrictName = $subDistrictName;
     }
 
     /**
-     * Get givenVials
-     *
-     * @return integer
+     * @return int
      */
-    public function getGivenVials()
+    public function getTargetPopulation()
     {
-        return $this->givenVials;
+        return $this->targetPopulation;
     }
 
     /**
-     * Set usedVials
-     *
-     * @param integer $usedVials
-     *
-     * @return TempAdminData
+     * @param int $targetPopulation
      */
-    public function setUsedVials($usedVials)
+    public function setTargetPopulation($targetPopulation)
     {
-        $this->usedVials = $usedVials;
-
-        return $this;
+        $this->targetPopulation = $targetPopulation;
     }
 
     /**
-     * Get usedVials
-     *
-     * @return integer
+     * @return int
+     */
+    public function getReceivedVials()
+    {
+        return $this->receivedVials;
+    }
+
+    /**
+     * @param int $receivedVials
+     */
+    public function setReceivedVials($receivedVials)
+    {
+        $this->receivedVials = $receivedVials;
+    }
+
+    /**
+     * @return int
      */
     public function getUsedVials()
     {
@@ -349,23 +282,15 @@ class TempAdminData
     }
 
     /**
-     * Set child011
-     *
-     * @param integer $child011
-     *
-     * @return TempAdminData
+     * @param int $usedVials
      */
-    public function setChild011($child011)
+    public function setUsedVials($usedVials)
     {
-        $this->child011 = $child011;
-
-        return $this;
+        $this->usedVials = $usedVials;
     }
 
     /**
-     * Get child011
-     *
-     * @return integer
+     * @return int
      */
     public function getChild011()
     {
@@ -373,23 +298,15 @@ class TempAdminData
     }
 
     /**
-     * Set child1259
-     *
-     * @param integer $child1259
-     *
-     * @return TempAdminData
+     * @param int $child011
      */
-    public function setChild1259($child1259)
+    public function setChild011($child011)
     {
-        $this->child1259 = $child1259;
-
-        return $this;
+        $this->child011 = $child011;
     }
 
     /**
-     * Get child1259
-     *
-     * @return integer
+     * @return int
      */
     public function getChild1259()
     {
@@ -397,23 +314,15 @@ class TempAdminData
     }
 
     /**
-     * Set regAbsent
-     *
-     * @param integer $regAbsent
-     *
-     * @return TempAdminData
+     * @param int $child1259
      */
-    public function setRegAbsent($regAbsent)
+    public function setChild1259($child1259)
     {
-        $this->regAbsent = $regAbsent;
-
-        return $this;
+        $this->child1259 = $child1259;
     }
 
     /**
-     * Get regAbsent
-     *
-     * @return integer
+     * @return int
      */
     public function getRegAbsent()
     {
@@ -421,23 +330,15 @@ class TempAdminData
     }
 
     /**
-     * Set vaccAbsent
-     *
-     * @param integer $vaccAbsent
-     *
-     * @return TempAdminData
+     * @param int $regAbsent
      */
-    public function setVaccAbsent($vaccAbsent)
+    public function setRegAbsent($regAbsent)
     {
-        $this->vaccAbsent = $vaccAbsent;
-
-        return $this;
+        $this->regAbsent = $regAbsent;
     }
 
     /**
-     * Get vaccAbsent
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccAbsent()
     {
@@ -445,23 +346,15 @@ class TempAdminData
     }
 
     /**
-     * Set regSleep
-     *
-     * @param integer $regSleep
-     *
-     * @return TempAdminData
+     * @param int $vaccAbsent
      */
-    public function setRegSleep($regSleep)
+    public function setVaccAbsent($vaccAbsent)
     {
-        $this->regSleep = $regSleep;
-
-        return $this;
+        $this->vaccAbsent = $vaccAbsent;
     }
 
     /**
-     * Get regSleep
-     *
-     * @return integer
+     * @return int
      */
     public function getRegSleep()
     {
@@ -469,23 +362,15 @@ class TempAdminData
     }
 
     /**
-     * Set vaccSleep
-     *
-     * @param integer $vaccSleep
-     *
-     * @return TempAdminData
+     * @param int $regSleep
      */
-    public function setVaccSleep($vaccSleep)
+    public function setRegSleep($regSleep)
     {
-        $this->vaccSleep = $vaccSleep;
-
-        return $this;
+        $this->regSleep = $regSleep;
     }
 
     /**
-     * Get vaccSleep
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccSleep()
     {
@@ -493,23 +378,15 @@ class TempAdminData
     }
 
     /**
-     * Set regRefusal
-     *
-     * @param integer $regRefusal
-     *
-     * @return TempAdminData
+     * @param int $vaccSleep
      */
-    public function setRegRefusal($regRefusal)
+    public function setVaccSleep($vaccSleep)
     {
-        $this->regRefusal = $regRefusal;
-
-        return $this;
+        $this->vaccSleep = $vaccSleep;
     }
 
     /**
-     * Get regRefusal
-     *
-     * @return integer
+     * @return int
      */
     public function getRegRefusal()
     {
@@ -517,23 +394,15 @@ class TempAdminData
     }
 
     /**
-     * Set vaccRefusal
-     *
-     * @param integer $vaccRefusal
-     *
-     * @return TempAdminData
+     * @param int $regRefusal
      */
-    public function setVaccRefusal($vaccRefusal)
+    public function setRegRefusal($regRefusal)
     {
-        $this->vaccRefusal = $vaccRefusal;
-
-        return $this;
+        $this->regRefusal = $regRefusal;
     }
 
     /**
-     * Get vaccRefusal
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccRefusal()
     {
@@ -541,23 +410,15 @@ class TempAdminData
     }
 
     /**
-     * Set newPolioCase
-     *
-     * @param integer $newPolioCase
-     *
-     * @return TempAdminData
+     * @param int $vaccRefusal
      */
-    public function setNewPolioCase($newPolioCase)
+    public function setVaccRefusal($vaccRefusal)
     {
-        $this->newPolioCase = $newPolioCase;
-
-        return $this;
+        $this->vaccRefusal = $vaccRefusal;
     }
 
     /**
-     * Get newPolioCase
-     *
-     * @return integer
+     * @return int
      */
     public function getNewPolioCase()
     {
@@ -565,23 +426,15 @@ class TempAdminData
     }
 
     /**
-     * Set vaccDay
-     *
-     * @param integer $vaccDay
-     *
-     * @return TempAdminData
+     * @param int $newPolioCase
      */
-    public function setVaccDay($vaccDay)
+    public function setNewPolioCase($newPolioCase)
     {
-        $this->vaccDay = $vaccDay;
-
-        return $this;
+        $this->newPolioCase = $newPolioCase;
     }
 
     /**
-     * Get vaccDay
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccDay()
     {
@@ -589,28 +442,46 @@ class TempAdminData
     }
 
     /**
-     * Set campaign
-     *
-     * @param integer $campaign
-     *
-     * @return TempAdminData
+     * @param int $vaccDay
      */
-    public function setCampaign($campaign)
+    public function setVaccDay($vaccDay)
     {
-        $this->campaign = $campaign;
-
-        return $this;
+        $this->vaccDay = $vaccDay;
     }
 
     /**
-     * Get campaign
-     *
-     * @return integer
+     * @return int
      */
     public function getCampaign()
     {
         return $this->campaign;
     }
+
+    /**
+     * @param int $campaign
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param int $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+
 
     /**
      * Get id

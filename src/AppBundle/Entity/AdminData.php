@@ -8,16 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
  * AdminData
  *
  * @ORM\Table(name="admin_data", indexes={@ORM\Index(name="fk_camp_adm_idx", columns={"campaign"}), @ORM\Index(name="district_admindata_idx", columns={"district"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\AdminDataRepository")
  */
 class AdminData
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="cluster_type", type="text", length=65535, nullable=true)
      */
-    private $clusterName;
+    private $clusterType;
 
     /**
      * @var string
@@ -138,26 +138,26 @@ class AdminData
      */
     private $entryDate;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="missed", type="integer", nullable=true)
-     */
-    private $missed;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="sleep", type="integer", nullable=true)
-     */
-    private $sleep;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="refusal", type="integer", nullable=true)
-     */
-    private $refusal;
+//    /**
+//     * @var integer
+//     *
+//     * @ORM\Column(name="missed", type="integer", nullable=true)
+//     */
+//    private $missed;
+//
+//    /**
+//     * @var integer
+//     *
+//     * @ORM\Column(name="sleep", type="integer", nullable=true)
+//     */
+//    private $sleep;
+//
+//    /**
+//     * @var integer
+//     *
+//     * @ORM\Column(name="refusal", type="integer", nullable=true)
+//     */
+//    private $refusal;
 
     /**
      * @var integer
@@ -191,27 +191,27 @@ class AdminData
 
 
     /**
-     * Set clusterName
+     * Set clusterType
      *
-     * @param string $clusterName
+     * @param string $clusterType
      *
      * @return AdminData
      */
-    public function setClusterName($clusterName)
+    public function setClusterType($clusterType)
     {
-        $this->clusterName = $clusterName;
+        $this->clusterType = $clusterType;
 
         return $this;
     }
 
     /**
-     * Get clusterName
+     * Get clusterType
      *
      * @return string
      */
-    public function getClusterName()
+    public function getClusterType()
     {
-        return $this->clusterName;
+        return $this->clusterType;
     }
 
     /**
@@ -622,77 +622,38 @@ class AdminData
         return $this->entryDate;
     }
 
-    /**
-     * Set missed
-     *
-     * @param integer $missed
-     *
-     * @return AdminData
-     */
-    public function setMissed($missed)
-    {
-        $this->missed = $missed;
 
-        return $this;
-    }
-
-    /**
-     * Get missed
-     *
-     * @return integer
-     */
-    public function getMissed()
-    {
-        return $this->missed;
-    }
-
-    /**
-     * Set sleep
-     *
-     * @param integer $sleep
-     *
-     * @return AdminData
-     */
-    public function setSleep($sleep)
-    {
-        $this->sleep = $sleep;
-
-        return $this;
-    }
-
-    /**
-     * Get sleep
-     *
-     * @return integer
-     */
-    public function getSleep()
-    {
-        return $this->sleep;
-    }
-
-    /**
-     * Set refusal
-     *
-     * @param integer $refusal
-     *
-     * @return AdminData
-     */
-    public function setRefusal($refusal)
-    {
-        $this->refusal = $refusal;
-
-        return $this;
-    }
-
-    /**
-     * Get refusal
-     *
-     * @return integer
-     */
-    public function getRefusal()
-    {
-        return $this->refusal;
-    }
+//    /**
+//     * Get missed
+//     *
+//     * @return integer
+//     */
+//    public function getMissed()
+//    {
+//        return $this->missed;
+//    }
+//
+//
+//    /**
+//     * Get sleep
+//     *
+//     * @return integer
+//     */
+//    public function getSleep()
+//    {
+//        return $this->sleep;
+//    }
+//
+//
+//    /**
+//     * Get refusal
+//     *
+//     * @return integer
+//     */
+//    public function getRefusal()
+//    {
+//        return $this->refusal;
+//    }
 
     /**
      * Get id

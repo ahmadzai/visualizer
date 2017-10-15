@@ -15,20 +15,6 @@ class TempCatchupData
     /**
      * @var string
      *
-     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
-     */
-    private $subDistrictName;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="district_code", type="integer", nullable=true)
-     */
-    private $districtCode;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
      */
     private $clusterName;
@@ -39,6 +25,20 @@ class TempCatchupData
      * @ORM\Column(name="cluster_no", type="text", length=65535, nullable=true)
      */
     private $clusterNo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
+     */
+    private $subDistrictName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="area_name", type="text", length=65535, nullable=true)
+     */
+    private $areaName;
 
     /**
      * @var integer
@@ -99,9 +99,9 @@ class TempCatchupData
     /**
      * @var integer
      *
-     * @ORM\Column(name="campaign_id", type="integer", nullable=true)
+     * @ORM\Column(name="new_remaining", type="integer", nullable=true)
      */
-    private $campaignId;
+    private $newRemaining;
 
     /**
      * @var integer
@@ -112,73 +112,27 @@ class TempCatchupData
      */
     private $id;
 
-
-
     /**
-     * Set subDistrictName
+     * @var \AppBundle\Entity\Campaign
      *
-     * @param string $subDistrictName
-     *
-     * @return TempCatchupData
+     * @ORM\Column(name="campaign", type="integer")
      */
-    public function setSubDistrictName($subDistrictName)
-    {
-        $this->subDistrictName = $subDistrictName;
-
-        return $this;
-    }
+    private $campaign;
 
     /**
-     * Get subDistrictName
-     *
-     * @return string
+     * @var \AppBundle\Entity\District
+     * @ORM\Column(name="district", type="integer")
      */
-    public function getSubDistrictName()
-    {
-        return $this->subDistrictName;
-    }
+    private $district;
 
     /**
-     * Set districtCode
+     * @var integer
      *
-     * @param integer $districtCode
-     *
-     * @return TempCatchupData
+     * @ORM\Column(name="file", type="integer", nullable=true)
      */
-    public function setDistrictCode($districtCode)
-    {
-        $this->districtCode = $districtCode;
-
-        return $this;
-    }
+    private $file;
 
     /**
-     * Get districtCode
-     *
-     * @return integer
-     */
-    public function getDistrictCode()
-    {
-        return $this->districtCode;
-    }
-
-    /**
-     * Set clusterName
-     *
-     * @param string $clusterName
-     *
-     * @return TempCatchupData
-     */
-    public function setClusterName($clusterName)
-    {
-        $this->clusterName = $clusterName;
-
-        return $this;
-    }
-
-    /**
-     * Get clusterName
-     *
      * @return string
      */
     public function getClusterName()
@@ -187,22 +141,14 @@ class TempCatchupData
     }
 
     /**
-     * Set clusterNo
-     *
-     * @param string $clusterNo
-     *
-     * @return TempCatchupData
+     * @param string $clusterName
      */
-    public function setClusterNo($clusterNo)
+    public function setClusterName($clusterName)
     {
-        $this->clusterNo = $clusterNo;
-
-        return $this;
+        $this->clusterName = $clusterName;
     }
 
     /**
-     * Get clusterNo
-     *
      * @return string
      */
     public function getClusterNo()
@@ -211,23 +157,47 @@ class TempCatchupData
     }
 
     /**
-     * Set regAbsent
-     *
-     * @param integer $regAbsent
-     *
-     * @return TempCatchupData
+     * @param string $clusterNo
      */
-    public function setRegAbsent($regAbsent)
+    public function setClusterNo($clusterNo)
     {
-        $this->regAbsent = $regAbsent;
-
-        return $this;
+        $this->clusterNo = $clusterNo;
     }
 
     /**
-     * Get regAbsent
-     *
-     * @return integer
+     * @return string
+     */
+    public function getSubDistrictName()
+    {
+        return $this->subDistrictName;
+    }
+
+    /**
+     * @param string $subDistrictName
+     */
+    public function setSubDistrictName($subDistrictName)
+    {
+        $this->subDistrictName = $subDistrictName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAreaName()
+    {
+        return $this->areaName;
+    }
+
+    /**
+     * @param string $areaName
+     */
+    public function setAreaName($areaName)
+    {
+        $this->areaName = $areaName;
+    }
+
+    /**
+     * @return int
      */
     public function getRegAbsent()
     {
@@ -235,23 +205,15 @@ class TempCatchupData
     }
 
     /**
-     * Set vaccAbsent
-     *
-     * @param integer $vaccAbsent
-     *
-     * @return TempCatchupData
+     * @param int $regAbsent
      */
-    public function setVaccAbsent($vaccAbsent)
+    public function setRegAbsent($regAbsent)
     {
-        $this->vaccAbsent = $vaccAbsent;
-
-        return $this;
+        $this->regAbsent = $regAbsent;
     }
 
     /**
-     * Get vaccAbsent
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccAbsent()
     {
@@ -259,23 +221,15 @@ class TempCatchupData
     }
 
     /**
-     * Set regSleep
-     *
-     * @param integer $regSleep
-     *
-     * @return TempCatchupData
+     * @param int $vaccAbsent
      */
-    public function setRegSleep($regSleep)
+    public function setVaccAbsent($vaccAbsent)
     {
-        $this->regSleep = $regSleep;
-
-        return $this;
+        $this->vaccAbsent = $vaccAbsent;
     }
 
     /**
-     * Get regSleep
-     *
-     * @return integer
+     * @return int
      */
     public function getRegSleep()
     {
@@ -283,23 +237,15 @@ class TempCatchupData
     }
 
     /**
-     * Set vaccSleep
-     *
-     * @param integer $vaccSleep
-     *
-     * @return TempCatchupData
+     * @param int $regSleep
      */
-    public function setVaccSleep($vaccSleep)
+    public function setRegSleep($regSleep)
     {
-        $this->vaccSleep = $vaccSleep;
-
-        return $this;
+        $this->regSleep = $regSleep;
     }
 
     /**
-     * Get vaccSleep
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccSleep()
     {
@@ -307,23 +253,15 @@ class TempCatchupData
     }
 
     /**
-     * Set regRefusal
-     *
-     * @param integer $regRefusal
-     *
-     * @return TempCatchupData
+     * @param int $vaccSleep
      */
-    public function setRegRefusal($regRefusal)
+    public function setVaccSleep($vaccSleep)
     {
-        $this->regRefusal = $regRefusal;
-
-        return $this;
+        $this->vaccSleep = $vaccSleep;
     }
 
     /**
-     * Get regRefusal
-     *
-     * @return integer
+     * @return int
      */
     public function getRegRefusal()
     {
@@ -331,23 +269,15 @@ class TempCatchupData
     }
 
     /**
-     * Set vaccRefusal
-     *
-     * @param integer $vaccRefusal
-     *
-     * @return TempCatchupData
+     * @param int $regRefusal
      */
-    public function setVaccRefusal($vaccRefusal)
+    public function setRegRefusal($regRefusal)
     {
-        $this->vaccRefusal = $vaccRefusal;
-
-        return $this;
+        $this->regRefusal = $regRefusal;
     }
 
     /**
-     * Get vaccRefusal
-     *
-     * @return integer
+     * @return int
      */
     public function getVaccRefusal()
     {
@@ -355,23 +285,15 @@ class TempCatchupData
     }
 
     /**
-     * Set newMissed
-     *
-     * @param integer $newMissed
-     *
-     * @return TempCatchupData
+     * @param int $vaccRefusal
      */
-    public function setNewMissed($newMissed)
+    public function setVaccRefusal($vaccRefusal)
     {
-        $this->newMissed = $newMissed;
-
-        return $this;
+        $this->vaccRefusal = $vaccRefusal;
     }
 
     /**
-     * Get newMissed
-     *
-     * @return integer
+     * @return int
      */
     public function getNewMissed()
     {
@@ -379,23 +301,15 @@ class TempCatchupData
     }
 
     /**
-     * Set newVaccinated
-     *
-     * @param integer $newVaccinated
-     *
-     * @return TempCatchupData
+     * @param int $newMissed
      */
-    public function setNewVaccinated($newVaccinated)
+    public function setNewMissed($newMissed)
     {
-        $this->newVaccinated = $newVaccinated;
-
-        return $this;
+        $this->newMissed = $newMissed;
     }
 
     /**
-     * Get newVaccinated
-     *
-     * @return integer
+     * @return int
      */
     public function getNewVaccinated()
     {
@@ -403,36 +317,84 @@ class TempCatchupData
     }
 
     /**
-     * Set campaignId
-     *
-     * @param integer $campaignId
-     *
-     * @return TempCatchupData
+     * @param int $newVaccinated
      */
-    public function setCampaignId($campaignId)
+    public function setNewVaccinated($newVaccinated)
     {
-        $this->campaignId = $campaignId;
-
-        return $this;
+        $this->newVaccinated = $newVaccinated;
     }
 
     /**
-     * Get campaignId
-     *
-     * @return integer
+     * @return int
      */
-    public function getCampaignId()
+    public function getNewRemaining()
     {
-        return $this->campaignId;
+        return $this->newRemaining;
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @param int $newRemaining
+     */
+    public function setNewRemaining($newRemaining)
+    {
+        $this->newRemaining = $newRemaining;
+    }
+
+    /**
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * @param Campaign $campaign
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
+    }
+
+    /**
+     * @return District
+     */
+    public function getDistrict()
+    {
+        return $this->district;
+    }
+
+    /**
+     * @param District $district
+     */
+    public function setDistrict($district)
+    {
+        $this->district = $district;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param int $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
+
+
 }

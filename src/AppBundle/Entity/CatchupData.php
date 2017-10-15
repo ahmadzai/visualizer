@@ -34,6 +34,13 @@ class CatchupData
     private $subDistrictName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="area_name", type="text", length=65535, nullable=true)
+     */
+    private $areaName;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="reg_absent", type="integer", nullable=true)
@@ -96,26 +103,6 @@ class CatchupData
      */
     private $entryDate = 'CURRENT_TIMESTAMP';
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="missed", type="integer", nullable=true)
-     */
-    private $missed;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="sleep", type="integer", nullable=true)
-     */
-    private $sleep;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="refusal", type="integer", nullable=true)
-     */
-    private $refusal;
 
     /**
      * @var integer
@@ -226,6 +213,23 @@ class CatchupData
     {
         return $this->subDistrictName;
     }
+
+    /**
+     * @return string
+     */
+    public function getAreaName()
+    {
+        return $this->areaName;
+    }
+
+    /**
+     * @param string $areaName
+     */
+    public function setAreaName($areaName)
+    {
+        $this->areaName = $areaName;
+    }
+
 
     /**
      * Set regAbsent
@@ -443,77 +447,6 @@ class CatchupData
         return $this->entryDate;
     }
 
-    /**
-     * Set missed
-     *
-     * @param integer $missed
-     *
-     * @return CatchupData
-     */
-    public function setMissed($missed)
-    {
-        $this->missed = $missed;
-
-        return $this;
-    }
-
-    /**
-     * Get missed
-     *
-     * @return integer
-     */
-    public function getMissed()
-    {
-        return $this->missed;
-    }
-
-    /**
-     * Set sleep
-     *
-     * @param integer $sleep
-     *
-     * @return CatchupData
-     */
-    public function setSleep($sleep)
-    {
-        $this->sleep = $sleep;
-
-        return $this;
-    }
-
-    /**
-     * Get sleep
-     *
-     * @return integer
-     */
-    public function getSleep()
-    {
-        return $this->sleep;
-    }
-
-    /**
-     * Set refusal
-     *
-     * @param integer $refusal
-     *
-     * @return CatchupData
-     */
-    public function setRefusal($refusal)
-    {
-        $this->refusal = $refusal;
-
-        return $this;
-    }
-
-    /**
-     * Get refusal
-     *
-     * @return integer
-     */
-    public function getRefusal()
-    {
-        return $this->refusal;
-    }
 
     /**
      * Set newRemaining
