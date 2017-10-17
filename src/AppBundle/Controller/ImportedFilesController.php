@@ -61,7 +61,7 @@ class ImportedFilesController extends Controller
 
 
         return $this->render('pages/table.html.twig',
-            ['datatable'=>$datatable, 'title'=>'Uploaded Files Management','add_new' => false,
+            ['datatable'=>$datatable, 'title'=>'Uploaded Files Management',
              'change_breadcrumb' => true,
              'breadcrumb_text' => 'Manage<small> uplaoded files</small>']);
     }

@@ -11,37 +11,37 @@
         <div class="tab-pane active" id="control-sidebar-home-tab">
             <h3 class="control-sidebar-heading">Recent Activity</h3>
             <ul class="control-sidebar-menu">
-                <li>
-                    <a href="javascript:;">
-                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                {#<li>#}
+                    {#<a href="{{ path("uploadmanager_index") }}">#}
+                        {#<i class="menu-icon fa fa-upload bg-red"></i>#}
 
-                        <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                        {#<div class="menu-info">#}
+                            {#<h4 class="control-sidebar-subheading">Upload Manager</h4>#}
 
-                            <p>Will be 23 on April 24th</p>
-                        </div>
-                    </a>
-                </li>
+                            {#<p>Set/unset uploading option</p>#}
+                        {#</div>#}
+                    {#</a>#}
+                {#</li>#}
             </ul>
             <!-- /.control-sidebar-menu -->
 
-            <h3 class="control-sidebar-heading">Tasks Progress</h3>
-            <ul class="control-sidebar-menu">
-                <li>
-                    <a href="javascript:;">
-                        <h4 class="control-sidebar-subheading">
-                            Custom Template Design
-                            <span class="pull-right-container">
-                    <span class="label label-danger pull-right">70%</span>
-                  </span>
-                        </h4>
+            {#<h3 class="control-sidebar-heading">Tasks Progress</h3>#}
+            {#<ul class="control-sidebar-menu">#}
+                {#<li>#}
+                    {#<a href="javascript:;">#}
+                        {#<h4 class="control-sidebar-subheading">#}
+                            {#Custom Template Design#}
+                            {#<span class="pull-right-container">#}
+                    {#<span class="label label-danger pull-right">70%</span>#}
+                  {#</span>#}
+                        {#</h4>#}
 
-                        <div class="progress progress-xxs">
-                            <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+                        {#<div class="progress progress-xxs">#}
+                            {#<div class="progress-bar progress-bar-danger" style="width: 70%"></div>#}
+                        {#</div>#}
+                    {#</a>#}
+                {#</li>#}
+            {#</ul>#}
             <!-- /.control-sidebar-menu -->
 
         </div>
@@ -54,16 +54,63 @@
             <form method="post">
                 <h3 class="control-sidebar-heading">General Settings</h3>
 
-                <div class="form-group">
-                    <label class="control-sidebar-subheading">
-                        Report panel usage
-                        <input type="checkbox" class="pull-right" checked>
-                    </label>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="{{ path("uploadmanager_index") }}">
+                            <i class="menu-icon fa fa-upload bg-red"></i>
 
-                    <p>
-                        Some information about this general settings option
-                    </p>
-                </div>
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Upload Manager</h4>
+
+                                <p>Set/unset uploading option</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path("manage_uploaded_files") }}">
+                            <i class="menu-icon fa fa-cloud-upload bg-yellow"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Files Manager</h4>
+
+                                <p>Manage uploaded files</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path("campaign_index") }}">
+                            <i class="menu-icon fa fa-calendar bg-blue"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Campaigns Manager</h4>
+
+                                <p>Manage campaigns</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path("province_index") }}">
+                            <i class="menu-icon fa fa-map-marker bg-green"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Provinces Manager</h4>
+
+                                <p>Manage provinces and regions</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path("district_index") }}">
+                            <i class="menu-icon fa fa-map-marker bg-purple"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Districts Manager</h4>
+
+                                <p>Manage districts</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
                 <!-- /.form-group -->
             </form>
         </div>

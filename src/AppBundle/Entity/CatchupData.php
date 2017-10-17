@@ -12,89 +12,216 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CatchupData
 {
+
+    /**
+     * @var string
+     * @ORM\Column(name="data_source", type="text", length=20, nullable=true)
+     */
+    private $dataSource;
+
     /**
      * @var string
      *
-     * @ORM\Column(name="cluster_name", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="cluster_name", type="text", length=50, nullable=true)
      */
     private $clusterName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cluster_no", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="cluster_no", type="text", length=20, nullable=true)
      */
     private $clusterNo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sub_district_name", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="sub_district_name", type="text", length=50, nullable=true)
      */
     private $subDistrictName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="area_name", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="area_name", type="text", length=100, nullable=true)
      */
     private $areaName;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="reg_absent", type="integer", nullable=true)
-     */
-    private $regAbsent;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="vacc_absent", type="integer", nullable=true)
+     * @ORM\Column(name="fb_no_sms", type="integer", nullable=true)
      */
-    private $vaccAbsent;
+    private $fbNoSMs;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="reg_sleep", type="integer", nullable=true)
+     * @ORM\Column(name="fb_no_hhs", type="integer", nullable=true)
      */
-    private $regSleep;
+    private $fbNoHHs;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="vacc_sleep", type="integer", nullable=true)
+     * @ORM\Column(name="fb_no_u5", type="integer", nullable=true)
      */
-    private $vaccSleep;
+    private $fbNoU5;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="reg_refusal", type="integer", nullable=true)
+     * @ORM\Column(name="fb_no_u5irr", type="integer", nullable=true)
      */
-    private $regRefusal;
+    private $fbNoU5IRR;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="vacc_refusal", type="integer", nullable=true)
+     * @ORM\Column(name="fb_guest_vac", type="integer", nullable=true)
      */
-    private $vaccRefusal;
+    private $fbGuestVac;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="new_missed", type="integer", nullable=true)
+     * @ORM\Column(name="fb_during_camp_vac", type="integer", nullable=true)
      */
-    private $newMissed;
+    private $fbDuringCampVac;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="new_vaccinated", type="integer", nullable=true)
+     * @ORM\Column(name="fb_refusal_not_vac", type="integer", nullable=true)
      */
-    private $newVaccinated;
+    private $fbRefusalNotVac;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_refusal_vac_during_camp", type="integer", nullable=true)
+     */
+    private $fbRefusalVacDuringCamp;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_refusal_vac_after_camp", type="integer", nullable=true)
+     */
+    private $fbRefusalVacAfterCamp;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_child_vac_by_smafter_camp", type="integer", nullable=true)
+     */
+    private $fbChildVacBySMAfterCamp;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_child_not_vacc_after_camp", type="integer", nullable=true)
+     */
+    private $fbChildNotVaccAfterCamp;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_child_missed_inaccessiblity", type="integer", nullable=true)
+     */
+    private $fbChildMissedInaccessiblity;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_child_refer_ri", type="integer", nullable=true)
+     */
+    private $fbChildReferRI;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_newborn_rec", type="integer", nullable=true)
+     */
+    private $fbNewbornRec;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_newborn_opv0", type="integer", nullable=true)
+     */
+    private $fbNewbornOPV0;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_pregnant_rec", type="integer", nullable=true)
+     */
+    private $fbPregnantRec;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fb_pregnant_refer_anc", type="integer", nullable=true)
+     */
+    private $fbPregnantReferANC;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_reg_absent", type="integer", nullable=true)
+     */
+    private $chRegAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_vac_absent", type="integer", nullable=true)
+     */
+    private $chVacAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_reg_sleep", type="integer", nullable=true)
+     */
+    private $chRegSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_vac_sleep", type="integer", nullable=true)
+     */
+    private $chVacSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_reg_refusal", type="integer", nullable=true)
+     */
+    private $chRegRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_vac_refusal", type="integer", nullable=true)
+     */
+    private $chVacRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_unrecorded", type="integer", nullable=true)
+     */
+    private $chUnrecorded;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ch_unrecorded_vac", type="integer", nullable=true)
+     */
+    private $chUnrecordedVac;
 
     /**
      * @var \DateTime
@@ -102,14 +229,6 @@ class CatchupData
      * @ORM\Column(name="entry_date", type="datetime", nullable=true)
      */
     private $entryDate = 'CURRENT_TIMESTAMP';
-
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="new_remaining", type="integer", nullable=true)
-     */
-    private $newRemaining;
 
     /**
      * @var integer
@@ -140,25 +259,23 @@ class CatchupData
      */
     private $district;
 
-
-
     /**
-     * Set clusterName
-     *
-     * @param string $clusterName
-     *
-     * @return CatchupData
+     * @return string
      */
-    public function setClusterName($clusterName)
+    public function getDataSource()
     {
-        $this->clusterName = $clusterName;
-
-        return $this;
+        return $this->dataSource;
     }
 
     /**
-     * Get clusterName
-     *
+     * @param string $dataSource
+     */
+    public function setDataSource($dataSource)
+    {
+        $this->dataSource = $dataSource;
+    }
+
+    /**
      * @return string
      */
     public function getClusterName()
@@ -167,22 +284,14 @@ class CatchupData
     }
 
     /**
-     * Set clusterNo
-     *
-     * @param string $clusterNo
-     *
-     * @return CatchupData
+     * @param string $clusterName
      */
-    public function setClusterNo($clusterNo)
+    public function setClusterName($clusterName)
     {
-        $this->clusterNo = $clusterNo;
-
-        return $this;
+        $this->clusterName = $clusterName;
     }
 
     /**
-     * Get clusterNo
-     *
      * @return string
      */
     public function getClusterNo()
@@ -191,27 +300,27 @@ class CatchupData
     }
 
     /**
-     * Set subDistrictName
-     *
-     * @param string $subDistrictName
-     *
-     * @return CatchupData
+     * @param string $clusterNo
      */
-    public function setSubDistrictName($subDistrictName)
+    public function setClusterNo($clusterNo)
     {
-        $this->subDistrictName = $subDistrictName;
-
-        return $this;
+        $this->clusterNo = $clusterNo;
     }
 
     /**
-     * Get subDistrictName
-     *
      * @return string
      */
     public function getSubDistrictName()
     {
         return $this->subDistrictName;
+    }
+
+    /**
+     * @param string $subDistrictName
+     */
+    public function setSubDistrictName($subDistrictName)
+    {
+        $this->subDistrictName = $subDistrictName;
     }
 
     /**
@@ -230,247 +339,428 @@ class CatchupData
         $this->areaName = $areaName;
     }
 
-
     /**
-     * Set regAbsent
-     *
-     * @param integer $regAbsent
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setRegAbsent($regAbsent)
+    public function getFbNoSMs()
     {
-        $this->regAbsent = $regAbsent;
-
-        return $this;
+        return $this->fbNoSMs;
     }
 
     /**
-     * Get regAbsent
-     *
-     * @return integer
+     * @param int $fbNoSMs
      */
-    public function getRegAbsent()
+    public function setFbNoSMs($fbNoSMs)
     {
-        return $this->regAbsent;
+        $this->fbNoSMs = $fbNoSMs;
     }
 
     /**
-     * Set vaccAbsent
-     *
-     * @param integer $vaccAbsent
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setVaccAbsent($vaccAbsent)
+    public function getFbNoHHs()
     {
-        $this->vaccAbsent = $vaccAbsent;
-
-        return $this;
+        return $this->fbNoHHs;
     }
 
     /**
-     * Get vaccAbsent
-     *
-     * @return integer
+     * @param int $fbNoHHs
      */
-    public function getVaccAbsent()
+    public function setFbNoHHs($fbNoHHs)
     {
-        return $this->vaccAbsent;
+        $this->fbNoHHs = $fbNoHHs;
     }
 
     /**
-     * Set regSleep
-     *
-     * @param integer $regSleep
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setRegSleep($regSleep)
+    public function getFbNoU5()
     {
-        $this->regSleep = $regSleep;
-
-        return $this;
+        return $this->fbNoU5;
     }
 
     /**
-     * Get regSleep
-     *
-     * @return integer
+     * @param int $fbNoU5
      */
-    public function getRegSleep()
+    public function setFbNoU5($fbNoU5)
     {
-        return $this->regSleep;
+        $this->fbNoU5 = $fbNoU5;
     }
 
     /**
-     * Set vaccSleep
-     *
-     * @param integer $vaccSleep
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setVaccSleep($vaccSleep)
+    public function getFbNoU5IRR()
     {
-        $this->vaccSleep = $vaccSleep;
-
-        return $this;
+        return $this->fbNoU5IRR;
     }
 
     /**
-     * Get vaccSleep
-     *
-     * @return integer
+     * @param int $fbNoU5IRR
      */
-    public function getVaccSleep()
+    public function setFbNoU5IRR($fbNoU5IRR)
     {
-        return $this->vaccSleep;
+        $this->fbNoU5IRR = $fbNoU5IRR;
     }
 
     /**
-     * Set regRefusal
-     *
-     * @param integer $regRefusal
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setRegRefusal($regRefusal)
+    public function getFbGuestVac()
     {
-        $this->regRefusal = $regRefusal;
-
-        return $this;
+        return $this->fbGuestVac;
     }
 
     /**
-     * Get regRefusal
-     *
-     * @return integer
+     * @param int $fbGuestVac
      */
-    public function getRegRefusal()
+    public function setFbGuestVac($fbGuestVac)
     {
-        return $this->regRefusal;
+        $this->fbGuestVac = $fbGuestVac;
     }
 
     /**
-     * Set vaccRefusal
-     *
-     * @param integer $vaccRefusal
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setVaccRefusal($vaccRefusal)
+    public function getFbDuringCampVac()
     {
-        $this->vaccRefusal = $vaccRefusal;
-
-        return $this;
+        return $this->fbDuringCampVac;
     }
 
     /**
-     * Get vaccRefusal
-     *
-     * @return integer
+     * @param int $fbDuringCampVac
      */
-    public function getVaccRefusal()
+    public function setFbDuringCampVac($fbDuringCampVac)
     {
-        return $this->vaccRefusal;
+        $this->fbDuringCampVac = $fbDuringCampVac;
     }
 
     /**
-     * Set newMissed
-     *
-     * @param integer $newMissed
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setNewMissed($newMissed)
+    public function getFbRefusalNotVac()
     {
-        $this->newMissed = $newMissed;
-
-        return $this;
+        return $this->fbRefusalNotVac;
     }
 
     /**
-     * Get newMissed
-     *
-     * @return integer
+     * @param int $fbRefusalNotVac
      */
-    public function getNewMissed()
+    public function setFbRefusalNotVac($fbRefusalNotVac)
     {
-        return $this->newMissed;
+        $this->fbRefusalNotVac = $fbRefusalNotVac;
     }
 
     /**
-     * Set newVaccinated
-     *
-     * @param integer $newVaccinated
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setNewVaccinated($newVaccinated)
+    public function getFbRefusalVacDuringCamp()
     {
-        $this->newVaccinated = $newVaccinated;
-
-        return $this;
+        return $this->fbRefusalVacDuringCamp;
     }
 
     /**
-     * Get newVaccinated
-     *
-     * @return integer
+     * @param int $fbRefusalVacDuringCamp
      */
-    public function getNewVaccinated()
+    public function setFbRefusalVacDuringCamp($fbRefusalVacDuringCamp)
     {
-        return $this->newVaccinated;
+        $this->fbRefusalVacDuringCamp = $fbRefusalVacDuringCamp;
     }
 
     /**
-     * Set entryDate
-     *
-     * @param \DateTime $entryDate
-     *
-     * @return CatchupData
+     * @return int
      */
-    public function setEntryDate($entryDate)
+    public function getFbRefusalVacAfterCamp()
     {
-        $this->entryDate = $entryDate;
-
-        return $this;
+        return $this->fbRefusalVacAfterCamp;
     }
 
     /**
-     * Get entryDate
-     *
-     * @return \DateTime
+     * @param int $fbRefusalVacAfterCamp
      */
-    public function getEntryDate()
+    public function setFbRefusalVacAfterCamp($fbRefusalVacAfterCamp)
     {
-        return $this->entryDate;
-    }
-
-
-    /**
-     * Set newRemaining
-     *
-     * @param integer $newRemaining
-     *
-     * @return CatchupData
-     */
-    public function setNewRemaining($newRemaining)
-    {
-        $this->newRemaining = $newRemaining;
-
-        return $this;
+        $this->fbRefusalVacAfterCamp = $fbRefusalVacAfterCamp;
     }
 
     /**
-     * Get newRemaining
-     *
-     * @return integer
+     * @return int
      */
-    public function getNewRemaining()
+    public function getFbChildVacBySMAfterCamp()
     {
-        return $this->newRemaining;
+        return $this->fbChildVacBySMAfterCamp;
     }
+
+    /**
+     * @param int $fbChildVacBySMAfterCamp
+     */
+    public function setFbChildVacBySMAfterCamp($fbChildVacBySMAfterCamp)
+    {
+        $this->fbChildVacBySMAfterCamp = $fbChildVacBySMAfterCamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbChildNotVaccAfterCamp()
+    {
+        return $this->fbChildNotVaccAfterCamp;
+    }
+
+    /**
+     * @param int $fbChildNotVaccAfterCamp
+     */
+    public function setFbChildNotVaccAfterCamp($fbChildNotVaccAfterCamp)
+    {
+        $this->fbChildNotVaccAfterCamp = $fbChildNotVaccAfterCamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbChildMissedInaccessiblity()
+    {
+        return $this->fbChildMissedInaccessiblity;
+    }
+
+    /**
+     * @param int $fbChildMissedInaccessiblity
+     */
+    public function setFbChildMissedInaccessiblity($fbChildMissedInaccessiblity)
+    {
+        $this->fbChildMissedInaccessiblity = $fbChildMissedInaccessiblity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbChildReferRI()
+    {
+        return $this->fbChildReferRI;
+    }
+
+    /**
+     * @param int $fbChildReferRI
+     */
+    public function setFbChildReferRI($fbChildReferRI)
+    {
+        $this->fbChildReferRI = $fbChildReferRI;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbNewbornRec()
+    {
+        return $this->fbNewbornRec;
+    }
+
+    /**
+     * @param int $fbNewbornRec
+     */
+    public function setFbNewbornRec($fbNewbornRec)
+    {
+        $this->fbNewbornRec = $fbNewbornRec;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbNewbornOPV0()
+    {
+        return $this->fbNewbornOPV0;
+    }
+
+    /**
+     * @param int $fbNewbornOPV0
+     */
+    public function setFbNewbornOPV0($fbNewbornOPV0)
+    {
+        $this->fbNewbornOPV0 = $fbNewbornOPV0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbPregnantRec()
+    {
+        return $this->fbPregnantRec;
+    }
+
+    /**
+     * @param int $fbPregnantRec
+     */
+    public function setFbPregnantRec($fbPregnantRec)
+    {
+        $this->fbPregnantRec = $fbPregnantRec;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFbPregnantReferANC()
+    {
+        return $this->fbPregnantReferANC;
+    }
+
+    /**
+     * @param int $fbPregnantReferANC
+     */
+    public function setFbPregnantReferANC($fbPregnantReferANC)
+    {
+        $this->fbPregnantReferANC = $fbPregnantReferANC;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChRegAbsent()
+    {
+        return $this->chRegAbsent;
+    }
+
+    /**
+     * @param int $chRegAbsent
+     */
+    public function setChRegAbsent($chRegAbsent)
+    {
+        $this->chRegAbsent = $chRegAbsent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChVacAbsent()
+    {
+        return $this->chVacAbsent;
+    }
+
+    /**
+     * @param int $chVacAbsent
+     */
+    public function setChVacAbsent($chVacAbsent)
+    {
+        $this->chVacAbsent = $chVacAbsent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChRegSleep()
+    {
+        return $this->chRegSleep;
+    }
+
+    /**
+     * @param int $chRegSleep
+     */
+    public function setChRegSleep($chRegSleep)
+    {
+        $this->chRegSleep = $chRegSleep;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChVacSleep()
+    {
+        return $this->chVacSleep;
+    }
+
+    /**
+     * @param int $chVacSleep
+     */
+    public function setChVacSleep($chVacSleep)
+    {
+        $this->chVacSleep = $chVacSleep;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChRegRefusal()
+    {
+        return $this->chRegRefusal;
+    }
+
+    /**
+     * @param int $chRegRefusal
+     */
+    public function setChRegRefusal($chRegRefusal)
+    {
+        $this->chRegRefusal = $chRegRefusal;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChVacRefusal()
+    {
+        return $this->chVacRefusal;
+    }
+
+    /**
+     * @param int $chVacRefusal
+     */
+    public function setChVacRefusal($chVacRefusal)
+    {
+        $this->chVacRefusal = $chVacRefusal;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChUnrecorded()
+    {
+        return $this->chUnrecorded;
+    }
+
+    /**
+     * @param int $chUnrecorded
+     */
+    public function setChUnrecorded($chUnrecorded)
+    {
+        $this->chUnrecorded = $chUnrecorded;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChUnrecordedVac()
+    {
+        return $this->chUnrecordedVac;
+    }
+
+    /**
+     * @param int $chUnrecordedVac
+     */
+    public function setChUnrecordedVac($chUnrecordedVac)
+    {
+        $this->chUnrecordedVac = $chUnrecordedVac;
+    }
+
+
+
+
+    /**
+     * @return int
+     */
+    public function getUnrecordedVac()
+    {
+        return $this->unrecordedVac;
+    }
+
+    /**
+     * @param int $unrecordedVac
+     */
+    public function setUnrecordedVac($unrecordedVac)
+    {
+        $this->unrecordedVac = $unrecordedVac;
+    }
+
+
+
+
 
     /**
      * Get id

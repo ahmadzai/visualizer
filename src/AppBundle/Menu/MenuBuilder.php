@@ -76,7 +76,7 @@ class MenuBuilder implements ContainerAwareInterface
         $menu['Catchup Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
         $menu['Catchup Data']['Dashboard']->setAttribute('icon','fa-dashboard');
         // Data Download
-        $menu['Catchup Data']->addChild("Download", array('uri'=>'#'))->setExtra('info', 'Catchup Data');
+        $menu['Catchup Data']->addChild("Download", array('route'=>'catchup_data_download'))->setExtra('info', 'Catchup Data');
         $menu['Catchup Data']['Download']->setAttribute('icon', 'fa-download');
         // Data Upload
         $menu['Catchup Data']->addChild("Upload", array('route'=>'import_data', 'routeParameters'=>['entity'=>'catchup_data'],

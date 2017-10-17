@@ -1,52 +1,120 @@
 {#{% extends 'base.html.twig' %}#}
 {% extends 'template.html.twig' %}
 {% block content %}
-    <h1>Uploadmanager</h1>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-danger">
+            <div class="box-header">
+                <h3 class="box-title">Show upload options</h3>
+                <a class="btn btn-info btn-sm pull-right" href="{{ path('uploadmanager_index') }}">Back to List</a>
+                <a href="{{ path('uploadmanager_edit', { 'id': uploadManager.id }) }}"
+                   class="btn btn-warning btn-sm pull-right" style="margin-right:5px">Edit</a>
+            </div>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ uploadManager.id }}</td>
-            </tr>
-            <tr>
-                <th>Tablename</th>
-                <td>{{ uploadManager.tableName }}</td>
-            </tr>
-            <tr>
-                <th>Excludedcolumns</th>
-                <td>{% if uploadManager.excludedColumns %}{{ uploadManager.excludedColumns|join(', ') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Entitycolumns</th>
-                <td>{% if uploadManager.entityColumns %}{{ uploadManager.entityColumns|join(', ') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Enabled</th>
-                <td>{% if uploadManager.enabled %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Hastemp</th>
-                <td>{% if uploadManager.hasTemp %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Modifiedat</th>
-                <td>{% if uploadManager.modifiedAt %}{{ uploadManager.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('uploadmanager_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('uploadmanager_edit', { 'id': uploadManager.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            <!-- /.box-header -->
+            {#{% for label, messages in app.flashes %}#}
+            {#{% for message in messages %}#}
+
+            {#{{ message }}#}
+
+            {#{% endfor %}#}
+            {#{% endfor %}#}
+            <div class="box-body">
+
+
+
+                <div class="row">
+
+                    <div class="col-md-8">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="box box-widget widget-user">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-aqua-active" style="margin-bottom: -40px">
+                                <!-- /.widget-user-image -->
+                                <h3 class="widget-user-username">{{ uploadManager.tableName }}</h3>
+
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Excluded Cols
+                                            <span class="pull-right">
+                                            {% if uploadManager.excludedColumns %}{{ uploadManager.excludedColumns|join(', ') }}{% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">Entity Cols
+                                            <span class="pull-right">
+                                                {% if uploadManager.entityColumns %}{{ uploadManager.entityColumns|join(', ') }}{% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">Unique Cols
+                                            <span class="pull-right">
+                                                {% if uploadManager.uniqueColumns %}{{ uploadManager.uniqueColumns|join(', ') }}{% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">Enabled
+                                            {% if uploadManager.enabled %}<span class="pull-right badge bg-green">Yes</span>
+                                            {% else %}<span class="pull-right badge bg-red">No</span>{% endif %}
+                                            </a>
+                                    </li>
+
+                                    <li><a href="#">Has Temp
+                                            {% if uploadManager.hasTemp %}<span class="pull-right badge bg-green">Yes</span>
+                                            {% else %}<span class="pull-right badge bg-red">No</span>{% endif %}
+                                        </a>
+                                    </li>
+
+                                    <li><a href="#">Modified At <span class="pull-right badge bg-red">
+                                                {% if uploadManager.modifiedAt %}{{ uploadManager.modifiedAt|date('Y-m-d H:i:s') }}{% endif %}
+                                            </span></a>
+                                    </li>
+
+                                </ul>
+                                {{ form_start(delete_form) }}
+                                <input type="submit" value="Delete" class="btn btn-danger btn-sm" style="margin-bottom: 10px">
+                                {{ form_end(delete_form) }}
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block breadcrumb %}
+    <h1>
+        Upload
+        <small> manager</small>
+    </h1>
+    <ol class="breadcrumb">
+
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+            {#<li class="active"><i class="fa fa-user"></i>#}
+            {#<a href="{{ path('fos_user_security_logout') }}">#}
+            {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
+            {#</a>#}
+            {#</li>#}
+            <li>
+                <a href="{{ path('fos_user_security_logout') }}">
+                    <i class="fa fa-sign-out"></i>
+                    Logout
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('fos_user_security_login') }}">
+                    <i class="fa fa-sign-in"></i>
+                    {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                </a>
+            </li>
+
+        {% endif %}
+
+    </ol>
 {% endblock %}

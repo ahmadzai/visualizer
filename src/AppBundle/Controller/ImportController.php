@@ -53,7 +53,7 @@ class ImportController extends Controller
                     return $this->persistFileAndReturn($file, $entity, 'import_data_handle');
                 }
 
-                return $this->render('pages/import.html.twig', array(
+                return $this->render('import/import.html.twig', array(
                     'file' => $file,
                     'form' => $form->createView(),
                     'entity' => $entity
@@ -102,11 +102,14 @@ class ImportController extends Controller
                     $mappedArray = $form->getData();
                     $excelData = $data['excel_data'];
                     $flashMessage = "";
+                    $file_id = -1;
                     if ($hasTemp) {
                         $entityClass = "\\AppBundle\\Entity\\Temp" . $importer->remove_($entity, true);
                         $flashMessage = ", please synchronize it with main table!";
+                        $file_id = $fileId;
                     }
-                    $result = $importer->processData($entityClass, $excelData, $mappedArray, $fileId);
+                    //Todo: Uploading directly without having a temporary table
+                    $result = $importer->processData($entityClass, $excelData, $mappedArray, $file_id);
 
                     if ($result === true) {
                         $this->addFlash("success", "The data has been successfully shifted to the temporary table" . $flashMessage);
@@ -133,7 +136,7 @@ class ImportController extends Controller
                 }
             }
 
-            return $this->render('pages/import_handle.html.twig',
+            return $this->render('import/import_handle.html.twig',
                     ['form' => $form->createView(),
                      'cols_excel' => $data['cols_excel'],
                      'entity' => $entity,
@@ -159,7 +162,7 @@ class ImportController extends Controller
 //        if(!preg_match("/$match/", $referrer))
 //            throw $this->createNotFoundException("You can't access this route directly!");
         $breadcrumb = $importer->remove_($entity, true);
-        return $this->render("pages/import_sync.html.twig", [
+        return $this->render("import/import_sync.html.twig", [
             'breadcrumb' => $breadcrumb, 'entity'=>$entity, 'file'=>$fileId
         ]);
     }
@@ -471,12 +474,11 @@ class ImportController extends Controller
         $obj = new $table();
         $columns = $importer->toDropDownArray($obj, $excludedCols);
 
-        $excelCols = range("A", "Z");
 
         $cols = array();
         $index = 0;
         foreach ($columns as $name=>$column) {
-            $cols[$excelCols[$index]] = $name;
+            $cols[$index] = $name;
             $index ++;
         }
 
@@ -491,7 +493,7 @@ class ImportController extends Controller
             ->setCategory("Template");
         foreach($cols as $key=>$col) {
             $phpExcelObject->setActiveSheetIndex(0)
-                ->setCellValue($key."1", $col);
+                ->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($key)."1", $col);
         }
 
         $phpExcelObject->getActiveSheet()->setTitle('template_'.$entity);

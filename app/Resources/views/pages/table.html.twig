@@ -6,11 +6,29 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">{{ title }}</h3>
-                {% if add_new  %}
-                <a href="{% if add_new_route!="#" %}{{ path(add_new_route) }}{% endif %}"
-                   class="btn btn-sm btn-info pull-right">
-                    <i class="fa fa-plus"></i>{{ add_new_title }}
-                </a>
+                {% if buttons is defined  %}
+                    {% for key, button in buttons %}
+                        {% if key=='a' %}
+                            <a href="{% if button['route']!="#" %}{{ path(button['route']) }}{% endif %}"
+                               class="btn btn-sm {{ button['class'] }} pull-right">
+                                <i class="fa fa-plus"></i> {{ button['title'] }}
+                            </a>
+                        {% elseif key == 'btn-group' %}
+
+                            <div class="btn-group pull-right" style="margin-right: 5px">
+                                <button type="button" class="btn {{ button['class'] }} btn-sm">{{ button['title'] }}</button>
+                                <button type="button" class="btn {{ button['class'] }} dropdown-toggle btn-sm" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for btn in button['options'] %}
+                                        <li><a href="{{ path(btn['route'], btn['params']) }}">{{ btn['title'] }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                         {% endif %}
+                    {% endfor %}
                 {% endif %}
             </div>
             <div class="box-body">

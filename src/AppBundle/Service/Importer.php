@@ -379,8 +379,9 @@ class Importer
                 $entity->$func($value);
             }
 
-            // now setting the file id
-            $entity->setFile($fileId);
+            // now setting the file id if file was not equal to -1, which means no file field in entity
+            if($fileId !== -1)
+                $entity->setFile($fileId);
 
             try {
                 $this->_em->persist($entity);

@@ -5,7 +5,7 @@
         <div class="col-xs-12">
             <div class="box box-danger">
                 <div class="box-header">
-                    <h3 class="box-title">Upload Manager!</h3>
+                    <h3 class="box-title">Attach upload to a table!</h3>
                     <a class="btn btn-info btn-sm pull-right" href="{{ path('uploadmanager_index') }}">Back to List</a>
                 </div>
 
@@ -149,4 +149,36 @@
             });
         });
     </script>
+{% endblock %}
+{% block breadcrumb %}
+    <h1>
+        Upload
+        <small> manager</small>
+    </h1>
+    <ol class="breadcrumb">
+
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+            {#<li class="active"><i class="fa fa-user"></i>#}
+            {#<a href="{{ path('fos_user_security_logout') }}">#}
+            {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
+            {#</a>#}
+            {#</li>#}
+            <li>
+                <a href="{{ path('fos_user_security_logout') }}">
+                    <i class="fa fa-sign-out"></i>
+                    Logout
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('fos_user_security_login') }}">
+                    <i class="fa fa-sign-in"></i>
+                    {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                </a>
+            </li>
+
+        {% endif %}
+
+    </ol>
 {% endblock %}

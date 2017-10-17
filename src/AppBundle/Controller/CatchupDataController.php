@@ -9,26 +9,25 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Datatables\AdminDataDatatable;
-use AppBundle\Entity\AdminData;
+use AppBundle\Datatables\CatchupDataDatatable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use AppBundle\Service\Importer;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class AdminDataController extends Controller
+class CatchupDataController extends Controller
 {
 
     /**
-     * @Route("/admin_data/download", name="admin_data_download", options={"expose"=true})
+     * @param Request $request
+     * @param $type
+     * @Route("/catchup_data/download/{type}", name="catchup_data_download", options={"expose"=true})
      * @Method("GET")
+     * @return Response
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request, $type='all') {
 
         $isAjax = $request->isXmlHttpRequest();
 
@@ -38,8 +37,8 @@ class AdminDataController extends Controller
 
         // or use the DatatableFactory
         /** @var DatatableInterface $datatable */
-        $datatable = $this->get('sg_datatables.factory')->create(AdminDataDatatable::class);
-        $datatable->buildDatatable();
+        $datatable = $this->get('sg_datatables.factory')->create(CatchupDataDatatable::class);
+        $datatable->buildDatatable(['type'=>$type]);
 
         if ($isAjax) {
             $responseService = $this->get('sg_datatables.response');
@@ -47,25 +46,31 @@ class AdminDataController extends Controller
             $dbQueryBuilder = $responseService->getDatatableQueryBuilder();
 
             $qb = $dbQueryBuilder->getQb();
+            if($type != "all") {
+                $qb->where("catchupdata.dataSource = :type");
+                $qb->setParameter('type', $type);
+            }
             $qb->addOrderBy('campaign.id', 'DESC');
             $qb->addOrderBy('district.province');
             $qb->addOrderBy('district.id');
             return $responseService->getResponse();
         }
 
+
         // creating buttons
         $buttons = array(
             'a' => ['route'=>'#', 'title'=>'New Record', 'class'=>'btn-info'],
             'btn-group' =>['class'=>'btn-default', 'title'=>'Options', 'options' => array(
-                ['route' => 'admin_data_download',
-                    'params' => [], 'title'=>'Raw Data'],
-                ['route' => 'admin_data_download',
-                    'params' => [], 'title'=>'Summary Data'],
+                ['route' => 'catchup_data_download',
+                'params' => ['type' => "all"], 'title'=>'All Data'],
+                ['route' => 'catchup_data_download',
+                    'params' => ['type' => "fb"], 'title'=>'Fieldbook only'],
+                ['route' => 'catchup_data_download',
+                    'params' => ['type' => "nfb"], 'title'=>'No Fieldbook'],
             )]
         );
-
         return $this->render('pages/table.html.twig',
-            ['datatable'=>$datatable,'title'=>'Coverage (Admin) Data','buttons'=>$buttons]);
+            ['datatable'=>$datatable,'title'=>'Catchup (Fieldbook) Data', 'buttons' => $buttons]);
     }
 
     /**
@@ -73,7 +78,7 @@ class AdminDataController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/bulk/delete/admin_data", name="admin_data_bulk_delete")
+     * @Route("/bulk/delete/catchup_data", name="catchup_data_bulk_delete")
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      *
@@ -92,7 +97,7 @@ class AdminDataController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
-            $repository = $em->getRepository('AppBundle:AdminData');
+            $repository = $em->getRepository('AppBundle:CatchupData');
 
             foreach ($choices as $choice) {
                 $entity = $repository->find($choice['id']);
