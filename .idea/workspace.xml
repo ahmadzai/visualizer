@@ -2,23 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2d9e6ee-264a-42d6-86f5-51c56950407b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/CatchupDataController.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Datatables/CatchupDataDatatable.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Resources/views/pages/import.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/import/import.html.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Resources/views/pages/import_handle.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/import/import_handle.html.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Resources/views/pages/import_sync.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/import/import_sync.html.twig" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataSummaryDatatable.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/pages/table.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/pages/table.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/shared/sidebar-control.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/shared/sidebar-control.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/uploadmanager/edit.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/uploadmanager/edit.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/uploadmanager/index.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/uploadmanager/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/uploadmanager/new.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/uploadmanager/new.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/uploadmanager/show.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/uploadmanager/show.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Menu/MenuBuilder.php" afterPath="$PROJECT_DIR$/src/AppBundle/Menu/MenuBuilder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/Importer.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Importer.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,74 +19,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CatchupDataDatatable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/CatchupDataDatatable.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="222" column="53" lean-forward="false" selection-start-line="222" selection-start-column="53" selection-end-line="222" selection-end-column="53" />
-              <folding>
-                <element signature="e#40#92#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImportedFilesController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="63" column="75" lean-forward="false" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImportController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="341" column="5" lean-forward="false" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
-              <folding>
-                <element signature="e#1448#1473#1#PHP" expanded="true" />
-                <element signature="e#2376#2614#0#PHP" expanded="false" />
-                <element signature="e#2812#2837#1#PHP" expanded="true" />
-                <element signature="e#5861#6068#0#PHP" expanded="false" />
-                <element signature="e#6652#6903#0#PHP" expanded="false" />
-                <element signature="e#6908#8798#0#PHP" expanded="false" />
-                <element signature="e#7197#7222#1#PHP" expanded="true" />
-                <element signature="e#7609#7634#1#PHP" expanded="true" />
-                <element signature="e#8310#8335#1#PHP" expanded="true" />
-                <element signature="e#8805#9068#0#PHP" expanded="false" />
-                <element signature="e#9253#9278#1#PHP" expanded="true" />
-                <element signature="e#13239#13339#0#PHP" expanded="false" />
-                <element signature="e#13344#13494#0#PHP" expanded="false" />
-                <element signature="e#13500#13674#0#PHP" expanded="false" />
-                <element signature="e#13679#14176#0#PHP" expanded="false" />
-                <element signature="e#14182#14302#0#PHP" expanded="false" />
-                <element signature="e#14307#14984#0#PHP" expanded="false" />
-                <element signature="e#14990#15298#0#PHP" expanded="false" />
-                <element signature="e#15304#17315#0#PHP" expanded="false" />
-                <element signature="e#15513#15538#1#PHP" expanded="true" />
-                <element signature="e#17764#17789#1#PHP" expanded="true" />
-                <marker date="1508222252421" expanded="true" signature="8125:8182" ph="Delete from " />
-                <marker date="1508222252421" expanded="true" signature="12233:12290" ph="Delete from " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatchupDataController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/CatchupDataController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="70" selection-end-column="10" />
-              <folding>
-                <element signature="e#126#172#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AdminDataController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -109,22 +29,131 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="table.html.twig" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/table.html.twig">
+      <file leaf-file-name="AdminDataSummaryDatatable.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataSummaryDatatable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="84" lean-forward="false" selection-start-line="17" selection-start-column="84" selection-end-line="17" selection-end-column="84" />
+            <state relative-caret-position="357">
+              <caret line="38" column="32" lean-forward="false" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdminDataDatatable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataDatatable.php">
+      <file leaf-file-name="TempCatchupData.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4063">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="55" />
+            <state relative-caret-position="141">
+              <caret line="223" column="0" lean-forward="false" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TempAdminData.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TempAdminData.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-3910">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminData.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminData.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="191">
+              <caret line="600" column="4" lean-forward="false" selection-start-line="600" selection-start-column="4" selection-end-line="612" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CatchupData.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="498">
+              <caret line="252" column="5" lean-forward="false" selection-start-line="252" selection-start-column="5" selection-end-line="252" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImportController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2946">
+              <caret line="341" column="5" lean-forward="false" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
+              <folding>
+                <element signature="e#2376#2614#0#PHP" expanded="false" />
+                <element signature="e#5861#6068#0#PHP" expanded="false" />
+                <element signature="e#6652#6903#0#PHP" expanded="false" />
+                <element signature="e#6908#8798#0#PHP" expanded="false" />
+                <element signature="e#8805#9068#0#PHP" expanded="false" />
+                <element signature="e#13239#13339#0#PHP" expanded="false" />
+                <element signature="e#13344#13494#0#PHP" expanded="false" />
+                <element signature="e#13500#13674#0#PHP" expanded="false" />
+                <element signature="e#13679#14176#0#PHP" expanded="false" />
+                <element signature="e#14182#14302#0#PHP" expanded="false" />
+                <element signature="e#14307#14984#0#PHP" expanded="false" />
+                <element signature="e#14990#15298#0#PHP" expanded="false" />
+                <element signature="e#15304#17315#0#PHP" expanded="false" />
+                <marker date="1508222252421" expanded="true" signature="8125:8182" ph="Delete from " />
+                <marker date="1508222252421" expanded="true" signature="12233:12290" ph="Delete from " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Importer.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Importer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1569">
+              <caret line="413" column="0" lean-forward="true" selection-start-line="413" selection-start-column="0" selection-end-line="413" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminDataRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="28" column="96" lean-forward="false" selection-start-line="28" selection-start-column="96" selection-end-line="28" selection-end-column="96" />
+              <folding>
+                <marker date="1508257902920" expanded="true" signature="1252:3495" ph="SELECT cmp.c... AppPolioDbBundle" />
+                <marker date="1508257902920" expanded="true" signature="3778:4198" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="3778:4502" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="4800:5508" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="5816:8279" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="8630:11121" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="11473:13994" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="14361:16932" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="17270:19691" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="20042:22483" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="22798:25188" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="25532:27956" ph="SELECT p.pro... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="28273:29271" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="29573:30558" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="30861:31846" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="32149:33134" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="33472:34490" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="34851:35856" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="36218:37223" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="37545:39880" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="40185:42495" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="42801:45111" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="45417:47731" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="48072:50445" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="50812:53159" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="53526:55873" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="55631:55873" ph="SELECT adm.i... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="56206:56344" ph="SELECT DISTI... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="56677:56815" ph="SELECT c.id,... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="57141:57200" ph="SELECT c.id AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="57188:57200" ph="SELECT c.cam... AppBundle" />
+                <marker date="1508257902920" expanded="true" signature="57527:57653" ph="SELECT DISTI... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -170,7 +199,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Resources/views/province/index.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/campaign/index.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/district/index.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/UploadType.php" />
@@ -182,7 +210,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/UploadManager.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/import_sync.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/import_handle.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/import.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/shared/footer.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
@@ -191,7 +218,6 @@
         <option value="$PROJECT_DIR$/app/AppKernel.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/template.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/AjaxController.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataDatatable.php" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Utils/Charts.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/MyFactory.php" />
@@ -204,12 +230,9 @@
         <option value="$PROJECT_DIR$/web/charts/modules/grouped-categories.js" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/Charts.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/MainController.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/index.html.twig" />
         <option value="$PROJECT_DIR$/web/charts/highcharts.js" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/shared/sidebar-control.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Service/Importer.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/uploadmanager/new.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/uploadmanager/edit.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/uploadmanager/show.html.twig" />
@@ -221,6 +244,12 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/table.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataDatatable.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataSummaryDatatable.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/Importer.php" />
       </list>
     </option>
   </component>
@@ -234,8 +263,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -689,11 +718,11 @@
       <recent name="C:\xampp7\htdocs\visualizer\app\Resources\views" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp7\htdocs\visualizer\src\AppBundle\Datatables" />
       <recent name="C:\xampp7\htdocs\visualizer\src\AppBundle\Controller" />
       <recent name="C:\xampp7\htdocs\visualizer\web" />
       <recent name="C:\xampp7\htdocs\visualizer\src\AppBundle" />
       <recent name="C:\xampp7\htdocs\visualizer\app\Resources\views\dtExtention" />
-      <recent name="C:\xampp7\htdocs\visualizer\app\Resources\views\pages" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -803,18 +832,18 @@
       <workItem from="1507044239298" duration="7018000" />
       <workItem from="1507215086807" duration="10704000" />
       <workItem from="1507908296327" duration="31127000" />
-      <workItem from="1508215327226" duration="14524000" />
+      <workItem from="1508215327226" duration="21673000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="420084000" />
+    <option name="totallyTimeSpent" value="427233000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20196672" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1881663" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -846,27 +875,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/sg/datatablesbundle/Datatable/Column/AbstractColumn.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/sg/datatablesbundle/Datatable/Extension/Button.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2295">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/sg/datatablesbundle/Datatable/Extension/Buttons.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2035">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/sg/datatablesbundle/Datatable/Extension/Responsive.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -972,14 +980,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="6" lean-forward="true" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/ChartsData.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9691">
@@ -1037,50 +1037,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="69" column="5" lean-forward="false" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
-          <folding>
-            <element signature="e#122#156#0#PHP" expanded="false" />
-            <element signature="e#57515#57536#1#PHP" expanded="false" />
-            <element signature="e#58148#58169#1#PHP" expanded="false" />
-            <marker date="1507999459192" expanded="true" signature="780:3023" ph="SELECT cmp.c... AppPolioDbBundle" />
-            <marker date="1507999459192" expanded="true" signature="3306:3726" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="3306:4030" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="4328:5036" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="5344:7807" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="8158:10649" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="11001:13522" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="13889:16460" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="16798:19219" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="19570:22011" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="22326:24716" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="25060:27484" ph="SELECT p.pro... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="27801:28799" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="29101:30086" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="30389:31374" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="31677:32662" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="33000:34018" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="34379:35384" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="35746:36751" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="37073:39408" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="39713:42023" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="42329:44639" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="44945:47259" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="47600:49973" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="50340:52687" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="53054:55401" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="55159:55401" ph="SELECT adm.i... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="55734:55872" ph="SELECT DISTI... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="56205:56343" ph="SELECT c.id,... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="56669:56728" ph="SELECT c.id AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="56716:56728" ph="SELECT c.cam... AppBundle" />
-            <marker date="1507999459192" expanded="true" signature="57055:57181" ph="SELECT DISTI... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/MainController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -1090,22 +1046,6 @@
             <element signature="e#4189#4212#0#PHP" expanded="false" />
             <marker date="1507998749005" expanded="false" signature="869:890" ph="pages/index" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4709">
-          <caret line="742" column="0" lean-forward="false" selection-start-line="742" selection-start-column="0" selection-end-line="742" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Importer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="381" column="103" lean-forward="false" selection-start-line="381" selection-start-column="103" selection-end-line="381" selection-end-column="103" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1178,76 +1118,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="341" column="5" lean-forward="false" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
-          <folding>
-            <element signature="e#1448#1473#1#PHP" expanded="true" />
-            <element signature="e#2376#2614#0#PHP" expanded="false" />
-            <element signature="e#2812#2837#1#PHP" expanded="true" />
-            <element signature="e#5861#6068#0#PHP" expanded="false" />
-            <element signature="e#6652#6903#0#PHP" expanded="false" />
-            <element signature="e#6908#8798#0#PHP" expanded="false" />
-            <element signature="e#7197#7222#1#PHP" expanded="true" />
-            <element signature="e#7609#7634#1#PHP" expanded="true" />
-            <element signature="e#8310#8335#1#PHP" expanded="true" />
-            <element signature="e#8805#9068#0#PHP" expanded="false" />
-            <element signature="e#9253#9278#1#PHP" expanded="true" />
-            <element signature="e#13239#13339#0#PHP" expanded="false" />
-            <element signature="e#13344#13494#0#PHP" expanded="false" />
-            <element signature="e#13500#13674#0#PHP" expanded="false" />
-            <element signature="e#13679#14176#0#PHP" expanded="false" />
-            <element signature="e#14182#14302#0#PHP" expanded="false" />
-            <element signature="e#14307#14984#0#PHP" expanded="false" />
-            <element signature="e#14990#15298#0#PHP" expanded="false" />
-            <element signature="e#15304#17315#0#PHP" expanded="false" />
-            <element signature="e#15513#15538#1#PHP" expanded="true" />
-            <element signature="e#17764#17789#1#PHP" expanded="true" />
-            <marker date="1508222252421" expanded="true" signature="8125:8182" ph="Delete from " />
-            <marker date="1508222252421" expanded="true" signature="12233:12290" ph="Delete from " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataDatatable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4063">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/CatchupDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="70" selection-end-column="10" />
-          <folding>
-            <element signature="e#126#172#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/UploadManagerController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-850">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="71" column="26" lean-forward="false" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="63" column="75" lean-forward="false" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
           <folding />
         </state>
       </provider>
@@ -1279,6 +1153,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/table.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="80" lean-forward="true" selection-start-line="13" selection-start-column="80" selection-end-line="13" selection-end-column="80" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/CatchupDataController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="70" selection-end-column="10" />
+          <folding>
+            <element signature="e#126#172#0#PHP" expanded="true" />
+            <element signature="e#3454#3477#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportedFilesController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="63" column="75" lean-forward="false" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/CatchupDataDatatable.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1289,10 +1192,133 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/table.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataDatatable.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="84" lean-forward="false" selection-start-line="17" selection-start-column="84" selection-end-line="17" selection-end-column="84" />
+        <state relative-caret-position="476">
+          <caret line="28" column="24" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="24" />
+          <folding>
+            <element signature="e#40#92#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminDataController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="71" column="26" lean-forward="false" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminDataRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="28" column="96" lean-forward="false" selection-start-line="28" selection-start-column="96" selection-end-line="28" selection-end-column="96" />
+          <folding>
+            <marker date="1508257902920" expanded="true" signature="1252:3495" ph="SELECT cmp.c... AppPolioDbBundle" />
+            <marker date="1508257902920" expanded="true" signature="3778:4198" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="3778:4502" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="4800:5508" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="5816:8279" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="8630:11121" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="11473:13994" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="14361:16932" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="17270:19691" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="20042:22483" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="22798:25188" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="25532:27956" ph="SELECT p.pro... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="28273:29271" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="29573:30558" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="30861:31846" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="32149:33134" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="33472:34490" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="34851:35856" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="36218:37223" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="37545:39880" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="40185:42495" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="42801:45111" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="45417:47731" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="48072:50445" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="50812:53159" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="53526:55873" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="55631:55873" ph="SELECT adm.i... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="56206:56344" ph="SELECT DISTI... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="56677:56815" ph="SELECT c.id,... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="57141:57200" ph="SELECT c.id AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="57188:57200" ph="SELECT c.cam... AppBundle" />
+            <marker date="1508257902920" expanded="true" signature="57527:57653" ph="SELECT DISTI... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Datatables/AdminDataSummaryDatatable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="38" column="32" lean-forward="false" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TempAdminData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3910">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TempCatchupData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="223" column="0" lean-forward="false" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/AdminData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="600" column="4" lean-forward="false" selection-start-line="600" selection-start-column="4" selection-end-line="612" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/CatchupData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="498">
+          <caret line="252" column="5" lean-forward="false" selection-start-line="252" selection-start-column="5" selection-end-line="252" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ImportController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2946">
+          <caret line="341" column="5" lean-forward="false" selection-start-line="341" selection-start-column="5" selection-end-line="341" selection-end-column="5" />
+          <folding>
+            <element signature="e#2376#2614#0#PHP" expanded="false" />
+            <element signature="e#5861#6068#0#PHP" expanded="false" />
+            <element signature="e#6652#6903#0#PHP" expanded="false" />
+            <element signature="e#6908#8798#0#PHP" expanded="false" />
+            <element signature="e#8805#9068#0#PHP" expanded="false" />
+            <element signature="e#13239#13339#0#PHP" expanded="false" />
+            <element signature="e#13344#13494#0#PHP" expanded="false" />
+            <element signature="e#13500#13674#0#PHP" expanded="false" />
+            <element signature="e#13679#14176#0#PHP" expanded="false" />
+            <element signature="e#14182#14302#0#PHP" expanded="false" />
+            <element signature="e#14307#14984#0#PHP" expanded="false" />
+            <element signature="e#14990#15298#0#PHP" expanded="false" />
+            <element signature="e#15304#17315#0#PHP" expanded="false" />
+            <marker date="1508222252421" expanded="true" signature="8125:8182" ph="Delete from " />
+            <marker date="1508222252421" expanded="true" signature="12233:12290" ph="Delete from " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Importer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1569">
+          <caret line="413" column="0" lean-forward="true" selection-start-line="413" selection-start-column="0" selection-end-line="413" selection-end-column="0" />
           <folding />
         </state>
       </provider>

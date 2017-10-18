@@ -23,6 +23,14 @@ class AdminDataRepository extends EntityRepository {
     }
 
 
+    public function dqlSummary($cid, $did, $cluster, $subd, $col)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT SUM(CASE WHEN (vaccDay=1 OR vaccDay=2 OR vaccDay= 3) THEN $col ELSE 0) as val
+            WHERE district =:did AND campaign =:cid AND cluster=:cluster AND 
+            (subDistrictName IS NULL OR subDistrictName =:sub)
+        ")->setParameters(['did'=>$did, 'cid'=>$cid, 'cluster'=>$cluster, 'sub'=>$subd])->getDQL();
+    }
     /**
      * @param $campaign
      * @return array

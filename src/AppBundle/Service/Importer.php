@@ -375,8 +375,8 @@ class Importer
             foreach($dataRow as $col=>$value) {
 
                 $func = "set".ucfirst($col);
-
-                $entity->$func($value);
+                $dataValue = trim($value) == ''?null:trim($value);
+                $entity->$func($dataValue);
             }
 
             // now setting the file id if file was not equal to -1, which means no file field in entity
@@ -386,14 +386,19 @@ class Importer
             try {
                 $this->_em->persist($entity);
             } catch (ForeignKeyConstraintViolationException $exception) {
-
                 $exceptions[] = "Foreign-key violation occurred (some of the fk are not in the lookup tables) in row: ".$index;
+                $this->_em->rollback();
 
             } catch (DBALException $exception) {
 
                 $exceptions[] = "Some exception occurred at row: ".$index;
+                $this->_em->rollback();
             } catch (DriverException $exception) {
-                echo "Incorrect type detected and escaped at row: ".$index;
+                $exceptions[] = "Incorrect type detected and escaped at row: ".$index;
+                $this->_em->rollback();
+            } catch (Exception $exception) {
+                $exceptions[] = "Exception occurred and escaped at row: ".$index;
+                $this->_em->rollback();
             }
 
             if (($index % $batchSize) === 0) {

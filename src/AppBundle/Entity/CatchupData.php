@@ -228,7 +228,31 @@ class CatchupData
      *
      * @ORM\Column(name="entry_date", type="datetime", nullable=true)
      */
-    private $entryDate = 'CURRENT_TIMESTAMP';
+    private $entryDate;
+
+    /**
+     * @return \DateTime
+     */
+    public function getEntryDate()
+    {
+        return $this->entryDate;
+    }
+
+    /**
+     * Set entryDate
+     *
+     * @param \DateTime $entryDate
+     *
+     * @return CatchupData
+     */
+    public function setEntryDate($entryDate)
+    {
+        $this->entryDate = $entryDate;
+
+        return $this;
+    }
+
+
 
     /**
      * @var integer
