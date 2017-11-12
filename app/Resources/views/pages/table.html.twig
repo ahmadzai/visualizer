@@ -8,12 +8,12 @@
                 <h3 class="box-title">{{ title }}</h3>
                 {% if buttons is defined  %}
                     {% for key, button in buttons %}
-                        {% if key=='a' %}
+                        {% if key=='a' and button %}
                             <a href="{% if button['route']!="#" %}{{ path(button['route']) }}{% endif %}"
                                class="btn btn-sm {{ button['class'] }} pull-right">
                                 <i class="fa fa-plus"></i> {{ button['title'] }}
                             </a>
-                        {% elseif key == 'btn-group' %}
+                        {% elseif key == 'btn-group' and button %}
 
                             <div class="btn-group pull-right" style="margin-right: 5px">
                                 <button type="button" class="btn {{ button['class'] }} btn-sm">{{ button['title'] }}</button>
@@ -32,6 +32,12 @@
                 {% endif %}
             </div>
             <div class="box-body">
+                {% if info is defined and info %}
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ info }}
+                    </div>
+                {% endif %}
                 {{ sg_datatables_render(datatable) }}
             </div>
         </div>

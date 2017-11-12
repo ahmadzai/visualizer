@@ -80,7 +80,7 @@ class District
     /**
      * @var \AppBundle\Entity\Province
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Province")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Province", fetch="EXTRA_LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="province", referencedColumnName="id")
      * })

@@ -20,7 +20,7 @@ use Doctrine\ORM\Query;
 class AjaxController extends Controller
 {
     /**
-     * Get all Users from Database to show in Select2-Filter.
+     * Get all Campaigns from Database to show in Select2-Filter.
      *
      * @param Request $request
      *
@@ -104,6 +104,94 @@ class AjaxController extends Controller
 
         return new Response('Bad request.', 400);
     }
+
+
+    /**
+     * Get all Campaigns from Database to show in Select2-Filter.
+     *
+     * @param Request $request
+     *
+     * @Route("/campaigns_names", name="select2_campaign_names")
+     *
+     * @return JsonResponse|Response
+     */
+    public function select2AllCampaignNames(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            //$campaigns = $em->getRepository('AppBundle:Campaign')->findAll();
+            $campaigns = $em->createQuery(
+                "SELECT cmp.id, cmp.campaignName FROM AppBundle:Campaign cmp ORDER BY cmp.id DESC"
+            )
+                ->getResult(Query::HYDRATE_SCALAR);
+            $result = array();
+
+            foreach ($campaigns as $campaign) {
+                $result[$campaign['campaignName']] = $campaign['campaignName'];
+            }
+
+            //$result = array_reverse($result, true);
+
+            return new JsonResponse($result);
+        }
+
+        return new Response('Bad request.', 400);
+    }
+
+    /**
+     * Get all Districts from Database to show in Select2-Filter.
+     *
+     * @param Request $request
+     *
+     * @Route("/districts_names", name="select2_district_names")
+     *
+     * @return JsonResponse|Response
+     */
+    public function select2AllDistrictsNames(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $districts = $em->getRepository('AppBundle:District')->findAll();
+
+            $result = array();
+
+            foreach ($districts as $district) {
+                $result[$district->getDistrictName()] = $district->getDistrictName();
+            }
+
+            return new JsonResponse($result);
+        }
+
+        return new Response('Bad request.', 400);
+    }
+
+    /**
+     * Get all Provinces from Database to show in Select2-Filter.
+     *
+     * @param Request $request
+     *
+     * @Route("/provinces_names", name="select2_province_names")
+     *
+     * @return JsonResponse|Response
+     */
+    public function select2AllProvincesNames(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $provinces = $em->getRepository('AppBundle:Province')->findAll();
+
+            $result = array();
+
+            foreach ($provinces as $province) {
+                $result[$province->getProvinceName()] = $province->getProvinceName();
+            }
+
+            return new JsonResponse($result);
+        }
+
+        return new Response('Bad request.', 400);
+    }
+
 
     /**
      * Get all Regions from Database to show in Select2-Filter.

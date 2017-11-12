@@ -1,0 +1,229 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AdmClsSum
+ *
+ * @ORM\Table(name="adm_cls_sum")
+ * @ORM\Entity
+ */
+class AdmClsSum
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="district", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $district;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="district_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $districtName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="district_risk_status", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $districtRiskStatus;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="province", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $province;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $provinceName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="region", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $region;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaign;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_type", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_date", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign_year", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignYear;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_month", type="string", length=20, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignMonth;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cluster", type="string", length=30, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $cluster;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sub_district", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $subDistrict;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="target_population", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $targetPopulation;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="received_vials", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $receivedVials;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="used_vials", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $usedVials;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="child_0_11", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $child011;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="child_12_59", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $child1259;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_absent", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $regAbsent;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_absent_3days", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccAbsent3Days;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_absent_5day", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccAbsent5Day;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_sleep", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $regSleep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_sleep_3days", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccSleep3Days;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_sleep_5day", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccSleep5Day;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reg_refusal", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $regRefusal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_refusal_3days", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccRefusal3Days;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vacc_refusal_5day", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $vaccRefusal5Day;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="new_polio_case", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $newPolioCase;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

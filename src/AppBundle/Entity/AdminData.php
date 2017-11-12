@@ -171,7 +171,7 @@ class AdminData
     /**
      * @var \AppBundle\Entity\Campaign
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign", fetch="EXTRA_LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="campaign", referencedColumnName="id")
      * })
@@ -181,7 +181,7 @@ class AdminData
     /**
      * @var \AppBundle\Entity\District
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District", fetch="EXTRA_LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="district", referencedColumnName="id")
      * })

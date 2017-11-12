@@ -49,7 +49,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                         'text' => 'Export to CSV',
                         'title_attr' => 'To export all, first select All from the length menu in the left',
                         'button_options' => array(
-                            'title' => 'AdminDataExport-'.date("Y-m-d")
+                            'title' => 'AdminDataSummaryExport-'.date("Y-m-d")
                         )
                     ),
                     array(
@@ -57,7 +57,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                         'text' => 'Export to Excel',
                         'title_attr' => 'To export all, first select All from the length menu in the left',
                         'button_options' => array(
-                            'title' => 'AdminDataExport-'.date("Y-m-d")
+                            'title' => 'AdminDataSummaryExport-'.date("Y-m-d")
                         )
                     ),
                 ),
@@ -77,7 +77,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
             'classes' => 'table table-bordered table-striped dataTable no-footer',
             'stripe_classes' => [],
             'individual_filtering' => true,
-            'page_length' => 25,
+            'page_length' => 50,
             'length_menu' => array(array(10, 25, 50, 100, -1), array('10', '25', '50', '100', 'All')),
             'individual_filtering_position' => 'head',
             'order' => array(array($this->getDefaultOrderCol(), 'asc')),
@@ -109,7 +109,8 @@ class AdminDataSummaryDatatable extends AbstractDatatable
 
 
         $this->columnBuilder
-            ->add('district.province.provinceRegion', Column::class, array(
+
+            ->add('region', Column::class, array(
                 'title' => 'Region',
                 //'width' => '90%',
                 'visible'=>true,
@@ -123,33 +124,33 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                     ),
                 ),
             ))
-            ->add('district.province.provinceName', Column::class, array(
+            ->add('provinceName', Column::class, array(
                 'title' => 'Province',
                 //'width' => '90%',
                 'filter' => array(Select2Filter::class,
                     array(
                         'search_type' => 'eq',
                         'cancel_button' => true,
-                        'url' => 'select2_province',
+                        'url' => 'select2_province_names',
                         'classes' => 'form-control input-sm',
                         'placeholder' => 'Province'
                     ),
                 ),
             ))
-            ->add('district.districtName', Column::class, array(
+            ->add('districtName', Column::class, array(
                 'title' => 'District',
                 //'width' => '90%',
                 'filter' => array(Select2Filter::class,
                     array(
                         'search_type' => 'eq',
                         'cancel_button' => true,
-                        'url' => 'select2_district',
+                        'url' => 'select2_district_names',
                         'placeholder' => 'District',
                         'classes' => 'form-control input-sm',
                     ),
                 ),
             ))
-            ->add('subDistrictName', Column::class, array(
+            ->add('subDistrict', Column::class, array(
                 'title' => 'SubDistrict',
                 'visible'=>false,
                 'filter' => array(TextFilter::class,
@@ -160,14 +161,14 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                     ),
                 ),
                 ))
-            ->add('campaign.campaignName', Column::class, array(
+            ->add('campaignName', Column::class, array(
                 'title' => 'Campaign',
                 //'width' => '90%',
                 'filter' => array(Select2Filter::class,
                     array(
                         'search_type' => 'eq',
                         'cancel_button' => true,
-                        'url' => 'select2_campaign',
+                        'url' => 'select2_campaign_names',
                         'classes' => 'form-control input-sm',
                         'placeholder'=>'Campaign'
                     ),
@@ -178,6 +179,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                 'title' => 'Cluster',
                 'searchable' => false
                 ))
+
             ->add('targetPopulation', Column::class, array(
                 'title' => 'Target',
                 'searchable' => false
@@ -200,50 +202,47 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                 'title' => 'Child1259',
                 'searchable' => false
                 ))
+
             ->add('regAbsent', Column::class, array(
                 'title' => 'RegAbsent',
                 'searchable' => false,
                 ))
-            ->add('vaccAbsent', Column::class, array(
-                'title' => 'VaccAbsent',
+
+            ->add('vaccAbsent3Days', Column::class, array(
+                'title' => 'Vac Absent Camp',
                 'searchable' => false
                 ))
-            ->add('Absent', Column::class, array(
-                'title' => 'Absents',
-                'dql' => '(admindata.regAbsent-admindata.vaccAbsent)',
-                'searchable' => false,
-                'orderable' => true,
+            ->add('vaccAbsent5Day', Column::class, array(
+                'title' => 'Vac Absent Revisit',
+                'searchable' => false
             ))
+
             ->add('regSleep', Column::class, array(
                 'title' => 'RegNSS',
                 'searchable' => false,
-                'visible' => false
-                ))
-            ->add('vaccSleep', Column::class, array(
-                'title' => 'VaccNSS',
-                'searchable' => false,
-                'visible' => false
-                ))
-            ->add('NSS', Column::class, array(
-                'title' => 'NSS',
-                'dql' => '(admindata.regSleep-admindata.vaccSleep)',
-                'searchable' => false,
-                'orderable' => true,
-                'visible' => false
             ))
+
+            ->add('vaccSleep3Days', Column::class, array(
+                'title' => 'Vac NSS Camp',
+                'searchable' => false
+            ))
+            ->add('vaccSleep5Day', Column::class, array(
+                'title' => 'Vac NSS Revisit',
+                'searchable' => false
+            ))
+
             ->add('regRefusal', Column::class, array(
                 'title' => 'RegRefusal',
                 'searchable' => false,
-                ))
-            ->add('vaccRefusal', Column::class, array(
-                'title' => 'VaccRefusal',
-                'searchable' => false,
-                ))
-            ->add('refusals', Column::class, array(
-                'title' => 'Refusals',
-                'dql' => '(admindata.regRefusal-admindata.vaccRefusal)',
-                'searchable' => false,
-                'orderable' => true,
+            ))
+
+            ->add('vaccRefusal3Days', Column::class, array(
+                'title' => 'Vac Refusal Camp',
+                'searchable' => false
+            ))
+            ->add('vaccRefusal5Day', Column::class, array(
+                'title' => 'Vac Refusal Revisit',
+                'searchable' => false
             ))
 
             ->add('newPolioCase', Column::class, array(
@@ -251,94 +250,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
                 'searchable' => false,
                 'visible' => false
                 ))
-            ->add('vaccDay', Column::class, array(
-                'title' => 'Day',
-                'searchable' => false,
-                ))
-//            ->add('entryDate', DateTimeColumn::class, array(
-//                'title' => 'EntryDate',
-//                ))
-            ->add('id', Column::class, array(
-                'title' => 'Id',
-                'visible' => false,
-                ))
 
-//            ->add('campaign.campaignType', Column::class, array(
-//                'title' => 'Campaign CampaignType',
-//                ))
-//            ->add('campaign.campaignStartDate', Column::class, array(
-//                'title' => 'Campaign CampaignStartDate',
-//                ))
-//            ->add('campaign.campaignEndDate', Column::class, array(
-//                'title' => 'Campaign CampaignEndDate',
-//                ))
-//            ->add('campaign.entryDate', Column::class, array(
-//                'title' => 'Campaign EntryDate',
-//                ))
-//            ->add('campaign.campaignYear', Column::class, array(
-//                'title' => 'Campaign CampaignYear',
-//                ))
-//            ->add('campaign.campaignMonth', Column::class, array(
-//                'title' => 'Campaign CampaignMonth',
-//                ))
-//            ->add('campaign.id', Column::class, array(
-//                'title' => 'Campaign Id',
-//                ))
-
-//            ->add('district.districtNamePashtu', Column::class, array(
-//                'title' => 'District DistrictNamePashtu',
-//                ))
-//            ->add('district.districtNameDari', Column::class, array(
-//                'title' => 'District DistrictNameDari',
-//                ))
-//            ->add('district.districtLpdStatus', Column::class, array(
-//                'title' => 'District DistrictLpdStatus',
-//                ))
-//            ->add('district.districtRiskStatus', Column::class, array(
-//                'title' => 'District DistrictRiskStatus',
-//                ))
-//            ->add('district.districtIcnStatus', Column::class, array(
-//                'title' => 'District DistrictIcnStatus',
-//                ))
-//            ->add('district.entryDate', Column::class, array(
-//                'title' => 'District EntryDate',
-//                ))
-//            ->add('district.id', Column::class, array(
-//                'title' => 'District Id',
-//                ))
-//            ->add(null, ActionColumn::class, array(
-//                'title' => $this->translator->trans('sg.datatables.actions.title'),
-//                'actions' => array(
-//                    array(
-//                        'route' => 'admindata_show',
-//                        'route_parameters' => array(
-//                            'id' => 'id'
-//                        ),
-//                        'label' => $this->translator->trans('sg.datatables.actions.show'),
-//                        'icon' => 'glyphicon glyphicon-eye-open',
-//                        'attributes' => array(
-//                            'rel' => 'tooltip',
-//                            'title' => $this->translator->trans('sg.datatables.actions.show'),
-//                            'class' => 'btn btn-primary btn-xs',
-//                            'role' => 'button'
-//                        ),
-//                    ),
-//                    array(
-//                        'route' => 'admindata_edit',
-//                        'route_parameters' => array(
-//                            'id' => 'id'
-//                        ),
-//                        'label' => $this->translator->trans('sg.datatables.actions.edit'),
-//                        'icon' => 'glyphicon glyphicon-edit',
-//                        'attributes' => array(
-//                            'rel' => 'tooltip',
-//                            'title' => $this->translator->trans('sg.datatables.actions.edit'),
-//                            'class' => 'btn btn-primary btn-xs',
-//                            'role' => 'button'
-//                        ),
-//                    )
-//                )
-//            ))
         ;
     }
 
@@ -347,7 +259,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
      */
     public function getEntity()
     {
-        return 'AppBundle\Entity\AdminData';
+        return 'AppBundle\Entity\AdmClsSum';
     }
 
     /**
@@ -355,7 +267,7 @@ class AdminDataSummaryDatatable extends AbstractDatatable
      */
     public function getName()
     {
-        return 'admindatasummary_datatable';
+        return 'adm_summary_datatable';
     }
 
     /**

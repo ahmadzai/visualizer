@@ -125,6 +125,72 @@ class AdminDataRepository extends EntityRepository {
             )-> setParameters(['camp'=>$campaign])
             ->getResult(Query::HYDRATE_SCALAR);
     }
+
+    /**
+     * @return array
+     */
+    public function clusterAgg() {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
+                  cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
+                  adm.subDistrictName as Subdistrict, adm.clusterNo as Cluster,
+                  sum(adm.receivedVials) as RVials, sum(adm.usedVials) as UVials,
+                  ((sum(adm.usedVials)*20 - (sum(adm.child011)+sum(adm.child1259)+sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal)))/(sum(adm.usedVials)*20) * 100) as VaccWastage,
+                  sum(adm.targetPopulation)/4 as TargetPopulation,
+                  sum(adm.child011)+SUM(adm.child1259)+sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal) as VaccChild,
+                  sum(adm.child011) as Child011, sum(adm.child1259) as Child1259,
+                  sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal) as MissedVaccinated,
+                  sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regAbsent ELSE 0
+                    END
+                  ) as RegAbsent,
+                  sum(adm.vaccAbsent) as VaccAbsent,
+                  (sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regAbsent ELSE 0
+                    END
+                  ) - sum(adm.vaccAbsent)) as RemainingAbsent,
+
+                  sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regSleep ELSE 0
+                    END
+                  ) as RegNSS,
+                  sum(adm.vaccSleep) as VaccNSS,
+                  (sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regSleep ELSE 0
+                    END
+                  )-sum(adm.vaccSleep)) as RemainingNSS,
+
+                  sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regRefusal ELSE 0
+                    END
+                  ) as RegRefusal,
+                  sum(adm.vaccRefusal) as VaccRefusal,
+                  (sum(
+                    CASE
+                      WHEN (adm.vaccDay = 1 OR adm.vaccDay = 2 OR adm.vaccDay = 3)
+                      THEN adm.regRefusal ELSE 0
+                    END
+                  )-sum(adm.vaccRefusal)) as RemainingRefusal
+
+                  FROM AppBundle:AdminData adm JOIN adm.campaign cmp
+                  JOIN adm.district d JOIN d.province p
+                  GROUP BY adm.campaign, adm.district, adm.subDistrictName, adm.clusterNo"
+            )
+            ->getResult(Query::HYDRATE_SCALAR);
+    }
+
+//sum(adm.regAbsent-adm.vaccAbsent + adm.regSleep-adm.vaccSleep + adm.regRefusal-adm.vaccRefusal) as TotalRemaining
     /**
      * @param $campaign
      * @return array
