@@ -2,9 +2,12 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class DistrictType extends AbstractType
 {
@@ -13,7 +16,34 @@ class DistrictType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('districtName')->add('districtNameAlt')->add('districtNamePashtu')->add('districtNameDari')->add('districtLpdStatus')->add('districtRiskStatus')->add('districtIcnStatus')->add('entryDate')->add('province');
+        $builder->add('districtName', TextType::class, array('label' => 'Name', 'attr' => array('class'=>'form-control')))
+                ->add('districtNameAlt', TextType::class, array('label' => 'Alt Name', 'attr' => array('class'=>'form-control')))
+                ->add('districtNamePashtu', TextType::class, array('label' => 'Pashtu Name', 'attr' => array('class'=>'form-control')))
+                ->add('districtNameDari', TextType::class, array('label' => 'Dari Name', 'attr' => array('class'=>'form-control')))
+                ->add('districtLpdStatus', ChoiceType::class, array('label'=> 'LPD Status', 'choices' => array(
+                    'LPD 1' => '1',
+                    'LPD 2' => '2',
+                    'LPD 3' => '3',
+                    'None' => null
+                ), 'attr' => array('class'=>'form-control select2')))
+                ->add('districtRiskStatus', ChoiceType::class, array('label'=> 'Risk Status', 'choices' => array(
+                    'VHR' => 'VHR',
+                    'HR' => 'HR',
+                    'Focus' => 'Focus',
+                    'None' => null
+                 ), 'attr' => array('class'=>'form-control select2')))
+                ->add('districtIcnStatus', ChoiceType::class, array('label'=> 'ICN Status', 'choices' => array(
+                    'Full time' => 'Fulltime',
+                    'Campaign Based' => 'Campaign',
+                    'Other Activity' => 'Other',
+                    'None' => null
+                ), 'attr' => array('class'=>'form-control select2')))
+                ->add('province', EntityType::class, array(
+                    'class'=>'AppBundle:Province',
+                    'choice_label'=>'provinceName',
+                    'attr' => array('class'=>'form-control select2'),
+                    'placeholder'=>'Province')
+                );
     }
     
     /**

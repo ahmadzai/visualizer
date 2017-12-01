@@ -1,60 +1,90 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 
-{% block body %}
-    <h1>District</h1>
+{% block content %}
+    {#<h1>District</h1>#}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Districtname</th>
-                <td>{{ district.districtName }}</td>
-            </tr>
-            <tr>
-                <th>Districtnamealt</th>
-                <td>{{ district.districtNameAlt }}</td>
-            </tr>
-            <tr>
-                <th>Districtnamepashtu</th>
-                <td>{{ district.districtNamePashtu }}</td>
-            </tr>
-            <tr>
-                <th>Districtnamedari</th>
-                <td>{{ district.districtNameDari }}</td>
-            </tr>
-            <tr>
-                <th>Districtlpdstatus</th>
-                <td>{{ district.districtLpdStatus }}</td>
-            </tr>
-            <tr>
-                <th>Districtriskstatus</th>
-                <td>{{ district.districtRiskStatus }}</td>
-            </tr>
-            <tr>
-                <th>Districticnstatus</th>
-                <td>{{ district.districtIcnStatus }}</td>
-            </tr>
-            <tr>
-                <th>Entrydate</th>
-                <td>{% if district.entryDate %}{{ district.entryDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ district.id }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {#<table>#}
+        {#<tbody>#}
+            {#<tr>#}
+                {#<th>Districtname</th>#}
+                {#<td>{{ district.districtName }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districtnamealt</th>#}
+                {#<td>{{ district.districtNameAlt }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districtnamepashtu</th>#}
+                {#<td>{{ district.districtNamePashtu }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districtnamedari</th>#}
+                {#<td>{{ district.districtNameDari }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districtlpdstatus</th>#}
+                {#<td>{{ district.districtLpdStatus }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districtriskstatus</th>#}
+                {#<td>{{ district.districtRiskStatus }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Districticnstatus</th>#}
+                {#<td>{{ district.districtIcnStatus }}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Entrydate</th>#}
+                {#<td>{% if district.entryDate %}{{ district.entryDate|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+            {#</tr>#}
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<td>{{ district.id }}</td>#}
+            {#</tr>#}
+        {#</tbody>#}
+    {#</table>#}
 
-    <ul>
-        <li>
-            <a href="{{ path('district_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('district_edit', { 'id': district.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <div class="row">
+
+        <div class="col-md-6">
+            <!-- Widget: user widget style 1 -->
+            <div class="box box-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-aqua-active">
+                    <!-- /.widget-user-image -->
+                    <h3 class="widget-user-username">District: {{ district.districtName }}</h3>
+                    <h5 class="widget-user-desc">Province: {{ district.province.provinceName }}</h5>
+                    <h5 class="widget-user-desc">DCODE: {{ district.id }}</h5>
+                </div>
+                <div class="box-footer no-padding">
+                    <ul class="nav nav-stacked">
+                        <li><a href="#">Alt Name <span class="pull-right badge">{{ district.districtNameAlt }}</span></a></li>
+                        <li><a href="#">Pashto Name <span class="pull-right badge ">{{ district.districtNamePashtu }}</span></a></li>
+                        <li><a href="#">Dari Name <span class="pull-right badge ">{{ district.districtNameDari }}</span></a></li>
+                        <li><a href="#">LPD Status <span class="pull-right badge ">{{ district.districtLpdStatus }}</span></a></li>
+                        <li><a href="#">ICN Status <span class="pull-right badge ">{{ district.districtIcnStatus }}</span></a></li>
+                        <li><a href="#">Risk Status <span class="pull-right badge ">{{ district.districtRiskStatus }}</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.widget-user -->
+        </div>
+    </div>
+
+    <div>
+
+        <a href="{{ path('district_index') }}" class="btn btn-primary"><i class="fa fa-reply"></i> Back</a>
+
+
+        <a href="{{ path('district_edit', { 'id': district.id }) }}" class="btn btn-info">Edit</a>
+
+    </div>
+    <br>
+    <div>
+        {{ form_start(delete_form) }}
+        <button type="submit" value="Delete" class="btn btn-danger">
+            <i class="fa fa-trash"></i> Delete
+        </button>
+        {{ form_end(delete_form) }}
+    </div>
 {% endblock %}

@@ -54,6 +54,8 @@ class ProvinceController extends Controller
         return $this->render('province/new.html.twig', array(
             'province' => $province,
             'form' => $form->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => "Adding <small> new province</small>"
         ));
     }
 
@@ -70,6 +72,8 @@ class ProvinceController extends Controller
         return $this->render('province/show.html.twig', array(
             'province' => $province,
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $province->getProvinceName()."<small> detail</small>"
         ));
     }
 
@@ -95,6 +99,8 @@ class ProvinceController extends Controller
             'province' => $province,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $province->getProvinceName()."<small> edit</small>"
         ));
     }
 

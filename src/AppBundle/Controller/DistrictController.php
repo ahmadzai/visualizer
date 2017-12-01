@@ -54,6 +54,8 @@ class DistrictController extends Controller
         return $this->render('district/new.html.twig', array(
             'district' => $district,
             'form' => $form->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => "Adding <small> a new district</small>"
         ));
     }
 
@@ -70,6 +72,8 @@ class DistrictController extends Controller
         return $this->render('district/show.html.twig', array(
             'district' => $district,
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $district->getDistrictName()."<small> detail</small>"
         ));
     }
 
@@ -95,6 +99,8 @@ class DistrictController extends Controller
             'district' => $district,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $district->getDistrictName()."<small> edit</small>"
         ));
     }
 

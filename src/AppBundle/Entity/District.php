@@ -298,7 +298,7 @@ class District
      *
      * @return District
      */
-    public function setProvince(\AppBundle\Entity\Province $province = null)
+    public function setProvince(Province $province = null)
     {
         $this->province = $province;
 
@@ -317,5 +317,10 @@ class District
 
     public function __toString() {
         return (string) $this->districtName;
+    }
+
+    public function __construct()
+    {
+        $this->entryDate = new \DateTimeImmutable();
     }
 }

@@ -95,15 +95,15 @@ class MainController extends Controller
     }
 
 
-    /**
-     * @Route("/admindata", name="admin_data")
-     * @param $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function adminDataAction(Request $request) {
-
-        return $this->render('pages/index.html.twig');
-    }
+//    /**
+//     * @Route("/admindata", name="admin_data")
+//     * @param $request
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     */
+//    public function adminDataAction(Request $request) {
+//
+//        return $this->render('pages/index.html.twig');
+//    }
 
 
     /**
