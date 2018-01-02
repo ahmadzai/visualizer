@@ -54,14 +54,14 @@ services:
         tags:
             - { name: form.type, alias: app_user_registration }
 
-    # Menu service
-    app.menu_builder:
-            class: AppBundle\Menu\MenuBuilder
-            arguments: ["@knp_menu.factory"]
-
-    app.main_menu:
-        class: Knp\Menu\MenuItem # the service definition requires setting the class
-        factory: ["@app.menu_builder", mainMenu]
-        arguments: ["@request_stack"]
-        tags:
-            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+#    # Menu service
+#    app.menu_builder:
+#            class: AppBundle\Menu\MenuBuilder
+#            arguments: ["@knp_menu.factory"]
+#
+#    app.main_menu:
+#        class: Knp\Menu\MenuItem # the service definition requires setting the class
+#        factory: ["@app.menu_builder", mainMenu]
+#        arguments: ["@request_stack"]
+#        tags:
+#            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
