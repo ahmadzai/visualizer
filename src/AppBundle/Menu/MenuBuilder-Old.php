@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Date: 8/26/2017
  * Time: 12:10 PM
  */
-class MenuBuilder implements ContainerAwareInterface
+class MenuBuilder2 implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 

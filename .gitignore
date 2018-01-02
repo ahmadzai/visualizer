@@ -17,3 +17,6 @@
 /web/bundles/
 New folder
 features.txt
+phpunit.xml.dist
+composer.lock
+Installation-Linode.md
