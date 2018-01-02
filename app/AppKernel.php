@@ -16,6 +16,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            // this being added to solve the issue of sg/datatable
+            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
             new AppBundle\AppBundle(),
             // the custom bundles
             new FOS\UserBundle\FOSUserBundle(),
