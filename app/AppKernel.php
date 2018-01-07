@@ -16,8 +16,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            // this being added to solve the issue of sg/datatable
-            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
+
             new AppBundle\AppBundle(),
             // the custom bundles
             new FOS\UserBundle\FOSUserBundle(),
@@ -60,6 +59,12 @@ class AppKernel extends Kernel
                 $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
+        }
+
+        if (in_array($this->getEnvironment(), ['prod'], true)) {
+
+            // this being added to solve the issue of sg/datatable
+            $bundles[] = Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
