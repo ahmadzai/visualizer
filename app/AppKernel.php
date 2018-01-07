@@ -64,7 +64,7 @@ class AppKernel extends Kernel
         if (in_array($this->getEnvironment(), ['prod'], true)) {
 
             // this being added to solve the issue of sg/datatable
-            $bundles[] = Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
