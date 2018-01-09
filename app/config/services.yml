@@ -54,6 +54,20 @@ services:
         tags:
             - { name: form.type, alias: app_user_registration }
 
+    # event handler for successful registration
+    poliodb.user_reg_success_listener:
+            class: AppBundle\EventListener\UserRegSuccessListener
+            arguments: ['@router']
+            tags:
+                - { name: kernel.event_subscriber }
+
+    # even handler to stop login for the new user
+    poliodb.user_confirm_success_listener:
+            class: AppBundle\EventListener\UserConfirmListener
+            arguments: ['@router']
+            tags:
+                - { name: kernel.event_subscriber }
+
 #    # Menu service
 #    app.menu_builder:
 #            class: AppBundle\Menu\MenuBuilder
