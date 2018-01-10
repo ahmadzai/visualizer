@@ -18,6 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * Class UsersController
+ * @package AppBundle\Controller
+ * @Security("has_role('ROLE_ADMIN')")
+ */
 class UsersController extends Controller
 {
 

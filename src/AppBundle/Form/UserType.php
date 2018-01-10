@@ -26,13 +26,14 @@ class UserType extends AbstractType
         $builder->add('firstName', TextType::class, array('label'=>'First Name',
             'attr' => array('class'=>'form-control')))
             ->add('lastName', TextType::class, array('label'=>'Last Name',
-                'attr' => array('class'=>'form-control')))
+                'attr' => array('class'=>'form-control'), 'required'=> false))
             ->add('email', EmailType::class)
             ->add('province', EntityType::class, array(
                 'class'=>'AppBundle:Province',
                 'choice_label'=>'provinceName',
                 'attr' => array('class'=>'form-control select2'),
-                'placeholder'=>'Select a Province'))
+                'placeholder'=>'Select a Province',
+                'required' => false))
             ->add('region', ChoiceType::class, array('choices' => array(
                 'CR'=>'CR',
                 'ER'=>'ER',
@@ -43,7 +44,8 @@ class UserType extends AbstractType
                 'NER'=>'NER'
                 ),
                 'attr' => array('class'=>'form-control select2'),
-                'placeholder'=>'Select a Region'
+                'placeholder'=>'Select a Region',
+                'required' => false,
             ))
             ->add('roles', ChoiceType::class, array('choices' => array(
                 'Admin'=>'ROLE_ADMIN',
@@ -52,11 +54,11 @@ class UserType extends AbstractType
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))
             ->add('level', ChoiceType::class, array('choices' => array(
                 'National' => 'National', 'Region' => 'Region', 'Province' => 'Province'),
-                'attr' => array('class'=>'form-control select2'), 'placeholder'=>'Select a Job level'))
+                'attr' => array('class'=>'form-control select2'), 'placeholder'=>'Select a Job level', 'required'=>false))
             ->add('position', TextType::class, array('label'=>'Position',
-                'attr' => array('class'=>'form-control')))
+                'attr' => array('class'=>'form-control'), 'required' => false))
             ->add('mobileNumber', TextType::class, array('label'=>'Mobile No',
-                'attr' => array('class'=>'form-control')))
+                'attr' => array('class'=>'form-control'), 'required'=>false))
             ->add('enabled', ChoiceType::class, array(
                 'choices' => array(
                     'Yes' => true,

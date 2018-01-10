@@ -20,6 +20,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Service\Importer;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class MainController
+ * @package AppBundle\Controller
+ * @Security("has_role('ROLE_USER')")
+ */
 class MainController extends Controller
 {
 

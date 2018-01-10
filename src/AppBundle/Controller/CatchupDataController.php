@@ -17,6 +17,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * Class CatchupDataController
+ * @package AppBundle\Controller
+ * @Security("has_role('ROLE_USER')")
+ */
 class CatchupDataController extends Controller
 {
 

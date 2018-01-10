@@ -12,8 +12,8 @@ security:
 
     role_hierarchy:
         ROLE_USER:  ROLE_VIEWER
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_EDITOR:  ROLE_USER
+        ROLE_ADMIN: ROLE_EDITOR, ROLE_SUPER_ADMIN
 
     providers:
         fos_userbundle:

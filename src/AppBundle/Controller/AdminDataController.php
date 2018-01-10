@@ -20,6 +20,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Service\Settings;
 use AppBundle\Service\Charts;
 
+
+/**
+ * @Security("has_role('ROLE_USER')")
+ */
 class AdminDataController extends Controller
 {
 
@@ -221,6 +225,8 @@ class AdminDataController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @return Response
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function bulkDeleteAction(Request $request)
     {

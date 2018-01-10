@@ -107,8 +107,8 @@ class ImportedFilesController extends Controller
 
     /**
      * @param $id
-     * @param ImportedFiles $file
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @internal param ImportedFiles $file
      * @Route("/uploaded/files/download/{id}", name="uploaded_files_download")
      */
     public function downloadFileAction($id)

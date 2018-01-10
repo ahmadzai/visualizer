@@ -128,7 +128,9 @@ desired effect
     </footer>
 
     {% block sidebar_control %}
-        {% include 'shared/sidebar-control.html.twig' %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {% include 'shared/sidebar-control.html.twig' %}
+        {% endif %}
     {% endblock %}
 
 </div>
