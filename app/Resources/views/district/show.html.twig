@@ -1,49 +1,6 @@
 {% extends 'template.html.twig' %}
 
 {% block content %}
-    {#<h1>District</h1>#}
-
-    {#<table>#}
-        {#<tbody>#}
-            {#<tr>#}
-                {#<th>Districtname</th>#}
-                {#<td>{{ district.districtName }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districtnamealt</th>#}
-                {#<td>{{ district.districtNameAlt }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districtnamepashtu</th>#}
-                {#<td>{{ district.districtNamePashtu }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districtnamedari</th>#}
-                {#<td>{{ district.districtNameDari }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districtlpdstatus</th>#}
-                {#<td>{{ district.districtLpdStatus }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districtriskstatus</th>#}
-                {#<td>{{ district.districtRiskStatus }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Districticnstatus</th>#}
-                {#<td>{{ district.districtIcnStatus }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Entrydate</th>#}
-                {#<td>{% if district.entryDate %}{{ district.entryDate|date('Y-m-d H:i:s') }}{% endif %}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Id</th>#}
-                {#<td>{{ district.id }}</td>#}
-            {#</tr>#}
-        {#</tbody>#}
-    {#</table>#}
-
     <div class="row">
 
         <div class="col-md-6">
@@ -54,7 +11,7 @@
                     <!-- /.widget-user-image -->
                     <h3 class="widget-user-username">District: {{ district.districtName }}</h3>
                     <h5 class="widget-user-desc">Province: {{ district.province.provinceName }}</h5>
-                    <h5 class="widget-user-desc">DCODE: {{ district.id }}</h5>
+                    <h5 class="widget-user-desc">CODE: {{ district.id }}</h5>
                 </div>
                 <div class="box-footer no-padding">
                     <ul class="nav nav-stacked">

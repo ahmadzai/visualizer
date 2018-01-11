@@ -57,6 +57,8 @@ class CampaignController extends Controller
         return $this->render('campaign/new.html.twig', array(
             'campaign' => $campaign,
             'form' => $form->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => "Adding a new"."<small> campaign</small>"
         ));
     }
 
@@ -73,6 +75,8 @@ class CampaignController extends Controller
         return $this->render('campaign/show.html.twig', array(
             'campaign' => $campaign,
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $campaign->getCampaignName()."<small> detail</small>"
         ));
     }
 
@@ -98,6 +102,8 @@ class CampaignController extends Controller
             'campaign' => $campaign,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'change_breadcrumb' => true,
+            'breadcrumb_text' => $campaign->getCampaignName()."<small> edit</small>"
         ));
     }
 

@@ -73,11 +73,13 @@
                                     </li>
 
                                 </ul>
-                                {{ form_start(delete_form) }}
-                                <input type="submit" value="Delete" class="btn btn-danger btn-sm" style="margin-bottom: 10px">
-                                {{ form_end(delete_form) }}
                             </div>
                         </div>
+                        {{ form_start(delete_form) }}
+                        <Button type="submit" class="btn btn-danger btn-sm" style="margin-bottom: 10px">
+                            <i class="fa fa-trash"> Delete</i>
+                        </Button>
+                        {{ form_end(delete_form) }}
                         <!-- /.widget-user -->
                     </div>
                 </div>
