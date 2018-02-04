@@ -2,8 +2,6 @@
  * Created by Wazir Khan on 10/13/2017.
  */
 
-//$(function () {
-
 globalOptions = {
     chart: {
         renderTo:'',
@@ -166,168 +164,272 @@ function colChart(renderTo, staticData, title, colors, ajaxPrams, url) {
 
 // ===================================================== End of Wrapper Functions ====================================
 
-/*
-
- var chart1 = {apiUrl:'api_get_admin_data_by_campaign_indicator',
- urlParams: {campaign:0, indicator:'remaining'},
- renderTo:'cont_reg_trend_last_camp',
- menu:[{chart:'normal', title:'Stack Chart'},
- {chart: '', title:'Back to Normal'}],
- stacking:'',
- combination:[{type:'pie', method:'sum'}],
- label:{title:'Total Remaining Children',
- position:{top:'18px', left:'170px'}}};
- //columnChart(chart1);
-
- var chart2 = {apiUrl:'api_get_admin_data_by_campaign_indicator',
- urlParams: {campaign:13, indicator:'vaccinated'},
- renderTo:'cont_reg_trend_vacc_child_last_camp',
- menu:[{chart:'normal', title:'Stack Chart'},
- {chart: '', title:'Back to Normal'}],
- stacking:'',
- yAxisTitle : 'Total Vaccinated Children',
- colors:['#3DE2FF', '#048AFF'],
- combination:[{type:'spline', method:'sum'}]};
- //columnChart(chart2);
-
- var chart3 = {apiUrl:'api_get_admin_data_by_campaign_indicator',
- urlParams: {campaign:13, indicator:'vaccines'},
- renderTo:'cont_reg_trend_vacc_usage_last_camp',
- legend: {
- layout: 'vertical',
- align: 'left',
- vAlign: 'top',
- x: 80,
- y: 55,
- color: '#FFFFFF'
- },
- yAxises: [
-
- {
- format:'',
- color:'#43AB0D',
- opposite: true,
- title:'Used Vaccine',
- indicator:'Used Vials',
- type: 'spline',
- tooltip: '',
- marker: true,
-
- },
- {
- format:'',
- color:'#048aff',
- opposite: false,
- title:'Received Vaccine',
- indicator:'Received Vials',
- type: 'column',
- tooltip: '',
- yAxis: 1,
- lineWidth: 1
- },
- {
- format:' %',
- color:'#F00000',
- opposite: true,
- title:'Wastage Percentage',
- indicator:'Vaccine Wastage',
- yAxis: 2,
- type: 'spline',
- tooltip: ' %',
- marker: false,
- lineWidth: 0
- },
-
-
- ]
- };
- //multiAxisColumnChart(chart3);
-
- var chart4 = {apiUrl:'api_get_admin_data_by_indicator',
- urlParams: {indicator:'vaccines'},
- renderTo:'container2',
- type: 'line',
- legend: {
- layout: 'horizontal',
- align: 'center',
- vAlign: 'bottom',
- floating: false,
- },
- yAxisTitle:'Vaccine Usage Last 3 Campaigns'
-
- };
- //lineChart(chart4);
-
- var last3CampRemChildColumnChart = {apiUrl:'api_get_admin_data_by_indicator',
- urlParams: {indicator:'vaccinated'},
- renderTo:'cont_reg_trend_rem_child_last_3camp',
- menu:[{chart:'', title:'Stack Column Chart'},
- {chart: 'normal', title:'Back to Normal'}],
- stacking:'normal',
- yAxisTitle:'Vaccinated Children',
- colors:['#3DE2FF', '#048AFF'],
- legend: {align:'right', vAlign:'top', x:-30, y:5, floating:true}
- };
- //columnChart(last3CampRemChildColumnChart);
-
- //console.log(globalOptions.exporting.buttons.contextButton.menuItems);
- var pieChartRefusal = {
- apiUrl:'api_get_admin_data_by_object',
- postData: {substitute:'Remaining Refusal', indicator:'d_remainingRefusal', cat:'d_region', campaignId:13},
- renderTo:'cont_refusal',
- type:'pie',
- plotOptions: { pie: {
- allowPointSelect: true,
- cursor: 'pointer',
- dataLabels: {
- enabled:false
- },
- showInLegend: true
- }}
- };
-
- //pieChart(pieChartRefusal);
-
- //});
+//chartType = {type: 'column', stacking: 'percent'}
+/**
+ * @param chartType
+ * @param renderTo
+ * @param data
+ * @param titles
+ * @param legend
+ * @param colors
+ * @param menu
  */
-
-
+function myChartWrapper(chartType, renderTo, data, titles, legend, colors, menu, large) {
+    var settings = {
+        chartType: chartType,
+        renderTo: renderTo,
+        data: data,
+        titles: (titles === undefined || titles === null)? {xTitle:null, yTitle:null}:titles,
+        legend: (legend=== undefined || legend === null)? {enabled:true, position:{vAlign:'bottom', hAlign:'center'}}:legend,
+        colors: (colors === undefined || colors === null) ? Highcharts.getOptions().colors : colors,
+        menu: (menu === undefined || menu === null) ? null : menu,
+        large: (large === undefined || large === null) ? null : large
+            /*
+            [{chart:'line', title:'Line Chart'},
+            {chart: 'column', title:'Column Chart'},
+            {chart: 'normal', title:'Stack Chart'},
+            {chart: 'bar', title:'Bar Chart'},
+            {chart: 'area', title:'Area Chart'},
+        {chart: 'percent', title:'Default'}], */
+    }
+    myChart(settings);
+}
 /*
  this function generates any chart with combination charts as well.
  */
-function pieChart(settings) {
-    // /*
-    // deep cloning the settings and global objects, otherwise it will messed up
-    //  */
+function myChart(settings) {
+
+    /*
+     deep cloning the settings and global objects, otherwise it will messed up
+     */
     var settings = jQuery.extend(true, {}, settings);
     var options = jQuery.extend(true, {}, globalOptions);
 
+    //options.series = [];
+
+    //console.log(options);
     // set the element where the chart should be rendered
     options.chart.renderTo = settings.renderTo;
 
-    // set the type of chart, in case the type was not half pie chart
-    if(!settings.hasOwnProperty('halfPie'))
-        options.chart.type = settings.type;
-    // else if (settings.hasOwnProperty('halfPie')) {
-    //
-    // }
+    // set the type of chart, static in this case
+    var chartType = settings.chartType.type;
+    options.chart.type = chartType;
 
-    // set the plat option, should be sent as an object
-    /*
-     pie: {
-     allowPointSelect: true,
-     cursor: 'pointer',
-     dataLabels: {
-     enabled: false
-     },
-     showInLegend: true
-     }
-     */
-    options['plotOptions'] = settings.plotOptions;
+    if(chartType === 'area' && settings.chartType.hasOwnProperty('stacking') &&
+        settings.chartType.stacking === 'percent') {
+        options['tooltip'] = {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
+            split: true
+        }
+    }
+
+    // set the plat option, empty, normal, percent
+
+    var plot = {};
+    plot[chartType] = {
+        dataLabels: {
+            style: {
+            fontSize: '70%',
+        }
+    }
+    }
+    if(settings.chartType.hasOwnProperty('stacking')) {
+        plot[chartType] = {
+            stacking:settings.chartType.stacking,
+            dataLabels: {
+                style: {
+                    fontSize: '70%',
+                }
+            }
+        }
+    }
+    options['plotOptions'] = plot;
+
+    if(settings.hasOwnProperty('titles'))
+        options.yAxis.title.text = settings.titles.yTitle;
+
+    // adding data label toggle menu option
+    var labelMenu = dataLabelToggleMenu(settings.renderTo);
+    var labelMenuFlag = true;
+    options.exporting.buttons.contextButton.menuItems.forEach(function (item, index) {
+        if(item.text === labelMenu.text) {
+            labelMenuFlag = false;
+        }
+    })
+
+    if(labelMenuFlag === true)
+        options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
     // check and set the menu options
     var menus = settings.menu;
-    if(settings.hasOwnProperty('menu')) {
+    if(settings.hasOwnProperty('menu') && menus!== null) {
+        for(var i = 0; i < menus.length; i++) {
+            var menuItem = myMenuItems('', menus[i].chart, settings.renderTo, menus[i].title);
+            options.exporting.buttons.contextButton.menuItems.push(menuItem);
+            menuItem = null;
+        }
+    }
+
+    // check for color property
+    if(settings.hasOwnProperty('colors'))
+        options.colors = settings.colors;
+
+    //check for label
+    if(settings.hasOwnProperty('label')) {
+        options['labels'] = {
+            items: [{
+                html: settings.label.title,
+                style: {
+                    left: settings.label.position.left,
+                    top: settings.label.position.top,
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                }
+            }]
+        }
+    }
+
+    // check if there was legned information
+    /*
+     legend: {
+     align: (left, right, center)
+     vAlign: (top, bottom, middle)
+     x: (pixels in integer)
+     y: (pixels in integer)
+     floating: (true|false)
+
+     }
+     */
+    if(settings.hasOwnProperty('legend')) {
+        options['legend'] = {
+            enabled: settings.legend.enabled,
+            //align: settings.legend.position.hAlign,
+            //verticalAlign: settings.legend.position.vAlign,
+        }
+    }
+
+    if(settings.hasOwnProperty('legend') && settings.legend.enabled === true) {
+        options['legend'] = {
+            align: settings.legend.position.hAlign,
+            verticalAlign: settings.legend.position.vAlign,
+        }
+    }
+
+    // set the data of the chart to what assigned from TWIG
+    //console.log(JSON.parse(settings.chartData));
+    var dataObj = JSON.parse(settings.data);
+
+    // =========================================================================
+    // set the dynamic title
+    options['title'] = {text: dataObj.title, marginBottom:5, style: {fontSize:'100%'}};
+    options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
+    // set the dynamic categories
+    options.xAxis.categories = dataObj.categories;
+    // set the data/series
+    options.series = dataObj.series;
+    //console.log(dataObj["series"]);
+    // check for the combined chart request
+    if (settings.hasOwnProperty('combination')) {
+        var secondCharts = settings.combination;
+        for (var i = 0; i < secondCharts.length; i++) {
+            var colors = options.colors;
+            if (secondCharts.hasOwnProperty('colors')) {
+                colors = secondCharts.colors;
+            }
+            var newSettings = secondChart(dataObj, secondCharts[i], colors);
+            options.series.push(newSettings);
+        }
+    }
+
+    if(settings.large !== null && settings.large === 'height') {
+        console.log(dataObj.categories);
+        $('#'+settings.renderTo).css("height", dataObj.categories.length*30+"px");
+    }
+    // finally create chart
+    var chart = new Highcharts.Chart(options);
+    options = null;
+}
+
+/**
+ * @param renderTo: string container name
+ * @param data: json array
+ * @param legend: boolean true|false
+ * @param colors: array of color codes
+ * @param menu: array of menu objects [{chart:'type', title:'Label'}]
+ * @param type: string type of Pies (donut, halfpie, pie)
+ */
+function myPieChartWrapper(renderTo, data, legend, colors, menu, type, area) {
+    var settings = {
+        type: (type === undefined || type === null) ? 'pie':type,
+        renderTo: renderTo,
+        data: data,
+        legend: (legend===undefined || legend === null)?false:legend,
+        colors: (colors === undefined || colors === null) ? Highcharts.getOptions().colors : colors,
+        menu: (menu === undefined || menu === null) ? null : menu,
+        area: (area === undefined || area === null) ? 'large':'small'
+    }
+    myPieChart(settings);
+}
+
+function myPieChart(settings) {
+    /*
+     deep cloning the settings and global objects, otherwise it will messed up
+     */
+    var settings = jQuery.extend(true, {}, settings);
+    var options = jQuery.extend(true, {}, globalOptions);
+
+    // set the type of chart, static in this case
+    var chartOptions =  {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        renderTo: settings.renderTo,
+    };
+    options.chart = chartOptions;
+
+    var plot = {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: (settings.legend === true) ? false : true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    fontSize: '90%'
+                }
+            },
+        }
+    }
+
+    if(settings.type === 'halfpie') {
+        plot.pie.startAngle = -90;
+        plot.pie.endAngle = 90;
+        plot.pie.center = ['50%', '75%'];
+        plot.pie.dataLabels.distance = -50;
+        plot.pie.dataLabels.format = '<b>{point.name}</b>';
+    } else if(settings.type === 'donut') {
+        plot.pie.innerSize = 100;
+        plot.pie.depth = 45;
+
+    }
+
+    if(settings.area === 'small') {
+        plot.pie.dataLabels.distance = -20;
+        plot.pie.dataLabels.format = '<b>{point.name}</b>';
+        options.chart.margin = 0;
+        options.chart.marginTop = 15;
+    }
+    if(settings.type === 'halfpie') {
+        options.chart.margin = -20;
+
+    }
+
+    options['plotOptions'] = plot;
+
+    // check and set the menu options
+    var menus = settings.menu;
+    if(settings.hasOwnProperty('menu') && menus !== null) {
         for(var i = 0; i < menus.length; i++) {
             var menuItem = myMenuItems('', menus[i].chart, settings.renderTo, menus[i].title);
             options.exporting.buttons.contextButton.menuItems.push(menuItem);
@@ -340,42 +442,162 @@ function pieChart(settings) {
     options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
     // check for color property
-    delete options.colors;
     if(settings.hasOwnProperty('colors'))
-        options['colors'] = settings.colors;
+        options.colors = settings.colors;
+
+    options['tooltip'] = {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    };
 
     // set the data of the chart to what assigned from TWIG
-    var dataObj = settings.data;
-    // if the data wasn't sett in the loading, call the ajax then
-    if(dataObj == null) {
-        $.ajax({
-            url: Routing.generate(settings.apiUrl),
-            type: 'POST',
-            data: JSON.stringify(settings.postData),
-            dataType: "JSON",
-            beforeSend: function () {
-                // ajax loader path is in the data attribute of the main div
-                var path = $("#main").data('ajax-loader');
-                $('#' + settings.renderTo).html("<img src='" + path + "' class='ajax-loader'>");
-            },
-            success: function (data) {
-                $('#' + settings.renderTo).html('');
-                dataObj = data;
-            },
-            cache: false
-        });
-    }
+    //console.log(JSON.parse(settings.chartData));
+    var dataObj = JSON.parse(settings.data);
 
+    // =========================================================================
     // set the dynamic title
-    options.title = {text: dataObj.title};
-    // set the dynamic categories
-    //options.xAxis.categories = obj.categories;
+    options['title'] = {text: dataObj.title, style: {fontSize:'100%'}};
     // set the data/series
+    if(settings.type === 'halfpie')
+        dataObj.series[0].innerSize = '50%';
     options.series = dataObj.series;
-    console.log(dataObj.series);
+
+    //console.log(dataObj["series"]);
     // finally create chart
     var chart = new Highcharts.Chart(options);
+}
 
+function myHeatMap(data, container, tooltipTitle) {
+    var dataObj = JSON.parse(data);
+    var options = {};
+
+        options.chart = {
+            type: 'heatmap',
+            marginTop: 100,
+            marginBottom: 80,
+            plotBorderWidth: 1,
+            renderTo: container,
+            marginTop: 80,
+        };
+
+
+        options.title = {
+            text: dataObj.title,
+            style: {
+                fontSize: '110%'
+            }
+        };
+
+        options.xAxis = [
+            {
+                categories: dataObj.xAxis,
+
+                labels: {
+                    style: {
+                        fontSize:'80%'
+                    },
+                    //autoRotation: [-30],
+                    autoRotation: false
+                }
+            },
+            {
+                linkedTo: 0,
+                opposite: true,
+                categories: dataObj.xAxis,
+                labels: {
+                    style: {
+                        fontSize:'80%'
+                    },
+                    //autoRotation: [30],
+                    autoRotation: false
+                }
+            }
+        ];
+
+        //console.log("Y AXIS: ", dataObj.yAxis);
+        // set the exporting options
+        options.exporting = globalOptions.exporting;
+        // label toggle option added
+        var labelMenu = dataLabelToggleMenu(container);
+        var labelMenuFlag = true;
+        options.exporting.buttons.contextButton.menuItems.forEach(function (item, index) {
+            if(item.text === labelMenu.text) {
+                labelMenuFlag = false;
+            }
+        })
+
+        if(labelMenuFlag === true)
+            options.exporting.buttons.contextButton.menuItems.push(labelMenu);
+
+        options.yAxis = {
+            categories: dataObj.yAxis,
+            title: null,
+            labels: {
+                style: {
+                    fontSize:'80%'
+                }
+            }
+        };
+        options.labels = {
+            style: {
+                fontSize: '80%'
+            }
+        };
+
+        options.colorAxis = {
+            min: 5,
+            max: 15,
+            tickInterval: 1,
+            startOnTick: false,
+            endOnTick: false,
+            stops: [
+                [
+                    0,
+                    "#43AB0D"
+                ],
+                [
+                    0.5,
+                    "#ffd927"
+                ],
+                [
+                    1,
+                    "#FF0000"
+                ]
+            ]
+        };
+
+        options.legend = {
+            enabled: false,
+            align: 'right',
+            layout: 'vertical',
+            margin: 0,
+            verticalAlign: 'top',
+            y: 25,
+            symbolHeight: 280
+        };
+
+        options.tooltip = {
+            formatter: function () {
+                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> <br>'+ tooltipTitle +' children <br><b>' +
+                    this.point.value + '</b> in cluster <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+            }
+        };
+        //console.log(dataObj.data);
+        options.series = [{
+
+            name: 'Clusters Trends',
+            borderWidth: 1,
+            turboThreshold: 200,
+            turboThreshold: Number.MAX_VALUE,
+            data: dataObj.data,
+            dataLabels: {
+                enabled: true,
+                color: '#000000'
+            }
+        }];
+    // Setting width and height of the container according to rows and columns
+    $('#'+container).css("height", dataObj.yAxis.length*29+"px");
+    $('#'+container).css("min-width", dataObj.xAxis.length*50+"px");
+    var chart = new Highcharts.Chart(options);
 
 }
 
@@ -819,25 +1041,42 @@ function dataLabelToggleMenu(renderTo) {
 /*
  this function changes chart type, the sourceType is not used till now
  */
-function changeChartType(sType, tType, renderTo) {
+function changeChartType(sType, type, renderTo) {
     var chart = $('#'+renderTo).highcharts(),
         s = chart.series,
         sLen = s.length;
-    //chart.settings.tooltip
-    chart.type = 'line';
-    for(var i =0; i < sLen; i++){
-        if(tType === 'line') {
-            console.log("Here we are");
+    var inverted = false;
+    var polar = false;
+    if(type == 'pie' || type == 'halfpie' || type == 'donut') {
+        console.log(chart);
+        //chart.userOptions
+    } else if(type == 'percent' || type == 'normal') {
+        for(var i =0; i < sLen; i++){
+
             s[i].update({
-                type: tType,
+                type: 'column',
+                stacking: type,
             }, false);
-        } else {
-            console.log("Here we are");
+        }
+    } else if(type == 'bar') {
+        inverted = true;
+    } else {
+        for (var i = 0; i < sLen; i++) {
+
             s[i].update({
-                stacking: tType,
+                type: type,
+                stacking:null
             }, false);
         }
     }
+
+    chart.update({
+        chart: {
+            inverted: inverted,
+            polar: polar
+        },
+    })
+
     chart.redraw();
 }
 

@@ -272,16 +272,18 @@ class Charts
      * @param mixed: $data
      * @return mixed: formatted array
      */
-    function chartData1Category($cat1, $indicators, $data) {
+    function chartData1Category($cat1, $indicators, $data, $sortCategories = true) {
 
         if(count($data) > 0) {
             $tmp_top_cat = array();
             foreach($data as $temp_d) {
-                $tmp_top_cat[] = $temp_d[$cat1];
+                $tmp_top_cat[] = $temp_d[$cat1['column']];
             }
 
             $top_cat = array_unique($tmp_top_cat);
-
+            if($sortCategories) {
+                sort($top_cat);
+            }
             $r_data = array();
             //$cat = array();
             $data_indicators = array();
@@ -290,24 +292,38 @@ class Charts
 
 
                 //$sub_cat = array();
+                $new_cat = $t_c;
                 foreach ($data as $val) {
-                    if ($val[$cat1] === $t_c) {
+                    if ($val[$cat1['column']] === $t_c) {
 
-                        foreach($indicators as $indicator) {
-                            $data_indicators[$indicator][] = $val[$indicator] == 'null' ? null : (int)$val[$indicator];
+                        $substitute = array_key_exists('substitute', $cat1)?$cat1['substitute']:$t_c;
+                        $new_cat = $substitute;
+                        if($substitute !== $t_c) {
+                            $col1 = is_array($substitute) ? (array_key_exists('col1', $substitute) ? $substitute['col1'] : null) : $substitute;
+                            $col2 = is_array($substitute) ? (array_key_exists('col2', $substitute) ? $substitute['col2'] : null) : null;
+                            $short = is_array($substitute) ? (array_key_exists('short', $substitute) ? $substitute['short'] : null) : null;
+
+                            // the value of short should be: my (month/year), m(month), y(year)
+                            $second_part = $col2 !== null ? "-" . ($short == 'my' || $short == 'y' ? $this->shortYear($val[$col2]) : $val[$col2]) : '';
+                            $first_part = $short !== null ? ($short == 'my' || $short == 'm' ? $this->shortMonth($val[$col1]) : $val[$col1]) : $val[$col1];
+                            $new_cat = $first_part.$second_part;
+                        }
+
+                        foreach($indicators as $key=>$indicator) {
+                            $data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
                         }
 
                     }
 
                 }
 
-                $temp_cat[] = $t_c;
+                $temp_cat[] = $new_cat;
             }
             //$cat['categories'] = $temp_cat;
             $r_data['categories'] = $temp_cat;
             $ser = array();
             foreach ($indicators as $key=>$ind) {
-                $ser[] = array('name'=>ucfirst($key), 'data' => $data_indicators[$ind]);
+                $ser[] = array('name'=>ucfirst($ind), 'data' => $data_indicators[$key]);
             }
 
             $r_data['series'] = $ser;
@@ -319,6 +335,86 @@ class Charts
             return ['data'=>null];
     }
 
+    /***
+     * @param mixed: $cat1 array('column'=>'NameOfColumn', 'substitute'=>'Substitute') top level category
+     * @param mixed: $indicator array('name'=>'NameOfColumn', 'label'=>'labelName') string array indicators
+     * @param mixed: $data
+     * @param bool: $sortCategories
+     * @return mixed: formatted array
+     */
+    function pieChartData($cat1, $indicator, $data, $sortCategories = true) {
+
+        if(count($data) > 0) {
+            $tmp_top_cat = array();
+            foreach($data as $temp_d) {
+                $tmp_top_cat[] = $temp_d[$cat1['column']];
+            }
+
+            $top_cat = array_unique($tmp_top_cat);
+            if($sortCategories) {
+                sort($top_cat);
+            }
+            $r_data = array();
+            //$cat = array();
+            $data_indicators = array();
+
+            foreach ($top_cat as $t_c) {
+
+                foreach ($data as $val) {
+                    if ($val[$cat1['column']] === $t_c) {
+
+                        $substitute = array_key_exists('substitute', $cat1)?$cat1['substitute']:$t_c;
+                        $col1 = is_array($substitute) ? (array_key_exists('col1', $substitute)? $substitute['col1'] : null) : $substitute;
+                        $col2 = is_array($substitute) ? (array_key_exists('col2', $substitute)? $substitute['col2'] : null) : null;
+                        $short = is_array($substitute) ? (array_key_exists('short', $substitute)? $substitute['short'] : null) : null;
+
+                        // the value of short should be: my (month/year), m(month), y(year)
+                        $second_part = $col2!==null?"-".($short=='my'||$short=='y'?$this->shortYear($val[$col2]):$val[$col2]):'';
+                        $first_part = ($short=='my'||$short=='m'? $this->shortMonth($val[$col1]):$val[$col1]);
+                        $new_cat = $first_part.$second_part;
+
+                        $data_indicators[] = array('name'=>$new_cat, 'y'=>$val[$indicator['name']] == 'null' ? null : (int)$val[$indicator['name']]);
+
+                    }
+
+                }
+
+            }
+
+            $ser[] = array('type'=>'pie', 'name'=>ucfirst($indicator['label']), 'data' => $data_indicators);
+            $r_data['series'] = $ser;
+
+            return $r_data;
+        }
+
+        else
+            return ['data'=>null];
+    }
+
+
+    function pieData($indicators, $data) {
+
+        if(count($data) > 0) {
+
+            //$cat = array();
+            $data_indicators = array();
+
+
+                $value = 0;
+                foreach($indicators as $key=>$indicator) {
+                    $data_indicators[] = array('name'=>$indicator, 'y'=>array_sum(array_column($data, $key)));
+                }
+
+
+            $ser[] = array('type'=>'pie', 'name'=>"Test", 'data' => $data_indicators);
+            $r_data['series'] = $ser;
+
+            return $r_data;
+        }
+
+        else
+            return ['data'=>null];
+    }
 
     /***
      * @param $cat1 top level category string name, where together with d_ it should be a column name
@@ -369,15 +465,15 @@ class Charts
     }
 
     /**
-     * @param $array
-     * @return array
-     */
+ * @param $array
+ * @return array
+ */
 
     function clusterDataForTable($array) {
         if(is_array($array)) {
             $month = array();
             foreach ($array as $value) {
-                $month[] = $value['d_cMonth'];
+                $month[] = $value['CMonth'];
             }
             $month = array_unique($month);
             $months = array();
@@ -391,11 +487,11 @@ class Charts
                 $c_data = array();
                 $d = array();
                 foreach ($array as $value) {
-                    if($month == $value['d_cMonth']) {
-                        $index = ($value['d_subDistrict']!= null || $value['d_subDistrict']!= "")? $value['d_subDistrict']."_".$value['d_cluster']:$value['d_cluster'];
-                        $d[$index] = ['absent'=>$value['d_remainingAbsent'],
-                            'sleep'=>$value['d_remainingSleep'],
-                            'refusal'=>$value['d_remainingRefusal']];
+                    if($month == $value['CMonth']) {
+                        $index = ($value['Subdistrict']!= null || $value['Subdistrict']!= "")? $value['Subdistrict']."_".$value['ClusterNo']:$value['ClusterNo'];
+                        $d[$index] = ['absent'=>$value['RemAbsent'],
+                            'NSS'=>$value['RemNSS'],
+                            'refusal'=>$value['RemRefusal']];
                         $c_data = $d;
                     }
                 }
@@ -428,8 +524,8 @@ class Charts
                     if(array_key_exists($k, $d)) {
                         $t_absent[] = $d[$k]['absent'];
                         $row[] = $d[$k]['absent'];
-                        $t_sleep[] = $d[$k]['sleep'];
-                        $row[] = $d[$k]['sleep'];
+                        $t_sleep[] = $d[$k]['NSS'];
+                        $row[] = $d[$k]['NSS'];
                         $t_refusal[] = $d[$k]['refusal'];
                         $row[] = $d[$k]['refusal'];
                         //$row[] = 'chart';
@@ -444,7 +540,7 @@ class Charts
                     }
                     //$rows[$k] = [$k.",".implode(",", $row)];
                 }
-                $row[] = "<span class='absent'>".implode(",", $t_absent)."</span> <span class='sleep'>".implode(",", $t_sleep)."</span> <span class='refusal'>".implode(",", $t_refusal)."</span>";
+                //$row[] = "<span class='absent'>".implode(",", $t_absent)."</span> <span class='sleep'>".implode(",", $t_sleep)."</span> <span class='refusal'>".implode(",", $t_refusal)."</span>";
                 //$row[] = array('absent'=>$t_absent, 'sleep'=>$t_sleep, 'refusal'=>$t_refusal);
                 $rows[] = $row;
 
@@ -461,6 +557,115 @@ class Charts
         else return ['error'=>'No data'];
     }
 
+    /**
+     * @param $array
+     * @param $indicator
+     * @param $filterBy
+     * @param array $clusters
+     * @param bool $sort
+     * @return array
+     */
+    function clusterDataForHeatMap($array, $indicator, $filterBy, $clusters = array(), $sort = true) {
+        if(is_array($array)) {
+            $tmp_top_cat = array();
+            foreach($array as $temp_d) {
+                $tmp_top_cat[] = $temp_d[$filterBy['column']];
+            }
+
+            $filters = array_unique($tmp_top_cat);
+            if($sort) {
+                sort($filters);
+            }
+            $data = array();
+            $yAxis = array();
+
+            foreach ($filters as $filter) {
+                $c_data = array();
+                $d = array();
+                foreach ($array as $value) {
+                    if($filter == $value[$filterBy['column']]) {
+                        $index = ($value['Subdistrict']!== null || $value['Subdistrict']!= "")?
+                                  $value['Subdistrict']."|".$value['ClusterNo']:
+                                  $value['ClusterNo'];
+                        $d[$index] = [$indicator=>$value[$indicator]];
+                        $c_data = $d;
+                        //$yAxis[] = $index;
+                    }
+                }
+                $data[$filter] = $c_data;
+            }
+
+//            dump($data);
+//            die;
+            $newRows = array();
+            $r = 0;
+            //Reverse the clusters, just to make heatmap from top-to-bottom aligned
+            $rClusters = array_reverse($clusters);
+            foreach($rClusters as $cluster) {
+
+                $newRow = array();
+
+                foreach($filters as $filter) {
+
+                    $c = 0;
+                    foreach($data as $datum) {
+
+                        if(array_key_exists($cluster, $datum)) {
+                            $newRow[] = [$c, $r, ($datum[$cluster][$indicator]=== null)? null : (int)$datum[$cluster][$indicator]];
+                        }
+                        else
+                            $newRow[] = [$c, $r, null];
+
+                        $c++;
+                    }
+                    break;
+                }
+                $newRows[] = $newRow;
+                $r++;
+
+            }
+
+            // making data for heatmap as a one array
+            $heatMapData = array();
+
+            foreach($newRows as $row) {
+                foreach ($row as $ro)
+                    $heatMapData[] = $ro;
+            }
+
+            // replacing filter column with substitute
+            $xAxis = array();
+            foreach ($filters as $filter) {
+                foreach ($array as $item) {
+                    if($filter == $item[$filterBy['column']]) {
+                        if($filterBy['substitute'] === 'shortName') {
+                            $xAxis[] = $item['CType']."-".$this->shortMonth($item['CMonth'])."-".$this->shortYear($item['CYear']);
+                        }
+                        else
+                            $xAxis[] = $item[$filterBy['substitute']];
+                        break;
+                    }
+                }
+            }
+
+            // yAxis, used reverse array of the clusters
+            foreach($rClusters as $cluster) {
+                $yAxis[] = str_replace("|", "-", $cluster);
+            }
+
+            //$heatMapDataReverse = array_reverse($heatMapData);
+            //$yAxisReverse = array_reverse($yAxis);
+            $final_data = array('yAxis'=>$yAxis, 'xAxis'=>$xAxis, 'data'=>$heatMapData);
+            //$final_data = array('yAxis'=>$yAxisReverse, 'xAxis'=>$xAxis, 'data'=>$heatMapDataReverse);
+            return $final_data;
+            //return $large;
+
+
+//            $data['larger_key'] = $key;
+//            return $data;
+        }
+        else return ['error'=>'No data'];
+    }
 
 
 }

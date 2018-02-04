@@ -5,13 +5,20 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CoverageData
+ * TempCoverageData
  *
- * @ORM\Entity(repositoryClass="AppBundle\Entity\CoverageDataRepository")
+ * @ORM\Entity
  *
  */
-class CoverageData
+class TempCoverageData
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="district", type="integer", nullable=true)
+     */
+    private $district;
+
     /**
      * @var string
      *
@@ -209,33 +216,11 @@ class CoverageData
     private $tallyType;
 
     /**
-     * @var \AppBundle\Entity\Campaign
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="campaign", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="campaign", type="integer", nullable=true)
      */
     private $campaign;
-
-    /**
-     * @var \AppBundle\Entity\District
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="district", referencedColumnName="id")
-     * })
-     */
-    private $district;
-
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
 
     /**
      * @var integer
@@ -694,22 +679,6 @@ class CoverageData
         $this->tallyType = $tallyType;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
 
     /**
      * Get id
@@ -724,21 +693,19 @@ class CoverageData
     /**
      * Set campaign
      *
-     * @param \AppBundle\Entity\Campaign $campaign
+     * @param integer $campaign
      *
-     * @return AdminData
      */
-    public function setCampaign(\AppBundle\Entity\Campaign $campaign = null)
+    public function setCampaign($campaign = null)
     {
         $this->campaign = $campaign;
 
-        return $this;
     }
 
     /**
      * Get campaign
      *
-     * @return \AppBundle\Entity\Campaign
+     * @return integer
      */
     public function getCampaign()
     {
@@ -748,21 +715,19 @@ class CoverageData
     /**
      * Set district
      *
-     * @param \AppBundle\Entity\District $district
+     * @param integer $district
      *
-     * @return AdminData
      */
-    public function setDistrict(\AppBundle\Entity\District $district = null)
+    public function setDistrict($district = null)
     {
         $this->district = $district;
 
-        return $this;
     }
 
     /**
      * Get district
      *
-     * @return \AppBundle\Entity\District
+     * @return integer
      */
     public function getDistrict()
     {

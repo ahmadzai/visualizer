@@ -12,6 +12,11 @@ use Doctrine\ORM\Query;
 class Settings
 {
 
+    // constants for number of campaigns
+    const NUM_CAMP_CLUSTERS = 6;
+    const NUM_CAMP_CHARTS = 10;
+    const NUM_CAMP_LIMIT = 10;
+
     protected $em;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -66,7 +71,7 @@ class Settings
 
         if($campaignId === 0 || $campaignId == 0) {
             $data = $this->em->createQuery(
-                "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear
+                "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
                FROM AppBundle:$table a
                JOIN a.campaign ca ORDER BY ca.id DESC"
               ) ->setFirstResult(1)
@@ -77,7 +82,7 @@ class Settings
         }
         else {
           $data = $this->em->createQuery(
-              "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear
+              "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
                FROM AppBundle:$table a
                JOIN a.campaign ca WHERE ca.id =:camp"
           )->setParameter('camp', $campaignId)->getResult(Query::HYDRATE_SCALAR);

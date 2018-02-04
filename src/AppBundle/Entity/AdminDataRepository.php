@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 
 class AdminDataRepository extends EntityRepository {
+
     /**
      * @param $function the function must be pre-defined
      * @param $parameters the parameters must be defined in the function

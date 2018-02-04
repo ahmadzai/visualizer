@@ -87,10 +87,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box box-primary">
-                                     <div class="box-body table-campaign-info">
+                                     <div class="box-body">
                                          <table class="table table-bordered">
                                              <tr>
-                                                 <th>Region</th>
+                                                 <th style="width: 10px">Region</th>
                                                  <th>U5 Children</th>
                                                  <th>Coverage %</th>
                                                  <th>Missed</th>
@@ -207,7 +207,7 @@
         <div class="col-md-12">
             <div class="box box-default bg-gray-light">
                 <div class="box-header with-border">
-                    <h3 class="box-title last10-campaign-title">Last 10 Campaigns' Trend </h3>
+                    <h3 class="box-title campaign-title">Last 10 Campaigns' Trend </h3>
                     <span class="badge bg-gray" style="font-weight: normal">Source: Admin Data</span>
                 </div>
                 <div class="box-body">
@@ -223,9 +223,7 @@
                                         <a class="campaign-type" href="#" title="LPD" data-url="vac_child_10camp">Reset</a>
                                     </div>
                                 </div>
-                                <span class="filter-loading loading vac_child_10camp" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
+                                <span class="filter-loading loading vac_child_10camp" title="Applying filter"><img src='{{ asset('ajax-loader-arrow.gif')}}' /></span>
                                 <div class="box-body">
                                     <div id="chart-vac_child_10camp" style="min-width: 300px; height: 350px; max-width:inherit"></div>
                                 </div>
@@ -287,39 +285,38 @@
     </div>
     <!--- End of the 10 Camp Trends --->
 
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-warning box">#}
-                {#<div class="box-body">#}
-                    {#<div id="chart-nss_3camp" style="min-width: 310px; height: 400px; max-width:inherit">#}
-                        {#{{ dump(lastCampData) }}#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-default box">#}
-                {#<div class="box-body">#}
-                    {#<div id="chart-refusal_3camp" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-danger box">#}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-warning box">
+                <div class="box-body">
+                    <div id="chart-nss_3camp" style="min-width: 310px; height: 400px; max-width:inherit">
+                        {{ dump(lastCampData) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-default box">
+                <div class="box-body">
+                    <div id="chart-refusal_3camp" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-danger box">
 
-                {#<div class="box-body">#}
-                    {#<div id="chart-vac_usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
+                <div class="box-body">
+                    <div id="chart-vac_usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
-
 {% block header %}
     {% embed 'shared/header.html.twig' %}
         {% block filter %}
@@ -330,7 +327,6 @@
         {% endblock %}
     {% endembed %}
 {% endblock %}
-
 {% block css %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('custom_js_css/custom-style.css') }}">
@@ -341,9 +337,6 @@
     <script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <script  src="{{ asset('template/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-
     <!-- AdminLTE App -->
     <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
 
@@ -368,21 +361,8 @@
                 var target = $(this).data('url');
                 var targetCont = "chart-"+ target;
                 var ajaxUrl = "ajax_camp_statistics";
-                var campaigns = $("#filterCampaign").val();
-                var regions = $("#filterRegion").val();
-                var provinces = $("#filterProvince").val();
-                var districts = $("#filterDistrict").val();
-
                 $('.'+target).show();
-                var postData = {'campType': $(this).text(),
-                                'entity': 'CoverageData',
-                                'chartType': target,
-                                'campaigns':campaigns,
-                                'regions' : regions,
-                                'provinces': provinces,
-                                'districts': districts,
-                               };
-                var stacking = target == "missed_type_10camp" ? {'type':'column', 'stacking':'normal'} : {'type':'column'};
+                var postData = {'campType': $(this).text(), 'entity': 'CoverageData', 'chartType': target}
                 $.ajax({
                     url: Routing.generate(ajaxUrl),
                     data: postData,
@@ -391,8 +371,7 @@
                         //console.log(data);
                         var jsonData = JSON.parse(data);
 
-                        myChartWrapper(stacking,
-                            targetCont, JSON.stringify(jsonData[target]),
+                        myChartWrapper({'type':"column"}, targetCont, JSON.stringify(jsonData[target]),
                             config[target].titles, null, config[target].color);
                         $('.'+target).hide();
                     },
@@ -478,13 +457,10 @@
 
                 if(selectedDistricts.length === 1) {
                     var districtId = $('#filterDistrict').val();
-                    //console.log(districtId[0].indexOf("HR"));
-                    if(districtId[0].indexOf("HR") == -1) {
-                        var url = Routing.generate('cluster_admin_data', {'district': districtId})
-                        $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> Clusters' data for " + $('#filterDistrict option:selected').attr('label'));
-                        $('.btn-cluster').attr("href", url);
-                        //$('.btn-cluster').show();
-                    }
+                    var url = Routing.generate('cluster_admin_data', {'district':districtId})
+                    $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> Clusters' data for " + $('#filterDistrict option:selected').attr('label'));
+                    $('.btn-cluster').attr("href", url);
+                    //$('.btn-cluster').show();
                 } else {
                     $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> For clusters' data click here!");
                     $('.btn-cluster').attr("href", Routing.generate('cluster_admin_data'));
@@ -493,70 +469,58 @@
 
             $('#filterButton').click(function () {
 
-                var campaigns = $('#filterCampaign').val();
+                var campaigns = $('#filterCampaign option:selected');
+                var selectedCampaigns = [];
+                $(campaigns).each(function (index, campaigns) {
+                    selectedCampaigns.push([$(this).val()]);
+                });
 
-                var region = $('#filterRegion').val();
+                var region = $('#filterRegion option:selected');
+                var selectedRegions = [];
+                $(region).each(function (index, region) {
+                    selectedRegions.push([$(this).val()]);
+                });
 
-                var provinces = $('#filterProvince').val();
+                var provinces = $('#filterProvince option:selected');
+                var selectedProvinces = [];
+                $(provinces).each(function (index, provinces) {
+                    selectedProvinces.push([$(this).val()]);
+                });
 
-                var districts = $('#filterDistrict').val();
+                var districts = $('#filterDistrict option:selected');
+                var selectedDistricts = [];
+                $(districts).each(function (index, districts) {
+                    selectedDistricts.push([$(this).val()]);
+                });
 
-                // check if a user didn't select anything, then return
-                if(campaigns === null || campaigns === undefined) {
-                    window.alert("Please select at least one campaign");
-                    return;
-                }
 
-                var data = {'campaign':campaigns, 'region':region, 'province': provinces, 'district': districts};
+                var data = {'campaign':selectedCampaigns, 'region':selectedRegions, 'province': selectedProvinces, 'district': selectedDistricts};
 
                 $('.loading, .loading-top').show();
 
 
                 $.ajax({
-                    url: Routing.generate('ajax_filter_admin_data'),
+                    url: Routing.generate('ajax_admin_data'),
                     data: data,
                     type: 'POST',
                     success: function (data) {
-                        console.log(data);
+                        //console.log(data);
                         var jsonData = JSON.parse(data);
+                        /*
+                         this is how the data is comming
+                         'allMissedChildren'
+                         'absentChildren'
+                         'nssChildren'
+                         'refusalChildren
+                         'vaccineUsage'
 
-                        // set tiles' values
-                        var target = (parseInt(jsonData.lastCampData[0].TotalRemaining) + parseInt(jsonData.lastCampData[0].TotalVac));
-                        var coverage = parseInt(jsonData.lastCampData[0].TotalVac)/target;
-
-                        $('.info-vaccinated-child').html(numeral(jsonData.lastCampData[0].TotalVac).format('0,0'));
-                        $('.info-coverage').html(numeral(coverage).format('0,0.00%'));
-                        $('.info-missed-child').html(numeral(jsonData.lastCampData[0].TotalRemaining).format('0,0'));
-                        $('.info-used-vials').html(numeral(jsonData.lastCampData[0].UVials).format('0,0'));
-                        // set new title for the row
-                        $('.campaign-title').html(jsonData.lastCampData[0].CName + " Campaign Data");
-                        // set new table
-                        $('.table-campaign-info').html(jsonData.table.table);
-
-                        myPieChartWrapper('chart-pie_chart_1camp', JSON.stringify(jsonData.lastCampPieData), null, ['#FFFF00', '#C99900', '#FF0000'], null, 'donut', 'small');
-                        myChartWrapper({'type':"column"}, "chart-column_chart_1camp", JSON.stringify(jsonData.lastCampVacData),
-                            {'yTitle':null, 'xTitle':null}, {'enabled':false}, ['#ffb32d']);
-
-                        // Second Row of the last campaign charts
-                        myPieChartWrapper('chart-recovered_all', JSON.stringify(jsonData.recoveredAll), null,
-                            ['#048AFF', '#40C97A', '#FFB32D'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_absent', JSON.stringify(jsonData.recoveredAbsent), null,
-                            ['#048AFF', '#40C97A', '#FFFF00'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_nss', JSON.stringify(jsonData.recoveredNSS), null,
-                            ['#048AFF', '#40C97A', '#9C800E'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_refusal', JSON.stringify(jsonData.recoveredRefusal), null,
-                            ['#048AFF', '#40C97A', '#FF0000'], null, 'halfpie', 'small');
-
-                        // Last 10 campaign trends
-                        myChartWrapper({'type':"column"}, "chart-vac_child_10camp", JSON.stringify(jsonData.chartVacChild10Camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['vac_child_10camp'].color);
-                        myChartWrapper({'type':"column"}, "chart-missed_10camp", JSON.stringify(jsonData.chartMissed10Camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['missed_10camp'].color);
-                        myChartWrapper({'type':"column", 'stacking':'normal'}, "chart-missed_type_10camp", JSON.stringify(jsonData.chartMissedType10camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['missed_type_10camp'].color);
-                        myChartWrapper({'type':"area", 'stacking':'percent'}, "chart-recovered_10camp", JSON.stringify(jsonData.last10CampRecovered),
-                            {'yTitle':null, 'xTitle':null}, null,
-                            ['#FFDE7B', '#33D3FF', '#42FFC0', '#40C97A']);
+                         */
+                        colChart('chart1', JSON.stringify(jsonData.allMissedChildren), 'No of missed children');
+                        colChart('chart-absent', JSON.stringify(jsonData.absentChildren), 'No of absent children', ['#FFFF00', '#43AB0D']);
+                        colChart('chart-nss', JSON.stringify(jsonData.nssChildren), 'No of NSS children', ['#C99900', '#43AB0D']);
+                        colChart('chart-refusal', JSON.stringify(jsonData.refusalChildren), 'No of refusal children', ['#FF0000', '#43AB0D']);
+                        threeAxisChart('vaccine-usage', JSON.stringify(jsonData.vaccineUsage), ['Received vials', 'Used vials', 'Wastage'],
+                            ['ReceivedVials', 'UsedVials', 'Wastage']);
 
                         $('.loading, .loading-top').hide();
                     },

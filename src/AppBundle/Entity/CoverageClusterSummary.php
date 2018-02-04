@@ -5,12 +5,11 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CoverageData
- *
- * @ORM\Entity(repositoryClass="AppBundle\Entity\CoverageDataRepository")
- *
+ * CoverageClusterSummary
+ * @ORM\Table(name="coverage_cluster_summary")
+ * @ORM\Entity(readOnly=true)
  */
-class CoverageData
+class CoverageClusterSummary
 {
     /**
      * @var string
@@ -26,12 +25,6 @@ class CoverageData
      */
     private $clusterNo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cluster_name", type="text", length=100, nullable=true)
-     */
-    private $clusterName;
 
     /**
      * @var integer
@@ -194,48 +187,91 @@ class CoverageData
      */
     private $afpCase;
 
+
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="vac_day", type="integer", nullable=true)
+     * @ORM\Column(name="district", type="integer", precision=0, scale=0, nullable=true, unique=false)
      */
-    private $vacDay;
+    private $district;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tally_type", type="text", length=100, nullable=true)
+     * @ORM\Column(name="district_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
      */
-    private $tallyType;
+    private $districtName;
 
     /**
-     * @var \AppBundle\Entity\Campaign
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="campaign", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="district_risk_status", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $districtRiskStatus;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="province", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $province;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="province_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $provinceName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="region", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $region;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign", type="integer", precision=0, scale=0, nullable=true, unique=false)
      */
     private $campaign;
 
     /**
-     * @var \AppBundle\Entity\District
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="district", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="campaign_name", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
      */
-    private $district;
-
+    private $campaignName;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(name="campaign_type", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
      */
-    private $updatedAt;
+    private $campaignType;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_date", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="campaign_year", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignYear;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campaign_month", type="string", length=20, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $campaignMonth;
 
     /**
      * @var integer
@@ -276,22 +312,6 @@ class CoverageData
     public function setClusterNo($clusterNo)
     {
         $this->clusterNo = $clusterNo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClusterName()
-    {
-        return $this->clusterName;
-    }
-
-    /**
-     * @param string $clusterName
-     */
-    public function setClusterName($clusterName)
-    {
-        $this->clusterName = $clusterName;
     }
 
     /**
@@ -665,80 +685,101 @@ class CoverageData
     /**
      * @return int
      */
-    public function getVacDay()
+    public function getDistrict()
     {
-        return $this->vacDay;
+        return $this->district;
     }
 
     /**
-     * @param int $vacDay
+     * @param int $district
      */
-    public function setVacDay($vacDay)
+    public function setDistrict($district)
     {
-        $this->vacDay = $vacDay;
+        $this->district = $district;
     }
 
     /**
      * @return string
      */
-    public function getTallyType()
+    public function getDistrictName()
     {
-        return $this->tallyType;
+        return $this->districtName;
     }
 
     /**
-     * @param string $tallyType
+     * @param string $districtName
      */
-    public function setTallyType($tallyType)
+    public function setDistrictName($districtName)
     {
-        $this->tallyType = $tallyType;
+        $this->districtName = $districtName;
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getUpdatedAt()
+    public function getDistrictRiskStatus()
     {
-        return $this->updatedAt;
+        return $this->districtRiskStatus;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param string $districtRiskStatus
      */
-    public function setUpdatedAt($updatedAt)
+    public function setDistrictRiskStatus($districtRiskStatus)
     {
-        $this->updatedAt = $updatedAt;
+        $this->districtRiskStatus = $districtRiskStatus;
     }
 
-
     /**
-     * Get id
-     *
-     * @return integer
+     * @return int
      */
-    public function getId()
+    public function getProvince()
     {
-        return $this->id;
+        return $this->province;
     }
 
     /**
-     * Set campaign
-     *
-     * @param \AppBundle\Entity\Campaign $campaign
-     *
-     * @return AdminData
+     * @param int $province
      */
-    public function setCampaign(\AppBundle\Entity\Campaign $campaign = null)
+    public function setProvince($province)
     {
-        $this->campaign = $campaign;
-
-        return $this;
+        $this->province = $province;
     }
 
     /**
-     * Get campaign
-     *
-     * @return \AppBundle\Entity\Campaign
+     * @return string
+     */
+    public function getProvinceName()
+    {
+        return $this->provinceName;
+    }
+
+    /**
+     * @param string $provinceName
+     */
+    public function setProvinceName($provinceName)
+    {
+        $this->provinceName = $provinceName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param string $region
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+    }
+
+    /**
+     * @return int
      */
     public function getCampaign()
     {
@@ -746,26 +787,102 @@ class CoverageData
     }
 
     /**
-     * Set district
-     *
-     * @param \AppBundle\Entity\District $district
-     *
-     * @return AdminData
+     * @param int $campaign
      */
-    public function setDistrict(\AppBundle\Entity\District $district = null)
+    public function setCampaign($campaign)
     {
-        $this->district = $district;
-
-        return $this;
+        $this->campaign = $campaign;
     }
 
     /**
-     * Get district
-     *
-     * @return \AppBundle\Entity\District
+     * @return string
      */
-    public function getDistrict()
+    public function getCampaignName()
     {
-        return $this->district;
+        return $this->campaignName;
     }
+
+    /**
+     * @param string $campaignName
+     */
+    public function setCampaignName($campaignName)
+    {
+        $this->campaignName = $campaignName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampaignType()
+    {
+        return $this->campaignType;
+    }
+
+    /**
+     * @param string $campaignType
+     */
+    public function setCampaignType($campaignType)
+    {
+        $this->campaignType = $campaignType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampaignDate()
+    {
+        return $this->campaignDate;
+    }
+
+    /**
+     * @param string $campaignDate
+     */
+    public function setCampaignDate($campaignDate)
+    {
+        $this->campaignDate = $campaignDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCampaignYear()
+    {
+        return $this->campaignYear;
+    }
+
+    /**
+     * @param int $campaignYear
+     */
+    public function setCampaignYear($campaignYear)
+    {
+        $this->campaignYear = $campaignYear;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampaignMonth()
+    {
+        return $this->campaignMonth;
+    }
+
+    /**
+     * @param string $campaignMonth
+     */
+    public function setCampaignMonth($campaignMonth)
+    {
+        $this->campaignMonth = $campaignMonth;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+
+
 }

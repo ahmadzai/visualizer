@@ -48,7 +48,7 @@ class MenuBuilder implements ContainerAwareInterface
 
         // Sub menu (child of Admin Data
         // Dashboard
-        $menu['Admin Data']->addChild("Dashboard", array('route'=>'admin_data'))->setExtra('info', 'Admin Data');
+        $menu['Admin Data']->addChild("Dashboard", array('route'=>'admin_data', 'extras'=>['route'=>'cluster_admin_data']))->setExtra('info', 'Admin Data');
         $menu['Admin Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
         $menu['Admin Data']['Dashboard']->setAttribute('icon','fa-dashboard');
         // Data Download
