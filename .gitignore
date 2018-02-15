@@ -22,3 +22,5 @@ composer.lock
 Installation-Linode.md
 .idea
 .idea/*
+web/template/pages
+web/template/documentation
