@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Province
  *
  * @ORM\Table(name="province", uniqueConstraints={@ORM\UniqueConstraint(name="province_code_UNIQUE", columns={"id"})})
- * @ORM\Entity(repositoryClass="AppBundle\Entity\ProvinceRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProvinceRepository")
  */
 class Province
 {

@@ -40,23 +40,6 @@
                             </div>
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="c-info-box">
-                                    <span class="c-info-box-icon bg-green"><i class="fa fa-line-chart"></i></span>
-
-                                    <div class="c-info-box-content">
-                                        <span class="c-info-box-text">Coverage</span>
-                                        <span class="c-info-box-number info-coverage">
-                                            {% set coverage = (lastCampData[0]['TotalVac']/(lastCampData[0]['TotalRemaining'] + lastCampData[0]['TotalVac']) * 100) %}
-                                            {{
-                                             coverage|number_format(2, '.', ',')
-                                            }}%
-                                        </span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                                <!-- /.info-box -->
-                            </div>
-                            <div class="col-md-3 col-sm-6 col-xs-12">
-                                <div class="c-info-box">
                                     <span class="c-info-box-icon bg-yellow"><i class="fa fa-warning"></i></span>
 
                                     <div class="c-info-box-content">
@@ -77,6 +60,24 @@
                                         <span class="c-info-box-text">Used Vials</span>
                                         <span class="c-info-box-number info-used-vials">
                                             {{ lastCampData[0]['UVials'] | number_format(0, '.', ',') }}
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="c-info-box">
+                                    <span class="c-info-box-icon bg-orange"><i class="fa fa-line-chart"></i></span>
+
+                                    <div class="c-info-box-content">
+                                        <span class="c-info-box-text">Vac Wastage</span>
+                                        <span class="c-info-box-number info-coverage">
+                                            {#{% set coverage = (lastCampData[0]['TotalVac']/(lastCampData[0]['TotalRemaining'] + lastCampData[0]['TotalVac']) * 100) %}#}
+                                            {#{{#}
+                                            {#coverage|number_format(2, '.', ',')#}
+                                            {#}}%#}
+                                            {{ lastCampData[0]['VacWastage'] | number_format(2, '.', ',') }}%
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -286,45 +287,13 @@
         </div>
     </div>
     <!--- End of the 10 Camp Trends --->
-
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-warning box">#}
-                {#<div class="box-body">#}
-                    {#<div id="chart-nss_3camp" style="min-width: 310px; height: 400px; max-width:inherit">#}
-                        {#{{ dump(lastCampData) }}#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-default box">#}
-                {#<div class="box-body">#}
-                    {#<div id="chart-refusal_3camp" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-danger box">#}
-
-                {#<div class="box-body">#}
-                    {#<div id="chart-vac_usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-
 {% endblock %}
 
 {% block header %}
     {% embed 'shared/header.html.twig' %}
         {% block filter %}
             {{ render(controller(
-            'AppBundle:ChartFilter:smallFilter'
+            'AppBundle:Ajax/AjaxFilter:smallFilter'
             ))
             }}
         {% endblock %}
@@ -433,7 +402,7 @@
 
             myPieChartWrapper('chart-pie_chart_1camp', '{{ lastCampPieData|raw }}', null, ['#FFFF00', '#C99900', '#FF0000'], null, 'donut', 'small');
             myChartWrapper({'type':"column"}, "chart-column_chart_1camp", '{{ lastCampVacData|raw }}',
-                {'yTitle':null, 'xTitle':null}, {'enabled':false}, ['#ffb32d']);
+                {'yTitle':null, 'xTitle':null}, {'enabled':false}, ['#ffb32d'], null, null, '%');
 
             // Second Row of the last campaign charts
             myPieChartWrapper('chart-recovered_all', '{{ recoveredAll|raw }}', null,

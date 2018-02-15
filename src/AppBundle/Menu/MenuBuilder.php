@@ -56,7 +56,7 @@ class MenuBuilder implements ContainerAwareInterface
         $menu['Admin Data']['Download']->setAttribute('icon', 'fa-download');
         // Data Upload
         {
-            $menu['Admin Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters'=>['entity'=>'admin_data'],
+            $menu['Admin Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters'=>['entity'=>'coverage_data'],
                 'extras'=>['route'=>'import_admin_data_handle']))
                 ->setExtra('info', 'Admin Data');
             $menu['Admin Data']['Upload']->setAttribute('icon', 'fa-upload');
@@ -72,7 +72,7 @@ class MenuBuilder implements ContainerAwareInterface
 
         // Sub menu (child of Catchup Data
         // Dashboard
-        $menu['Catchup Data']->addChild("Dashboard", array('uri'=>'#'))->setExtra('info', 'Catchup Data');
+        $menu['Catchup Data']->addChild("Dashboard", array('route'=>'catchup_data'))->setExtra('info', 'Catchup Data');
         $menu['Catchup Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
         $menu['Catchup Data']['Dashboard']->setAttribute('icon','fa-dashboard');
         // Data Download

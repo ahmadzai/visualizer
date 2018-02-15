@@ -182,7 +182,7 @@ class CatchupDataDatatable extends AbstractDatatable
                     ),
                 ),
             ))
-            ->add('subDistrictName', Column::class, array(
+            ->add('subDistrict', Column::class, array(
                 'title' => 'SubDistrict',
                 'visible'=>false,
                 'filter' => array(TextFilter::class,
@@ -215,127 +215,65 @@ class CatchupDataDatatable extends AbstractDatatable
                 'visible' => false,
                 'searchable' => false
                 ));
-        if($type == "all") {
+
             $this->columnBuilder
                 ->add('dataSource', Column::class, array(
                     'title' => 'Source',
                     'searchable' => false,
-                    'dql' => "(CASE WHEN catchupdata.dataSource='fb' Then 'Fieldbook' ELSE 'No FB' END)"
+                    'visible' => false
                 ));
-        }
-            if($type == "all" || $type == "fb") {
-                $this->columnBuilder
-                ->add('fbNoSMs', Column::class, array(
-                    'title' => 'No. SMs',
+
+            $this->columnBuilder
+                ->add('noSM', Column::class, array(
+                    'title' => 'No.SMs',
                     'searchable' => false
                 ))
-                    ->add('fbNoHHs', Column::class, array(
-                        'title' => 'No. HHs',
+                    ->add('noHH', Column::class, array(
+                        'title' => 'No.HHs',
                         'searchable' => false
                     ))
-                    ->add('fbNoU5', Column::class, array(
-                        'title' => 'No. U5',
+                    ->add('noU5', Column::class, array(
+                        'title' => 'No.U5',
                         'searchable' => false
                     ))
-                    ->add('fbNoU5IRR', Column::class, array(
-                        'title' => 'No. U5 IRR',
+                    ->add('regAbsent', Column::class, array(
+                        'title' => 'Reg Absent',
                         'searchable' => false
                     ))
-                    ->add('fbGuestVac', Column::class, array(
+                    ->add('vacAbsent', Column::class, array(
+                        'title' => 'Vac Absent',
+                        'searchable' => false
+                    ))
+                    ->add('regNSS', Column::class, array(
+                        'title' => 'Reg NSS',
+                        'searchable' => false
+                    ))
+                    ->add('vacNSS', Column::class, array(
+                        'title' => 'Vac NSS',
+                        'searchable' => false
+                    ))
+                    ->add('regRefusal', Column::class, array(
+                        'title' => 'Reg Refusal',
+                        'searchable' => false
+                    ))
+                    ->add('vacRefusal', Column::class, array(
+                        'title' => 'Vac Refusal',
+                        'searchable' => false
+                    ))
+                    ->add('unRecorded', Column::class, array(
+                        'title' => 'Unrecorded',
+                        'searchable' => false
+                    ))
+                    ->add('vacUnRecorded', Column::class, array(
+                        'title' => 'Vac Unrecorded',
+                        'searchable' => false
+                    ))
+                    ->add('vacGuest', Column::class, array(
                         'title' => 'Vac Guests',
                         'searchable' => false
-                    ))
-                    ->add('fbDuringCampVac', Column::class, array(
-                        'title' => 'Vac During Camp',
-                        'searchable' => false
-                    ))
-                    ->add('fbRefusalNotVac', Column::class, array(
-                        'title' => 'Refusal Not Vac',
-                        'searchable' => false
-                    ))
-                    ->add('fbRefusalVacDuringCamp', Column::class, array(
-                        'title' => 'Refusal Vac Camp',
-                        'searchable' => false
-                    ))
-                    ->add('fbRefusalVacAfterCamp', Column::class, array(
-                        'title' => 'Refusal Vac SMs',
-                        'searchable' => false
-                    ))
-                    ->add('fbChildVacBySMAfterCamp', Column::class, array(
-                        'title' => 'Vac After Camp SMs',
-                        'searchable' => false
-                    ))
-                    ->add('fbChildNotVaccAfterCamp', Column::class, array(
-                        'title' => 'Not Vac AfterCamp',
-                        'searchable' => false
-                    ))
-                    ->add('fbChildMissedInaccessiblity', Column::class, array(
-                        'title' => 'Missed Inaccessibility',
-                        'searchable' => false
-                    ))
-                    ->add('fbChildReferRI', Column::class, array(
-                        'title' => 'Child Refer RI',
-                        'searchable' => false
-                    ))
-                    ->add('fbNewbornRec', Column::class, array(
-                        'title' => 'Newborn Rec',
-                        'searchable' => false
-                    ))
-                    ->add('fbNewbornOPV0', Column::class, array(
-                        'title' => 'Newborn OPV0',
-                        'searchable' => false
-                    ))
-                    ->add('fbPregnantRec', Column::class, array(
-                        'title' => 'Pregnant Rec',
-                        'searchable' => false
-                    ))
-                    ->add('fbPregnantReferANC', Column::class, array(
-                        'title' => 'Pregnant ReferANC',
-                        'searchable' => false
                     ));
-                    } else if($type == "all" || $type == "nfb") {
-                $this->columnBuilder->
-                add('chRegAbsent', Column::class, array(
-                    'title' => 'RegAbsent',
-                    'searchable' => false,
-                    'visible' => $type=='nfb'?true:false
-                ))
-                    ->add('chVacAbsent', Column::class, array(
-                        'title' => 'VacAbsent',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chRegSleep', Column::class, array(
-                        'title' => 'RegNSS',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chVacSleep', Column::class, array(
-                        'title' => 'VacNSS',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chRegRefusal', Column::class, array(
-                        'title' => 'RegRefusal',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chVacRefusal', Column::class, array(
-                        'title' => 'VacRefusal',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chUnrecorded', Column::class, array(
-                        'title' => 'Unrecorded',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ))
-                    ->add('chUnrecordedVac', Column::class, array(
-                        'title' => 'Vac Unrecorded',
-                        'searchable' => false,
-                        'visible' => $type=='nfb'?true:false
-                    ));
-            }
+
+
             /*
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
@@ -371,7 +309,6 @@ class CatchupDataDatatable extends AbstractDatatable
                 )
             ))
             */
-        ;
     }
 
     /**

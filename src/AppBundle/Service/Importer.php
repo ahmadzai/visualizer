@@ -10,6 +10,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\ImportedFiles;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata,
     Doctrine\Common\Util\Inflector,
@@ -51,11 +52,11 @@ class Importer
      */
     public function listAllTables($except = null, $allowTemp = false)
     {
-        $tables = $this->_em->getConnection()->getSchemaManager()->listTables();
+        $tables = $this->_em->getConnection()->getSchemaManager()->listTableNames();
         $data = array();
         foreach ($tables as $table) {
 
-            $name = $table->getName();
+            $name = $table; //->getName();
             // remove the doctrine migration table
             if(strpos($name, "migration") === false)
                 $data[$name] = $name;
@@ -365,18 +366,38 @@ class Importer
 //        $properties = null;
 
         //$this->truncate($entity);
+        //dump($mappedArray);
+        //dump($data);
+        //die;
 
         $exceptions = null;
-        $batchSize = 20;
+        $batchSize = 50;
+
+        $counter = 0;
+
+        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+
         foreach($readyData as $index => $dataRow) {
 
             $entity = new $className();
-
+            $types = $this->_em->getClassMetadata($className)->fieldMappings;
             foreach($dataRow as $col=>$value) {
 
                 $func = "set".ucfirst($col);
                 $dataValue = trim($value) == ''?null:trim($value);
+                $type = $types[$col]['type'];
+
+                if($type == "integer" || $type == "float" || $type == "double") {
+                    if( preg_match("/^-?[0-9]+$/", $dataValue) ||
+                        preg_match('/^-?[0-9]+(\.[0-9]+)?$/', $dataValue) ||
+                        is_numeric($dataValue)) {
+                        $dataValue = $dataValue;
+                    } else
+                        $dataValue = $dataValue === null ? null : 0;
+                }
                 $entity->$func($dataValue);
+
+
             }
 
             // now setting the file id if file was not equal to -1, which means no file field in entity
@@ -387,26 +408,36 @@ class Importer
                 $this->_em->persist($entity);
             } catch (ForeignKeyConstraintViolationException $exception) {
                 $exceptions[] = "Foreign-key violation occurred (some of the fk are not in the lookup tables) in row: ".$index;
-                $this->_em->rollback();
+                //$this->_em->rollback();
+                continue;
 
             } catch (DBALException $exception) {
-
                 $exceptions[] = "Some exception occurred at row: ".$index;
-                $this->_em->rollback();
+                continue;
+                //$this->_em->rollback();
             } catch (DriverException $exception) {
                 $exceptions[] = "Incorrect type detected and escaped at row: ".$index;
-                $this->_em->rollback();
+                continue;
+                //$this->_em->rollback();
+            } catch (PDOException $exception) {
+                $exceptions[] = "Incorrect type detected and escaped at row: ".$index;
+                continue;
+
             } catch (Exception $exception) {
-                $exceptions[] = "Exception occurred and escaped at row: ".$index;
-                $this->_em->rollback();
+                $exceptions[] = "Exception occurred and escaped at row: ".$index. ". Exception: ".$exception;
+                continue;
+                //$this->_em->rollback();
             }
 
-            if (($index % $batchSize) === 0) {
+            if($counter%$batchSize == 0) {
                 $this->_em->flush();
                 $this->_em->clear();
             }
+
+            $counter ++;
         }
 
+        $this->_em->flush();
         $this->_em->clear();
 
         if(count($exceptions) == null)

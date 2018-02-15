@@ -39,6 +39,19 @@
                                 <div class="col-md-12">
                                     <div class="box-warning box">
                                         <div class="box-body">
+                                            <div class="chart-menu">
+                                                <span><a href="#"><i class="fa fa-bars"></i>&nbsp;&nbsp;</a></span>
+                                                <div class="filter-content">
+                                                    <a class="filter-heatmap-type" data-type="number"
+                                                       href="#" title="Heatmap number" >
+                                                        Numbers
+                                                    </a>
+                                                    <a class="filter-heatmap-type" href="#" data-type="percent"
+                                                       title="Heatmap percent" >
+                                                        Percentage
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <div class="chart-filter">
                                                 <span><a href="#"><i class="fa fa-filter"></i>&nbsp;&nbsp;</a></span>
                                                 <div class="filter-content">
@@ -138,7 +151,7 @@
     {% embed 'shared/header.html.twig' %}
         {% block filter %}
             {{ render(controller(
-            'AppBundle:ChartFilter:clusterFilter',
+            'AppBundle:Ajax/AjaxFilter:clusterFilter',
                 { 'source': 'CoverageData', 'district': district }
             ))
             }}
@@ -237,107 +250,85 @@
                 $("#hidden-total-refusal").val(JSON.stringify({{ heatMapTotalRefusal|raw }}));
                 $("#hidden-total-nss").val(JSON.stringify({{ heatMapTotalNSS|raw }}));
             {% endif %}
-            {#myPieChartWrapper('chart-pie_chart_1camp', '{{ lastCampPieData|raw }}', null, ['#FFFF00', '#C99900', '#FF0000'], null, 'donut', 'small');#}
-            {#myChartWrapper({'type':"column"}, "chart-column_chart_1camp", '{{ lastCampVacData|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, {'enabled':false}, ['#ffb32d']);#}
 
-            {#// Second Row of the last campaign charts#}
-            {#myPieChartWrapper('chart-recovered_all', '{{ recoveredAll|raw }}', null,#}
-                {#['#048AFF', '#40C97A', '#FFB32D'], null, 'halfpie', 'small');#}
-            {#myPieChartWrapper('chart-recovered_absent', '{{ recoveredAbsent|raw }}', null,#}
-                {#['#048AFF', '#40C97A', '#FFFF00'], null, 'halfpie', 'small');#}
-            {#myPieChartWrapper('chart-recovered_nss', '{{ recoveredNSS|raw }}', null,#}
-                {#['#048AFF', '#40C97A', '#9C800E'], null, 'halfpie', 'small');#}
-            {#myPieChartWrapper('chart-recovered_refusal', '{{ recoveredRefusal|raw }}', null,#}
-                {#['#048AFF', '#40C97A', '#FF0000'], null, 'halfpie', 'small');#}
-
-            {#// Last 10 campaign trends#}
-            {#myChartWrapper({'type':"column"}, "chart-vac_child_10camp", '{{ chartVacChild10Camp|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, null, config['vac_child_10camp'].color);#}
-            {#myChartWrapper({'type':"column"}, "chart-missed_10camp", '{{ chartMissed10Camp|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, null, config['missed_10camp'].color);#}
-            {#myChartWrapper({'type':"column", 'stacking':'normal'}, "chart-missed_type_10camp", '{{ chartMissedType10camp|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, null, config['missed_type_10camp'].color);#}
-            {#myChartWrapper({'type':"area", 'stacking':'percent'}, "chart-recovered_10camp", '{{ last10CampRecovered|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, null,#}
-               {#['#FFDE7B', '#33D3FF', '#42FFC0', '#40C97A']);#}
+            $('.filter-heatmap-type').click(function (event) {
+                event.preventDefault();
+                var calcType = $(this).data('type');
+                makeAjaxRequest(calcType);
+            });
 
             // ============================== End loading of the charts ==========================
 
 
             $('#filterButton').click(function () {
-              
-//                var campaigns = $('#filterCampaign option:selected');
-                var selectedCampaigns = $('#filterCampaign').val();
-
-                //var provinces = $('#filterProvince option:selected');
-                var selectedProvinces = $('#filterProvince').val();
-//                $(provinces).each(function (index, provinces) {
-//                    selectedProvinces.push([$(this).val()]);
-//                });
-
-                //var districts = $('#filterDistrict option:selected');
-                var selectedDistricts = $('#filterDistrict').val();
-//                $(districts).each(function (index, districts) {
-//                    selectedDistricts.push([$(this).val()]);
-//                });
-
-                //var clusters = $('#filterCluster option:selected');
-                var selectedClusters = $('#filterCluster').val();
-//                $(clusters).each(function (index, cluster) {
-//                    selectedClusters.push([$(this).val()]);
-//                });
-
-                if(selectedDistricts === null || selectedDistricts === undefined) {
-                    window.alert("Please select a district");
-                    return;
-                }
-
-
-                var data = {'campaign':selectedCampaigns, 'province': selectedProvinces,
-                            'district': selectedDistricts, 'cluster':selectedClusters, };
-
-                $('.loading, .loading-top').show();
-
-
-                $.ajax({
-
-                    url: Routing.generate('ajax_cluster_admin_data'),
-                    data: data,
-                    type: 'POST',
-                    success: function (data) {
-                        //console.log(data);
-                        $("#hidden-total-absent").val('');
-                        $("#hidden-total-remaining").val('');
-                        $("#hidden-total-refusal").val('');
-                        $("#hidden-total-nss").val('');
-                        var jsonData = JSON.parse(data);
-                        /*
-                         this is how the data is comming
-                         'allMissedChildren'
-                         'absentChildren'
-                         'nssChildren'
-                         'refusalChildren
-                         'vaccineUsage'
-
-                         */
-                        //colChart('chart1', JSON.stringify(jsonData.heatMapTotalRemaining), 'No of missed children');
-                        myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
-                        myChartWrapper({'type':"bar", 'stacking':'percent'}, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
-                            {'yTitle':null, 'xTitle':null}, null, config.colors, null, 'height');
-                        $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
-                        $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
-                        $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
-                        $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
-
-
-                        $('.loading, .loading-top').hide();
-                    },
-                    cache: false
-                });
-
+                makeAjaxRequest(null, config);
             })
         });
+
+        function makeAjaxRequest(calcType, config) {
+
+            var selectedCampaigns = $('#filterCampaign').val();
+            //var provinces = $('#filterProvince option:selected');
+            var selectedProvinces = $('#filterProvince').val();
+            //var districts = $('#filterDistrict option:selected');
+            var selectedDistricts = $('#filterDistrict').val();
+            //var clusters = $('#filterCluster option:selected');
+            var selectedClusters = $('#filterCluster').val();
+
+            if(selectedDistricts === null || selectedDistricts === undefined) {
+                window.alert("Please select a district");
+                return;
+            }
+
+            var data = {'campaign':selectedCampaigns, 'province': selectedProvinces,
+                'district': selectedDistricts, 'cluster':selectedClusters, 'calcType': calcType};
+
+            $('.loading, .loading-top').show();
+
+            $.ajax({
+
+                url: Routing.generate('ajax_cluster_admin_data'),
+                data: data,
+                type: 'POST',
+                success: function (data) {
+                    //console.log(data);
+                    $("#hidden-total-absent").val('');
+                    $("#hidden-total-remaining").val('');
+                    $("#hidden-total-refusal").val('');
+                    $("#hidden-total-nss").val('');
+                    var jsonData = JSON.parse(data);
+
+                    //console.log(jsonData);
+                    /*
+                     this is how the data is comming
+                     'allMissedChildren'
+                     'absentChildren'
+                     'nssChildren'
+                     'refusalChildren
+                     'vaccineUsage'
+
+                     */
+                    //colChart('chart1', JSON.stringify(jsonData.heatMapTotalRemaining), 'No of missed children');
+                    $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
+                    $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
+                    $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
+                    $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
+
+                    myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
+                    if(calcType === null || calcType === undefined) {
+                        console.log(jsonData.lastCampBarChart);
+                        myChartWrapper({
+                                'type': "bar",
+                                'stacking': 'percent'
+                            }, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
+                            {'yTitle': null, 'xTitle': null}, null, config.colors, null, 'height');
+                    }
+
+                    $('.loading, .loading-top').hide();
+                },
+                cache: false
+            });
+        }
 
 
     </script>

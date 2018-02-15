@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * AdminData
  *
  * @ORM\Table(name="admin_data", indexes={@ORM\Index(name="fk_camp_adm_idx", columns={"campaign"}), @ORM\Index(name="district_admindata_idx", columns={"district"})})
- * @ORM\Entity(repositoryClass="AppBundle\Entity\AdminDataRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AdminDataRepository")
  */
 class AdminData
 {

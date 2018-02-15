@@ -558,14 +558,15 @@ class Charts
     }
 
     /**
-     * @param $array
-     * @param $indicator
-     * @param $filterBy
+     * @param array $array (data)
+     * @param string $indicator
+     * @param array $filterBy
      * @param array $clusters
+     * @param array $calcType ['type' => 'number|percent', 'column'=>'columnName']
      * @param bool $sort
      * @return array
      */
-    function clusterDataForHeatMap($array, $indicator, $filterBy, $clusters = array(), $sort = true) {
+    function clusterDataForHeatMap($array, $indicator, $filterBy, $clusters = array(), $calcType = ['type'=>'number'], $sort = true) {
         if(is_array($array)) {
             $tmp_top_cat = array();
             foreach($array as $temp_d) {
@@ -587,7 +588,18 @@ class Charts
                         $index = ($value['Subdistrict']!== null || $value['Subdistrict']!= "")?
                                   $value['Subdistrict']."|".$value['ClusterNo']:
                                   $value['ClusterNo'];
-                        $d[$index] = [$indicator=>$value[$indicator]];
+
+                        $index_data = $value[$indicator];
+                        // if the calc type was percent
+                        if($calcType['type'] == 'percent') {
+                            $divider = $value[$calcType['column']];
+                            if($divider > 0)
+                                $index_data = round(($index_data/$divider)*100, 2);
+                            else
+                                $index_data = 0;
+                        }
+
+                        $d[$index] = [$indicator=>$index_data];
                         $c_data = $d;
                         //$yAxis[] = $index;
                     }
@@ -611,7 +623,9 @@ class Charts
                     foreach($data as $datum) {
 
                         if(array_key_exists($cluster, $datum)) {
-                            $newRow[] = [$c, $r, ($datum[$cluster][$indicator]=== null)? null : (int)$datum[$cluster][$indicator]];
+                            $newRow[] = [$c, $r, ($datum[$cluster][$indicator]=== null)? null :
+                                                            $calcType['type']=='percent'?$datum[$cluster][$indicator]:
+                                                                (int)$datum[$cluster][$indicator]];
                         }
                         else
                             $newRow[] = [$c, $r, null];
@@ -666,6 +680,7 @@ class Charts
         }
         else return ['error'=>'No data'];
     }
+
 
 
 }

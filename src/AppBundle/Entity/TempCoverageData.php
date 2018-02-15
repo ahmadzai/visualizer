@@ -223,6 +223,12 @@ class TempCoverageData
     private $campaign;
 
     /**
+     * @var string
+     * @ORM\Column(name="file", type="string", nullable=true)
+     */
+    private $file;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -678,6 +684,23 @@ class TempCoverageData
     {
         $this->tallyType = $tallyType;
     }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
 
 
     /**

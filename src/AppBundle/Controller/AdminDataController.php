@@ -74,22 +74,22 @@ class AdminDataController extends Controller
         $lastCampMissedPieChart['title'] = "Missed Children By Reason";
 
         // last campaign recovered all type by 3days, 4th day
-        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'Campaign', 'RecoveredDay4'=>'Revisit', 'TotalRemaining'=>'Remaining'],
+        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'3Days', 'RecoveredDay4'=>'Day4', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRecovered['title'] = "Missed Children Recovery Camp/Revisit";
 
         // last campaign Absent recovered by 3days and 4th day
-        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'Campaign', 'VacAbsentDay4'=>'Revisit', 'RemAbsent'=>'Remaining'],
+        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'3Days', 'VacAbsentDay4'=>'Day4', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
         $lastCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
 
         // last campaign NSS recovered by 3days and 4th day
-        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'Campaign', 'VacNSSDay4'=>'Revisit', 'RemNSS'=>'Remaining'],
+        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'3Days', 'VacNSSDay4'=>'Day4', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
         $lastCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
 
         // last campaign Refusal recovered by 3days and 4th day
-        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'Campaign', 'VacRefusalDay4'=>'Revisit', 'RemRefusal'=>'Remaining'],
+        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'3Day', 'VacRefusalDay4'=>'Day4', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
 
@@ -252,6 +252,8 @@ class AdminDataController extends Controller
                                                                         ['column'=>'CID', 'substitute' => 'shortName'],
                                                                         $clustersWithSubDistrict);
             $heatMapDataTotalRemaining['title'] = 'Tends of total remaining children after campaign';
+            $heatMapDataTotalRemaining['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
+                                                  ->findOne('CoverageData', 'TotalRemaining');
             $data['heatMapTotalRemaining'] = json_encode($heatMapDataTotalRemaining);
 
             // covert the database data into heatmap array for a give indicator
@@ -259,6 +261,8 @@ class AdminDataController extends Controller
                                                                      ['column'=>'CID', 'substitute' => 'shortName'],
                                                                       $clustersWithSubDistrict);
             $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after campaign';
+            $heatMapDataTotalAbsent['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
+                ->findOne('CoverageData', 'RemAbsent');
             $data['heatMapTotalAbsent'] = json_encode($heatMapDataTotalAbsent);
 
             // covert the database data into heatmap array for a give indicator
@@ -266,6 +270,8 @@ class AdminDataController extends Controller
                                                               ['column'=>'CID', 'substitute' => 'shortName'],
                                                               $clustersWithSubDistrict);
             $heatMapTotalNSS['title'] = 'Tends of total NSS children after campaign';
+            $heatMapTotalNSS['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
+                ->findOne('CoverageData', 'RemNSS');
             $data['heatMapTotalNSS'] = json_encode($heatMapTotalNSS);
 
             // covert the database data into heatmap array for a give indicator
@@ -273,6 +279,8 @@ class AdminDataController extends Controller
                                                                      ['column'=>'CID', 'substitute' => 'shortName'],
                                                                      $clustersWithSubDistrict);
             $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after campaign';
+            $heatMapDataTotalRefusal['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
+                ->findOne('CoverageData', 'RemRefusal');
             $data['heatMapTotalRefusal'] = json_encode($heatMapDataTotalRefusal);
 
             // Data of the latest one campaign and preparing the chart data

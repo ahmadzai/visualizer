@@ -109,22 +109,22 @@ class MainController extends Controller
         $lastCampMissedPieChart['title'] = "Missed Children By Reason";
 
         // last campaign recovered all type by 3days, 4th day
-        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'Campaign', 'RecoveredDay4'=>'Revisit', 'TotalRemaining'=>'Remaining'],
+        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'3Days', 'RecoveredDay4'=>'Day4', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRecovered['title'] = "Missed Children Recovery Camp/Revisit";
 
         // last campaign Absent recovered by 3days and 4th day
-        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'Campaign', 'VacAbsentDay4'=>'Revisit', 'RemAbsent'=>'Remaining'],
+        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'3Days', 'VacAbsentDay4'=>'Day4', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
         $lastCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
 
         // last campaign NSS recovered by 3days and 4th day
-        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'Campaign', 'VacNSSDay4'=>'Revisit', 'RemNSS'=>'Remaining'],
+        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'3Days', 'VacNSSDay4'=>'Day4', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
         $lastCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
 
         // last campaign Refusal recovered by 3days and 4th day
-        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'Campaign', 'VacRefusalDay4'=>'Revisit', 'RemRefusal'=>'Remaining'],
+        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'3Days', 'VacRefusalDay4'=>'Day4', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
 
@@ -179,27 +179,27 @@ class MainController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function testAction(Request $request, Charts $charts, Settings $settings) {
-        $category = [['column'=>'Region'], ['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']]];
-        $campaignIds = $settings->latestCampaign('CoverageData');
-        $tenCampAdminData = $charts->chartData('CoverageData', 'campaignStatistics', $campaignIds[0]['id']);
-
-        $otherFunction = $charts->chartData('CoverageData', 'campaignsStatistics', [$campaignIds[0]['id']]);
-
-        $data['single'] = $tenCampAdminData;
-        $data['plural'] = $otherFunction;
-        //$data = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $tenCampAdminData);
-        //$data['title'] = 'Missed Children During Last 10 Campaigns';
-//        $campaignIds = $settings->lastFewCampaigns('CoverageData', 10);
-//        $data = $charts->chartData('CoverageData', 'clusterAgg', $campaignIds, 1510);
-//        $data = $charts->clusterDataForHeatMap($data, 'RemAbsent', ['column'=>'CID', 'substitute' => 'CName']);
-//        $data['title'] = 'Missed Children During Last 10 Campaigns';
-//        $em = $this->getDoctrine()->getManager();
-//        $data = $em->getRepository('AppBundle:District')
-//            ->selectDistrictByProvince(6);
-        return new Response(json_encode($data));
+//        $category = [['column'=>'Region'], ['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']]];
+        $campaignIds = $settings->lastFewCampaigns('CatchupData');
+        $tenCampAdminData = $charts->chartData('CatchupData', 'clusterAgg', $campaignIds, 3301);
+//
+//        $otherFunction = $charts->chartData('CoverageData', 'campaignsStatistics', [$campaignIds[0]['id']]);
+//
+//        $data['single'] = $tenCampAdminData;
+//        $data['plural'] = $otherFunction;
+//        //$data = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $tenCampAdminData);
+//        //$data['title'] = 'Missed Children During Last 10 Campaigns';
+////        $campaignIds = $settings->lastFewCampaigns('CoverageData', 10);
+////        $data = $charts->chartData('CoverageData', 'clusterAgg', $campaignIds, 1510);
+////        $data = $charts->clusterDataForHeatMap($data, 'RemAbsent', ['column'=>'CID', 'substitute' => 'CName']);
+////        $data['title'] = 'Missed Children During Last 10 Campaigns';
+////        $em = $this->getDoctrine()->getManager();
+////        $data = $em->getRepository('AppBundle:District')
+////            ->selectDistrictByProvince(6);
+        return new Response(json_encode($tenCampAdminData));
 
 //        return $this->render("pages/test.html.twig",
-//            ['testData' => json_encode($data)]);
+//            ['testData' => json_encode([])]);
 
     }
 

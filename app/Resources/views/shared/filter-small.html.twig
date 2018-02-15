@@ -141,7 +141,7 @@
 
                 var districts = selectedDistricts.join(',');
                 districts = districts.split(',');
-                if(districts.length > 2) {
+                if(districts.length > 1) {
                     if(districts.indexOf('VHR')>-1 || districts.indexOf('HR')>-1 || districts.indexOf('Non-V/HR districts')>-1) {
                         $.each(districts, function (index, value) {
                             if (value !== 'VHR' || value !== 'Non-V/HR districts' || value !== 'HR') {

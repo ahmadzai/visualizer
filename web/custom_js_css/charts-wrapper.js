@@ -174,7 +174,7 @@ function colChart(renderTo, staticData, title, colors, ajaxPrams, url) {
  * @param colors
  * @param menu
  */
-function myChartWrapper(chartType, renderTo, data, titles, legend, colors, menu, large) {
+function myChartWrapper(chartType, renderTo, data, titles, legend, colors, menu, large, yAxisFormatter) {
     var settings = {
         chartType: chartType,
         renderTo: renderTo,
@@ -183,7 +183,8 @@ function myChartWrapper(chartType, renderTo, data, titles, legend, colors, menu,
         legend: (legend=== undefined || legend === null)? {enabled:true, position:{vAlign:'bottom', hAlign:'center'}}:legend,
         colors: (colors === undefined || colors === null) ? Highcharts.getOptions().colors : colors,
         menu: (menu === undefined || menu === null) ? null : menu,
-        large: (large === undefined || large === null) ? null : large
+        large: (large === undefined || large === null) ? null : large,
+        yAxisFormatter: (yAxisFormatter === undefined || yAxisFormatter === null) ? '' : yAxisFormatter,
             /*
             [{chart:'line', title:'Line Chart'},
             {chart: 'column', title:'Column Chart'},
@@ -255,7 +256,7 @@ function myChart(settings) {
         if(item.text === labelMenu.text) {
             labelMenuFlag = false;
         }
-    })
+    });
 
     if(labelMenuFlag === true)
         options.exporting.buttons.contextButton.menuItems.push(labelMenu);
@@ -324,6 +325,10 @@ function myChart(settings) {
     options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
     // set the dynamic categories
     options.xAxis.categories = dataObj.categories;
+
+    // change the formatter for yAxis if not empty
+    if(settings.yAxisFormatter !== "")
+        options.yAxis.labels = {format: '{value}'+settings.yAxisFormatter}
     // set the data/series
     options.series = dataObj.series;
     //console.log(dataObj["series"]);
@@ -341,7 +346,7 @@ function myChart(settings) {
     }
 
     if(settings.large !== null && settings.large === 'height') {
-        console.log(dataObj.categories);
+        //console.log(dataObj.categories);
         $('#'+settings.renderTo).css("height", dataObj.categories.length*30+"px");
     }
     // finally create chart
@@ -544,23 +549,23 @@ function myHeatMap(data, container, tooltipTitle) {
         };
 
         options.colorAxis = {
-            min: 5,
-            max: 15,
+            min: dataObj.stops !== null ? dataObj.stops.minValue : 5,
+            max: dataObj.stops !== null ? dataObj.stops.maxValue : 20,
             tickInterval: 1,
             startOnTick: false,
             endOnTick: false,
             stops: [
                 [
                     0,
-                    "#43AB0D"
+                    dataObj.stops !== null? dataObj.stops.minColor: "#43AB0D"
                 ],
                 [
-                    0.5,
-                    "#ffd927"
+                    dataObj.stops !== null? dataObj.stops.midStop: 0.5,
+                    dataObj.stops !== null? dataObj.stops.midColor:"#ffd927"
                 ],
                 [
                     1,
-                    "#FF0000"
+                    dataObj.stops !== null? dataObj.stops.maxColor:"#FF0000"
                 ]
             ]
         };

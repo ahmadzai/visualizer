@@ -1,0 +1,335 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+    <script src="{{ asset('charts/highcharts.js') }}"></script>
+    <script src="{{ asset('charts/modules/heatmap.js') }}"></script>
+    <script src="{{ asset('charts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('charts/modules/grouped-categories.js') }}"></script>
+    <!-- Current Row -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default bg-gray">
+                <div class="box-header with-border">
+                    Coverage Data Trends and Analysis, Cluster Level
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box-warning box">
+                                        <div class="box-body">
+                                            <span class="filter-loading loading" title="Applying filter">
+                                                <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                            </span>
+                                            <div id="chart-last_camp_bar" style="min-height: 400px;">
+                                                <span class="loading-top" style="margin-left:40%; margin-top:5%; display:inline-block">
+                                                    Loading contents... <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box-warning box">
+                                        <div class="box-body">
+                                            <div class="chart-menu">
+                                                <span><a href="#"><i class="fa fa-bars"></i>&nbsp;&nbsp;</a></span>
+                                                <div class="filter-content">
+                                                    <a class="filter-heatmap-type" data-type="number"
+                                                       href="#" title="Heatmap number" >
+                                                        Numbers
+                                                    </a>
+                                                    <a class="filter-heatmap-type" href="#" data-type="percent"
+                                                       title="Heatmap percent" >
+                                                        Percentage
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="chart-filter">
+                                                <span><a href="#"><i class="fa fa-filter"></i>&nbsp;&nbsp;</a></span>
+                                                <div class="filter-content">
+                                                    <a class="filter-heatmap" data-url="cluster_heatmap"
+                                                       href="#" title="Absent" >
+                                                        Absent
+                                                    </a>
+                                                    <a class="filter-heatmap" href="#" data-url="cluster_heatmap"
+                                                       title="New Born, Sleep and Sick" >
+                                                        NSS
+                                                    </a>
+                                                    <a class="filter-heatmap" href="#" data-url="cluster_heatmap"
+                                                       title="Refusal" >
+                                                        Refusal
+                                                    </a>
+                                                    <a class="filter-heatmap" href="#" data-url="cluster_heatmap"
+                                                       title="All Type" >
+                                                        All Type
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <span class="filter-loading loading cluster_heatmap" title="Applying filter">
+                                                <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                            </span>
+                                            <input type="hidden" id="hidden-total-remaining" value="" >
+                                            <input type="hidden" id="hidden-total-absent" value="" >
+                                            <input type="hidden" id="hidden-total-nss" value="" >
+                                            <input type="hidden" id="hidden-total-refusal" value="" >
+                                            <div id="chart-cluster_heatmap" style="min-height: 400px;">
+                                                <span class="loading-top" style="margin-left:40%; margin-top:5%; display:inline-block">
+                                                    Loading contents... <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#<div class="row">#}
+        {#<div class="col-md-12">#}
+            {#<div class="box-default box">#}
+                {#<div class="box-body">#}
+                    {#<div id="chart-refusal_3camp" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="row">#}
+        {#<div class="col-md-12">#}
+            {#<div class="box-danger box">#}
+
+                {#<div class="box-body">#}
+                    {#<div id="chart-vac_usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+    <!-- Information Modal -->
+    <div class="modal modal-default fade" id="modal-primary">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title"><span class="badge btn-primary"><i class="fa fa-info"></i></span> Information!</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Welcome to the cluster level trends' page</h4>
+                    <p>To see cluster level trends of any district please select a district first.
+                    To select a district, you have to select a province first. When you select the province and district
+                        then click <span class="btn btn-xs bg-primary"><i class="fa fa-filter"></i> Filter</span> button. The page will automatically populate.
+                        You can then filter any cluster you want or can see all the clusters.
+                    </p>
+                    <p>
+                        Thank You!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- End of Modal-->
+
+{% endblock %}
+
+{% block header %}
+    {% embed 'shared/header.html.twig' %}
+        {% block filter %}
+            {{ render(controller(
+            'AppBundle:ChartFilter:clusterFilter',
+                { 'source': 'CoverageData', 'district': district }
+            ))
+            }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('custom_js_css/custom-style.css') }}">
+{% endblock %}
+{% block js_head %}
+    <script src="{{ asset('template/bower_components/jquery/dist/jquery.min.js')}}"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+    <script  src="{{ asset('template/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+{% endblock %}
+{% block js %}
+    <script src="{{ asset('custom_js_css/charts-wrapper.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            {% if district == 0 %}
+                $("#modal-primary").modal({'show':true});
+            {% endif %}
+            // ========================= General Configuration for charts =================
+            const config = {'colors':['#FFFF00', '#C99900', '#FF0000', '#048AFF']};
+            $(".filter-heatmap").click(function (event){
+                event.preventDefault();
+                var target = $(this).data('url');
+                var targetCont = "chart-"+ target;
+                $('.'+target).show();
+
+                var type = $(this).text();
+                //console.log($("#hidden-total-remaining").val());
+
+                if(type.trim() == "Absent")
+                {
+                    console.log("Absent is selected");
+                    myHeatMap($("#hidden-total-absent").val(), 'chart-cluster_heatmap', 'absent');
+                }
+                else if(type.trim() == "NSS")
+                    myHeatMap($("#hidden-total-nss").val(), 'chart-cluster_heatmap', 'NSS');
+
+                else if(type.trim() == "Refusal")
+                    myHeatMap($("#hidden-total-refusal").val(), 'chart-cluster_heatmap', 'refusal');
+                else if(type.trim() == "All Type")
+                    myHeatMap($("#hidden-total-remaining").val(), 'chart-cluster_heatmap', 'Total Remaining');
+
+
+                $('.'+target).hide();
+            })
+
+            //============================== Tree Menu ========================================
+            var checkElement = $('.menu-open .treeview-menu');
+            if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
+                //Get the parent menu
+                var parent = checkElement.parents('ul').first();
+                //Close all open menus within the parent
+                var ul = parent.find('ul:visible').slideUp(500);
+                //Remove the menu-open class from the parent
+                ul.removeClass('menu-open');
+                //Get the parent li
+                var parent_li = checkElement.parent("li");
+
+                //Open the target menu and add the menu-open class
+                checkElement.slideDown(500, function () {
+                    //Add the class active to the parent li
+                    checkElement.addClass('menu-open');
+                    //parent.find('li.active').removeClass('active');
+                    parent_li.addClass('active');
+                    //Fix the layout in case the sidebar stretches over the height of the window
+                    //_this.layout.fix();
+                });
+            }
+
+            // =============================== End of Tree Menu ==================================
+
+            $('.loading, .loading-top').hide();
+
+            // =============================== Load the charts for the first time ================
+            {% if district != 0 %}
+                $("#modal-primary").modal({'show':false});
+                myChartWrapper({'type':"bar", 'stacking':'percent'}, "chart-last_camp_bar", '{{ lastCampBarChart|raw }}',
+                    {'yTitle':null, 'xTitle':null}, null, config.colors, null, 'height');
+                myHeatMap('{{ heatMapTotalRemaining|raw }}', 'chart-cluster_heatmap', 'Total Remaining');
+
+                $("#hidden-total-absent").val(JSON.stringify({{ heatMapTotalAbsent|raw }}));
+                $("#hidden-total-remaining").val(JSON.stringify({{ heatMapTotalRemaining|raw }}));
+                $("#hidden-total-refusal").val(JSON.stringify({{ heatMapTotalRefusal|raw }}));
+                $("#hidden-total-nss").val(JSON.stringify({{ heatMapTotalNSS|raw }}));
+            {% endif %}
+
+            $('.filter-heatmap-type').click(function (event) {
+                event.preventDefault();
+                var calcType = $(this).data('type');
+                makeAjaxRequest(calcType);
+            });
+
+            // ============================== End loading of the charts ==========================
+
+
+            $('#filterButton').click(function () {
+                makeAjaxRequest(null, config);
+            })
+        });
+
+        function makeAjaxRequest(calcType, config) {
+
+            var selectedCampaigns = $('#filterCampaign').val();
+            //var provinces = $('#filterProvince option:selected');
+            var selectedProvinces = $('#filterProvince').val();
+            //var districts = $('#filterDistrict option:selected');
+            var selectedDistricts = $('#filterDistrict').val();
+            //var clusters = $('#filterCluster option:selected');
+            var selectedClusters = $('#filterCluster').val();
+
+            if(selectedDistricts === null || selectedDistricts === undefined) {
+                window.alert("Please select a district");
+                return;
+            }
+
+            var data = {'campaign':selectedCampaigns, 'province': selectedProvinces,
+                'district': selectedDistricts, 'cluster':selectedClusters, 'calcType': calcType};
+
+            $('.loading, .loading-top').show();
+
+            $.ajax({
+
+                url: Routing.generate('ajax_cluster_admin_data'),
+                data: data,
+                type: 'POST',
+                success: function (data) {
+                    //console.log(data);
+                    $("#hidden-total-absent").val('');
+                    $("#hidden-total-remaining").val('');
+                    $("#hidden-total-refusal").val('');
+                    $("#hidden-total-nss").val('');
+                    var jsonData = JSON.parse(data);
+
+                    //console.log(jsonData);
+                    /*
+                     this is how the data is comming
+                     'allMissedChildren'
+                     'absentChildren'
+                     'nssChildren'
+                     'refusalChildren
+                     'vaccineUsage'
+
+                     */
+                    //colChart('chart1', JSON.stringify(jsonData.heatMapTotalRemaining), 'No of missed children');
+                    $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
+                    $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
+                    $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
+                    $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
+
+                    myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
+                    if(calcType === null || calcType === undefined) {
+                        console.log(jsonData.lastCampBarChart);
+                        myChartWrapper({
+                                'type': "bar",
+                                'stacking': 'percent'
+                            }, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
+                            {'yTitle': null, 'xTitle': null}, null, config.colors, null, 'height');
+                    }
+
+                    $('.loading, .loading-top').hide();
+                },
+                cache: false
+            });
+        }
+
+
+    </script>
+{% endblock %}
