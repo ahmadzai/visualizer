@@ -185,6 +185,9 @@
             {% endif %}
             // ========================= General Configuration for charts =================
             const config = {'colors':['#FFFF00', '#C99900', '#FF0000', '#048AFF']};
+            config['missed_recovery'] = {'color': ['#FFB32D', '#2DA810', '#45E490', '#048AFF'],
+                'chart':{'type':"bar", 'stacking':'percent'}
+            };
             $(".filter-heatmap").click(function (event){
                 event.preventDefault();
                 var target = $(this).data('url');
@@ -242,7 +245,7 @@
             {% if district != 0 %}
                 $("#modal-primary").modal({'show':false});
                 myChartWrapper({'type':"bar", 'stacking':'percent'}, "chart-last_camp_bar", '{{ lastCampBarChart|raw }}',
-                    {'yTitle':null, 'xTitle':null}, null, config.colors, null, 'height');
+                    {'yTitle':null, 'xTitle':null}, null,  config['missed_recovery'].color, null, 'height');
                 myHeatMap('{{ heatMapTotalRemaining|raw }}', 'chart-cluster_heatmap', 'Total Remaining');
 
                 $("#hidden-total-absent").val(JSON.stringify({{ heatMapTotalAbsent|raw }}));
@@ -287,7 +290,7 @@
 
             $.ajax({
 
-                url: Routing.generate('ajax_cluster_admin_data'),
+                url: Routing.generate('ajax_cluster_main'),
                 data: data,
                 type: 'POST',
                 success: function (data) {
@@ -316,12 +319,11 @@
 
                     myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
                     if(calcType === null || calcType === undefined) {
-                        console.log(jsonData.lastCampBarChart);
                         myChartWrapper({
                                 'type': "bar",
                                 'stacking': 'percent'
                             }, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
-                            {'yTitle': null, 'xTitle': null}, null, config.colors, null, 'height');
+                            {'yTitle': null, 'xTitle': null}, null, config['missed_recovery'].color, null, 'height');
                     }
 
                     $('.loading, .loading-top').hide();

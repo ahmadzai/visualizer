@@ -1,4 +1,4 @@
-<li style="padding-top: 8px; padding-bottom: 8px;">
+<li style="padding-top: 8px; padding-bottom: 8px;" data-source="{{ source }}" class="data-source">
     <div class="dropdown">
         {#<label class="col-md-1 control-label" style="color: #ffffff;">Campaigns:</label>#}
         <div class="col-md-10">
@@ -107,7 +107,7 @@
                     selectedProvinces.push([$(this).val()]);
                 });
                 if(selectedProvinces.length > 0) {
-                    var data = {"province": selectedProvinces, "risk" : false};
+                    var data = {"province": selectedProvinces, "risk" : false, 'campaign':$('#filterCampaign').val()};
                     ajaxRequest('filter_district', data, 'filterDistrict');
 
                 }
@@ -146,7 +146,7 @@
 
                     var campaign = $('#filterCampaign').val();
                     //console.log(campaign);
-                    var data = {"district": selectedDistricts, 'campaign': campaign};
+                    var data = {"district": selectedDistricts, 'campaign': campaign, 'source':$('.data-source').data('source')};
                     ajaxRequest('filter_cluster', data, 'filterCluster');
 
                 }

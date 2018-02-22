@@ -10,6 +10,7 @@ namespace AppBundle\Controller\Ajax;
 
 
 use AppBundle\Service\Charts;
+use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Settings;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +18,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminDataAjaxController extends Controller
+class CatchupDataAjaxController extends Controller
 {
     /**
      * @param Request $request
      * @param Settings $settings
      * @param Charts $charts
-     * @Route("api/camp-statistics", name="ajax_camp_statistics")
+     * @Route("api/camp-statistics/catchup", name="ajax_camp_statistics_catchup")
      * @Method("POST")
      * @return Response
      */
@@ -64,19 +65,19 @@ class AdminDataAjaxController extends Controller
         if($campType==="Reset")
             $function = "campaignsStatistics";
         if(!isset($entity))
-            $entity = "CoverageData";
+            $entity = "CatchupData";
 
         $category = [['column'=>'Region'], ['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']]];
 
-        $indicators = ['TotalVac'=>'Vaccinated Children'];
-        $title = "Vaccinated children trends in ";
+        $indicators = ['TotalRecovered'=>'Recovered Children'];
+        $title = "Recovered children trends in ";
         if($chartType === 'missed_10camp') {
             $indicators = ['TotalRemaining' => 'Missed Children'];
-                $title = "Missed children trends in ";
+                $title = "Remaining children trends in ";
         }
         if($chartType === 'missed_type_10camp') {
             $indicators = ['RemAbsent' => 'Absent', 'RemNSS' => 'NSS', 'RemRefusal' => 'Refusal'];
-            $title = "Missed children by reasons trends in ";
+            $title = "Remaining children by reasons trends in ";
         }
 
         $campData = null;
@@ -107,7 +108,7 @@ class AdminDataAjaxController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/api/clusters/admin_data", name="ajax_cluster_admin_data", options={"expose"=true})
+     * @Route("/api/clusters/catchup_data", name="ajax_cluster_catchup_data", options={"expose"=true})
      * @Method("POST")
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {
@@ -121,7 +122,7 @@ class AdminDataAjaxController extends Controller
         $calcTypeArray = ['type'=>'number'];
         $dbIndicatorPostfix = "";
         if($calcType === 'percent') {
-            $calcTypeArray = ['type'=>'percent', 'column'=>'CalcTarget'];
+            $calcTypeArray = ['type'=>'percent', 'column'=>'RegMissed'];
             $dbIndicatorPostfix = "Per";
         }
 
@@ -147,7 +148,7 @@ class AdminDataAjaxController extends Controller
         if(count($districts) > 0) {
             // get last 6 campaigns if the selected campaigns are <2
             if(count($campaignIds) <= 1)
-                $campaignIds = $settings->lastFewCampaigns('CoverageData', $settings::NUM_CAMP_CLUSTERS);
+                $campaignIds = $settings->lastFewCampaigns('CatchupData', $settings::NUM_CAMP_CLUSTERS);
 
             $em = $this->getDoctrine()->getManager();
 
@@ -157,7 +158,7 @@ class AdminDataAjaxController extends Controller
             if(count($subDistrictArray) > 0) {
                 foreach($subDistrictArray as $item) {
                     // find the clusters data
-                    $heatMapData[] = $em->getRepository('AppBundle:CoverageData')
+                    $heatMapData[] = $em->getRepository('AppBundle:CatchupData')
                         ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
                 }
 
@@ -167,7 +168,7 @@ class AdminDataAjaxController extends Controller
 
             // if there's no sub district
             if(count($subDistrictArray) <= 0 || $subDistrictArray === null){
-                $heatMapData = $em->getRepository('AppBundle:CoverageData')
+                $heatMapData = $em->getRepository('AppBundle:CatchupData')
                     ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
             }
 
@@ -176,33 +177,36 @@ class AdminDataAjaxController extends Controller
             // covert the database data into heatmap array for a give indicator
             $heatMapDataTotalRemaining = $charts->clusterDataForHeatMap($heatMapData, 'TotalRemaining',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRemaining['title'] = 'Trends of total remaining children after campaign';
+            $heatMapDataTotalRemaining['title'] = 'Trends of total remaining children after catchup';
             $heatMapDataTotalRemaining['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'TotalRemaining'.$dbIndicatorPostfix);
+                ->findOne('CatchupData', 'TotalRemaining'.$dbIndicatorPostfix);
             $data['heatMapTotalRemaining'] = $heatMapDataTotalRemaining;
 
             // covert the database data into heatmap array for a give indicator
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegAbsent', 'type'=>'percent'] :$clusterArray;
             $heatMapDataTotalAbsent = $charts->clusterDataForHeatMap($heatMapData, 'RemAbsent',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after campaign';
+            $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after catchup';
             $heatMapDataTotalAbsent['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemAbsent'.$dbIndicatorPostfix);
+                ->findOne('CatchupData', 'RemAbsent'.$dbIndicatorPostfix);
             $data['heatMapTotalAbsent'] = $heatMapDataTotalAbsent;
 
             // covert the database data into heatmap array for a give indicator
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegNSS', 'type'=>'percent'] :$clusterArray;
             $heatMapTotalNSS = $charts->clusterDataForHeatMap($heatMapData, 'RemNSS',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapTotalNSS['title'] = 'Tends of total NSS children after campaign';
+            $heatMapTotalNSS['title'] = 'Tends of total NSS children after catchup';
             $heatMapTotalNSS['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemNSS'.$dbIndicatorPostfix);
+                ->findOne('CatchupData', 'RemNSS'.$dbIndicatorPostfix);
             $data['heatMapTotalNSS'] = $heatMapTotalNSS;
 
             // covert the database data into heatmap array for a give indicator
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegRefusal', 'type'=>'percent'] :$clusterArray;
             $heatMapDataTotalRefusal = $charts->clusterDataForHeatMap($heatMapData, 'RemRefusal',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after campaign';
+            $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after catchup';
             $heatMapDataTotalRefusal['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemRefusal'.$dbIndicatorPostfix);
+                ->findOne('CatchupData', 'RemRefusal'.$dbIndicatorPostfix);
             $data['heatMapTotalRefusal'] = $heatMapDataTotalRefusal;
 
             //------------------------------- Last Campaign Bar Chart Filter ---------------------------------
@@ -210,7 +214,7 @@ class AdminDataAjaxController extends Controller
 
             if($calcType !== 'percent') {
                 $lastCampaignId = $selectedCampaignIds;
-                $lastCampaign = $settings->latestCampaign("CoverageData");
+                $lastCampaign = $settings->latestCampaign("CatchupData");
                 if (count($lastCampaignId) > 1) {
 
                     $lastCampaignId = $lastCampaign[0]['id'];
@@ -220,7 +224,7 @@ class AdminDataAjaxController extends Controller
                 if (count($subDistrictArray) > 0) {
                     foreach ($subDistrictArray as $item) {
                         // find the clusters data
-                        $lastCampClustersData[] = $em->getRepository('AppBundle:CoverageData')
+                        $lastCampClustersData[] = $em->getRepository('AppBundle:CatchupData')
                             ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
                     }
 
@@ -230,7 +234,7 @@ class AdminDataAjaxController extends Controller
 
                 // if there's no sub district
                 if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
-                    $lastCampClustersData = $em->getRepository('AppBundle:CoverageData')
+                    $lastCampClustersData = $em->getRepository('AppBundle:CatchupData')
                         ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
                 }
 
@@ -239,10 +243,10 @@ class AdminDataAjaxController extends Controller
                         'RemAbsent' => 'Absent',
                         'RemNSS' => 'NSS',
                         'RemRefusal' => 'Refusal',
-                        'TotalVac' => 'Vaccinated',
+                        'TotalRecovered' => 'Recovered',
                     ],
                     $lastCampClustersData, false);
-                $lastCampBarChart['title'] = $lastCampClustersData[0]['CName'] . " Vaccinated and Remaining Children";
+                $lastCampBarChart['title'] = $lastCampClustersData[0]['CName'] . " Recovered and Remaining Children";
                 $data['lastCampBarChart'] = $lastCampBarChart;
             }
             // ------------------------------------------------------------------------------------------------------
@@ -254,7 +258,7 @@ class AdminDataAjaxController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/api/filter/admin_data", name="ajax_filter_admin_data", options={"expose"=true})
+     * @Route("/api/filter/catchup_data", name="ajax_filter_catchup_data", options={"expose"=true})
      * @Method("POST")
      */
     function filterAdminDashboardAction(Request $request, Settings $settings, Charts $charts) {
@@ -268,6 +272,8 @@ class AdminDataAjaxController extends Controller
         $type = 'Region';
         $subTitle = "for selected campaigns";
         $during = "Last 10 Campaigns";
+
+        $entity = "CatchupData";
 
         //$districts = ["Non-V/HR districts"];
         //=========================== End of Ajax Request ===================================
@@ -324,81 +330,110 @@ class AdminDataAjaxController extends Controller
         }
 
         //$regionAdminData = $charts->chartData('CoverageData', 'regionAgg', $campaignIds);
-        $campaignIds = $settings->lastFewCampaigns('CoverageData', $settings::NUM_CAMP_CHARTS);
+        $campaignIds = $settings->lastFewCampaigns($entity, $settings::NUM_CAMP_CHARTS);
 
         if(count($selectedCampaignIds) > 1) {
             // this function returns latest campaign, can work for all data sources that have relation with campaign
-            $lastCamp = $settings->latestCampaign('CoverageData');
+            $lastCamp = $settings->latestCampaign($entity);
             $campaignIds = $selectedCampaignIds;
             $during = "Selected Campaigns";
             $selectedCampaignIds = [$lastCamp[0]['id']];
         }
-        $lastCampAdminData = $charts->chartData('CoverageData', $functionCampaignsStatistics, $selectedCampaignIds, $secondParam);
-        $lastCampRegionsData = $charts->chartData('CoverageData', $functionRegion, $selectedCampaignIds, $secondParam);
+        $lastCampAdminData = $charts->chartData($entity, $functionCampaignsStatistics, $selectedCampaignIds, $secondParam);
+        $lastCampRegionsData = $charts->chartData($entity, $functionRegion, $selectedCampaignIds, $secondParam);
         //return new Response(json_encode(['func' => $lastCampRegionsData]));
         //Total Vac Children Last 10 Campaigns
 
-        $tenCampAdminData = $charts->chartData('CoverageData', $functionCampaignsStatistics, $campaignIds, $secondParam);
+        $tenCampAdminData = $charts->chartData($entity, $functionCampaignsStatistics, $campaignIds, $secondParam);
 
-        $tenCampVacChildChart = $charts->chartData1Category($category[1], ['TotalVac'=>'Vaccinated Children'], $tenCampAdminData);
-        $tenCampVacChildChart['title'] = 'Vaccinated Children '.$during;
+        $tenCampVacChildChart = $charts->chartData1Category($category[1], ['TotalRecovered'=>'Recovered Children'], $tenCampAdminData);
+        $tenCampVacChildChart['title'] = 'Recovered Children '.$during;
         $tenCampVacChildChart['subTitle'] = $subTitle;
 
-        $tenCampMissedChildChart = $charts->chartData1Category($category[1], ['TotalRemaining'=>'Missed Children'], $tenCampAdminData);
-        $tenCampMissedChildChart['title'] = 'Missed Children During '.$during;
+        $tenCampMissedChildChart = $charts->chartData1Category($category[1], ['TotalRemaining'=>'Remaining Children'], $tenCampAdminData);
+        $tenCampMissedChildChart['title'] = 'Remaining Children During '.$during;
         $tenCampMissedChildChart['subTitle'] = $subTitle;
 
         $tenCampMissedTypeChart = $charts->chartData1Category($category[1],
             ['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $tenCampAdminData);
-        $tenCampMissedTypeChart['title'] = 'Missed Children By Reason '.$during;
+        $tenCampMissedTypeChart['title'] = 'Remaining Children By Reason '.$during;
         $tenCampMissedTypeChart['subTitle'] = $subTitle;
+
+        // Ten campaign missed recovery charts
+        $tenCampMissedRecovered = $charts->chartData1Category($category[1],
+            ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+            $tenCampAdminData);
+        $tenCampMissedRecovered['title'] = "Missed Children Recovery in Catchup";
+        $tenCampMissedRecovered['subTitle'] = $subTitle;
+
+        $tenCampAbsentRecovered = $charts->chartData1Category($category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            $tenCampAdminData);
+        $tenCampAbsentRecovered['title'] = "Absent Children Recovery in Catchup";
+        $tenCampAbsentRecovered['subTitle'] = $subTitle;
+
+        $tenCampNSSRecovered = $charts->chartData1Category($category[1],
+            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            $tenCampAdminData);
+        $tenCampNSSRecovered['title'] = "NSS Children Recovery in Catchup";
+        $tenCampNSSRecovered['subTitle'] = $subTitle;
+
+        $tenCampRefusalRecovered = $charts->chartData1Category($category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            $tenCampAdminData);
+        $tenCampRefusalRecovered['title'] = "Refusal Children Recovery in Catchup";
+        $tenCampRefusalRecovered['subTitle'] = $subTitle;
 
         // Last campaign missed by reason
         $lastCampMissedPieChart = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $lastCampAdminData);
-        $lastCampMissedPieChart['title'] = "Missed Children By Reason";
+        $lastCampMissedPieChart['title'] = "Remaining Children By Reason";
 
 
         // last campaign recovered all type by 3days, 4th day
-        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'Campaign', 'RecoveredDay4'=>'Revisit', 'TotalRemaining'=>'Remaining'],
+        $lastCampRecovered = $charts->pieData(['TotalRecovered'=>'Recovered', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
-        $lastCampRecovered['title'] = "Missed Children Recovery Camp/Revisit";
+        $lastCampRecovered['title'] = "Missed Children Recovery in Catchup";
 
         // last campaign Absent recovered by 3days and 4th day
-        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'Campaign', 'VacAbsentDay4'=>'Revisit', 'RemAbsent'=>'Remaining'],
+        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent'=>'Recovered', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
-        $lastCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
+        $lastCampAbsentRecovered['title'] = "Absent Children Recovery in Catchup";
 
         // last campaign NSS recovered by 3days and 4th day
-        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'Campaign', 'VacNSSDay4'=>'Revisit', 'RemNSS'=>'Remaining'],
+        $lastCampNSSRecovered = $charts->pieData(['VacNSS'=>'Recovered', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
-        $lastCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
+        $lastCampNSSRecovered['title'] = "NSS Children Recovery in Catchup";
 
         // last campaign Refusal recovered by 3days and 4th day
-        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'Campaign', 'VacRefusalDay4'=>'Revisit', 'RemRefusal'=>'Remaining'],
+        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal'=>'Recovered', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
-        $lastCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
+        $lastCampRefusalRecovered['title'] = "Refusal Children Recovery in Catchup";
 
-        // last campaign Refusal recovered by 3days and 4th day
         $last10CampRecovered = $charts->chartData1Category($category[1],
             ['TotalRemaining'=>'Remaining',
                 'VacAbsent'=>'Recovered Absent',
                 'VacNSS'=>'Recovered NSS',
                 'VacRefusal'=>'Recovered Refusal'],
             $tenCampAdminData);
-        $last10CampRecovered['title'] = "Recovering Missed Children By Reason During ".$during;
-        $last10CampRecovered['subTitle'] = $subTitle;
+        $last10CampRecovered['title'] = "Recovering Missed Children By Reason";
 
         // last campaign vaccine wastage by region
-        $lastCampVaccineData = $charts->chartData1Category($category[0], ['VacWastage'=>'Wastage'], $lastCampRegionsData);
-        $lastCampVaccineData['title'] = 'Vaccine Wastage';
+        $lastCampVaccineData = $charts->chartData1Category($category[0], ['VacUnRecorded'=>'Vac Unrecorded'], $lastCampRegionsData);
+        $lastCampVaccineData['title'] = 'Vaccinated Unrecorded children';
         //return new Response(json_encode(['func' => $category]));
 
-        $table['table'] = $this->createTable($lastCampRegionsData, $type);
+        //$table['table'] = $this->createTable($lastCampRegionsData, $type);
+        $table['table'] = HtmlTable::tableForCatchupData($lastCampRegionsData, $type);
+        $info = HtmlTable::infoForCatchup($lastCampAdminData);
 
         $data = [
             'chartVacChild10Camp' => $tenCampVacChildChart,
             'chartMissed10Camp' => $tenCampMissedChildChart,
             'chartMissedType10camp' => $tenCampMissedTypeChart,
+            'chartMissedRec10Camp' => $tenCampMissedRecovered,
+            'chartAbsentRec10Camp' => $tenCampAbsentRecovered,
+            'chartNSSRec10Camp' => $tenCampNSSRecovered,
+            'chartRefusalRec10Camp' => $tenCampRefusalRecovered,
             'lastCampPieData' => $lastCampMissedPieChart,
             'lastCampVacData' => $lastCampVaccineData,
             'lastCampRegionData' => $lastCampRegionsData,
@@ -407,54 +442,13 @@ class AdminDataAjaxController extends Controller
             'recoveredNSS' => $lastCampNSSRecovered,
             'recoveredRefusal' => $lastCampRefusalRecovered,
             'last10CampRecovered' => $last10CampRecovered,
-            'lastCampData' => $lastCampAdminData,
+            'campaign' => $lastCampAdminData[0]['CName'],
+            'info' => $info,
             'table' => $table
         ];
         return new Response(json_encode($data));
 
     }
 
-    private function createTable($data, $type) {
-        $table = " <table class=\"table table-bordered\">";
-        $th = "<tr>
-                 <th>".$type."</th>
-                 <th>U5 Children</th>
-                 <th>Coverage %</th>
-                 <th>Missed</th>
-                 <th style='color: orange'>Absent</th>
-                 <th style='color: saddlebrown;'>NSS</th>
-                 <th style='color: red'>Refusal</th>
-              </tr>";
-
-        $rows = "";
-        foreach($data as $datum) {
-            $tr = "<tr>";
-            $tr .= "<td>".$datum[$type]."</td>";
-            $target = (int) $datum['TotalRemaining'] + (int) $datum['TotalVac'];
-            $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
-
-            $totalVac = (int) $datum['TotalVac'];
-            $coverage = number_format((($totalVac/$target) * 100),
-                2, '.', ',');
-
-            $progress = "<div class=\"progress progress-sm\" style=\"background-color: #cb4b16\">
-                             <div class=\"progress-bar progress-bar-success\" 
-                             title=\"Coverage: ".$coverage."%\"
-                                  style=\"width:".$coverage."%\">
-                             </div>
-                         </div>";
-            $tr .= "<td>".$progress."</td>";
-            $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemRefusal'], 0, '.', ',')."</td>";
-
-            $tr .= "</tr>";
-
-            $rows .= $tr;
-        }
-
-        return $table.$th.$rows."</table>";
-    }
 
 }

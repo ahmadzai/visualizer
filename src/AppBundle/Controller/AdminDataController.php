@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Service\Settings;
 use AppBundle\Service\Charts;
+use AppBundle\Service\HtmlTable;
 
 
 /**
@@ -69,6 +70,27 @@ class AdminDataController extends Controller
             ['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $tenCampAdminData);
         $tenCampMissedTypeChart['title'] = 'Missed Children By Reason Last 10 Campaigns';
 
+        // Ten campaign missed recovery charts
+        $tenCampMissedRecovered = $charts->chartData1Category($category[1],
+            ['TotalRemaining'=>'Remaining', 'RecoveredDay4'=>'Day4', 'Recovered3Days'=>'3Days' ],
+            $tenCampAdminData);
+        $tenCampMissedRecovered['title'] = "Missed Children Recovery Camp/Revisit";
+
+        $tenCampAbsentRecovered = $charts->chartData1Category($category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day4' , 'VacAbsent3Days'=>'3Days'],
+            $tenCampAdminData);
+        $tenCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
+
+        $tenCampNSSRecovered = $charts->chartData1Category($category[1],
+            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day4', 'VacNSS3Days'=>'3Days' ],
+            $tenCampAdminData);
+        $tenCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
+
+        $tenCampRefusalRecovered = $charts->chartData1Category($category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day4', 'VacRefusal3Days'=>'3Days'],
+            $tenCampAdminData);
+        $tenCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
+
         // Last campaign missed by reason
         $lastCampMissedPieChart = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $lastCampAdminData);
         $lastCampMissedPieChart['title'] = "Missed Children By Reason";
@@ -105,11 +127,19 @@ class AdminDataController extends Controller
         // last campaign vaccine wastage by region
         $lastCampVaccineData = $charts->chartData1Category($category[0], ['VacWastage'=>'Wastage'], $lastCampRegionsData);
         $lastCampVaccineData['title'] = 'Regions Vaccine Wastage';
-        return $this->render("pages/index.html.twig",
+
+        $table = HtmlTable::tableForAdminData($lastCampRegionsData);
+        $info = HtmlTable::infoForAdminData($lastCampAdminData);
+
+        return $this->render("pages/admin_data/index.html.twig",
             [
                 'chartVacChild10Camp' => json_encode($tenCampVacChildChart),
                 'chartMissed10Camp' => json_encode($tenCampMissedChildChart),
                 'chartMissedType10camp' => json_encode($tenCampMissedTypeChart),
+                'chartMissedRec10Camp' => json_encode($tenCampMissedRecovered),
+                'chartAbsentRec10Camp' => json_encode($tenCampAbsentRecovered),
+                'chartNSSRec10Camp' => json_encode($tenCampNSSRecovered),
+                'chartRefusalRec10Camp' => json_encode($tenCampRefusalRecovered),
                 'lastCampPieData' => json_encode($lastCampMissedPieChart),
                 'lastCampVacData' => json_encode($lastCampVaccineData),
                 'lastCampRegionData' => $lastCampRegionsData,
@@ -118,7 +148,9 @@ class AdminDataController extends Controller
                 'recoveredNSS' => json_encode($lastCampNSSRecovered),
                 'recoveredRefusal' => json_encode($lastCampRefusalRecovered),
                 'last10CampRecovered' => json_encode($last10CampRecovered),
-                'lastCampData' => $lastCampAdminData
+                'info'=>$info,
+                'campaign' => $lastCampAdminData[0]['CName'],
+                'table' => $table
             ]);
 
     }

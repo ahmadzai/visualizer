@@ -117,7 +117,7 @@
                     selectedProvinces.push([$(this).val()]);
                 });
                 if(selectedProvinces.length > 0) {
-                    var data = {"province": selectedProvinces};
+                    var data = {"province": selectedProvinces, 'campaign':$('#filterCampaign').val()};
                     ajaxRequest('filter_district', data, 'filterDistrict');
 
                 }

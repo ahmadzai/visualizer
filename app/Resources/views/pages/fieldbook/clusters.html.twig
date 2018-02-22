@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
-                    Coverage Data Trends and Analysis, Cluster Level
+                    Catchup Data Trends and Analysis, Cluster Level
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -151,8 +151,8 @@
     {% embed 'shared/header.html.twig' %}
         {% block filter %}
             {{ render(controller(
-            'AppBundle:ChartFilter:clusterFilter',
-                { 'source': 'CoverageData', 'district': district }
+            'AppBundle:Ajax/AjaxFilter:clusterFilter',
+                { 'source': 'CatchupData', 'district': district }
             ))
             }}
         {% endblock %}
@@ -287,7 +287,7 @@
 
             $.ajax({
 
-                url: Routing.generate('ajax_cluster_admin_data'),
+                url: Routing.generate('ajax_cluster_catchup_data'),
                 data: data,
                 type: 'POST',
                 success: function (data) {

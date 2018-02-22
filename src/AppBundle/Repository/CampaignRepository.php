@@ -11,7 +11,7 @@ namespace AppBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 
-class ProvinceRepository extends EntityRepository {
+class CampaignRepository extends EntityRepository {
     /***
      * @return array
      */
@@ -31,12 +31,13 @@ class ProvinceRepository extends EntityRepository {
             ->getResult(Query::HYDRATE_SCALAR);
     }
 
-    public function selectProvinceByRegion($region) {
+    public function selectCampaignBySource($source) {
+        $entity = "AppBundle:".$source;
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT DISTINCT p FROM AppBundle:Province p WHERE p.provinceRegion IN (:region) ORDER BY p.provinceRegion"
-            ) ->setParameter('region', $region)
-            ->getResult(Query::HYDRATE_SCALAR);
+                "SELECT DISTINCT cmp.id, cmp.campaignName FROM $entity s JOIN s.campaign cmp ORDER BY cmp.id DESC "
+            )
+            ->getResult();
     }
 
 }

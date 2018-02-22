@@ -10,6 +10,7 @@ namespace AppBundle\Controller\Ajax;
 
 
 use AppBundle\Service\Charts;
+use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Settings;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -353,6 +354,31 @@ class AdminDataAjaxController extends Controller
         $tenCampMissedTypeChart['title'] = 'Missed Children By Reason '.$during;
         $tenCampMissedTypeChart['subTitle'] = $subTitle;
 
+        // Ten campaign missed recovery charts
+        $tenCampMissedRecovered = $charts->chartData1Category($category[1],
+            ['TotalRemaining'=>'Remaining', 'RecoveredDay4'=>'Day4', 'Recovered3Days'=>'3Days' ],
+            $tenCampAdminData);
+        $tenCampMissedRecovered['title'] = "Missed Children Recovery Camp/Revisit";
+        $tenCampMissedRecovered['subTitle'] = $subTitle;
+
+        $tenCampAbsentRecovered = $charts->chartData1Category($category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day4' , 'VacAbsent3Days'=>'3Days'],
+            $tenCampAdminData);
+        $tenCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
+        $tenCampAbsentRecovered['subTitle'] = $subTitle;
+
+        $tenCampNSSRecovered = $charts->chartData1Category($category[1],
+            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day4', 'VacNSS3Days'=>'3Days' ],
+            $tenCampAdminData);
+        $tenCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
+        $tenCampNSSRecovered['subTitle'] = $subTitle;
+
+        $tenCampRefusalRecovered = $charts->chartData1Category($category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day4', 'VacRefusal3Days'=>'3Days'],
+            $tenCampAdminData);
+        $tenCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
+        $tenCampRefusalRecovered['subTitle'] = $subTitle;
+
         // Last campaign missed by reason
         $lastCampMissedPieChart = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $lastCampAdminData);
         $lastCampMissedPieChart['title'] = "Missed Children By Reason";
@@ -392,13 +418,18 @@ class AdminDataAjaxController extends Controller
         $lastCampVaccineData = $charts->chartData1Category($category[0], ['VacWastage'=>'Wastage'], $lastCampRegionsData);
         $lastCampVaccineData['title'] = 'Vaccine Wastage';
         //return new Response(json_encode(['func' => $category]));
-
-        $table['table'] = $this->createTable($lastCampRegionsData, $type);
+        // call the static table function fo HtmlTable class
+        $table['table'] = HtmlTable::tableForAdminData($lastCampRegionsData, $type);
+        $info = HtmlTable::infoForAdminData($lastCampAdminData);
 
         $data = [
             'chartVacChild10Camp' => $tenCampVacChildChart,
             'chartMissed10Camp' => $tenCampMissedChildChart,
             'chartMissedType10camp' => $tenCampMissedTypeChart,
+            'chartMissedRec10Camp' => $tenCampMissedRecovered,
+            'chartAbsentRec10Camp' => $tenCampAbsentRecovered,
+            'chartNSSRec10Camp' => $tenCampNSSRecovered,
+            'chartRefusalRec10Camp' => $tenCampRefusalRecovered,
             'lastCampPieData' => $lastCampMissedPieChart,
             'lastCampVacData' => $lastCampVaccineData,
             'lastCampRegionData' => $lastCampRegionsData,
@@ -407,54 +438,13 @@ class AdminDataAjaxController extends Controller
             'recoveredNSS' => $lastCampNSSRecovered,
             'recoveredRefusal' => $lastCampRefusalRecovered,
             'last10CampRecovered' => $last10CampRecovered,
-            'lastCampData' => $lastCampAdminData,
+            'campaign' => $lastCampAdminData[0]['CName'],
+            'info' => $info,
             'table' => $table
         ];
         return new Response(json_encode($data));
 
     }
 
-    private function createTable($data, $type) {
-        $table = " <table class=\"table table-bordered\">";
-        $th = "<tr>
-                 <th>".$type."</th>
-                 <th>U5 Children</th>
-                 <th>Coverage %</th>
-                 <th>Missed</th>
-                 <th style='color: orange'>Absent</th>
-                 <th style='color: saddlebrown;'>NSS</th>
-                 <th style='color: red'>Refusal</th>
-              </tr>";
-
-        $rows = "";
-        foreach($data as $datum) {
-            $tr = "<tr>";
-            $tr .= "<td>".$datum[$type]."</td>";
-            $target = (int) $datum['TotalRemaining'] + (int) $datum['TotalVac'];
-            $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
-
-            $totalVac = (int) $datum['TotalVac'];
-            $coverage = number_format((($totalVac/$target) * 100),
-                2, '.', ',');
-
-            $progress = "<div class=\"progress progress-sm\" style=\"background-color: #cb4b16\">
-                             <div class=\"progress-bar progress-bar-success\" 
-                             title=\"Coverage: ".$coverage."%\"
-                                  style=\"width:".$coverage."%\">
-                             </div>
-                         </div>";
-            $tr .= "<td>".$progress."</td>";
-            $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemRefusal'], 0, '.', ',')."</td>";
-
-            $tr .= "</tr>";
-
-            $rows .= $tr;
-        }
-
-        return $table.$th.$rows."</table>";
-    }
 
 }

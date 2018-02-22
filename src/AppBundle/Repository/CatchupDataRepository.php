@@ -136,7 +136,7 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignStatistics($campaign) {
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT cmp.id as joinkey, cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -165,7 +165,7 @@ class CatchupDataRepository extends EntityRepository {
         }
 
         $em = $this->getEntityManager();
-        $dq = $em->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+        $dq = $em->createQuery("SELECT cmp.id as joinkey, cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -190,7 +190,8 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByRegion($campaigns, $regions) {
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT concat(cmp.id,p.provinceRegion) as joinkey, 
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName, p.provinceRegion as Region, 
                   ".self::$DQL."
@@ -208,7 +209,8 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByProvince($campaigns, $province) {
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT concat(cmp.id,p.id) as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -226,11 +228,12 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByDistrict($campaigns, $district) {
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT concat(cmp.id,d.id) as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp JOIN cvr.district d
                   WHERE(cvr.campaign IN (:camps) AND cvr.district IN (:district))
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'district'=>$district])
             ->getResult(Query::HYDRATE_SCALAR);
@@ -245,7 +248,8 @@ class CatchupDataRepository extends EntityRepository {
         $prov = $risk['province'];
         $risk = $risk['risk'];
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT concat(cmp.id,d.id) as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -266,7 +270,8 @@ class CatchupDataRepository extends EntityRepository {
         $prov = $risk['province'];
         $risk = $risk['risk'];
         return $this->getEntityManager()
-            ->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+            ->createQuery("SELECT concat(cmp.id, d.id) as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -299,7 +304,8 @@ class CatchupDataRepository extends EntityRepository {
         }
 
         $em = $this->getEntityManager();
-        $dq = $em->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+        $dq = $em->createQuery("SELECT cmp.id as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -337,7 +343,8 @@ class CatchupDataRepository extends EntityRepository {
         }
 
         $em = $this->getEntityManager();
-        $dq = $em->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+        $dq = $em->createQuery("SELECT cmp.id as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -378,7 +385,8 @@ class CatchupDataRepository extends EntityRepository {
         }
 
         $em = $this->getEntityManager();
-        $dq = $em->createQuery("SELECT cmp.id as CID, cmp.campaignStartDate as CDate,
+        $dq = $em->createQuery("SELECT cmp.id as joinkey,
+                  cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -407,7 +415,12 @@ class CatchupDataRepository extends EntityRepository {
     public function clusterAgg($campaigns, $district) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CASE 
+                                WHEN cvr.subDistrict IS NULL 
+                                THEN Concat(cmp.id, cvr.clusterNo, d.id) 
+                                ELSE CONCAT(cmp.id, cvr.subDistrict, cvr.clusterNo, d.id)
+                             END as joinkey,
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
                   cmp.campaignName as CName,
@@ -436,7 +449,12 @@ class CatchupDataRepository extends EntityRepository {
     public function clusterAggBySubDistrictCluster($campaigns, $district, $clusters, $subDistrict = '' ) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CASE 
+                                WHEN cvr.subDistrict IS NULL 
+                                THEN Concat(cmp.id, cvr.clusterNo, d.id) 
+                                ELSE CONCAT(cmp.id, cvr.subDistrict, cvr.clusterNo, d.id)
+                             END as joinkey,
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
                   cmp.campaignName as CName,
@@ -467,7 +485,8 @@ class CatchupDataRepository extends EntityRepository {
     public function districtAggByCampaign($campaign) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CONCAT(cmp.id, d.id) as joinkey, 
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -486,7 +505,8 @@ class CatchupDataRepository extends EntityRepository {
     public function districtAggByCampaignDistrict($campaign, $district) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CONCAT(cmp.id, d.id) as joinkey,
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -502,7 +522,8 @@ class CatchupDataRepository extends EntityRepository {
         $risk = $risk['risk'];
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CONCAT(cmp.id, d.id) as joinkey,
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -519,7 +540,8 @@ class CatchupDataRepository extends EntityRepository {
         $risk = $risk['risk'];
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+                "SELECT CONCAT(cmp.id, d.id) as joinkey,
+                  p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -538,8 +560,9 @@ class CatchupDataRepository extends EntityRepository {
     public function provinceAggByCampaign($campaign) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.id as PCODE, p.provinceName as Province, 
-                   cmp.campaignStartDate as CDate, cmp.id as CID,
+                "SELECT CONCAT(cmp.id, p.id) as joinkey,
+                  p.provinceRegion as Region, p.id as PCODE, p.provinceName as Province, 
+                  cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -557,8 +580,9 @@ class CatchupDataRepository extends EntityRepository {
     public function provinceAggByCampaignProvince($campaign, $province) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, p.id as PCODE, p.provinceName as Province, 
-                   cmp.campaignStartDate as CDate, cmp.id as CID,
+                "SELECT CONCAT(cmp.id, p.id) as joinkey,
+                  p.provinceRegion as Region, p.id as PCODE, p.provinceName as Province, 
+                  cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -575,7 +599,8 @@ class CatchupDataRepository extends EntityRepository {
     public function regionAgg($campaign) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
+                "SELECT CONCAT(cmp.id, p.provinceRegion) as joinkey,
+                  p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -594,7 +619,8 @@ class CatchupDataRepository extends EntityRepository {
     public function regionAggByCampaignRegion($campaign, $region) {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
+                "SELECT CONCAT(cmp.id, p.provinceRegion) as joinkey,
+                  p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
                   ".self::$DQL."
@@ -604,91 +630,6 @@ class CatchupDataRepository extends EntityRepository {
             )-> setParameters(['camp'=>$campaign, 'region'=>$region])
             ->getResult(Query::HYDRATE_SCALAR);
 
-    }
-
-
-    /**
-     * @param $region
-     * @return array
-     */
-    public function selectAggRegion($region) {
-
-        return $this->getEntityManager()
-            ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
-                      d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
-                      cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
-                      cmp.campaignName as CName,
-                      cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-              ".self::$DQL."
-              FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
-              JOIN cvr.district d JOIN d.province p WHERE p.provinceRegion in (:region)
-              GROUP BY cvr.clusterNo, p.provinceRegion"
-            )-> setParameters(['region'=>$region])
-            ->getResult(Query::HYDRATE_SCALAR);
-    }
-
-    /**
-     * @param $province
-     * @return array
-     */
-    public function selectAggProvince($province) {
-
-        return $this->getEntityManager()
-            ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
-                      d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
-                      cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
-                      cmp.campaignName as CName,
-                      cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-              ".self::$DQL."
-              FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
-              JOIN cvr.district d JOIN d.province p WHERE p.id in (:prov)
-              GROUP BY cvr.cluster, p.id"
-            )-> setParameters(['prov'=>$province])
-            ->getResult(Query::HYDRATE_SCALAR);
-    }
-
-    /**
-     * @param $district
-     * @return array
-     */
-    public function selectAggDistrict($district) {
-
-        return $this->getEntityManager()
-            ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
-                      d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
-                      cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
-                      cmp.campaignName as CName,
-                      cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-                      ".self::$DQL."
-                      FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
-                      JOIN cvr.district d JOIN d.province p WHERE d.id in (:dist)
-                      GROUP BY cvr.cluster, d.id"
-            )-> setParameters(['dist'=>$district])
-            ->getResult(Query::HYDRATE_SCALAR);
-    }
-
-    /**
-     * @param $campaign
-     * @return array
-     */
-    public function selectAggCampaign($campaign) {
-
-        return $this->getEntityManager()
-            ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
-                     d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
-                     cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
-                     cmp.campaignName as CName,
-                     cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-                      ".self::$DQL."
-                      FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
-                      JOIN cvr.district d JOIN d.province p WHERE cmp.id in (:camp)
-                      GROUP BY cvr.cluster, cmp.id"
-            )-> setParameters(['camp'=>$campaign])
-            ->getResult(Query::HYDRATE_SCALAR);
     }
 
     /**
@@ -701,7 +642,8 @@ class CatchupDataRepository extends EntityRepository {
 
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
+                "SELECT CONCAT(cmp.id, p.provinceRegion) as joinkey,
+                cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
                 d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,
@@ -723,7 +665,8 @@ class CatchupDataRepository extends EntityRepository {
 
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
+                "SELECT CONCAT(cmp.id, p.id) as joinkey,
+                cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
                 d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,
@@ -745,7 +688,8 @@ class CatchupDataRepository extends EntityRepository {
 
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
+                "SELECT CONCAT(cmp.id, d.id) as joinkey,
+                cvr.id as ID, p.provinceRegion as Region, p.provinceName as Province, 
                 d.districtName as District, d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,

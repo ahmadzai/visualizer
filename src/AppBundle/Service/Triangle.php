@@ -6,143 +6,166 @@ namespace AppBundle\Service;
  * Date: 11/12/2016
  * Time: 6:44 PM
  */
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 
+/**
+ * Class Triangle
+ * @package AppBundle\Service
+ * To be used for data triangulation
+ */
 class Triangle
 {
 
-    // constants for number of campaigns
-    const NUM_CAMP_CLUSTERS = 6;
-    const NUM_CAMP_CHARTS = 10;
-    const NUM_CAMP_LIMIT = 10;
-
-    protected $em;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->em = $entityManager;
-
-    }
-
-    /***
-     * @param $months array of months
-     * @return order_months
+    /**
+     * @param string $commonIndex
+     * @param array(sourceArray, moreArrays) $arrays
+     * @return array
      */
-    function orderMonths($months) {
-        $order_months = array();
-        if(is_array($months) && count($months) > 0) {
-            $temp = array();
-            foreach($months as $month) {
-                $m = date_parse($month);
-                $temp[$m['month']] = $month;
+    public static function triangulate($arrays, $commonIndex) {
+        $arrObj = new \ArrayObject($arrays[0]);
+        $resultArray = $arrObj->getArrayCopy();
+
+        foreach ($resultArray as $index=>$sourceValue) {
+
+            for($i = 1; $i < count($arrays); $i++ ) {
+
+                foreach ($arrays[$i]  as $array) {
+                    if($sourceValue[$commonIndex] === $array[$commonIndex]) {
+                        $resultArray[$index] = array_merge($resultArray[$index], $array);
+                    } else {
+                        $temp = array();
+                        foreach($array as $key=>$value)
+                            $temp[$key] = null;
+                        $resultArray[$index] = array_merge($temp, $resultArray[$index]);
+                    }
+                }
+
             }
-            ksort($temp);
-            $order_months = $temp;
         }
-
-        return $order_months;
+        return $resultArray;
     }
 
     /**
-     * @param $table
+     * Source Array as first index, further arrays in this format:
+     * array(data=>array, indexes=>array, prefix=>string), where indexes is the array of
+     * indexes that should be added to the source array in case there was a match
+     * And prefix will rename the indexes with this prefix if it was set.
+     * @param $arrays (sourceArray, [data=>Array, indexes=>Array])
+     * @param $commonIndex
      * @return array
      */
-    public function campaignMenu($table)
-    {
+    public static function triangulateCustom($arrays, $commonIndex) {
 
-        $data = $this->em->createQuery(
-            "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear
-             FROM AppBundle:$table a
-             JOIN a.campaign ca GROUP BY ca.id ORDER BY ca.id DESC"
-        )
-            ->getResult(Query::HYDRATE_SCALAR);
+        $sourceArray = $arrays[0];
 
-        return $data;
+        $arrObj = new \ArrayObject($sourceArray);
 
-    }
+        $resultArray = $arrObj->getArrayCopy();
 
-    /**
-     * @param $table
-     * @param $campaignId
-     * @return single campaign
-     */
-    public function latestCampaign($table, $campaignId = 0) {
+        for($i = 1; $i < count($arrays); $i++ ) {
+            $data = isset($arrays[$i]['data'])?$arrays[$i]['data']:null;
+            $indexes = isset($arrays[$i]['indexes'])?$arrays[$i]['indexes']:null;
+            $prefix = isset($arrays[$i]['prefix'])?$arrays[$i]['prefix']:false;
+            $notFound = array();
+            // if the second array was bigger than 0
+            if(count($data) > 0) {
+                foreach ($resultArray as $sourceIndex => $sourceValue) {
+                    $flagFound = false;
+                    foreach ($data as $array) {
 
-        if($campaignId === 0 || $campaignId == 0) {
-            $data = $this->em->createQuery(
-                "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
-               FROM AppBundle:$table a
-               JOIN a.campaign ca ORDER BY ca.id DESC"
-              ) ->setFirstResult(1)
-                ->setMaxResults(1)
-                ->getResult(Query::HYDRATE_SCALAR);
-            //$campaignId = $data[0]['CampID'];
-            return $data;
+                        if ($sourceValue[$commonIndex] === $array[$commonIndex]) {
+                            $flagFound = true;
+                            if ($indexes === 'all') {
+                                foreach ($array as $key => $value) {
+                                    $newIndex = $prefix === false ? $key : $prefix . $key;
+                                    $resultArray[$sourceIndex][$newIndex] = $value;
+                                }
+                            } else {
+                                foreach ($indexes as $index) {
+                                    foreach ($array as $key => $value) {
+                                        if ($key == $index) {
+                                            $newIndex = $prefix === false ? $index : $prefix . $index;
+                                            $resultArray[$sourceIndex][$newIndex] = $value;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                    }
+
+                    if (!$flagFound)
+                        $notFound[] = $sourceIndex;
+                }
+                // check if some row were not matching
+                if (count($notFound) > 0) {
+                    foreach ($notFound as $item) {
+                        if ($indexes === 'all') {
+                            foreach ($data[0] as $key => $value) {
+                                $newIndex = $prefix === false ? $key : $prefix . $key;
+                                $resultArray[$item][$newIndex] = null;
+                            }
+                        } else {
+                            foreach ($indexes as $index) {
+                                $newIndex = $prefix === false ? $index : $prefix . $index;
+                                $resultArray[$item][$newIndex] = null;
+                            }
+                        }
+                    }
+                }
+            } else { // if the second array count was 0
+                foreach ($resultArray as $sourceIndex => $sourceValue) {
+                    if(count($indexes) > 0 && $indexes !== 'all')
+                        foreach ($indexes as $index) {
+                            $newIndex = $prefix === false ? $index : $prefix . $index;
+                            $resultArray[$sourceIndex][$newIndex] = null;
+                        }
+                }
+            }
         }
-        else {
-          $data = $this->em->createQuery(
-              "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
-               FROM AppBundle:$table a
-               JOIN a.campaign ca WHERE ca.id =:camp"
-          )->setParameter('camp', $campaignId)->getResult(Query::HYDRATE_SCALAR);
-          return $data;
-       }
+
+        return $resultArray;
+
     }
 
+
     /**
-     * @param $table
-     * @param int $no default 3 campaigns
+     * @param array $data
+     * @param array $columns (firstCol is the first operand always)
+     * @param string $operation (+, -, /)
+     * @param string $newCol (indexName to store new info)
      * @return array
      */
-    public function lastFewCampaigns($table, $no = 3) {
-        $campaigns = $this->campaignMenu($table);
-        $cam = [];
-        $i = 0;
-        foreach ($campaigns as $campaign) {
-            if($i == $no)
-                break;
-            $cam[] = $campaign['id'];
-            $i++;
+    public static function mathOps(array $data, array $columns, $operation, $newCol) {
+        $resultArray = $data;
+        foreach($resultArray as $key=>$item) {
+            // the first column should be the first operand
+            $firstOperand = $item[$columns[0]];
+            $secondOperand = 0;
+            for($i=1; $i<count($columns); $i++) {
+                $secondOperand += $item[$columns[$i]];
+            }
+
+            if($operation === '+') {
+                $resultArray[$key][$newCol] = $firstOperand + $secondOperand;
+            } elseif ($operation === '-') {
+                $resultArray[$key][$newCol] = $firstOperand - $secondOperand;
+            } elseif ($operation === '/') {
+                if($secondOperand !== 0)
+                    $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand), 2);
+                else
+                    $resultArray[$key][$newCol] = 0;
+            } elseif($operation === '%') {
+                if($secondOperand !== 0)
+                    $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand), 2);
+                else
+                    $resultArray[$key][$newCol] = 0;
+            } elseif($operation === '*') {
+                $resultArray[$key][$newCol] = round(($firstOperand * $secondOperand), 0);
+            }
         }
-
-        return $cam;
+        return $resultArray;
     }
-
-      /**
-       * @param $table
-       * @return array
-       */
-      public function noEntryCampaigns($table) {
-          $campaigns = $this->campaignMenu($table);
-          $cam = [];
-          foreach ($campaigns as $campaign) {
-            $check = $this->campaignEntryCheck($campaign['id']);
-              if(isset($check))
-                $cam[] = $campaign['id'];
-
-                $check = [];
-          }
-
-          return $cam;
-      }
-
-      /**
-       * @param $campaignId
-       * @return array
-       */
-      public function campaignEntryCheck($campaignId)
-      {
-
-          $data = $this->em->createQuery(
-              "SELECT adm FROM AppBundle:AdminData adm WHERE adm.campaign =:camp"
-            )->setParameter('camp', $campaignId)
-             ->setFirstResult(1)
-             ->setMaxResults(1)
-             ->getResult(Query::HYDRATE_SCALAR);
-
-          return $data;
-
-      }
 
 }

@@ -20,8 +20,12 @@ class AjaxFilterController extends Controller
 {
 
     /**
+     * @param Request $request
+     * @param string $source
+     * @param Settings $settings
      * @Route("/smallFilter/{source}", name="small_filter")
      * @Method("GET")selectProvinceByRegion
+     * @return Response
      */
     public function smallFilterAction(Request $request, $source="CoverageData", Settings $settings)
     {
@@ -31,7 +35,7 @@ class AjaxFilterController extends Controller
 
         $selectedCampaigns = $settings->lastFewCampaigns($source, 1);
 
-        $campaigns = $em->getRepository('AppBundle:Campaign')->findBy([], ['id' => 'DESC']);
+        $campaigns = $em->getRepository('AppBundle:Campaign')->selectCampaignBySource($source);
 
         $regions = $em->getRepository('AppBundle:Province')->selectAllRegions();
 
@@ -55,13 +59,14 @@ class AjaxFilterController extends Controller
 
         $latestCampaign = $settings->lastFewCampaigns($source, 1);
 
-        $campaigns = $em->getRepository('AppBundle:Campaign')->findBy([], ['id' => 'DESC']);
+        $campaigns = $em->getRepository('AppBundle:Campaign')->selectCampaignBySource($source);
 
         $provinces = $em->getRepository("AppBundle:Province")->findAll();
         $data = [
             'campaigns' => $campaigns,
             'provinces' => $provinces,
-            'selectedCampaign' => $latestCampaign
+            'selectedCampaign' => $latestCampaign,
+            'source' => $source
         ];
 
         if($district !== 0) {
@@ -70,7 +75,7 @@ class AjaxFilterController extends Controller
             $data['districts'] = $em->getRepository("AppBundle:District")->findBy(['province'=>$province->getProvince()->getId()]);
             $data['selectedDistrict'] = $province->getId();
             $campaignIds = $settings->lastFewCampaigns($source, $settings::NUM_CAMP_CLUSTERS);
-            $clusterRaw = $em->getRepository("AppBundle:CoverageData")->clustersByDistrictCampaign([$province->getId()], $campaignIds);
+            $clusterRaw = $em->getRepository("AppBundle:".$source)->clustersByDistrictCampaign([$province->getId()], $campaignIds);
             $data['clusters'] = $this->clustersJSON($clusterRaw,  true);
         }
 
@@ -233,9 +238,10 @@ class AjaxFilterController extends Controller
      */
     public function filterClusterAction(Request $request, Settings $settings) {
 
-        //Todo: Make it Dynamic to work for all data-sources
         $district = $request->get('district');
         $campaign = $request->get('campaign');
+        $source = $request->get('source');
+
 
         $em = $this->getDoctrine()->getManager();
 
@@ -245,7 +251,7 @@ class AjaxFilterController extends Controller
                 $campaigns[] = (int) $item;
             }
         } else {
-            $campaigns = $settings->lastFewCampaigns("CoverageData", $settings::NUM_CAMP_CLUSTERS);
+            $campaigns = $settings->lastFewCampaigns($source, $settings::NUM_CAMP_CLUSTERS);
 
         }
         //$requestData = json_decode($content);
@@ -253,7 +259,7 @@ class AjaxFilterController extends Controller
 
         //return new Response(var_dump($content));
 
-        $data = $em->getRepository('AppBundle:CoverageData')
+        $data = $em->getRepository('AppBundle:'.$source)
             ->clustersByDistrictCampaign($district, $campaigns);
 
         return new Response($this->clustersJSON($data));

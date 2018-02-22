@@ -222,6 +222,16 @@ function myChart(settings) {
             pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
             split: true
         }
+    } else if(chartType === 'column' && settings.chartType.hasOwnProperty('stacking') &&
+        settings.chartType.stacking === 'percent') {
+        options['tooltip'] = {
+            pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y} ({point.percentage:.1f}%)</b><br/>',
+        }
+    } else if(chartType === 'bar' && settings.chartType.hasOwnProperty('stacking') &&
+        settings.chartType.stacking === 'percent') {
+        options['tooltip'] = {
+            pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y} ({point.percentage:.1f}%)</b><br/>',
+        }
     }
 
     // set the plat option, empty, normal, percent
@@ -451,7 +461,7 @@ function myPieChart(settings) {
         options.colors = settings.colors;
 
     options['tooltip'] = {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{point.y}<b> ({point.percentage:.1f}%)</b>'
     };
 
     // set the data of the chart to what assigned from TWIG
@@ -461,10 +471,15 @@ function myPieChart(settings) {
     // =========================================================================
     // set the dynamic title
     options['title'] = {text: dataObj.title, style: {fontSize:'100%'}};
+    options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
     // set the data/series
-    if(settings.type === 'halfpie')
-        dataObj.series[0].innerSize = '50%';
-    options.series = dataObj.series;
+    if(dataObj.series === null || dataObj.series === undefined) {
+        options.series = [];
+    } else {
+        if (settings.type === 'halfpie')
+            dataObj.series[0].innerSize = '50%';
+        options.series = dataObj.series;
+    }
 
     //console.log(dataObj["series"]);
     // finally create chart
