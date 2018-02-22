@@ -39,7 +39,7 @@ class MenuBuilder implements ContainerAwareInterface
         $menu = $factory->createItem('Home');
         $menu->setChildrenAttributes(array('class'=>'sidebar-menu', 'data-widget'=>'tree'));
 
-        $menu->addChild("Home", array('route'=>'home'))->setExtra('info', 'the main dashboard');
+        $menu->addChild("Home", array('route'=>'home', 'extras'=>['route'=>'cluster_main']))->setExtra('info', 'the main dashboard');
         $menu['Home']->setAttribute('icon','fa-home');
         // ------------------------------------------------ Admin Data ------------------------------------------------
         $menu->addChild("Admin Data", array('uri'=>'#'))->setExtra('info', 'the main dashboard');
