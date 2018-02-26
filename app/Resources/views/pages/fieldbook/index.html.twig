@@ -234,6 +234,68 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="box box-primary">
+                                {#<div class="chart-filter">#}
+                                    {#<span><a href="#"><i class="fa fa-filter"></i></a></span>#}
+                                    {#<div class="filter-content">#}
+                                        {#<a class="campaign-type" href="#" title="NID" data-url="ten_camp_absent">NID</a>#}
+                                        {#<a class="campaign-type" href="#" title="SNID" data-url="ten_camp_absent">SNID</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_absent">LPD</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_absent">Reset</a>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                <span class="filter-loading loading ten_camp_absent" title="Applying filter" data-chart_type="absent">
+                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                </span>
+                                <div class="box-body">
+                                    <div id="chart-ten_camp_absent_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box box-primary">
+                                {#<div class="chart-filter">#}
+                                    {#<span><a href="#"><i class="fa fa-filter"></i></a></span>#}
+                                    {#<div class="filter-content">#}
+                                        {#<a class="campaign-type" href="#" title="NID" data-url="ten_camp_nss">NID</a>#}
+                                        {#<a class="campaign-type" href="#" title="SNID" data-url="ten_camp_nss">SNID</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_nss">LPD</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_nss">Reset</a>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                <span class="filter-loading loading ten_camp_nss" title="Applying filter" data-chart_type="nss">
+                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                </span>
+                                <div class="box-body">
+                                    <div id="chart-ten_camp_nss_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box box-primary">
+                                {#<div class="chart-filter">#}
+                                    {#<span><a href="#"><i class="fa fa-filter"></i></a></span>#}
+                                    {#<div class="filter-content">#}
+                                        {#<a class="campaign-type" href="#" title="NID" data-url="ten_camp_refusal">NID</a>#}
+                                        {#<a class="campaign-type" href="#" title="SNID" data-url="ten_camp_refusal">SNID</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_refusal">LPD</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_refusal">Reset</a>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                <span class="filter-loading loading ten_camp_refusal" title="Applying filter" data-chart_type="refusal">
+                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                </span>
+                                <div class="box-body">
+                                    <div id="chart-ten_camp_refusal_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="box box-info">
 
@@ -334,6 +396,15 @@
             };
             config['ten_camp_refusal'] = {'color': ['#FF0000', '#40C97A'],
                 'chart':{'type':"column", 'stacking':'percent'}};
+            // third row
+            config['ten_camp_absent_normal'] = {'color': ['#EAFF19', '#40C97A'],
+                'chart':{'type':"column", 'stacking':'normal'}
+            };
+            config['ten_camp_nss_normal'] = {'color': ['#9C800E', '#40C97A'],
+                'chart':{'type':"column", 'stacking':'normal'}
+            };
+            config['ten_camp_refusal_normal'] = {'color': ['#FF0000', '#40C97A'],
+                'chart':{'type':"column", 'stacking':'normal'}};
 
             // =========================== Filter Menu Item Clicked For Campaign Type =========================
             $(".campaign-type").click(function (event){
@@ -432,6 +503,14 @@
                 {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss'].color);
             myChartWrapper(config['ten_camp_refusal'].chart, "chart-ten_camp_refusal", '{{ chartRefusalRec10Camp|raw }}',
                 {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal'].color);
+
+            // new row for 10 campaign
+            myChartWrapper(config['ten_camp_absent_normal'].chart, "chart-ten_camp_absent_normal", '{{ chartAbsentRec10Camp|raw }}',
+                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_absent_normal'].color);
+            myChartWrapper(config['ten_camp_nss_normal'].chart, "chart-ten_camp_nss_normal", '{{ chartNSSRec10Camp|raw }}',
+                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss_normal'].color);
+            myChartWrapper(config['ten_camp_refusal_normal'].chart, "chart-ten_camp_refusal_normal", '{{ chartRefusalRec10Camp|raw }}',
+                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal_normal'].color);
 
             myChartWrapper({'type':"area", 'stacking':'percent'}, "chart-recovered_10camp", '{{ last10CampRecovered|raw }}',
                 {'yTitle':null, 'xTitle':null}, null,
@@ -537,6 +616,14 @@
                             {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss'].color);
                         myChartWrapper(config['ten_camp_refusal'].chart, "chart-ten_camp_refusal",  JSON.stringify(jsonData.chartRefusalRec10Camp),
                             {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal'].color);
+                        // new row for 10 campaign
+                        myChartWrapper(config['ten_camp_absent_normal'].chart, "chart-ten_camp_absent_normal",  JSON.stringify(jsonData.chartAbsentRec10Camp),
+                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_absent_normal'].color);
+                        myChartWrapper(config['ten_camp_nss_normal'].chart, "chart-ten_camp_nss_normal",  JSON.stringify(jsonData.chartNSSRec10Camp),
+                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss_normal'].color);
+                        myChartWrapper(config['ten_camp_refusal_normal'].chart, "chart-ten_camp_refusal_normal",  JSON.stringify(jsonData.chartRefusalRec10Camp),
+                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal_normal'].color);
+                        // area chart
                         myChartWrapper({'type':"area", 'stacking':'percent'}, "chart-recovered_10camp", JSON.stringify(jsonData.last10CampRecovered),
                             {'yTitle':null, 'xTitle':null}, null,
                             ['#FFDE7B', '#33D3FF', '#42FFC0', '#40C97A']);

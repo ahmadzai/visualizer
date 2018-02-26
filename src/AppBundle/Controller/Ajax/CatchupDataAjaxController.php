@@ -183,7 +183,7 @@ class CatchupDataAjaxController extends Controller
             $data['heatMapTotalRemaining'] = $heatMapDataTotalRemaining;
 
             // covert the database data into heatmap array for a give indicator
-            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegAbsent', 'type'=>'percent'] :$clusterArray;
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegAbsent', 'type'=>'percent'] :$calcTypeArray;
             $heatMapDataTotalAbsent = $charts->clusterDataForHeatMap($heatMapData, 'RemAbsent',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
             $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after catchup';
@@ -192,7 +192,7 @@ class CatchupDataAjaxController extends Controller
             $data['heatMapTotalAbsent'] = $heatMapDataTotalAbsent;
 
             // covert the database data into heatmap array for a give indicator
-            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegNSS', 'type'=>'percent'] :$clusterArray;
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegNSS', 'type'=>'percent'] :$calcTypeArray;
             $heatMapTotalNSS = $charts->clusterDataForHeatMap($heatMapData, 'RemNSS',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
             $heatMapTotalNSS['title'] = 'Tends of total NSS children after catchup';
@@ -201,7 +201,7 @@ class CatchupDataAjaxController extends Controller
             $data['heatMapTotalNSS'] = $heatMapTotalNSS;
 
             // covert the database data into heatmap array for a give indicator
-            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegRefusal', 'type'=>'percent'] :$clusterArray;
+            $calcTypeArray = $calcType === 'percent' ? ['column'=>'RegRefusal', 'type'=>'percent'] :$calcTypeArray;
             $heatMapDataTotalRefusal = $charts->clusterDataForHeatMap($heatMapData, 'RemRefusal',
                 ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
             $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after catchup';

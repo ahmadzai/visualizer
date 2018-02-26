@@ -312,12 +312,6 @@
 
                      */
                     //colChart('chart1', JSON.stringify(jsonData.heatMapTotalRemaining), 'No of missed children');
-                    $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
-                    $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
-                    $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
-                    $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
-
-                    myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
                     if(calcType === null || calcType === undefined) {
                         myChartWrapper({
                                 'type': "bar",
@@ -325,6 +319,14 @@
                             }, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
                             {'yTitle': null, 'xTitle': null}, null, config['missed_recovery'].color, null, 'height');
                     }
+
+                    $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
+                    $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
+                    $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
+                    $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
+
+                    myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
+
 
                     $('.loading, .loading-top').hide();
                 },

@@ -1,11 +1,9 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
-
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Updating user profile!</h3>
     </div>
-    {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+    {{ form_start(form, { 'action': path('fos_user_profile_edit')}) }}
     {#{{ form_widget(form) }}#}
     {#<div>#}
         {#<input type="submit" value="{{ 'profile.edit.submit'|trans }}" />#}
@@ -60,7 +58,11 @@
 
             <div class="form-group {{ form_errors(form.roles)|length > 0 ? 'has-error' : '' }}">
                 <label>Roles</label>
-                {{ form_widget(form.roles, {'attr':{'tabindex':10, 'style':'width:100%'}}) }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    {{ form_widget(form.roles, {'attr':{'tabindex':10, 'style':'width:100%'}}) }}
+                {% else %}
+                    {{ form_widget(form.roles, {'attr':{'disabled': 'disabled','tabindex':10, 'style':'width:100%'}}) }}
+                {% endif %}
             </div>
             <!-- /.form-group -->
         </div>
