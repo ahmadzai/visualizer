@@ -261,15 +261,14 @@ function myChart(settings) {
 
     // adding data label toggle menu option
     var labelMenu = dataLabelToggleMenu(settings.renderTo);
-    var labelMenuFlag = true;
+
     options.exporting.buttons.contextButton.menuItems.forEach(function (item, index) {
         if(item.text === labelMenu.text) {
-            labelMenuFlag = false;
+            options.exporting.buttons.contextButton.menuItems.pop();
         }
     });
 
-    if(labelMenuFlag === true)
-        options.exporting.buttons.contextButton.menuItems.push(labelMenu);
+    options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
     // check and set the menu options
     var menus = settings.menu;
@@ -489,6 +488,7 @@ function myPieChart(settings) {
 function myHeatMap(data, container, tooltipTitle) {
     var dataObj = JSON.parse(data);
     var options = {};
+    //var options = jQuery.extend(true, {}, globalOptions);
 
         options.chart = {
             type: 'heatmap',
@@ -535,18 +535,17 @@ function myHeatMap(data, container, tooltipTitle) {
 
         //console.log("Y AXIS: ", dataObj.yAxis);
         // set the exporting options
+        console.log(globalOptions.exporting);
         options.exporting = globalOptions.exporting;
         // label toggle option added
         var labelMenu = dataLabelToggleMenu(container);
-        var labelMenuFlag = true;
         options.exporting.buttons.contextButton.menuItems.forEach(function (item, index) {
             if(item.text === labelMenu.text) {
-                labelMenuFlag = false;
+                options.exporting.buttons.contextButton.menuItems.pop();
             }
-        })
+        });
 
-        if(labelMenuFlag === true)
-            options.exporting.buttons.contextButton.menuItems.push(labelMenu);
+        options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
         options.yAxis = {
             categories: dataObj.yAxis,
