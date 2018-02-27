@@ -115,8 +115,8 @@ class MainAjaxController extends Controller
             // 10 campaign vaccinated in campaign and catchup
             if($chartType === 'ten_camp_vac') {
                 $finalData = $charts->chartData1Category($category[1],
-                    ['cTotalVac' => 'Vaccinated Catchup',
-                        'TotalVac' => 'Vaccinated Campaign'], $tenCampData);
+                    ['TotalVac' => 'Vaccinated Campaign',
+                        'cTotalVac' => 'Vaccinated Catchup'], $tenCampData);
                 $finalData['title'] = 'Vaccinated Children During Campaigns and Catchup';
                 $finalData['subTitle'] = $subTitle;
             } else {
@@ -508,8 +508,8 @@ class MainAjaxController extends Controller
 
         // 10 campaign vaccinated in campaign and catchup
         $tenCampVacChildChart = $charts->chartData1Category($category[1],
-               ['cTotalVac'=>'Vaccinated Catchup',
-                'TotalVac'=>'Vaccinated Campaign'], $tenCampData);
+               ['TotalVac'=>'Vaccinated Campaign',
+                'cTotalVac'=>'Vaccinated Catchup'], $tenCampData);
         $tenCampVacChildChart['title'] = 'Vaccinated Children During '.$during.' and Catchup';
         $tenCampVacChildChart['subTitle'] = $subTitle;
 
