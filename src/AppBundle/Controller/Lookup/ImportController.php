@@ -36,6 +36,7 @@ class ImportController extends Controller
      * @param Request $request
      * @param EntityName $entity
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_EDITOR')")
      */
     public function importDataAction(Request $request, $entity) {
 
@@ -230,6 +231,7 @@ class ImportController extends Controller
      * @param $fileId
      * @param Importer $importer
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Security("has_role('ROLE_EDITOR')")
      */
     public function syncDataAction(Request $request, $entity, $fileId, Importer $importer) {
 

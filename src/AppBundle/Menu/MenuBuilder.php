@@ -29,12 +29,13 @@ class MenuBuilder implements ContainerAwareInterface
      */
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-//        dump($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'));
-//
+
+        // Check if the user has specific roles
 //        $user = $this->container->get('security.token_storage')->getToken()->getUser();
-//        dump($this->container->get('security.context')->isGranted('ROLE_ADMIN'));
-//        die();
-        //$request = $this->container->get('request_stack')->getCurrentRequest();
+//        dump($user);
+//        die;
+        $adminRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $editRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_EDITOR');
 
         $menu = $factory->createItem('Home');
         $menu->setChildrenAttributes(array('class'=>'sidebar-menu', 'data-widget'=>'tree'));
@@ -51,18 +52,22 @@ class MenuBuilder implements ContainerAwareInterface
         $menu['Admin Data']->addChild("Dashboard", array('route'=>'admin_data', 'extras'=>['route'=>'cluster_admin_data']))->setExtra('info', 'Admin Data');
         $menu['Admin Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
         $menu['Admin Data']['Dashboard']->setAttribute('icon','fa-dashboard');
-        // Data Download
-        $menu['Admin Data']->addChild("Download", array('route'=>'admin_data_download'))->setExtra('info', 'Admin Data');
-        $menu['Admin Data']['Download']->setAttribute('icon', 'fa-download');
-        // Data Upload
-        {
-            $menu['Admin Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters'=>['entity'=>'coverage_data'],
-                'extras'=>['route'=>'import_admin_data_handle']))
-                ->setExtra('info', 'Admin Data');
-            $menu['Admin Data']['Upload']->setAttribute('icon', 'fa-upload');
-            // Data Entry
-            $menu['Admin Data']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'of Admin Data');
-            $menu['Admin Data']['Data Entry']->setAttribute('icon', 'fa-table');
+        if($editRole) {
+            // Data Download
+            $menu['Admin Data']->addChild("Download", array('route'=>'admin_data_download'))->setExtra('info', 'Admin Data');
+            // if the user had edit role
+
+            $menu['Admin Data']['Download']->setAttribute('icon', 'fa-download');
+            // Data Upload
+            {
+                $menu['Admin Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters' => ['entity' => 'coverage_data'],
+                    'extras' => ['route' => 'import_admin_data_handle']))
+                    ->setExtra('info', 'Admin Data');
+                $menu['Admin Data']['Upload']->setAttribute('icon', 'fa-upload');
+                // Data Entry
+                $menu['Admin Data']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'of Admin Data');
+                $menu['Admin Data']['Data Entry']->setAttribute('icon', 'fa-table');
+            }
         }
 
         //------------------------------------------------------- Catchup Data ---------------------------------------
@@ -75,20 +80,23 @@ class MenuBuilder implements ContainerAwareInterface
         $menu['Catchup Data']->addChild("Dashboard", array('route'=>'catchup_data', 'extras'=>['route'=>'cluster_catchup_data']))->setExtra('info', 'Catchup Data');
         $menu['Catchup Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
         $menu['Catchup Data']['Dashboard']->setAttribute('icon','fa-dashboard');
-        // Data Download
-        $menu['Catchup Data']->addChild("Download", array('route'=>'catchup_data_download'))->setExtra('info', 'Catchup Data');
-        $menu['Catchup Data']['Download']->setAttribute('icon', 'fa-download');
-        // Data Upload
-        $menu['Catchup Data']->addChild("Upload", array('route'=>'import_data', 'routeParameters'=>['entity'=>'catchup_data'],
-            'extras'=>['route'=>'import_catchup_data_handle']))
-            ->setExtra('info', 'Catchup Data');
-        $menu['Catchup Data']['Upload']->setAttribute('icon', 'fa-upload');
-        // Data Entry
-        $menu['Catchup Data']->addChild("Data Entry", array('uri'=>'#'))->setExtra('info', 'Catchup Data');
-        $menu['Catchup Data']['Data Entry']->setAttribute('icon', 'fa-table');
+        if($editRole) {
+            // Data Download
+            $menu['Catchup Data']->addChild("Download", array('route' => 'catchup_data_download'))->setExtra('info', 'Catchup Data');
+            $menu['Catchup Data']['Download']->setAttribute('icon', 'fa-download');
+            // Data Upload
+            $menu['Catchup Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters' => ['entity' => 'catchup_data'],
+                'extras' => ['route' => 'import_catchup_data_handle']))
+                ->setExtra('info', 'Catchup Data');
+            $menu['Catchup Data']['Upload']->setAttribute('icon', 'fa-upload');
+            // Data Entry
+            $menu['Catchup Data']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'Catchup Data');
+            $menu['Catchup Data']['Data Entry']->setAttribute('icon', 'fa-table');
+        }
 
         // ------------------------------------------------------- End of Catchup Data --------------------------------
-        $menu->addChild('other', array('route'=>'homepage'))->setAttribute('icon','fa-link');
+        if($adminRole)
+            $menu->addChild('other', array('route'=>'homepage'))->setAttribute('icon','fa-link');
 
 
         return $menu;

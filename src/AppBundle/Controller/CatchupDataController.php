@@ -292,6 +292,7 @@ class CatchupDataController extends Controller
      * @Route("/catchup_data/download/{type}", name="catchup_data_download", options={"expose"=true})
      * @Method("GET")
      * @return Response
+     * @Security("has_role('ROLE_EDITOR')")
      */
     public function downloadAction(Request $request, $type='all') {
 

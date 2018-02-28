@@ -158,6 +158,7 @@ class AdminDataController extends Controller
 
     /**
      * @Route("/admin_data/download/{type}", name="admin_data_download", options={"expose"=true})
+     * @Security("has_role('ROLE_EDITOR')")
      */
     public function downloadAction(Request $request, $type='all') {
 
