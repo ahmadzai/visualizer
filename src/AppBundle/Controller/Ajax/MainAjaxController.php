@@ -407,7 +407,10 @@ class MainAjaxController extends Controller
                         'Recovered3Days'=>'3Days'
                     ],
                     $lastCampCltrCalc, false);
-                $lastCampBarChart['title'] = $lastCampaign[0]['campaignName']." Missed Children Recovery Camp/Revisit/Catchup";
+                $campaign = "No data for this campaign as per current filter";
+                if(count($lastCampaign) > 0)
+                    $campaign = $lastCampaign[0]['campaignName']." Missed Children Recovery Camp/Revisit/Catchup";
+                $lastCampBarChart['title'] = $campaign;
                 $data['lastCampBarChart'] = $lastCampBarChart;
             }
             // ------------------------------------------------------------------------------------------------------

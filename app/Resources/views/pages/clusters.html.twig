@@ -283,6 +283,11 @@
                 return;
             }
 
+            if(selectedClusters === null || selectedClusters === undefined) {
+                window.alert("No cluster selected, or there is no data for any cluster for the selected campaigns");
+                return;
+            }
+
             var data = {'campaign':selectedCampaigns, 'province': selectedProvinces,
                 'district': selectedDistricts, 'cluster':selectedClusters, 'calcType': calcType};
 

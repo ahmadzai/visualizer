@@ -125,8 +125,8 @@ class CatchupDataController extends Controller
 
         // last campaign vaccine wastage by region
         //$calcData = Triangle::mathOps()
-        $lastCampVaccineData = $charts->chartData1Category($category[0], ['TotalRemaining'=>'Remaining'], $lastCampRegionsData);
-        $lastCampVaccineData['title'] = 'Remaining children after catchup';
+        $lastCampTotalRemaining = $charts->chartData1Category($category[0], ['TotalRemaining'=>'Remaining'], $lastCampRegionsData);
+        $lastCampTotalRemaining['title'] = 'Remaining children after catchup';
 
         $table = HtmlTable::tableForCatchupData($lastCampRegionsData);
         $info = HtmlTable::infoForCatchup($lastCampAdminData);
@@ -141,7 +141,7 @@ class CatchupDataController extends Controller
                 'chartNSSRec10Camp' => json_encode($tenCampNSSRecovered),
                 'chartRefusalRec10Camp' => json_encode($tenCampRefusalRecovered),
                 'lastCampPieData' => json_encode($lastCampMissedPieChart),
-                'lastCampVacData' => json_encode($lastCampVaccineData),
+                'lastCampVacData' => json_encode($lastCampTotalRemaining),
                 'lastCampRegionData' => $lastCampRegionsData,
                 'recoveredAll' => json_encode($lastCampRecovered),
                 'recoveredAbsent' => json_encode($lastCampAbsentRecovered),

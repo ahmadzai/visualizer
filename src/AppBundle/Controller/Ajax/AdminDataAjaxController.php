@@ -243,7 +243,10 @@ class AdminDataAjaxController extends Controller
                         'TotalVac' => 'Vaccinated',
                     ],
                     $lastCampClustersData, false);
-                $lastCampBarChart['title'] = $lastCampClustersData[0]['CName'] . " Vaccinated and Remaining Children";
+                $campaign = "No data for this campaign as per current filter";
+                if(count($lastCampClustersData) > 0)
+                    $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
+                $lastCampBarChart['title'] = $campaign;
                 $data['lastCampBarChart'] = $lastCampBarChart;
             }
             // ------------------------------------------------------------------------------------------------------
@@ -422,6 +425,10 @@ class AdminDataAjaxController extends Controller
         $table['table'] = HtmlTable::tableForAdminData($lastCampRegionsData, $type);
         $info = HtmlTable::infoForAdminData($lastCampAdminData);
 
+        $campaign = "No data for this campaign as per current filter";
+        if(count($lastCampAdminData) > 0)
+            $campaign = $lastCampAdminData[0]['CName'];
+
         $data = [
             'chartVacChild10Camp' => $tenCampVacChildChart,
             'chartMissed10Camp' => $tenCampMissedChildChart,
@@ -438,7 +445,7 @@ class AdminDataAjaxController extends Controller
             'recoveredNSS' => $lastCampNSSRecovered,
             'recoveredRefusal' => $lastCampRefusalRecovered,
             'last10CampRecovered' => $last10CampRecovered,
-            'campaign' => $lastCampAdminData[0]['CName'],
+            'campaign' => $campaign,
             'info' => $info,
             'table' => $table
         ];

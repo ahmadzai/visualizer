@@ -333,13 +333,22 @@ function myChart(settings) {
     options['title'] = {text: dataObj.title, marginBottom:5, style: {fontSize:'100%'}};
     options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
     // set the dynamic categories
-    options.xAxis.categories = dataObj.categories;
+    if(dataObj.categories === null || dataObj.categories === undefined) {
+        options.xAxis.categories = [];
+    } else {
+        options.xAxis.categories = dataObj.categories;
+    }
 
     // change the formatter for yAxis if not empty
     if(settings.yAxisFormatter !== "")
         options.yAxis.labels = {format: '{value}'+settings.yAxisFormatter}
     // set the data/series
-    options.series = dataObj.series;
+
+    if(dataObj.series === null || dataObj.series === undefined) {
+        options.series = [];
+    } else {
+        options.series = dataObj.series;
+    }
     //console.log(dataObj["series"]);
     // check for the combined chart request
     if (settings.hasOwnProperty('combination')) {
@@ -354,9 +363,11 @@ function myChart(settings) {
         }
     }
 
+    var height = (dataObj.categories === undefined ) ? 10: dataObj.categories.length;
+
     if(settings.large !== null && settings.large === 'height') {
         //console.log(dataObj.categories);
-        $('#'+settings.renderTo).css("height", dataObj.categories.length*30+"px");
+        $('#'+settings.renderTo).css("height", height*30+"px");
     }
     // finally create chart
     var chart = new Highcharts.Chart(options);
@@ -501,7 +512,7 @@ function myHeatMap(data, container, tooltipTitle) {
 
 
         options.title = {
-            text: dataObj.title,
+            text: dataObj.title === undefined? 'Heatmap': dataObj.title,
             style: {
                 fontSize: '110%'
             }
@@ -509,7 +520,7 @@ function myHeatMap(data, container, tooltipTitle) {
 
         options.xAxis = [
             {
-                categories: dataObj.xAxis,
+                categories: dataObj.xAxis === undefined? [] : dataObj.xAxis,
 
                 labels: {
                     style: {
@@ -522,7 +533,7 @@ function myHeatMap(data, container, tooltipTitle) {
             {
                 linkedTo: 0,
                 opposite: true,
-                categories: dataObj.xAxis,
+                categories: dataObj.xAxis === undefined? [] : dataObj.xAxis,
                 labels: {
                     style: {
                         fontSize:'80%'
@@ -548,7 +559,7 @@ function myHeatMap(data, container, tooltipTitle) {
         options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
         options.yAxis = {
-            categories: dataObj.yAxis,
+            categories: dataObj.yAxis === undefined? [] : dataObj.yAxis,
             title: null,
             labels: {
                 style: {
@@ -614,8 +625,10 @@ function myHeatMap(data, container, tooltipTitle) {
             }
         }];
     // Setting width and height of the container according to rows and columns
-    $('#'+container).css("height", dataObj.yAxis.length*29+"px");
-    $('#'+container).css("min-width", dataObj.xAxis.length*50+"px");
+    var height = dataObj.yAxis === undefined ? '29px' : dataObj.yAxis.length*29+"px";
+    var width = dataObj.xAxis === undefined ? '50px' : dataObj.xAxis.length*50+"px";
+    $('#'+container).css("height", height);
+    $('#'+container).css("min-width", width);
     var chart = new Highcharts.Chart(options);
 
 }
