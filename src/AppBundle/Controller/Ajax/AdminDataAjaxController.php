@@ -292,7 +292,9 @@ class AdminDataAjaxController extends Controller
             $subTitle = "for selected districts";
 
             $secondParam = $districts;
-            if(array_search("VHR", $districts) > -1 || array_search('HR', $districts) > -1 || array_search('Non-V/HR districts', $districts) > -1) {
+            if(array_search("VHR", $districts) > -1 ||
+                array_search('HR', $districts) > -1 ||
+                array_search('Non-V/HR districts', $districts) > -1) {
                 $functionRegion = $functionRegion.'Risk';
                 $functionCampaignsStatistics = $functionCampaignsStatistics."Risk";
                 $nonVhrIndex = array_search('Non-V/HR districts', $districts);
@@ -361,7 +363,7 @@ class AdminDataAjaxController extends Controller
         $tenCampMissedRecovered['subTitle'] = $subTitle;
 
         $tenCampAbsentRecovered = $charts->chartData1Category($category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day4' , 'VacAbsent3Days'=>'3Days'],
+            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day5' , 'VacAbsent3Days'=>'3Days'],
             $tenCampAdminData);
         $tenCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
         $tenCampAbsentRecovered['subTitle'] = $subTitle;
