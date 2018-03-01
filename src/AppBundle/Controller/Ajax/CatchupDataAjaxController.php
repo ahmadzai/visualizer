@@ -330,6 +330,8 @@ class CatchupDataAjaxController extends Controller
             $functionCampaignStatistics = $functionCampaignStatistics."ByRegion";
             $secondParam = $regions;
             $subTitle = "for selected regions";
+        } else if(count($selectedCampaignIds) == 1) {
+            $subTitle = null;
         }
 
         //$regionAdminData = $charts->chartData('CoverageData', 'regionAgg', $campaignIds);

@@ -95,25 +95,6 @@
             </div>
         </div>
     </div>
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-default box">#}
-                {#<div class="box-body">#}
-                    {#<div id="chart-refusal_3camp" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div class="row">#}
-        {#<div class="col-md-12">#}
-            {#<div class="box-danger box">#}
-
-                {#<div class="box-body">#}
-                    {#<div id="chart-vac_usage" style="min-width: 310px; height: 400px; max-width:inherit"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
 
     <!-- Information Modal -->
     <div class="modal modal-default fade" id="modal-primary">
@@ -178,167 +159,14 @@
 {% endblock %}
 {% block js %}
     <script src="{{ asset('custom_js_css/charts-wrapper.js') }}"></script>
+    <script src="{{ asset('custom_js_css/common-dash.js') }}"></script>
+    <script src="{{ asset('custom_js_css/config-main-cluster.js') }}"></script>
     <script>
         $(document).ready(function () {
             {% if district == 0 %}
-                $("#modal-primary").modal({'show':true});
+                $("#modal-primary").modal({'show': true});
+                $('.loading, .loading-top').hide();
             {% endif %}
-            // ========================= General Configuration for charts =================
-            const config = {'colors':['#FFFF00', '#C99900', '#FF0000', '#048AFF']};
-            config['missed_recovery'] = {'color': ['#FFB32D', '#2DA810', '#45E490', '#048AFF'],
-                'chart':{'type':"bar", 'stacking':'percent'}
-            };
-            $(".filter-heatmap").click(function (event){
-                event.preventDefault();
-                var target = $(this).data('url');
-                var targetCont = "chart-"+ target;
-                $('.'+target).show();
-
-                var type = $(this).text();
-                //console.log($("#hidden-total-remaining").val());
-
-                if(type.trim() == "Absent")
-                {
-                    console.log("Absent is selected");
-                    myHeatMap($("#hidden-total-absent").val(), 'chart-cluster_heatmap', 'absent');
-                }
-                else if(type.trim() == "NSS")
-                    myHeatMap($("#hidden-total-nss").val(), 'chart-cluster_heatmap', 'NSS');
-
-                else if(type.trim() == "Refusal")
-                    myHeatMap($("#hidden-total-refusal").val(), 'chart-cluster_heatmap', 'refusal');
-                else if(type.trim() == "All Type")
-                    myHeatMap($("#hidden-total-remaining").val(), 'chart-cluster_heatmap', 'Total Remaining');
-
-
-                $('.'+target).hide();
-            })
-
-            //============================== Tree Menu ========================================
-            var checkElement = $('.menu-open .treeview-menu');
-            if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
-                //Get the parent menu
-                var parent = checkElement.parents('ul').first();
-                //Close all open menus within the parent
-                var ul = parent.find('ul:visible').slideUp(500);
-                //Remove the menu-open class from the parent
-                ul.removeClass('menu-open');
-                //Get the parent li
-                var parent_li = checkElement.parent("li");
-
-                //Open the target menu and add the menu-open class
-                checkElement.slideDown(500, function () {
-                    //Add the class active to the parent li
-                    checkElement.addClass('menu-open');
-                    //parent.find('li.active').removeClass('active');
-                    parent_li.addClass('active');
-                    //Fix the layout in case the sidebar stretches over the height of the window
-                    //_this.layout.fix();
-                });
-            }
-
-            // =============================== End of Tree Menu ==================================
-
-            $('.loading, .loading-top').hide();
-
-            // =============================== Load the charts for the first time ================
-            {% if district != 0 %}
-                $("#modal-primary").modal({'show':false});
-                myChartWrapper({'type':"bar", 'stacking':'percent'}, "chart-last_camp_bar", '{{ lastCampBarChart|raw }}',
-                    {'yTitle':null, 'xTitle':null}, null,  config['missed_recovery'].color, null, 'height');
-                myHeatMap('{{ heatMapTotalRemaining|raw }}', 'chart-cluster_heatmap', 'Total Remaining');
-
-                $("#hidden-total-absent").val(JSON.stringify({{ heatMapTotalAbsent|raw }}));
-                $("#hidden-total-remaining").val(JSON.stringify({{ heatMapTotalRemaining|raw }}));
-                $("#hidden-total-refusal").val(JSON.stringify({{ heatMapTotalRefusal|raw }}));
-                $("#hidden-total-nss").val(JSON.stringify({{ heatMapTotalNSS|raw }}));
-            {% endif %}
-
-            $('.filter-heatmap-type').click(function (event) {
-                event.preventDefault();
-                var calcType = $(this).data('type');
-                makeAjaxRequest(calcType);
-            });
-
-            // ============================== End loading of the charts ==========================
-
-
-            $('#filterButton').click(function () {
-                makeAjaxRequest(null, config);
-            })
         });
-
-        function makeAjaxRequest(calcType, config) {
-
-            var selectedCampaigns = $('#filterCampaign').val();
-            //var provinces = $('#filterProvince option:selected');
-            var selectedProvinces = $('#filterProvince').val();
-            //var districts = $('#filterDistrict option:selected');
-            var selectedDistricts = $('#filterDistrict').val();
-            //var clusters = $('#filterCluster option:selected');
-            var selectedClusters = $('#filterCluster').val();
-
-            if(selectedDistricts === null || selectedDistricts === undefined) {
-                window.alert("Please select a district");
-                return;
-            }
-
-            if(selectedClusters === null || selectedClusters === undefined) {
-                window.alert("No cluster selected, or there is no data for any cluster for the selected campaigns");
-                return;
-            }
-
-            var data = {'campaign':selectedCampaigns, 'province': selectedProvinces,
-                'district': selectedDistricts, 'cluster':selectedClusters, 'calcType': calcType};
-
-            $('.loading, .loading-top').show();
-
-            $.ajax({
-
-                url: Routing.generate('ajax_cluster_main'),
-                data: data,
-                type: 'POST',
-                success: function (data) {
-                    //console.log(data);
-                    $("#hidden-total-absent").val('');
-                    $("#hidden-total-remaining").val('');
-                    $("#hidden-total-refusal").val('');
-                    $("#hidden-total-nss").val('');
-                    var jsonData = JSON.parse(data);
-
-                    //console.log(jsonData);
-                    /*
-                     this is how the data is comming
-                     'allMissedChildren'
-                     'absentChildren'
-                     'nssChildren'
-                     'refusalChildren
-                     'vaccineUsage'
-
-                     */
-                    //colChart('chart1', JSON.stringify(jsonData.heatMapTotalRemaining), 'No of missed children');
-                    if(calcType === null || calcType === undefined) {
-                        myChartWrapper({
-                                'type': "bar",
-                                'stacking': 'percent'
-                            }, "chart-last_camp_bar", JSON.stringify(jsonData.lastCampBarChart),
-                            {'yTitle': null, 'xTitle': null}, null, config['missed_recovery'].color, null, 'height');
-                    }
-
-                    $("#hidden-total-absent").val(JSON.stringify(jsonData.heatMapTotalAbsent));
-                    $("#hidden-total-remaining").val(JSON.stringify(jsonData.heatMapTotalRemaining));
-                    $("#hidden-total-refusal").val(JSON.stringify(jsonData.heatMapTotalRefusal));
-                    $("#hidden-total-nss").val(JSON.stringify(jsonData.heatMapTotalNSS));
-
-                    myHeatMap(JSON.stringify(jsonData.heatMapTotalRemaining), 'chart-cluster_heatmap');
-
-
-                    $('.loading, .loading-top').hide();
-                },
-                cache: false
-            });
-        }
-
-
     </script>
 {% endblock %}

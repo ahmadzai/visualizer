@@ -41,7 +41,7 @@
 
 .filter-loading {
     z-index: 1000 !important;
-    left:24px !important;
+    left:12px !important;
     top:14px !important;
     position: absolute !important;
 }

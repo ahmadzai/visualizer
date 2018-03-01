@@ -310,7 +310,8 @@ class Charts
                         }
 
                         foreach($indicators as $key=>$indicator) {
-                            $data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
+                            $finalValue = $val[$key] == 'null' ? null : (int)$val[$key];
+                            $data_indicators[$key][] = $finalValue < 0 ? 0 : $finalValue;
                         }
 
                     }

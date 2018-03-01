@@ -1,9 +1,6 @@
 {% extends 'template.html.twig' %}
-
 {% block content %}
-
     <script src="{{ asset('charts/highcharts.js') }}"></script>
-    <script src="{{ asset('charts/modules/heatmap.js') }}"></script>
     <script src="{{ asset('charts/modules/exporting.js') }}"></script>
     <script src="{{ asset('charts/modules/grouped-categories.js') }}"></script>
     <!-- Current Row -->
@@ -11,7 +8,7 @@
         <div class="col-md-12">
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
-                    <h3 class="box-title campaign-title">{{ campaign }} Campaign Data </h3>
+                    <h3 class="box-title campaign-title">Data will load soon... </h3>
                     <span class="badge bg-gray-light" style="font-weight: normal; color:black">Source: Triangulation from Admin and Catchup Data</span>
                     <span class="loading" title="Applying filter" style="margin-left: 12%; display: inline-block;">
                         <img src='{{ asset('filtering.gif')}}' />
@@ -22,49 +19,7 @@
                     </a>
                 </div>
                 <div class="box-body">
-
-                    <!-- Start of First Row --->
-                    {#<div class="row">#}
-                    {#<div class="col-md-9">#}
-                        {#<div class="row info-row">#}
-                            {#{{ info|raw }}#}
-                        {#</div>#}
-                        {#<div class="row">#}
-                            {#<div class="col-md-12">#}
-                                {#<div class="box box-primary">#}
-                                     {#<div class="box-body table-campaign-info">#}
-                                         {#{{ table|raw }}#}
-                                     {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</div>#}
-
-                    {#<div class="col-md-3">#}
-                        {#<div class="row">#}
-                            {#<div class="col-md-12">#}
-                                {#<div class="box box-primary">#}
-                                     {#<div class="box-body" style="padding: 1px;">#}
-                                        {#<div id="chart-pie_chart_1camp" style="height: 200px; max-height: 250px;" >#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                        {#<div class="row">#}
-                            {#<div class="col-md-12">#}
-
-                                {#<div class="box box-primary">#}
-                                    {#<div class="box-body" style="padding: 1px;">#}
-                                        {#<div id="chart-column_chart_1camp" style="height: 200px; max-height: 250px;"></div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</div>#}
-                    {#</div>#}
-                    <!-- End of First Row --->
-                    <!-- Second Row --->
+                    <!-- First Row --->
                     <div class="row">
                         <div class="col-md-3">
                             <div class="box box-warning">
@@ -128,15 +83,15 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_vac">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_vac">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_vac">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_vac">Reset</a>
-                                    </div>
-                                </div>
+                                {#<div class="chart-filter">#}
+                                    {#<span><a href="#"><i class="fa fa-filter"></i></a></span>#}
+                                    {#<div class="filter-content">#}
+                                        {#<a class="campaign-type" href="#" title="NID" data-url="ten_camp_vac">NID</a>#}
+                                        {#<a class="campaign-type" href="#" title="SNID" data-url="ten_camp_vac">SNID</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_vac">LPD</a>#}
+                                        {#<a class="campaign-type" href="#" title="LPD" data-url="ten_camp_vac">Reset</a>#}
+                                    {#</div>#}
+                                {#</div>#}
                                 <span class="filter-loading loading ten_camp_vac" title="Applying filter" data-chart_type="vac">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -148,15 +103,6 @@
                         </div>
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_missed">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_missed">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_missed" title="Applying filter" data-chart_type="missed">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -168,15 +114,6 @@
                         </div>
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_missed_type">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_missed_type">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed_type">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed_type">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_missed_type" title="Applying filter" data-chart_type="missed_type">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -190,15 +127,6 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_absent">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_absent">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_absent">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_absent">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_absent" title="Applying filter" data-chart_type="absent">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -210,15 +138,6 @@
                         </div>
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_nss">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_nss">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_nss">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_nss">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_nss" title="Applying filter" data-chart_type="nss">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -230,15 +149,6 @@
                         </div>
                         <div class="col-md-4">
                             <div class="box box-primary">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_refusal">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_refusal">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_refusal">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_refusal">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_refusal" title="Applying filter" data-chart_type="refusal">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -252,15 +162,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box box-info">
-                                <div class="chart-filter">
-                                    <span><a href="#"><i class="fa fa-filter"></i></a></span>
-                                    <div class="filter-content">
-                                        <a class="campaign-type" href="#" title="NID" data-url="ten_camp_missed_vac">NID</a>
-                                        <a class="campaign-type" href="#" title="SNID" data-url="ten_camp_missed_vac">SNID</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed_vac">LPD</a>
-                                        <a class="campaign-type" href="#" title="LPD" data-url="ten_camp_missed_vac">Reset</a>
-                                    </div>
-                                </div>
                                 <span class="filter-loading loading ten_camp_missed_vac" title="Applying filter" data-chart_type="missed_type">
                                     <img src='{{ asset('ajax-loader-arrow.gif')}}' />
                                 </span>
@@ -301,8 +202,6 @@
 
     <script  src="{{ asset('template/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-
     <!-- AdminLTE App -->
     <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
 
@@ -312,227 +211,6 @@
 {% endblock %}
 {% block js %}
     <script src="{{ asset('custom_js_css/charts-wrapper.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-
-            // ========================= General Configuration for charts =================
-            const config = new Array();
-            config['ten_camp_vac'] = {'color':['#048AFF', '#43AB0D'], 'chart':{'type':"column", 'stacking':'normal'}};
-            config['ten_camp_missed'] = {'color':['#C99900', '#FFB32D'], 'chart':{'type':"column"} };
-            config['ten_camp_missed_type'] = {'color': ['#FFB32D', '#2DA810', '#45E490', '#048AFF'],
-                                              'chart':{'type':"column", 'stacking':'percent'}
-                                             };
-            config['ten_camp_absent'] = {'color': ['#EAFF19', '#2DA810', '#45E490', '#048AFF'],
-                                         'chart':{'type':"column", 'stacking':'percent'}
-                                        };
-            config['ten_camp_nss'] = {'color': ['#9C800E', '#2DA810', '#45E490', '#048AFF'],
-                                        'chart':{'type':"column", 'stacking':'percent'}
-                                    };
-            config['ten_camp_refusal'] = {'color': ['#FF0000', '#2DA810', '#45E490', '#048AFF'],
-                                            'chart':{'type':"column", 'stacking':'percent'}
-                                        };
-            config['ten_camp_missed_vac'] = {'color': ['#FFB32D', '#2DA810', '#45E490', '#048AFF'],
-                                                'chart':{'type':"area", 'stacking':'percent'}
-                                            };
-
-            // =========================== Filter Menu Item Clicked For Campaign Type =========================
-            $(".campaign-type").click(function (event) {
-                event.preventDefault();
-                var target = $(this).data('url');
-                var chartDataType = $(target).data('chart_type');
-                var targetCont = "chart-"+ target;
-                var ajaxUrl = "ajax_camp_statistics_main";
-                var campaigns = $("#filterCampaign").val();
-                var regions = $("#filterRegion").val();
-                var provinces = $("#filterProvince").val();
-                var districts = $("#filterDistrict").val();
-
-                $('.'+target).show();
-                var postData = {'campType': $(this).text(),
-                                'chartType': target,
-                                'campaigns':campaigns,
-                                'regions' : regions,
-                                'provinces': provinces,
-                                'districts': districts,
-                                'chartDataType': chartDataType
-                               };
-                $.ajax({
-                    url: Routing.generate(ajaxUrl),
-                    data: postData,
-                    type: 'POST',
-                    success: function (data) {
-                        //console.log(data);
-                        var jsonData = JSON.parse(data);
-
-                        myChartWrapper(config[target].chart,
-                            targetCont, JSON.stringify(jsonData[target]),
-                            config[target].titles, null, config[target].color);
-                        $('.'+target).hide();
-                    },
-                    cache: false
-                });
-
-                //alert($(this).text()+" and "+$(this).data('url') + " and " + target);
-            })
-
-            //============================== Tree Menu ========================================
-            var checkElement = $('.menu-open .treeview-menu');
-            if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
-                //Get the parent menu
-                var parent = checkElement.parents('ul').first();
-                //Close all open menus within the parent
-                var ul = parent.find('ul:visible').slideUp(500);
-                //Remove the menu-open class from the parent
-                ul.removeClass('menu-open');
-                //Get the parent li
-                var parent_li = checkElement.parent("li");
-
-                //Open the target menu and add the menu-open class
-                checkElement.slideDown(500, function () {
-                    //Add the class active to the parent li
-                    checkElement.addClass('menu-open');
-                    //parent.find('li.active').removeClass('active');
-                    parent_li.addClass('active');
-                    //Fix the layout in case the sidebar stretches over the height of the window
-                    //_this.layout.fix();
-                });
-            }
-
-            // =============================== End of Tree Menu ==================================
-
-            $('.loading, .loading-top').hide();
-
-            // =============================== Load the charts for the first time ================
-
-            {#myPieChartWrapper('chart-pie_chart_1camp', '{{ lastCampPieData|raw }}', null, ['#FFFF00', '#C99900', '#FF0000'], null, 'donut', 'small');#}
-            {#myChartWrapper({'type':"column"}, "chart-column_chart_1camp", '{{ lastCampVacData|raw }}',#}
-                {#{'yTitle':null, 'xTitle':null}, {'enabled':false}, ['#ffb32d'], null, null, '%');#}
-
-            // Second Row of the last campaign charts
-            myPieChartWrapper('chart-recovered_all', '{{ recoveredAll|raw }}', null,
-                ['#048AFF', '#45E490', '#2DA810', '#FFB32D'], null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_absent', '{{ recoveredAbsent|raw }}', null,
-                ['#048AFF', '#45E490', '#2DA810', '#FFFF00'], null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_nss', '{{ recoveredNSS|raw }}', null,
-                ['#048AFF', '#45E490', '#2DA810', '#9C800E'], null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_refusal', '{{ recoveredRefusal|raw }}', null,
-                ['#048AFF', '#45E490', '#2DA810', '#FF0000'], null, 'halfpie', 'small');
-
-            // Last 10 campaign trends
-            myChartWrapper(config['ten_camp_vac'].chart, "chart-ten_camp_vac", '{{ chartVacChild10Camp|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_vac'].color);
-            myChartWrapper(config['ten_camp_missed'].chart, "chart-ten_camp_missed", '{{ chartMissed10Camp|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_missed'].color);
-            myChartWrapper(config['ten_camp_missed_type'].chart, "chart-ten_camp_missed_type", '{{ chartMissedType10camp|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_missed_type'].color);
-            // last 10 campaign stack charts
-            myChartWrapper(config['ten_camp_absent'].chart, "chart-ten_camp_absent", '{{ tenCampAbsent|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_absent'].color);
-            myChartWrapper(config['ten_camp_nss'].chart, "chart-ten_camp_nss", '{{ tenCampNSS|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss'].color);
-            myChartWrapper(config['ten_camp_refusal'].chart, "chart-ten_camp_refusal", '{{ tenCampRefusal|raw }}',
-                {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal'].color);
-            // last 10 campaign area chart
-            myChartWrapper(config['ten_camp_missed_vac'].chart, "chart-ten_camp_missed_vac", '{{ last10CampRecovered|raw }}',
-                {'yTitle':null, 'xTitle':null}, null,
-               config['ten_camp_missed_vac'].color);
-
-            // ============================== End loading of the charts ==========================
-            $('#filterDistrict').change(function () {
-                //$('.btn-cluster').hide();
-                var districts = $('#filterDistrict option:selected');
-
-                var selectedDistricts = [];
-                $(districts).each(function (index, districts) {
-
-                    selectedDistricts.push([$(districts).val()]);
-                });
-
-                if(selectedDistricts.length === 1) {
-                    var districtId = $('#filterDistrict').val();
-                    //console.log(districtId[0].indexOf("HR"));
-                    if(districtId[0].indexOf("HR") == -1) {
-                        var url = Routing.generate('cluster_main', {'district': districtId})
-                        $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> Clusters' data for " +
-                            $('#filterDistrict option:selected').attr('label'));
-                        $('.btn-cluster').attr("href", url);
-                        //$('.btn-cluster').show();
-                    }
-                } else {
-                    $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> For clusters' data click here!");
-                    $('.btn-cluster').attr("href", Routing.generate('cluster_main'));
-                }
-            })
-
-            $('#filterButton').click(function () {
-
-                var campaigns = $('#filterCampaign').val();
-
-                var region = $('#filterRegion').val();
-
-                var provinces = $('#filterProvince').val();
-
-                var districts = $('#filterDistrict').val();
-
-                // check if a user didn't select anything, then return
-                if(campaigns === null || campaigns === undefined) {
-                    window.alert("Please select at least one campaign");
-                    return;
-                }
-
-                var data = {'campaign':campaigns, 'region':region, 'province': provinces, 'district': districts};
-
-                $('.loading, .loading-top').show();
-
-
-                $.ajax({
-                    url: Routing.generate('ajax_filter_main'),
-                    data: data,
-                    type: 'POST',
-                    success: function (data) {
-                        console.log(data);
-                        var jsonData = JSON.parse(data);
-                        // set new title for the row
-                        var title = jsonData.campaign === 0?"No data for the selected campaign":jsonData.campaign+" Camapign Data";
-                        $('.campaign-title').html(title);
-
-                        // Second Row of the last campaign charts
-                        myPieChartWrapper('chart-recovered_all', JSON.stringify(jsonData.recoveredAll), null,
-                            ['#048AFF', '#45E490', '#2DA810', '#FFB32D'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_absent', JSON.stringify(jsonData.recoveredAbsent), null,
-                            ['#048AFF', '#45E490', '#2DA810', '#FFFF00'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_nss', JSON.stringify(jsonData.recoveredNSS), null,
-                            ['#048AFF', '#45E490', '#2DA810', '#9C800E'], null, 'halfpie', 'small');
-                        myPieChartWrapper('chart-recovered_refusal', JSON.stringify(jsonData.recoveredRefusal), null,
-                            ['#048AFF', '#45E490', '#2DA810', '#FF0000'], null, 'halfpie', 'small');
-
-                        // Last 10 campaign trends
-                        myChartWrapper(config['ten_camp_vac'].chart, "chart-ten_camp_vac", JSON.stringify(jsonData.chartVacChild10Camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_vac'].color);
-                        myChartWrapper(config['ten_camp_missed'].chart, "chart-ten_camp_missed",  JSON.stringify(jsonData.chartMissed10Camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_missed'].color);
-                        myChartWrapper(config['ten_camp_missed_type'].chart, "chart-ten_camp_missed_type", JSON.stringify(jsonData.chartMissedType10camp),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_missed_type'].color);
-                        // last 10 campaign stack charts
-                        myChartWrapper(config['ten_camp_absent'].chart, "chart-ten_camp_absent", JSON.stringify(jsonData.tenCampAbsent),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_absent'].color);
-                        myChartWrapper(config['ten_camp_nss'].chart, "chart-ten_camp_nss", JSON.stringify(jsonData.tenCampNSS),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_nss'].color);
-                        myChartWrapper(config['ten_camp_refusal'].chart, "chart-ten_camp_refusal", JSON.stringify(jsonData.tenCampRefusal),
-                            {'yTitle':null, 'xTitle':null}, null, config['ten_camp_refusal'].color);
-                        // last 10 campaign area chart
-                        myChartWrapper(config['ten_camp_missed_vac'].chart, "chart-ten_camp_missed_vac", JSON.stringify(jsonData.last10CampRecovered),
-                            {'yTitle':null, 'xTitle':null}, null,
-                            config['ten_camp_missed_vac'].color);
-
-                        $('.loading, .loading-top').hide();
-                    },
-                    cache: false
-                });
-
-            })
-        });
-
-
-    </script>
+    <script src="{{ asset('custom_js_css/common-dash.js') }}"></script>
+    <script src="{{ asset('custom_js_css/config-main.js') }}"></script>
 {% endblock %}

@@ -281,14 +281,12 @@ class AdminDataAjaxController extends Controller
         // Default function name, it will change based on the selected filter
         $functionRegion = 'regionAgg';
         $functionCampaignsStatistics= "campaignsStatistics";
-        $functionCampaignStatistics = "campaignStatistics";
         $secondParam = array();
 
         if($districts !== null && count($districts)>0) {
             $type = "District";
             $functionRegion = 'districtAggByCampaignDistrict';
             $functionCampaignsStatistics = $functionCampaignsStatistics."ByDistrict";
-            $functionCampaignStatistics = $functionCampaignStatistics."ByDistrict";
             $category[0] = ['column' => 'DCODE', 'substitute' => 'District'];
 
             $subTitle = "for selected districts";
@@ -297,7 +295,6 @@ class AdminDataAjaxController extends Controller
             if(array_search("VHR", $districts) > -1 || array_search('HR', $districts) > -1 || array_search('Non-V/HR districts', $districts) > -1) {
                 $functionRegion = $functionRegion.'Risk';
                 $functionCampaignsStatistics = $functionCampaignsStatistics."Risk";
-                $functionCampaignStatistics = $functionCampaignStatistics."Risk";
                 $nonVhrIndex = array_search('Non-V/HR districts', $districts);
                 $subTitle = "for selected province's HR/VHR districts";
                 $newParam['risk'] = $districts;
@@ -305,7 +302,6 @@ class AdminDataAjaxController extends Controller
                 if($nonVhrIndex>-1) {
                     $functionRegion = $functionRegion.'Null';
                     $functionCampaignsStatistics = $functionCampaignsStatistics."Null";
-                    $functionCampaignStatistics = $functionCampaignStatistics."Null";
                     $subTitle = "for selected province's Non HR/VHR districts";
                 }
 
@@ -315,16 +311,16 @@ class AdminDataAjaxController extends Controller
             $type = "Province";
             $functionRegion = "provinceAggByCampaignProvince";
             $functionCampaignsStatistics = $functionCampaignsStatistics."ByProvince";
-            $functionCampaignStatistics = $functionCampaignStatistics."ByProvince";
             $category[0] = ['column' => 'PCODE', 'substitute' => 'Province'];
             $secondParam = $provinces;
             $subTitle = "for selected provinces";
         } else if($regions !== null && count($regions) > 0) {
             $functionRegion = $functionRegion."ByCampaignRegion";
             $functionCampaignsStatistics = $functionCampaignsStatistics."ByRegion";
-            $functionCampaignStatistics = $functionCampaignStatistics."ByRegion";
             $secondParam = $regions;
             $subTitle = "for selected regions";
+        } else if(count($selectedCampaignIds) == 1) {
+            $subTitle = null;
         }
 
         //$regionAdminData = $charts->chartData('CoverageData', 'regionAgg', $campaignIds);
@@ -359,7 +355,7 @@ class AdminDataAjaxController extends Controller
 
         // Ten campaign missed recovery charts
         $tenCampMissedRecovered = $charts->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining', 'RecoveredDay4'=>'Day4', 'Recovered3Days'=>'3Days' ],
+            ['TotalRemaining'=>'Remaining', 'RecoveredDay4'=>'Day5', 'Recovered3Days'=>'3Days' ],
             $tenCampAdminData);
         $tenCampMissedRecovered['title'] = "Missed Children Recovery Camp/Revisit";
         $tenCampMissedRecovered['subTitle'] = $subTitle;
@@ -371,13 +367,13 @@ class AdminDataAjaxController extends Controller
         $tenCampAbsentRecovered['subTitle'] = $subTitle;
 
         $tenCampNSSRecovered = $charts->chartData1Category($category[1],
-            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day4', 'VacNSS3Days'=>'3Days' ],
+            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day5', 'VacNSS3Days'=>'3Days' ],
             $tenCampAdminData);
         $tenCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
         $tenCampNSSRecovered['subTitle'] = $subTitle;
 
         $tenCampRefusalRecovered = $charts->chartData1Category($category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day4', 'VacRefusal3Days'=>'3Days'],
+            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day5', 'VacRefusal3Days'=>'3Days'],
             $tenCampAdminData);
         $tenCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
         $tenCampRefusalRecovered['subTitle'] = $subTitle;
@@ -388,22 +384,22 @@ class AdminDataAjaxController extends Controller
 
 
         // last campaign recovered all type by 3days, 4th day
-        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'Campaign', 'RecoveredDay4'=>'Revisit', 'TotalRemaining'=>'Remaining'],
+        $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'3Days', 'RecoveredDay4'=>'Day5', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRecovered['title'] = "Missed Children Recovery Camp/Revisit";
 
         // last campaign Absent recovered by 3days and 4th day
-        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'Campaign', 'VacAbsentDay4'=>'Revisit', 'RemAbsent'=>'Remaining'],
+        $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'3Days', 'VacAbsentDay4'=>'Day5', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
         $lastCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
 
         // last campaign NSS recovered by 3days and 4th day
-        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'Campaign', 'VacNSSDay4'=>'Revisit', 'RemNSS'=>'Remaining'],
+        $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'3Days', 'VacNSSDay4'=>'Day5', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
         $lastCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
 
         // last campaign Refusal recovered by 3days and 4th day
-        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'Campaign', 'VacRefusalDay4'=>'Revisit', 'RemRefusal'=>'Remaining'],
+        $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'3Days', 'VacRefusalDay4'=>'Day5', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
 

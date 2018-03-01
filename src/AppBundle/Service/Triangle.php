@@ -150,7 +150,7 @@ class Triangle
             if($operation === '+') {
                 $resultArray[$key][$newCol] = $firstOperand + $secondOperand;
             } elseif ($operation === '-') {
-                $resultArray[$key][$newCol] = $firstOperand - $secondOperand;
+                $resultArray[$key][$newCol] = ($firstOperand - $secondOperand) < 0 ? 0 : ($firstOperand - $secondOperand);
             } elseif ($operation === '/') {
                 if($secondOperand !== 0)
                     $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand), 2);
