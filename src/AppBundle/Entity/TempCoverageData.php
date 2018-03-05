@@ -77,6 +77,12 @@ class TempCoverageData
 
     /**
      * @var integer
+     * @ORM\Column(name="no_child_vac_by_tt", type="integer", nullable=true)
+     */
+    private $noChildVacByTT;
+
+    /**
+     * @var integer
      *
      * @ORM\Column(name="no_houses_visited", type="integer", nullable=true)
      */
@@ -109,6 +115,12 @@ class TempCoverageData
      * @ORM\Column(name="no_child_outside_vac", type="integer", nullable=true)
      */
     private $noChildOutsideVac;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="no_vac_nomad", type="integer", nullable=true)
+     */
+    private $noVacNomad;
 
     /**
      * @var integer
@@ -701,6 +713,37 @@ class TempCoverageData
         $this->file = $file;
     }
 
+    /**
+     * @return int
+     */
+    public function getNoChildVacByTT()
+    {
+        return $this->noChildVacByTT;
+    }
+
+    /**
+     * @param int $noChildVacByTT
+     */
+    public function setNoChildVacByTT($noChildVacByTT)
+    {
+        $this->noChildVacByTT = $noChildVacByTT;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNoVacNomad()
+    {
+        return $this->noVacNomad;
+    }
+
+    /**
+     * @param int $noVacNomad
+     */
+    public function setNoVacNomad($noVacNomad)
+    {
+        $this->noVacNomad = $noVacNomad;
+    }
 
 
     /**

@@ -53,23 +53,7 @@
 {% endblock %}
 
 {% block js_head %}
-    {#{{ parent() }}#}
-    {#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
-    {#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
-    {#<script type="text/javascript">#}
-        {#$(document).ready( function () {#}
-            {#$('#test_ajax').click(function () {#}
-                {#alert("Hello this is clicked");#}
-                {#$.ajax({#}
-                    {#url: Routing.generate('admin_data_download'),#}
-                    {#context: document.body#}
-                {#}).done(function() {#}
-                    {#alert("Success!")#}
-                {#});#}
-            {#})#}
-
-        {#})#}
-    {#</script>#}
+    {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment-with-locales.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -83,11 +67,6 @@
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-
-
-    <!-- AdminLTE App -->
-
-
 {% endblock %}
 
 {% block js %}

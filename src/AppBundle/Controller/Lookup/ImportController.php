@@ -317,7 +317,7 @@ class ImportController extends Controller
                             // path to that entity
                             $entityPath = "AppBundle\\Entity\\" . $column;
                             // get the object of that entity by id of that column (should be id)
-                            $entityCol = $em->getRepository($entityPath)->find($newData);
+                            $entityCol = $em->getRepository($entityPath)->findOneById($newData);
                             // so in this case (if the column is entity), update the newdata to be an object
                             $newData = $entityCol;
                         }
@@ -461,11 +461,12 @@ class ImportController extends Controller
         $colsExcel = $importer->cleanExcelColumns($uploadedFileInfo['columns']);
 
         // check if the columns were not matching with database or if the columns header were not there.
-        if($colsExcel < $colsEntity) {
+        if(count($colsExcel) < count($colsEntity)) {
+
             $this->addFlash("error", "The uploaded file doesn't have all the required information, 
             the file has been deleted. Please upload the correct file");
 
-            if($colsExcel < $uploadedFileInfo['columns'])
+            if(count($colsExcel) < count($uploadedFileInfo['columns']))
                 $this->addFlash('warning', "The uploaded file doesn't have columns headers, or some of the 
                 columns headers are incorrect. Please upload the file with correct headers that match the information in
                 the database");
@@ -476,7 +477,7 @@ class ImportController extends Controller
             // redirect it to the upload page
             return false;
 
-        } elseif ($colsExcel > $colsEntity)
+        } elseif (count($colsExcel) > count($colsEntity))
             $this->addFlash("warning", "The uploaded file have more columns, please map all the columns
             correctly, map the extra columns with Exclude this field");
 

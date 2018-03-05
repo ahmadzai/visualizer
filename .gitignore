@@ -27,3 +27,4 @@ web/template/documentation
 web/maps
 pivot
 dia
+web/data_files/*

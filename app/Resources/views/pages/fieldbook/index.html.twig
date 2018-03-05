@@ -272,6 +272,7 @@
     <link rel="stylesheet" href="{{ asset('custom_js_css/custom-style.css') }}">
 {% endblock %}
 {% block js_head %}
+    {{ parent() }}
     <script src="{{ asset('template/bower_components/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
