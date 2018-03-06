@@ -445,15 +445,19 @@ function myPieChart(settings) {
         plot.pie.dataLabels.format = '<b>{point.percentage:.1f}%</b>';
         options.chart.margin = -20;
         if(settings.legend) {
-            options.chart.marginRight = 60;
+            //options.chart.marginRight = 60;
             options.legend = {
-                align: 'right',
-                verticalAlign: 'top',
-                layout: 'vertical',
-                y: 50,
+                itemDistance: 8,
+                padding: 0,
+                margin:0,
+                // align: 'right',
+                // verticalAlign: 'top',
+                // layout: 'vertical',
+                // y: 50,
                 itemStyle: {
                     fontWeight: 'normal',
-                    fontSize: '90%'
+                    fontSize: '90%',
+
                 }
             }
         }
