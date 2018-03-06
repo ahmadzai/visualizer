@@ -65,8 +65,8 @@ class MainController extends Controller
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 //        $category = [['column'=>'Region'], ['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']]];
         $campaignIds = $settings->lastFewCampaigns('CatchupData');
-        $source = $charts->chartData('CoverageData', 'campaignsStatisticsByDistrict', [21], [3302]);
-        $second = $charts->chartData('CatchupData', 'campaignsStatisticsByDistrict', [21], [3302]);
+        $source = $charts->chartData('CoverageData', 'campaignsStatisticsByRegion', [22], ['ER']);
+        $second = $charts->chartData('CatchupData', 'campaignsStatisticsByRegion', [22], ['ER']);
 
 //        $tenCampData=$triangle->triangulateCustom([$source,
 //            ['data'=>$second, 'indexes'=>['RegMissed', 'TotalRecovered']],

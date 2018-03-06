@@ -527,9 +527,12 @@ class MainAjaxController extends Controller
         $tenCampMissedChildChart['subTitle'] = $subTitle;
 
         // 10 campaign missed recovered all reasons
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['TotalRemaining', 'cRegMissed'], '-', 'cDisc');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['TotalRemaining', 'cTotalRecovered'], '-', 'RemTotal');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['TotalRemaining', 'cRegMissed'],
+                                                  '-', 'cDisc', 'cRegMissed');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['TotalRemaining', 'cTotalRecovered'],
+                                                                                '-', 'RemTotal');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'], '-',
+                                                                                    'FinalTotalRemaining');
         $tenCampMissedTypeChart = $charts->chartData1Category($category[1],
             [   'cDisc'=>'Discrep',
                 'FinalTotalRemaining'=>'Remaining',
@@ -555,9 +558,12 @@ class MainAjaxController extends Controller
         $last10CampRecovered['subTitle'] = $subTitle;
 
         // 10 campaign stack/percent chart for recovering absent during camp/catchup
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemAbsent', 'cRegAbsent'], '-', 'cDisc');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemAbsent', 'cVacAbsent'], '-', 'RemTotal');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'], '-', 'FinalRemAbsent');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemAbsent', 'cRegAbsent'],
+                                                    '-', 'cDisc', 'cRegMissed');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemAbsent', 'cVacAbsent'],
+                                                                      '-', 'RemTotal');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'],
+                                                           '-', 'FinalRemAbsent');
         $tenCampAbsentChart = $charts->chartData1Category($category[1],
             ['cDisc'=>'Discrep',
                 'FinalRemAbsent'=>'Remaining',
@@ -569,9 +575,12 @@ class MainAjaxController extends Controller
         $tenCampAbsentChart['subTitle'] = $subTitle;
 
         // 10 campaign stack/percent chart for recovering NSS during camp/catchup
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemNSS', 'cRegNSS'], '-', 'cDisc');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemNSS', 'cVacNSS'], '-', 'RemTotal');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'], '-', 'FinalRemNSS');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemNSS', 'cRegNSS'],
+                                                        '-', 'cDisc', 'cRegNSS');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemNSS', 'cVacNSS'],
+                                                                 '-', 'RemTotal');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'],
+                                                              '-', 'FinalRemNSS');
         $tenCampNSSChart = $charts->chartData1Category($category[1],
             ['cDisc'=>'Discrep',
                 'FinalRemNSS'=>'Remaining',
@@ -583,9 +592,12 @@ class MainAjaxController extends Controller
         $tenCampNSSChart['subTitle'] = $subTitle;
 
         // 10 campaign stack/percent chart for recovering NSS during camp/catchup
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemRefusal', 'cRegRefusal'], '-', 'cDisc');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemRefusal', 'cVacRefusal'], '-', 'RemTotal');
-        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'], '-', 'FinalRemRefusal');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampData, ['RemRefusal', 'cRegRefusal'],
+                                                             '-', 'cDisc', 'cRegMissed');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemRefusal', 'cVacRefusal'],
+                                                                        '-', 'RemTotal');
+        $tenCampMissedCalcData = Triangle::mathOps($tenCampMissedCalcData, ['RemTotal', 'cDisc'],
+                                                                '-', 'FinalRemRefusal');
         $tenCampRefusalChart = $charts->chartData1Category($category[1],
             ['cDisc'=>'Discrep',
                 'FinalRemRefusal'=>'Remaining',
@@ -612,9 +624,12 @@ class MainAjaxController extends Controller
              'prefix'=>'c']
             ], 'joinkey');
         // last campaign recovered all type by 3days, 4th day and catchup
-        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['TotalRemaining', 'cRegMissed'], '-', 'cDisc');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['TotalRemaining', 'cTotalRecovered'], '-', 'RemTotal');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['TotalRemaining', 'cRegMissed'],
+                                                        '-', 'cDisc', 'cRegMissed');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['TotalRemaining', 'cTotalRecovered'],
+                                                                                 '-', 'RemTotal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'],
+                                                         '-', 'FinalTotalRemaining');
         $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'3Days',
                                                 'RecoveredDay4'=>'Day5',
                                                 'cTotalRecovered'=>'Catchup',
@@ -626,9 +641,12 @@ class MainAjaxController extends Controller
         $lastCampRecovered['subTitle'] = $subTitle;
 
         // last campaign Absent recovered by 3days and 4th day and catchup
-        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemAbsent', 'cRegAbsent'], '-', 'cDisc');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemAbsent', 'cVacAbsent'], '-', 'RemTotal');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'], '-', 'FinalRemAbsent');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemAbsent', 'cRegAbsent'],
+                                                            '-', 'cDisc', 'cRegMissed');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemAbsent', 'cVacAbsent'],
+                                                                      '-', 'RemTotal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'],
+                                                                 '-', 'FinalRemAbsent');
         $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'3Days',
                                                         'VacAbsentDay4'=>'Day5',
                                                         'cVacAbsent'=>'Catchup',
@@ -640,9 +658,12 @@ class MainAjaxController extends Controller
         $lastCampAbsentRecovered['subTitle'] = $subTitle;
 
         // last campaign NSS recovered by 3days and 4th day and catchup
-        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemNSS', 'cRegNSS'], '-', 'cDisc');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemNSS', 'cVacNSS'], '-', 'RemTotal');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'], '-', 'FinalRemNSS');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemNSS', 'cRegNSS'],
+                                                         '-', 'cDisc', 'cRegNSS');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemNSS', 'cVacNSS'],
+                                                                              '-', 'RemTotal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'],
+                                                                           '-', 'FinalRemNSS');
         $lastCampNSSRecovered = $charts->pieData([  'VacNSS3Days'=>'3Days',
                                                     'VacNSSDay4'=>'Day5',
                                                     'cVacNSS'=>'Catchup',
@@ -654,9 +675,12 @@ class MainAjaxController extends Controller
         $lastCampNSSRecovered['subTitle'] = $subTitle;
 
         // last campaign Refusal recovered by 3days and 4th day and catchup
-        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemRefusal', 'cRegRefusal'], '-', 'cDisc');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemRefusal', 'cVacRefusal'], '-', 'RemTotal');
-        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'], '-', 'FinalRemRefusal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampData, ['RemRefusal', 'cRegRefusal'],
+                                                                '-', 'cDisc', 'cRegRefusal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemRefusal', 'cVacRefusal'],
+                                                                        '-', 'RemTotal');
+        $lastCampRecoveredData = Triangle::mathOps($lastCampRecoveredData, ['RemTotal', 'cDisc'],
+                                                                  '-', 'FinalRemRefusal');
         $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'3Days',
                                                         'VacRefusalDay4'=>'Day5',
                                                         'cVacRefusal'=>'Catchup',

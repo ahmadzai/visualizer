@@ -112,14 +112,14 @@ function loadData(config) {
             $('.campaign-title').html(title);
 
             // Second Row of the last campaign charts
-            myPieChartWrapper('chart-recovered_all', JSON.stringify(jsonData.recoveredAll), null,
-                config['recovered_all'].color, null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_absent', JSON.stringify(jsonData.recoveredAbsent), null,
-                config['recovered_absent'].color, null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_nss', JSON.stringify(jsonData.recoveredNSS), null,
-                config['recovered_nss'].color, null, 'halfpie', 'small');
-            myPieChartWrapper('chart-recovered_refusal', JSON.stringify(jsonData.recoveredRefusal), null,
-                config['recovered_refusal'].color, null, 'halfpie', 'small');
+            myPieChartWrapper('chart-recovered_all', JSON.stringify(jsonData.recoveredAll), true,
+                config['recovered_all'].color, null, 'halfpie');
+            myPieChartWrapper('chart-recovered_absent', JSON.stringify(jsonData.recoveredAbsent), true,
+                config['recovered_absent'].color, null, 'halfpie');
+            myPieChartWrapper('chart-recovered_nss', JSON.stringify(jsonData.recoveredNSS), true,
+                config['recovered_nss'].color, null, 'halfpie');
+            myPieChartWrapper('chart-recovered_refusal', JSON.stringify(jsonData.recoveredRefusal), true,
+                config['recovered_refusal'].color, null, 'halfpie');
 
             // Last 10 campaign trends
             myChartWrapper(config['ten_camp_vac'].chart, "chart-ten_camp_vac", JSON.stringify(jsonData.chartVacChild10Camp),
@@ -140,6 +140,10 @@ function loadData(config) {
                 {'yTitle':null, 'xTitle':null}, null,
                 config['ten_camp_missed_vac'].color);
 
+            $('.loading, .loading-top').hide();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            alert("Something went wrong, while loading charts data, please try again later\n"+errorThrown);
             $('.loading, .loading-top').hide();
         },
         cache: false

@@ -383,27 +383,32 @@ class AdminDataAjaxController extends Controller
         // Last campaign missed by reason
         $lastCampMissedPieChart = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $lastCampAdminData);
         $lastCampMissedPieChart['title'] = "Missed Children By Reason";
+        //$lastCampMissedPieChart['subTitle'] = $subTitle;
 
 
         // last campaign recovered all type by 3days, 4th day
         $lastCampRecovered = $charts->pieData(['Recovered3Days'=>'3Days', 'RecoveredDay4'=>'Day5', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRecovered['title'] = "Missed Children Recovery Camp/Revisit";
+        $lastCampRecovered['subTitle'] = $subTitle;
 
         // last campaign Absent recovered by 3days and 4th day
         $lastCampAbsentRecovered = $charts->pieData(['VacAbsent3Days'=>'3Days', 'VacAbsentDay4'=>'Day5', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
         $lastCampAbsentRecovered['title'] = "Absent Children Recovery Camp/Revisit";
+        $lastCampAbsentRecovered['subTitle'] = $subTitle;
 
         // last campaign NSS recovered by 3days and 4th day
         $lastCampNSSRecovered = $charts->pieData(['VacNSS3Days'=>'3Days', 'VacNSSDay4'=>'Day5', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
         $lastCampNSSRecovered['title'] = "NSS Children Recovery Camp/Revisit";
+        $lastCampNSSRecovered['subTitle'] = $subTitle;
 
         // last campaign Refusal recovered by 3days and 4th day
         $lastCampRefusalRecovered = $charts->pieData(['VacRefusal3Days'=>'3Days', 'VacRefusalDay4'=>'Day5', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRefusalRecovered['title'] = "Refusal Children Recovery Camp/Revisit";
+        $lastCampRefusalRecovered['subTitle'] = $subTitle;
 
         // last campaign Refusal recovered by 3days and 4th day
         $last10CampRecovered = $charts->chartData1Category($category[1],
@@ -414,10 +419,12 @@ class AdminDataAjaxController extends Controller
             $tenCampAdminData);
         $last10CampRecovered['title'] = "Recovering Missed Children By Reason During ".$during;
         $last10CampRecovered['subTitle'] = $subTitle;
+        $last10CampRecovered['subTitle'] = $subTitle;
 
         // last campaign vaccine wastage by region
         $lastCampVaccineData = $charts->chartData1Category($category[0], ['VacWastage'=>'Wastage'], $lastCampRegionsData);
         $lastCampVaccineData['title'] = 'Vaccine Wastage';
+        $lastCampVaccineData['subTitle'] = $subTitle;
         //return new Response(json_encode(['func' => $category]));
         // call the static table function fo HtmlTable class
         $table['table'] = HtmlTable::tableForAdminData($lastCampRegionsData, $type);

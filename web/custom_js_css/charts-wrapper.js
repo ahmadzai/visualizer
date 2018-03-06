@@ -312,6 +312,11 @@ function myChart(settings) {
     if(settings.hasOwnProperty('legend')) {
         options['legend'] = {
             enabled: settings.legend.enabled,
+            itemStyle: {
+                fontWeight: 'normal',
+                fontSize: '100%'
+            }
+
             //align: settings.legend.position.hAlign,
             //verticalAlign: settings.legend.position.vAlign,
         }
@@ -321,6 +326,10 @@ function myChart(settings) {
         options['legend'] = {
             align: settings.legend.position.hAlign,
             verticalAlign: settings.legend.position.vAlign,
+            itemStyle: {
+                fontWeight: 'normal',
+                fontSize: '100%'
+            }
         }
     }
 
@@ -331,7 +340,7 @@ function myChart(settings) {
     // =========================================================================
     // set the dynamic title
     options['title'] = {text: dataObj.title, marginBottom:5, style: {fontSize:'100%'}};
-    options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
+    options['subtitle'] = {text: dataObj.subTitle, y:20, style: {fontSize:'80%'}};
     // set the dynamic categories
     if(dataObj.categories === null || dataObj.categories === undefined) {
         options.xAxis.categories = [];
@@ -417,13 +426,14 @@ function myPieChart(settings) {
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-                enabled: (settings.legend === true) ? false : true,
+                enabled: settings.legend !== true,
                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                 style: {
                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                     fontSize: '90%'
                 }
             },
+            showInLegend: settings.legend,
         }
     }
 
@@ -431,8 +441,22 @@ function myPieChart(settings) {
         plot.pie.startAngle = -90;
         plot.pie.endAngle = 90;
         plot.pie.center = ['50%', '75%'];
-        plot.pie.dataLabels.distance = -50;
-        plot.pie.dataLabels.format = '<b>{point.name}</b>';
+        plot.pie.dataLabels.distance = -30;
+        plot.pie.dataLabels.format = '<b>{point.percentage:.1f}%</b>';
+        options.chart.margin = -20;
+        if(settings.legend) {
+            options.chart.marginRight = 60;
+            options.legend = {
+                align: 'right',
+                verticalAlign: 'top',
+                layout: 'vertical',
+                y: 50,
+                itemStyle: {
+                    fontWeight: 'normal',
+                    fontSize: '90%'
+                }
+            }
+        }
     } else if(settings.type === 'donut') {
         plot.pie.innerSize = 100;
         plot.pie.depth = 45;
@@ -444,10 +468,6 @@ function myPieChart(settings) {
         plot.pie.dataLabels.format = '<b>{point.name}</b>';
         options.chart.margin = 0;
         options.chart.marginTop = 15;
-    }
-    if(settings.type === 'halfpie') {
-        options.chart.margin = -20;
-
     }
 
     options['plotOptions'] = plot;
@@ -481,7 +501,7 @@ function myPieChart(settings) {
     // =========================================================================
     // set the dynamic title
     options['title'] = {text: dataObj.title, style: {fontSize:'100%'}};
-    options['subtitle'] = {text: dataObj.subTitle, style: {fontSize:'80%'}};
+    options['subtitle'] = {text: dataObj.subTitle, y:20, style: {fontSize:'80%'}};
     // set the data/series
     if(dataObj.series === null || dataObj.series === undefined) {
         options.series = [];

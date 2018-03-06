@@ -403,7 +403,9 @@ class Charts
 
                 $value = 0;
                 foreach($indicators as $key=>$indicator) {
-                    $data_indicators[] = array('name'=>$indicator, 'y'=>array_sum(array_column($data, $key)));
+                    //if(array_sum(array_column($data, $key)) !== 0)
+                        $data_indicators[] = array('name'=>$indicator,
+                                                   'y'=>array_sum(array_column($data, $key)));
                 }
 
 

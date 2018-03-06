@@ -392,27 +392,32 @@ class CatchupDataAjaxController extends Controller
         // Last campaign missed by reason
         $lastCampMissedPieChart = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $lastCampAdminData);
         $lastCampMissedPieChart['title'] = "Remaining Children By Reason";
+        //$lastCampMissedPieChart['subTitle'] = $subTitle;
 
 
         // last campaign recovered all type by 3days, 4th day
         $lastCampRecovered = $charts->pieData(['TotalRecovered'=>'Recovered', 'TotalRemaining'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRecovered['title'] = "Missed Children Recovery in Catchup";
+        $lastCampRecovered['subTitle'] = $subTitle;
 
         // last campaign Absent recovered by 3days and 4th day
         $lastCampAbsentRecovered = $charts->pieData(['VacAbsent'=>'Recovered', 'RemAbsent'=>'Remaining'],
             $lastCampAdminData);
         $lastCampAbsentRecovered['title'] = "Absent Children Recovery in Catchup";
+        $lastCampAbsentRecovered['subTitle'] = $subTitle;
 
         // last campaign NSS recovered by 3days and 4th day
         $lastCampNSSRecovered = $charts->pieData(['VacNSS'=>'Recovered', 'RemNSS'=>'Remaining'],
             $lastCampAdminData);
         $lastCampNSSRecovered['title'] = "NSS Children Recovery in Catchup";
+        $lastCampNSSRecovered['subTitle'] = $subTitle;
 
         // last campaign Refusal recovered by 3days and 4th day
         $lastCampRefusalRecovered = $charts->pieData(['VacRefusal'=>'Recovered', 'RemRefusal'=>'Remaining'],
             $lastCampAdminData);
         $lastCampRefusalRecovered['title'] = "Refusal Children Recovery in Catchup";
+        $lastCampRefusalRecovered['subTitle'] = $subTitle;
 
         $last10CampRecovered = $charts->chartData1Category($category[1],
             ['TotalRemaining'=>'Remaining',
@@ -421,10 +426,12 @@ class CatchupDataAjaxController extends Controller
                 'VacRefusal'=>'Recovered Refusal'],
             $tenCampAdminData);
         $last10CampRecovered['title'] = "Recovering Missed Children By Reason";
+        $last10CampRecovered['subTitle'] = $subTitle;
 
         // last campaign vaccine wastage by region
         $lastCampTotalRemaining = $charts->chartData1Category($category[0], ['TotalRemaining'=>'Remaining'], $lastCampRegionsData);
         $lastCampTotalRemaining['title'] = 'Remaining children after catchup';
+        $lastCampTotalRemaining['subTitle'] = $subTitle;
         //return new Response(json_encode(['func' => $category]));
 
         //$table['table'] = $this->createTable($lastCampRegionsData, $type);

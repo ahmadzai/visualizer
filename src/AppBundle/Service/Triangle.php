@@ -116,11 +116,14 @@ class Triangle
                 }
             } else { // if the second array count was 0
                 foreach ($resultArray as $sourceIndex => $sourceValue) {
-                    if(count($indexes) > 0 && $indexes !== 'all')
+                    if(count($indexes) > 0 && $indexes !== 'all') {
                         foreach ($indexes as $index) {
                             $newIndex = $prefix === false ? $index : $prefix . $index;
                             $resultArray[$sourceIndex][$newIndex] = null;
                         }
+                    } else {
+                        $resultArray[$sourceIndex]['noCatchup'] = true;
+                    }
                 }
             }
         }
@@ -135,9 +138,10 @@ class Triangle
      * @param array $columns (firstCol is the first operand always)
      * @param string $operation (+, -, /)
      * @param string $newCol (indexName to store new info)
+     * @param string $checkCol (name of the column to check first before operation)
      * @return array
      */
-    public static function mathOps(array $data, array $columns, $operation, $newCol) {
+    public static function mathOps(array $data, array $columns, $operation, $newCol, $checkCol = 'colName') {
         $resultArray = $data;
         foreach($resultArray as $key=>$item) {
             // the first column should be the first operand
@@ -150,7 +154,13 @@ class Triangle
             if($operation === '+') {
                 $resultArray[$key][$newCol] = $firstOperand + $secondOperand;
             } elseif ($operation === '-') {
-                $resultArray[$key][$newCol] = ($firstOperand - $secondOperand) < 0 ? 0 : ($firstOperand - $secondOperand);
+
+                if($checkCol !== 'colName' && ( $item[$checkCol] === null || $item[$checkCol] == 0)) {
+                    $resultArray[$key][$newCol] = null;
+                } else {
+                    $resultArray[$key][$newCol] = ($firstOperand - $secondOperand) < 0 ? 0 :
+                                                            ($firstOperand - $secondOperand);
+                }
             } elseif ($operation === '/') {
                 if($secondOperand !== 0)
                     $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand), 2);

@@ -106,6 +106,10 @@ function makeAjaxRequest(calcType, config) {
 
             $('.loading, .loading-top').hide();
         },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+                alert("Something went wrong, while loading charts data, please try again later\n"+errorThrown);
+                $('.loading, .loading-top').hide();
+        },
         cache: false
     });
 
