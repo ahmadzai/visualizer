@@ -43,7 +43,11 @@ class AdminDataRepository extends EntityRepository {
                   sum(adm.receivedVials) as RVials, sum(adm.usedVials) as UVials,
                   ((sum(adm.usedVials)*20 - (sum(adm.child011)+sum(adm.child1259)+sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal)))/(sum(adm.usedVials)*20) * 100) as VaccWastage,
                   sum(adm.targetPopulation)/4 as TargetPopulation,
-                  sum(adm.child011)+SUM(adm.child1259)+sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal) as VaccChild,
+                  sum(adm.child011)+
+                  SUM(adm.child1259)+
+                  sum(adm.vaccAbsent)+
+                  sum(adm.vaccSleep)+
+                  sum(adm.vaccRefusal) as VaccChild,
                   sum(adm.child011) as Child011, sum(adm.child1259) as Child1259,
                   sum(adm.vaccAbsent)+sum(adm.vaccSleep)+sum(adm.vaccRefusal) as MissedVaccinated,
                   sum(

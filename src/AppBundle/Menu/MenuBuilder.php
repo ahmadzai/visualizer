@@ -94,6 +94,27 @@ class MenuBuilder implements ContainerAwareInterface
             $menu['Catchup Data']['Data Entry']->setAttribute('icon', 'fa-table');
         }
 
+        //------------------------------------------------------- Catchup Data ---------------------------------------
+        $menu->addChild("ICN Monitoring TPM", array('uri'=>'#'))->setExtra('info', 'ICN Monitoring Report');
+        $menu['ICN Monitoring TPM']->setAttribute('icon','fa-database');
+        $menu['ICN Monitoring TPM']->setAttribute('sub_menu_icon', 'fa-angle-left');
+
+        // Sub menu (child of Catchup Data
+        // SMs Performance
+        $menu['ICN Monitoring TPM']->addChild("SMs Performance", array('route'=>'icn_monitoring_sm',
+                                                                       'extras'=>['route'=>'cluster_icn_monitoring_sm']
+                                                                      ))->setExtra('info', 'Report');
+        $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class'=>'treeview-menu'));
+        $menu['ICN Monitoring TPM']['SMs Performance']->setAttribute('icon',' fa-bar-chart');
+
+        // CCSs Performance
+        $menu['ICN Monitoring TPM']->addChild("CCSs Performance", array('route'=>'icn_monitoring_ccs',
+                                                                        'extras'=>['route'=>'cluster_icn_monitoring_ccs']
+                                                                        ))->setExtra('info', 'Report');
+        $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class'=>'treeview-menu'));
+        $menu['ICN Monitoring TPM']['CCSs Performance']->setAttribute('icon',' fa-bar-chart');
+
+
         // ------------------------------------------------------- End of Catchup Data --------------------------------
         if($adminRole)
             $menu->addChild('other', array('route'=>'homepage'))->setAttribute('icon','fa-link');

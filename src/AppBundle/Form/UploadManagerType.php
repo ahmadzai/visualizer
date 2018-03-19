@@ -32,8 +32,22 @@ class UploadManagerType extends AbstractType
             'choices' => $tables,
             'placeholder' => 'Select a table to add',
             'attr' => array('class'=>'form-control select2'),))
-            ->add('enabled', CheckboxType::class, ['label'=>'Enable for Upload?'])
-            ->add('hasTemp', CheckboxType::class, ['label'=>'Has Temp Table?']);
+            ->add('enabled', ChoiceType::class, [
+                'label' => 'Enable upload? ',
+                'attr' => ['class'=>'form-control'],
+                'choices'=>array(
+                'Yes' => 1,
+                'No' => 0,
+                )
+            ])
+            ->add('hasTemp', ChoiceType::class, [
+                'label'=> 'Has Temp Table?',
+                'attr' => ['class'=>'form-control'],
+                'choices'=>array(
+                'Yes' => 1,
+                'No' => 0,
+                )
+            ]);
 
         $formModifier = function (FormInterface $form, $entity = null) {
             $columns = null === $entity ? array() : $this->importer->listColumns($entity);

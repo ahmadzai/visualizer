@@ -536,15 +536,16 @@ function myHeatMap(data, container, tooltipTitle) {
 
 
         options.title = {
-            text: dataObj.title === undefined? 'Heatmap': dataObj.title,
+            text: (dataObj.title === undefined || dataObj.title === null)? 'Heatmap': dataObj.title,
             style: {
                 fontSize: '110%'
             }
         };
 
+        console.log(dataObj);
         options.xAxis = [
             {
-                categories: dataObj.xAxis === undefined? [] : dataObj.xAxis,
+                categories: (dataObj.xAxis === undefined || dataObj.xAxis === null) ? [] : dataObj.xAxis,
 
                 labels: {
                     style: {
@@ -557,7 +558,7 @@ function myHeatMap(data, container, tooltipTitle) {
             {
                 linkedTo: 0,
                 opposite: true,
-                categories: dataObj.xAxis === undefined? [] : dataObj.xAxis,
+                categories: (dataObj.xAxis === undefined || dataObj.xAxis === null) ? [] : dataObj.xAxis,
                 labels: {
                     style: {
                         fontSize:'80%'
@@ -583,7 +584,7 @@ function myHeatMap(data, container, tooltipTitle) {
         options.exporting.buttons.contextButton.menuItems.push(labelMenu);
 
         options.yAxis = {
-            categories: dataObj.yAxis === undefined? [] : dataObj.yAxis,
+            categories: (dataObj.yAxis === undefined || dataObj.yAxis === null) ? [] : dataObj.yAxis,
             title: null,
             labels: {
                 style: {
@@ -598,23 +599,23 @@ function myHeatMap(data, container, tooltipTitle) {
         };
 
         options.colorAxis = {
-            min: dataObj.stops !== null ? dataObj.stops.minValue : 5,
-            max: dataObj.stops !== null ? dataObj.stops.maxValue : 20,
+            min: (dataObj.stops === undefined || dataObj.stops === null) ? 5: dataObj.stops.minValue,
+            max: (dataObj.stops === undefined || dataObj.stops === null) ? 20: dataObj.stops.maxValue,
             tickInterval: 1,
             startOnTick: false,
             endOnTick: false,
             stops: [
                 [
                     0,
-                    dataObj.stops !== null? dataObj.stops.minColor: "#43AB0D"
+                    (dataObj.stops === undefined || dataObj.stops === null) ? "#43AB0D": dataObj.stops.minColor
                 ],
                 [
-                    dataObj.stops !== null? dataObj.stops.midStop: 0.5,
-                    dataObj.stops !== null? dataObj.stops.midColor:"#ffd927"
+                    (dataObj.stops === undefined || dataObj.stops === null) ? 0.5:dataObj.stops.midStop,
+                    (dataObj.stops === undefined || dataObj.stops === null) ? "#ffd927":dataObj.stops.midColor
                 ],
                 [
                     1,
-                    dataObj.stops !== null? dataObj.stops.maxColor:"#FF0000"
+                    (dataObj.stops === undefined || dataObj.stops === null) ? "#FF0000": dataObj.stops.maxColor
                 ]
             ]
         };

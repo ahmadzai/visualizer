@@ -345,30 +345,13 @@ class Importer
      * @param $data
      * @param $mappedArray
      * @param ImportedFiles $fileId
+     * @param array $uniqueCols
+     * @param array $entityCols
      * @return array|bool|null
      */
-    public function processData($className, $data, $mappedArray, $fileId) {
+    public function processData($className, $data, $mappedArray, $fileId, $uniqueCols = null, $entityCols = null) {
 
         $readyData = $this->replaceKeys($data, $mappedArray);
-
-        //$entity = new $className();
-
-//        $doctrineExtractor = new DoctrineExtractor($this->_em->getMetadataFactory());
-//
-//        $properties = $doctrineExtractor->getProperties($className);
-//
-//        $propertyTypes = array();
-//
-//        foreach($properties as $property) {
-//            $propertyTypes[$property] = $doctrineExtractor->getTypes($className, $property);
-//        }
-//
-//        $properties = null;
-
-        //$this->truncate($entity);
-        //dump($mappedArray);
-        //dump($data);
-        //die;
 
         $exceptions = null;
         $batchSize = 50;
@@ -377,26 +360,72 @@ class Importer
 
         $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
 
+
+        $types = $this->_em->getClassMetadata($className)->fieldMappings;
+
         foreach($readyData as $index => $dataRow) {
 
-            $entity = new $className();
-            $types = $this->_em->getClassMetadata($className)->fieldMappings;
+            //$entity = new $className();
+            $entity = null;
+            if($fileId === -1) {
+
+                $criteria = array();
+                // make a criteria from the columns set in upload manager to
+                // define a row as a unique
+                // loop over those columns
+                foreach ($uniqueCols as $uniqueCol) {
+                    $uniqueCol = $this->remove_($uniqueCol, true);
+                    // prepare the get function of those columns
+                    // initialize the array ['columnName'] = value (value from the data)
+                    $datum = trim($dataRow[lcfirst($uniqueCol)]);
+                    if(strpos(strtolower($uniqueCol), 'date') !== false) {
+                        $datum = \DateTimeImmutable::createFromFormat('Y-m-d', $datum);
+                    }
+                    $criteria[lcfirst($uniqueCol)] = $datum;
+                }
+
+                // now create the object of target entity
+                // first check if the record is already there by criteria
+                // we created above
+                $entity = $this->_em->getRepository($className)->findOneBy($criteria);
+
+            }
+            if($entity === null)
+                $entity = new $className();
+
             foreach($dataRow as $col=>$value) {
 
-                $func = "set".ucfirst($col);
-                $dataValue = trim($value) == ''?null:trim($value);
-                $type = $types[$col]['type'];
+                $func = "set" . ucfirst($col);
+                $dataValue = trim($value) == '' ? null : trim($value);
+                $type = in_array(lcfirst($col), $entityCols) === true ? 'integer': $types[$col]['type'];
 
-                if($type == "integer" || $type == "float" || $type == "double") {
-                    if( preg_match("/^-?[0-9]+$/", $dataValue) ||
+                if ($type == "integer" || $type == "float" || $type == "double") {
+                    if (preg_match("/^-?[0-9]+$/", $dataValue) ||
                         preg_match('/^-?[0-9]+(\.[0-9]+)?$/', $dataValue) ||
-                        is_numeric($dataValue)) {
+                        is_numeric($dataValue)
+                    ) {
                         $dataValue = $dataValue;
                     } else
                         $dataValue = $dataValue === null ? null : 0;
                 }
-                $entity->$func($dataValue);
 
+                if($fileId === -1) {
+                    $isEntityCol = in_array(lcfirst($col), $entityCols);
+                    if ($isEntityCol === true) {
+                        // path to that entity
+                        $entityPath = "AppBundle\\Entity\\" . ucfirst($col);
+                        // get the object of that entity by id of that column (should be id)
+                        $entityCol = $this->_em->getRepository($entityPath)->findOneById($dataValue);
+                        // so in this case (if the column is entity), update the newdata to be an object
+                        $dataValue = $entityCol;
+                    }
+                }
+
+//                if($dataValue == 'Batikot') {
+//                    dump($dataValue);
+//                    die;
+//                }
+                $entity->$func($dataValue);
 
             }
 

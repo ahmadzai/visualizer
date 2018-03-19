@@ -68,6 +68,11 @@ doctrine:
         result_cache_driver:
           type: service
           id: doctrine_cache.providers.result_cache
+        dql:
+            datetime_functions:
+              MONTH: DoctrineExtensions\Query\Mysql\Month
+              YEAR: DoctrineExtensions\Query\Mysql\Year
+
 
 doctrine_cache:
   providers:

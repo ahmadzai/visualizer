@@ -57,7 +57,7 @@ class UploadManager
     protected $enabled;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $hasTemp;
 
@@ -176,7 +176,7 @@ class UploadManager
     /**
      * @param mixed $hasTemp
      */
-    public function setHasTemp($hasTemp)
+    public function setHasTemp($hasTemp=0)
     {
         $this->hasTemp = $hasTemp;
     }

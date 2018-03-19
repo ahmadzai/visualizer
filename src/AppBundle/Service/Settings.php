@@ -145,4 +145,13 @@ class Settings
 
       }
 
+      public function getLastDate($table, $column = 'monitoringDate') {
+          $data = $this->em->createQuery(
+              "SELECT max(tbl.$column) as lastDate FROM AppBundle:$table tbl"
+                )
+              ->getResult(Query::HYDRATE_SCALAR);
+
+          return $data[0]['lastDate'];
+      }
+
 }

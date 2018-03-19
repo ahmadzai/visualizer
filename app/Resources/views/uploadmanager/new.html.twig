@@ -87,18 +87,21 @@
                     </div>
                     <div class="row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                {{ form_row(form.enabled, {'attr': {'class':'minimal', 'tabIndex':5}}) }}
+                                {{ form_row(form.enabled, {'attr': {'tabIndex':5}}) }}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                {{ form_row(form.hasTemp, {'attr': {'class':'minimal', 'tabIndex':6}}) }}
+                                {{ form_row(form.hasTemp, {'attr': {'tabIndex':6}}) }}
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary" value="Create" />
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="submit" class="btn btn-primary form-control" value="Create" />
+                            </div>
                         </div>
 
 

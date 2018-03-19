@@ -685,5 +685,87 @@ class Charts
     }
 
 
+    /**
+     * @param $data
+     * @param $xAxises [col1, col2, ..., coln]
+     * @param $yAxis [col, label]
+     * @param $calcType (percent)
+     * @return array
+     */
+    public function heatMap($data, $xAxises, $yAxis, $calcType = '') {
+
+        $yAxises = array();
+        foreach ($data as $datum) {
+            $yAxises[$datum[$yAxis['col']]] = $datum[$yAxis['label']];
+        }
+
+        ksort($yAxises);
+
+        if(is_array($data)) {
+            $rdata = array();
+            foreach ($xAxises as $axise) {
+                $tmp_data = array();
+                $d = array();
+                foreach ($data as $datum) {
+
+                    $index = $datum[$yAxis['col']];
+                    $index_value = $datum[$axise];
+
+                    if($calcType == 'percent') {
+
+                        $index_value = $index_value === null ? null: round(($index_value * 100), 0);
+                    }
+                    $d[$index] = [$axise=>$index_value];
+                    $tmp_data = $d;
+                }
+
+                $rdata[$axise] = $tmp_data;
+            }
+
+            $newRows = array();
+            $r = 0;
+//
+//            dump($rdata);
+//            dump($yAxises);
+//            dump($xAxises);
+//            die;
+            foreach($yAxises as $yAxis=>$val) {
+
+                $newRow = array();
+
+                foreach($xAxises as $xAxis) {
+
+                    $c = 0;
+                     foreach($rdata as $datum) {
+
+                        if(array_key_exists($yAxis, $datum)) {
+                            $value = $datum[$yAxis];
+                            if(array_key_exists($xAxis, $value)) {
+                                $newRow[] = [$c, $r, ($value[$xAxis] === null) ? null :
+                                    $calcType == 'percent' ? $value[$xAxis] :
+                                        (int) $value[$xAxis]];
+                            }
+                        }
+                        $c ++;
+                    }
+
+                }
+                $newRows[] = $newRow;
+                $r++;
+
+            }
+
+            $heatMapData = array();
+            foreach($newRows as $row) {
+                foreach ($row as $ro)
+                    $heatMapData[] = $ro;
+            }
+
+            return array('yAxis'=>array_values($yAxises), 'xAxis'=> $xAxises, 'data'=> $heatMapData);
+
+        }
+    }
+
+
 
 }

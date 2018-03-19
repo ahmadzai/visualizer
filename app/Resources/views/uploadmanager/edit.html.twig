@@ -1,24 +1,5 @@
 {% extends 'template.html.twig' %}
 
-{#{% block body %}#}
-    {#<h1>Uploadmanager edit</h1>#}
-
-    {#{{ form_start(edit_form) }}#}
-        {#{{ form_widget(edit_form) }}#}
-        {#<input type="submit" value="Edit" />#}
-    {#{{ form_end(edit_form) }}#}
-
-    {#<ul>#}
-        {#<li>#}
-            {#<a href="{{ path('uploadmanager_index') }}">Back to the list</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#{{ form_start(delete_form) }}#}
-                {#<input type="submit" value="Delete">#}
-            {#{{ form_end(delete_form) }}#}
-        {#</li>#}
-    {#</ul>#}
-{#{% endblock %}#}
 {% block content %}
     <div class="row">
         <div class="col-xs-12">
@@ -106,18 +87,21 @@
                     </div>
                     <div class="row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                {{ form_row(edit_form.enabled, {'attr': {'class':'minimal', 'tabIndex':5}}) }}
+                                {{ form_row(edit_form.enabled, {'attr': {'tabIndex':5}}) }}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                {{ form_row(edit_form.hasTemp, {'attr': {'class':'minimal', 'tabIndex':6}}) }}
+                                {{ form_row(edit_form.hasTemp, {'attr': {'tabIndex':6}}) }}
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary" value="Update" />
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="submit" class="btn btn-primary form-control" value="Update" />
+                            </div>
                         </div>
 
 

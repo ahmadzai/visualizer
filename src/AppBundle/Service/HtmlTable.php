@@ -347,4 +347,100 @@ class HtmlTable
         return$row;
     }
 
+
+    /**
+     * @param $data
+     * @param $headerVars (col, label, calc)
+     * @return string
+     */
+    public static function tableODK($data, $headerVars) {
+        $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped table-responsive\">";
+        $th = "<thead>";
+        foreach ($headerVars as $var) {
+            $header = array_key_exists('label', $var) ? $var['label'] : ucfirst($var);
+            $th .= "<th>" . $header . "</th>";
+        }
+        $th .="</thead>";
+
+        $rows = "<tbody>";
+        foreach($data as $datum) {
+            $tr = "<tr>";
+            foreach ($headerVars as $headerVar) {
+                $index = array_key_exists('col', $headerVar) ? $headerVar['col'] : $headerVar;
+                $calc = array_key_exists('calc', $headerVar) ? $headerVar['calc'] : 'normal';
+                $value = is_numeric($datum[$index]) ? round($datum[$index]*100, 0):$datum[$index];
+                $color = '#CCCCCC';
+                $finalValue = is_numeric($value) ? $value.'%': $value;
+
+                if($calc === 'normal') {
+                    $color = self::numToColor($datum[$index], 0, 1);
+                } else if($calc === 'rev') {
+                    $color = self::numToColor($datum[$index], 0, 1);
+                } else if($calc === 'none') {
+                    $value = is_numeric($value) ? round($value/100, 0): $value;
+                    $finalValue = $value;
+                }
+
+                $align = is_numeric($value) ? 'text-align:center' : '';
+                $color = $value === null ? '#CCCCCC' : $color;
+
+                $tr .= "<td style=\"background-color: $color; $align\">" . $finalValue . "</td>";
+            }
+            $tr .= "</tr>";
+            $rows .= $tr;
+        }
+
+        $rows .= "</tbody>";
+
+        return $table.$th.$rows."</table>";
+    }
+
+    public static function hslToRgb($h, $s, $l){
+        $r = $b = $g = null;
+        if($s == 0) {
+            $r = $g = $b = $l; // achromatic
+        } else {
+            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+            $p = 2 * $l - $q;
+            $r = self::hue2rgb($p, $q, $h + 1/3);
+            $g = self::hue2rgb($p, $q, $h);
+            $b = self::hue2rgb($p, $q, $h - 1/3);
+        }
+
+        return [floor($r * 255), floor($g * 255), floor($b * 255)];
+    }
+
+    public static function numToColor($i, $min, $max) {
+        $ratio = $i;
+        if ($min> 0 || $max < 1) {
+            if ($i < $min) {
+                $ratio = 0;
+            } else if ($i > $max) {
+                $ratio = 1;
+            } else {
+                $range = $max - $min;
+                $ratio = ($i-$min) / $range;
+            }
+        }
+
+        // as the function expects a value between 0 and 1, and red = 0° and green = 120°
+        // we convert the input to the appropriate hue value
+        $hue = $ratio * 1.2 / 3.60;
+
+        // we convert hsl to rgb (saturation 100%, lightness 50%)
+        $rgb = self::hslToRgb($hue, 1, .5);
+        // we format to css value and return
+        return 'rgb('.$rgb[0].','.$rgb[1].','.$rgb[2].')';
+    }
+
+    public static function hue2rgb($p, $q, $t){
+        if($t < 0) $t += 1;
+        if($t > 1) $t -= 1;
+        if($t < 1/6) return $p + ($q - $p) * 6 * $t;
+        if($t < 1/2) return $q;
+        if($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+        return $p;
+    }
+
+
 }

@@ -108,16 +108,22 @@ class ImportController extends Controller
                     $excelData = $data['excel_data'];
                     $flashMessage = "";
                     $file_id = -1;
+                    $table = 'table';
                     if ($hasTemp) {
                         $entityClass = "\\AppBundle\\Entity\\Temp" . $importer->remove_($entity, true);
                         $flashMessage = ", please synchronize it with main table!";
                         $file_id = $fileId;
+                        $table = 'temporary table';
                     }
+
+                    // get entity and unique cols
+                    $uniqueCols = $uploadMgr->getUniqueColumns();
+                    $entityCols = $uploadMgr->getEntityColumns();
                     //Todo: Uploading directly without having a temporary table
-                    $result = $importer->processData($entityClass, $excelData, $mappedArray, $file_id);
+                    $result = $importer->processData($entityClass, $excelData, $mappedArray, $file_id, $uniqueCols, $entityCols);
 
                     if ($result === true) {
-                        $this->addFlash("success", "The data has been successfully shifted to the temporary table" . $flashMessage);
+                        $this->addFlash("success", "The data has been successfully shifted to the $table " . $flashMessage);
                     } else {
                         $message = "<ul>";
                         foreach ($result as $exception) {
@@ -131,8 +137,8 @@ class ImportController extends Controller
                     // set the columns in session that are required for sync function
                     $session = $request->getSession();
                     $session->set("requiredCols", $mappedArray);
-                    $session->set("uniqueCols", $uploadMgr->getUniqueColumns());
-                    $session->set("entityCols", $uploadMgr->getEntityColumns());
+                    $session->set("uniqueCols", $uniqueCols);
+                    $session->set("entityCols", $entityCols);
                     //Todo: also check the uniqueness for those entities who don't have temp
                     if($hasTemp)
                         return $this->redirectToRoute("sync_data_view", ['entity' => $entity, 'fileId' => $fileId]);

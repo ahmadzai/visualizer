@@ -63,35 +63,16 @@ class MainController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
-//        $category = [['column'=>'Region'], ['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']]];
-        $campaignIds = $settings->lastFewCampaigns('CatchupData');
-        $source = $charts->chartData('CoverageData', 'campaignsStatisticsByRegion', [22], ['ER']);
-        $second = $charts->chartData('CatchupData', 'campaignsStatisticsByRegion', [22], ['ER']);
 
-//        $tenCampData=$triangle->triangulateCustom([$source,
-//            ['data'=>$second, 'indexes'=>['RegMissed', 'TotalRecovered']],
-//            ['data'=>$second, 'indexes'=>['RegMissed', 'TotalRecovered'], 'prefix'=>'C']
-//            ], 'joinkey');
-        $tenCampData=Triangle::triangulateCustom([$source,
-            ['data'=>$second, 'indexes'=>'all', 'prefix'=>'c']
-        ], 'joinkey');
+        $source = $charts->chartData('OdkSmMonitoring', 'aggByProvince', ['SR']);
 
-        //$tenCampData = Triangle::mathOps($tenCampData, ['TotalRemaining', 'TotalRecovered'],'-', 'RemAfterCatchup');
-//
-//        $otherFunction = $charts->chartData('CoverageData', 'campaignsStatistics', [$campaignIds[0]['id']]);
-//
-//        $data['single'] = $tenCampData;
-//        $data['plural'] = $otherFunction;
-//        //$data = $charts->pieData(['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $tenCampData);
-//        //$data['title'] = 'Missed Children During Last 10 Campaigns';
-////        $campaignIds = $settings->lastFewCampaigns('CoverageData', 10);
-////        $data = $charts->chartData('CoverageData', 'clusterAgg', $campaignIds, 1510);
-////        $data = $charts->clusterDataForHeatMap($data, 'RemAbsent', ['column'=>'CID', 'substitute' => 'CName']);
-////        $data['title'] = 'Missed Children During Last 10 Campaigns';
-        $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('AppBundle:Campaign')->selectCampaignBySource("CoverageData");
-////            ->selectDistrictByProvince(6);
-        return new Response(json_encode($tenCampData));
+        $xAxises = ['attendance', 'profile', 'tallying'];
+        $yAxis = ['col'=>'pcode', 'label'=>'provinceName'];
+
+        //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
+
+
+        return new Response(json_encode($source));
 
 //        return $this->render("pages/test.html.twig",
 //            ['testData' => json_encode([])]);
