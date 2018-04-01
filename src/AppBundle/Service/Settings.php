@@ -27,7 +27,7 @@ class Settings
 
     /***
      * @param $months array of months
-     * @return order_months
+     * @return array
      */
     function orderMonths($months) {
         $order_months = array();
@@ -145,6 +145,11 @@ class Settings
 
       }
 
+    /**
+     * @param $table
+     * @param string $column
+     * @return mixed
+     */
       public function getLastDate($table, $column = 'monitoringDate') {
           $data = $this->em->createQuery(
               "SELECT max(tbl.$column) as lastDate FROM AppBundle:$table tbl"
@@ -153,5 +158,50 @@ class Settings
 
           return $data[0]['lastDate'];
       }
+
+    /**
+     * @param string $table
+     * @param string $column
+     * @return array
+     */
+    public function getMonths($table, $column = 'monitoringDate') {
+        $data = $this->em->createQuery(
+            "SELECT YEAR(tbl.$column) AS monthYear, MONTH(tbl.$column) as monthNo, 
+                  MONTHNAME(tbl.$column) as monthName FROM AppBundle:$table tbl
+                  GROUP BY monthYear, monthNo ORDER BY tbl.$column DESC "
+        )
+            ->getResult(Query::HYDRATE_SCALAR);
+
+        return $data;
+    }
+
+    /**
+     * @param $source
+     * @return array
+     */
+    public function selectProvinceBySource($source) {
+        $data = $this->em->createQuery(
+            "SELECT Distinct p.id, p.provinceName FROM AppBundle:$source source 
+                  JOIN source.district d JOIN d.province p"
+        )
+            ->getResult(Query::HYDRATE_SCALAR);
+
+        return $data;
+    }
+
+    /**
+     * @param $source
+     * @param $province
+     * @return array
+     */
+    public function selectDistrictBySource($source, $province) {
+        $data = $this->em->createQuery(
+            "SELECT Distinct d.id, d.districtName, p.provinceName, p.id as pid FROM AppBundle:$source source 
+                  JOIN source.district d JOIN d.province p WHERE p.id IN (:prov)"
+        )   ->setParameter("prov", $province)
+            ->getResult(Query::HYDRATE_SCALAR);
+
+        return $data;
+    }
 
 }

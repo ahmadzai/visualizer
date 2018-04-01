@@ -87,6 +87,56 @@ class AjaxFilterController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param $source
+     * @param Settings $settings
+     * @return Response
+     */
+    public function odkFilterAction(Request $request, $source, Settings $settings) {
+
+
+        $months = $settings->getMonths($source);
+
+        $selectedMonth = $months[0]['monthYear']."-".$months[0]['monthNo'];
+
+        $provinces = $settings->selectProvinceBySource($source);
+
+        return $this->render("shared/filter-odk.html.twig", ['months' => $months, 'provinces' => $provinces, 'selectedMonth' => [$selectedMonth]]);
+
+    }
+
+    /**
+     * @Route("filter/odk_district", name="filter_district_odk")
+     * @param Request $request
+     * @return Response
+     */
+    public function odkFilterDistrictAction(Request $request, Settings $settings) {
+
+        $province = $request->get('province');
+        $source = $request->get('source');
+
+        $district = $settings->selectDistrictBySource($source, $province);
+
+        $response = array();
+        foreach ($province as $prov) {
+            $temp = array();
+            $pname = '';
+            foreach ($district as $option) {
+
+                if($option['pid'] == $prov[0]) {
+                    $pname = $option['provinceName'];
+                    $temp[] = array('label' => $option['districtName'], 'value'=>$option['id']);
+                }
+            }
+
+            $response[] = array('label'=>$pname, 'children'=>$temp);
+        }
+
+        return new Response(json_encode($response));
+
+    }
+
+    /**
      * @Route("filter/province", name="filter_province")
      * @param Request $request
      * @return Response
@@ -266,10 +316,44 @@ class AjaxFilterController extends Controller
 
     }
 
+    /**
+     * @Route("filter/odk_cluster", name="filter_cluster_odk")
+     * @param Request $request
+     * @return Response
+     */
+    public function odkFilterClusterAction(Request $request, Settings $settings) {
+
+        $district = $request->get('district');
+        $campaign = $request->get('campaign');
+        $source = $request->get('source');
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $campaigns = array();
+        if(count($campaign) > 0) {
+            foreach($campaign as $item) {
+                $campaigns[] = $item;
+            }
+        }
+
+
+        //return new Response(var_dump($content));
+
+        $data = $em->getRepository('AppBundle:'.$source)
+            ->clustersByDistrictMonth($district, $campaigns);
+
+        return new Response($this->clustersJSON($data, false));
+
+    }
+
     private function clustersJSON($clusters, $firstLoad = true) {
         $subDist = array();
         foreach($clusters as $cluster) {
-            $subDist[] = ($cluster['subDistrict'] === null ? $cluster['districtName'] : $cluster['subDistrict']);
+            if(array_key_exists('subDistrict', $cluster))
+                $subDist[] = ($cluster['subDistrict'] === null ? $cluster['districtName'] : $cluster['subDistrict']);
+            else
+                $subDist[] = $cluster['districtName'];
 
         }
 
@@ -280,7 +364,7 @@ class AjaxFilterController extends Controller
         foreach ($subDist as $sub) {
             $temp = array();
             foreach ($clusters as $option) {
-                if($option['subDistrict'] == $sub) {
+                if(array_key_exists('subDistrict', $option) && $option['subDistrict'] == $sub) {
                     $temp[] = array('label' => $option['clusterNo'], 'value' => $sub."|".$option['clusterNo'], 'selected' => $firstLoad);
                 } else if($option['districtName'] == $sub) {
                     $temp[] = array('label' => $option['clusterNo'], 'value' => $option['clusterNo'], 'selected' => $firstLoad);
@@ -293,6 +377,8 @@ class AjaxFilterController extends Controller
         return json_encode($response);
 
     }
+
+
 
 
 

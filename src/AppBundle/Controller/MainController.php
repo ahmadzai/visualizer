@@ -64,10 +64,12 @@ class MainController extends Controller
      */
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 
-        $source = $charts->chartData('OdkSmMonitoring', 'aggByProvince', ['SR']);
+        //$source = $charts->chartData('OdkSmMonitoring', 'aggByProvince', ['SR']);
 
         $xAxises = ['attendance', 'profile', 'tallying'];
         $yAxis = ['col'=>'pcode', 'label'=>'provinceName'];
+
+        $source = $settings->getMonths("OdkSmMonitoring");
 
         //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
 

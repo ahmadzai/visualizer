@@ -263,8 +263,6 @@ class MainAjaxController extends Controller
             if(count($subDistrictArray) > 0) {
                 foreach($subDistrictArray as $item) {
                     // find the clusters data
-                    $heatMapData[] = $em->getRepository('AppBundle:CoverageData')
-                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
 
                     $adminData = $em->getRepository('AppBundle:CoverageData')
                         ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
@@ -282,6 +280,7 @@ class MainAjaxController extends Controller
 
                 // merge the data of all sub districts
                 $heatMapData = array_merge(...$heatMapData);
+
             }
 
             // if there's no sub district

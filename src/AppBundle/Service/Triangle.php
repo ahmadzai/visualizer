@@ -95,6 +95,9 @@ class Triangle
 
                     }
 
+//                    dump($resultArray);
+//                    die;
+
                     if (!$flagFound)
                         $notFound[] = $sourceIndex;
                 }

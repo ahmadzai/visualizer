@@ -37,7 +37,7 @@ class HtmlTable
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
             $totalVac = (int) $datum['TotalVac'];
-            $coverage = number_format((($totalVac/$target) * 100),
+            $coverage = $target == 0 ? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
             $progress = "<div class=\"progress progress-sm\"
@@ -85,7 +85,7 @@ class HtmlTable
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
             $totalVac = (int) $datum['TotalVac'];
-            $coverage = number_format((($totalVac/$target) * 100),
+            $coverage = $target == 0 ? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
             $progress = "<div class=\"progress progress-sm\"
@@ -133,7 +133,7 @@ class HtmlTable
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
             $totalVac = (int) $datum['TotalRecovered'];
-            $coverage = number_format((($totalVac/$target) * 100),
+            $coverage = $target == 0? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
             $progress = "<div class=\"progress progress-sm\"
@@ -273,7 +273,7 @@ class HtmlTable
                                     <div class=\"c-info-box-content\">
                                         <span class=\"c-info-box-text\">Vac Wastage</span>
                                         <span class=\"c-info-box-number info-coverage\">
-                                            ".number_format($data[0]['VacWastage'],2, '.', ',')."
+                                            ".number_format($data[0]['VacWastage'],2, '.', ',')."%
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -354,7 +354,8 @@ class HtmlTable
      * @return string
      */
     public static function tableODK($data, $headerVars) {
-        $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped table-responsive\">";
+        $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped table-responsive\" 
+                         style=\"width:100%\" '>";
         $th = "<thead>";
         foreach ($headerVars as $var) {
             $header = array_key_exists('label', $var) ? $var['label'] : ucfirst($var);
@@ -375,7 +376,8 @@ class HtmlTable
                 if($calc === 'normal') {
                     $color = self::numToColor($datum[$index], 0, 1);
                 } else if($calc === 'rev') {
-                    $color = self::numToColor($datum[$index], 0, 1);
+                    $colorValue = abs((1-$datum[$index]));
+                    $color = self::numToColor($colorValue, 0.5, 1);
                 } else if($calc === 'none') {
                     $value = is_numeric($value) ? round($value/100, 0): $value;
                     $finalValue = $value;

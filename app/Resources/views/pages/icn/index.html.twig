@@ -2,265 +2,50 @@
 
 {% block content %}
 
-    <script src="{{ asset('charts/highcharts.js') }}"></script>
-    <script src="{{ asset('charts/modules/heatmap.js') }}"></script>
-    <script src="{{ asset('charts/modules/exporting.js') }}"></script>
-    <script src="{{ asset('charts/modules/grouped-categories.js') }}"></script>
-    <!-- Current Row -->
     <div class="row">
         <div class="col-md-12">
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
-                    <h3 class="box-title campaign-title">Data will load soon... </h3>
-                    <span class="badge bg-gray-light" style="font-weight: normal; color:black">Source: Catchup Data</span>
+                    Catchup Data Trends and Analysis, Cluster Level
                     <span class="loading" title="Applying filter" style="margin-left: 12%; display: inline-block;">
                         <img src='{{ asset('filtering.gif')}}' />
                     </span>
-                    <a class="pull-right btn-sm btn-primary btn-cluster"
-                       style="cursor:pointer" target="_blank" href="{{ path("cluster_catchup_data") }}">
-                        <i class="fa fa-mail-forward"></i> For clusters' data click here!
+                    <a href="#" title="Click here for selected months' cumulative result"
+                       class="btn btn-sm btn-primary pull-right btn-cum-res">
+                        Cumulative Result
                     </a>
                 </div>
                 <div class="box-body">
-
-                    <!-- Start of First Row --->
                     <div class="row">
-                    <div class="col-md-9">
-                        <div class="row info-row">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-primary">
-                                     <div class="box-body table-campaign-info">
-                                         <span class="loading" title="Applying filter" style="left: 40%; top: 20px;">
-                                            <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                         </span>
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-primary">
-                                    <span class="filter-loading loading" title="Applying filter">
-                                        <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                    </span>
-                                     <div class="box-body" style="padding: 1px;">
-                                        <div id="chart-remaining_by_reason" style="height: 200px; max-height: 250px;" >
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box-warning box">
+                                        <!-- data-route is required for ajax URL -->
+                                        <div class="box-body route-url" data-route="{{ url }}">
+                                            <!-- data-source is required for the filter-->
+                                            <div id="icn-table" data-source="{{ source }}">
+                                                {{ table|raw }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div class="box box-primary">
-                                    <span class="filter-loading loading" title="Applying filter">
-                                        <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                    </span>
-                                    <div class="box-body" style="padding: 1px;">
-                                        <div id="chart-remaining_all" style="height: 200px; max-height: 250px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <!-- End of First Row --->
-                    <!-- Second Row --->
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="box box-warning">
-                                <span class="filter-loading loading" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body" style="padding: 1px">
-                                    <div id="chart-recovered_all" style="height: 200px; max-height: 250px;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="box box-warning">
-                                <span class="filter-loading loading" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body" style="padding: 1px">
-                                    <div id="chart-recovered_absent" style="height: 200px; max-height: 250px;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="box box-warning">
-                                <span class="filter-loading loading" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body" style="padding: 1px">
-                                    <div id="chart-recovered_nss" style="height: 200px; max-height: 250px;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="box box-warning">
-                                <span class="filter-loading loading" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body" style="padding: 1px">
-                                    <div id="chart-recovered_refusal" style="height: 200px; max-height: 250px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End of second row -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End of Current Campaign Row-->
-    <!-- Start of the 10 Campaign Trends --->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-default bg-gray-light">
-                <div class="box-header with-border">
-                    <h3 class="box-title last10-campaign-title">Last 10 Campaigns' Trend </h3>
-                    <span class="badge bg-gray" style="font-weight: normal">Source: Catchup Data</span>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading" title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-vac_child_10camp" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading " title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-missed_10camp" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading " title="Applying filter">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-missed_type_10camp" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading " title="Applying filter" data-chart_type="absent">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_absent" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading" title="Applying filter" data-chart_type="nss">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_nss" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading" title="Applying filter" data-chart_type="refusal">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_refusal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading ten_camp_absent" title="Applying filter" data-chart_type="absent">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_absent_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading ten_camp_nss" title="Applying filter" data-chart_type="nss">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_nss_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box box-primary">
-                                <span class="filter-loading loading ten_camp_refusal" title="Applying filter" data-chart_type="refusal">
-                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                </span>
-                                <div class="box-body">
-                                    <div id="chart-ten_camp_refusal_normal" style="min-width: 300px; height: 350px; max-width:inherit"></div>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box box-info">
-
-                                <div class="box-body">
-                                    <div id="chart-recovered_10camp" style="min-width: 300px; height: 350px; max-width:inherit">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}
-{% block title %}Catchup Data Dashboard{% endblock %}
+{% block title %}ICN Performance Dashboard{% endblock %}
 {% block header %}
     {% embed 'shared/header.html.twig' %}
         {% block filter %}
             {{ render(controller(
-            'AppBundle:Ajax/AjaxFilter:smallFilter',
-            { 'source': 'CatchupData'}
+            'AppBundle:Ajax/AjaxFilter:odkFilter',
+                { 'source': source }
             ))
             }}
         {% endblock %}
@@ -270,6 +55,7 @@
 {% block css %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('custom_js_css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
 {% endblock %}
 {% block js_head %}
     {{ parent() }}
@@ -278,16 +64,17 @@
     <script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <script  src="{{ asset('template/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
-
     <!-- AdminLTE App -->
     <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
+    <script src="{{ asset('template/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('template/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+
 {% endblock %}
 {% block js %}
-    <script src="{{ asset('custom_js_css/charts-wrapper.js') }}"></script>
     <script src="{{ asset('custom_js_css/common-dash.js') }}"></script>
-    <script src="{{ asset('custom_js_css/config-catchup.js') }}"></script>
+    <script src="{{ asset('custom_js_css/config-icn-tpm.js') }}"></script>
 {% endblock %}

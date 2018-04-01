@@ -35,6 +35,30 @@ class ProvinceController extends Controller
     }
 
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/select", name="province_select")
+     * @Method("GET")
+     */
+    public function allProAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $provinces = $em->getRepository('AppBundle:District')->findAll();
+
+        $select = "<select>";
+        $options = "";
+        foreach ($provinces as $province) {
+            $options .= "<option>".$province->getDistrictName()."</option>";
+        }
+
+        $select = $select.$options;
+        $select .= "</select>";
+
+        return $this->render(':pages:test.html.twig', ['select' => $select]);
+
+
+    }
+
+    /**
      * Creates a new province entity.
      *
      * @Route("/new", name="province_new")

@@ -30,82 +30,41 @@ class CcsPerformController extends Controller
 {
 
     /**
+     * @param Charts $charts
+     * @param Settings $settings
      * @return Response
      * @Route("/icn_monitoring/ccs", name="icn_monitoring_ccs")
      */
-    public function indexAction(Charts $charts) {
+    public function indexAction(Charts $charts, Settings $settings) {
 
-        //$source = $charts->chartData('OdkSmMonitoring', 'aggByProvince', ['SR', 'CR', 'ER', 'SER', 'WR']);
-        //$source = $charts->chartData('OdkSmMonitoring', 'aggByDistrict', [33, 1, 6, 13]);
-        $source = $charts->chartData('OdkCcsMonitoring', 'aggByCluster', [101, 601, 3301]);
+        $months = $settings->getMonths('OdkCcsMonitoring');
+        $month = $months[0]['monthYear']."-".$months[0]['monthNo'];
+        $source = $charts->chartData('OdkCcsMonitoring', 'aggByRegionMonth', [$month]);
+
         $xAxises = [
-            ['col'=>'provinceName', 'label'=>'Province', 'calc'=>'none'],
-            ['col'=>'attendance', 'label'=>'Attendance', 'calc'=>'normal'],
+            ['col'=>'mName', 'label'=>'Month', 'calc'=>'none'],
+            ['col'=>'provinceName', 'label'=>'Prov', 'calc'=>'none'],
+            ['col'=>'attendance', 'label'=>'Attend', 'calc'=>'normal'],
             ['col'=>'profile', 'label'=>'Profile', 'calc'=>'normal'],
             ['col'=>'preparedness', 'label'=>'Prepared', 'calc'=>'normal'],
-            ['col'=>'mentoring', 'label'=>'Mentoring', 'calc'=>'normal'],
-            ['col'=>'trackingMissed', 'label'=>'Tracking Missed', 'calc'=>'normal'],
+            ['col'=>'mentoring', 'label'=>'Mentor', 'calc'=>'normal'],
+            ['col'=>'trackingMissed', 'label'=>'Missed', 'calc'=>'normal'],
             ['col'=>'planningReview', 'label'=>'Planning', 'calc'=>'normal'],
             ['col'=>'mobilization', 'label'=>'Mobiliz', 'calc'=>'normal'],
-            ['col'=>'advocacy', 'label'=>'Advocacy', 'calc'=>'normal'],
-            ['col'=>'iecMaterial', 'label'=>'IEC Mat', 'calc'=>'normal'],
-            ['col'=>'higherSup', 'label'=>'Supervision', 'calc'=>'none'],
+            ['col'=>'advocacy', 'label'=>'Advoc', 'calc'=>'normal'],
+            ['col'=>'iecMaterial', 'label'=>'IEC', 'calc'=>'normal'],
+            ['col'=>'higherSup', 'label'=>'Super', 'calc'=>'none'],
             ['col'=>'refusalChallenge', 'label'=>'Refusal', 'calc'=>'rev'],
             ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
         ];
 
-        $xAxises2 = [
-            ['col'=>'provinceName', 'label'=>'Province', 'calc'=>'none'],
-            ['col'=>'districtName', 'label'=>'District', 'calc'=>'none'],
-            ['col'=>'attendance', 'label'=>'Attendance', 'calc'=>'normal'],
-            ['col'=>'profile', 'label'=>'Profile', 'calc'=>'normal'],
-            ['col'=>'preparedness', 'label'=>'Prepared', 'calc'=>'normal'],
-            ['col'=>'mentoring', 'label'=>'Mentoring', 'calc'=>'normal'],
-            ['col'=>'trackingMissed', 'label'=>'Tracking Missed', 'calc'=>'normal'],
-            ['col'=>'planningReview', 'label'=>'Planning', 'calc'=>'normal'],
-            ['col'=>'mobilization', 'label'=>'Mobiliz', 'calc'=>'normal'],
-            ['col'=>'advocacy', 'label'=>'Advocacy', 'calc'=>'normal'],
-            ['col'=>'iecMaterial', 'label'=>'IEC Mat', 'calc'=>'normal'],
-            ['col'=>'higherSup', 'label'=>'Supervision', 'calc'=>'none'],
-            ['col'=>'refusalChallenge', 'label'=>'Refusal', 'calc'=>'rev'],
-            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
-        ];
 
-        $xAxises3 = [
-            ['col'=>'provinceName', 'label'=>'Province', 'calc'=>'none'],
-            ['col'=>'districtName', 'label'=>'District', 'calc'=>'none'],
-            ['col'=>'cluster', 'label'=>'Cluster', 'calc'=>'none'],
-            ['col'=>'attendance', 'label'=>'Attendance', 'calc'=>'normal'],
-            ['col'=>'profile', 'label'=>'Profile', 'calc'=>'normal'],
-            ['col'=>'preparedness', 'label'=>'Prepared', 'calc'=>'normal'],
-            ['col'=>'mentoring', 'label'=>'Mentoring', 'calc'=>'normal'],
-            ['col'=>'trackingMissed', 'label'=>'Tracking Missed', 'calc'=>'normal'],
-            ['col'=>'planningReview', 'label'=>'Planning', 'calc'=>'normal'],
-            ['col'=>'mobilization', 'label'=>'Mobiliz', 'calc'=>'normal'],
-            ['col'=>'advocacy', 'label'=>'Advocacy', 'calc'=>'normal'],
-            ['col'=>'iecMaterial', 'label'=>'IEC Mat', 'calc'=>'normal'],
-            ['col'=>'higherSup', 'label'=>'Supervision', 'calc'=>'none'],
-            ['col'=>'refusalChallenge', 'label'=>'Refusal', 'calc'=>'rev'],
-            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
-        ];
-
-        $table = HtmlTable::tableODK($source, $xAxises3);
-        return $this->render("pages/icn/clusters.html.twig", ['table'=>$table]);
+        $table = HtmlTable::tableODK($source, $xAxises);
+        return $this->render("pages/icn/index.html.twig",
+                                 ['table'=>$table, 'url'=>'ajax_icn_monitoring_ccs',
+                                     'source'=>'OdkCcsMonitoring']);
     }
 
-    /**
-     * @param null $district
-     * @return Response
-     * @Route("/icn_monitoring/ccs/clusters/{district}", name="cluster_icn_monitoring_ccs", options={"expose"=true})
-     */
-    public  function clusterLevelAction($district = null)
-    {
-        $data = ['district' => $district === null ? 0 : $district];
-        return $this->render("pages/icn/clusters.html.twig",
-            $data
-        );
-
-    }
 
 
 }
