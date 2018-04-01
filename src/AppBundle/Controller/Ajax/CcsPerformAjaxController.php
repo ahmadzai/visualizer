@@ -9,11 +9,9 @@
 namespace AppBundle\Controller\Ajax;
 
 
-use AppBundle\Datatables\CatchupDataDatatable;
+
 use AppBundle\Service\Charts;
 use AppBundle\Service\HtmlTable;
-use AppBundle\Service\Settings;
-use AppBundle\Service\Triangle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
