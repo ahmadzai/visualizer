@@ -18,7 +18,6 @@
 New folder
 features.txt
 phpunit.xml.dist
-composer.lock
 Installation-Linode.md
 .idea
 .idea/*
