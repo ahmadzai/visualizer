@@ -8,10 +8,10 @@ use \DateTime;
 /**
  * AdminData
  *
- * @ORM\Table(name="odk_ccs_monitoring")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OdkCcsRepository")
+ * @ORM\Table(name="int_odk_ccs_monitoring")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\IntOdkCcsRepository")
  */
-class OdkCcsMonitoring
+class IntOdkCcsMonitoring
 {
 
     /**
@@ -78,14 +78,9 @@ class OdkCcsMonitoring
     private $mentoring;
 
     /**
-     * @ORM\Column(type="integer", name="tracking_missed")
+     * @ORM\Column(type="integer", name="fieldbook")
      */
-    private $trackingMissed;
-
-    /**
-     * @ORM\Column(type="integer", name="planning_review")
-     */
-    private $planningReview;
+    private $fieldbook;
 
     /**
      * @ORM\Column(type="integer", name="mobilization")
@@ -93,9 +88,14 @@ class OdkCcsMonitoring
     private $mobilization;
 
     /**
-     * @ORM\Column(type="integer", name="advocacy")
+     * @ORM\Column(type="integer", name="camp_perform")
      */
-    private $advocacy;
+    private $campPerform;
+
+    /**
+     * @ORM\Column(type="integer", name="catchup_perform")
+     */
+    private $catchupPerform;
 
     /**
      * @ORM\Column(type="integer", name="iec_material")
@@ -103,19 +103,34 @@ class OdkCcsMonitoring
     private $iecMaterial;
 
     /**
-     * @ORM\Column(type="integer", name="higher_supv")
-     */
-    private $higherSupv;
-
-    /**
      * @ORM\Column(type="integer", name="refusal_challenge")
      */
     private $refusalChallenge;
 
     /**
+     * @ORM\Column(type="integer", name="higher_supv")
+     */
+    private $higherSupv;
+
+    /**
+     * @ORM\Column(type="integer", name="com_support")
+     */
+    private $comSupport;
+
+    /**
+     * @ORM\Column(type="integer", name="coldchain")
+     */
+    private $coldchain;
+
+    /**
      * @ORM\Column(type="integer", name="access_challenge")
      */
     private $accessChallenge;
+
+    /**
+     * @ORM\Column(type="integer", name="overall_perform")
+     */
+    private $overallPerform;
 
     /**
      * @ORM\Column(name="monitoring_date", type="date")
@@ -157,22 +172,6 @@ class OdkCcsMonitoring
     /**
      * @return mixed
      */
-    public function getCcsName()
-    {
-        return $this->ccsName;
-    }
-
-    /**
-     * @param mixed $ccsName
-     */
-    public function setCcsName($ccsName)
-    {
-        $this->ccsName = $ccsName;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getDcoName()
     {
         return $this->dcoName;
@@ -184,6 +183,22 @@ class OdkCcsMonitoring
     public function setDcoName($dcoName)
     {
         $this->dcoName = $dcoName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCcsName()
+    {
+        return $this->ccsName;
+    }
+
+    /**
+     * @param mixed $ccsName
+     */
+    public function setCcsName($ccsName)
+    {
+        $this->ccsName = $ccsName;
     }
 
     /**
@@ -243,6 +258,14 @@ class OdkCcsMonitoring
     }
 
     /**
+     * @param mixed $preparedness
+     */
+    public function setPreparedness($preparedness)
+    {
+        $this->preparedness = $preparedness;
+    }
+
+    /**
      * @return mixed
      */
     public function getMentoring()
@@ -261,41 +284,17 @@ class OdkCcsMonitoring
     /**
      * @return mixed
      */
-    public function getPlanningReview()
+    public function getFieldbook()
     {
-        return $this->planningReview;
+        return $this->fieldbook;
     }
 
     /**
-     * @param mixed $planningReview
+     * @param mixed $fieldbook
      */
-    public function setPlanningReview($planningReview)
+    public function setFieldbook($fieldbook)
     {
-        $this->planningReview = $planningReview;
-    }
-
-    /**
-     * @param mixed $preparedness
-     */
-    public function setPreparedness($preparedness)
-    {
-        $this->preparedness = $preparedness;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTrackingMissed()
-    {
-        return $this->trackingMissed;
-    }
-
-    /**
-     * @param mixed $trackingMissed
-     */
-    public function setTrackingMissed($trackingMissed)
-    {
-        $this->trackingMissed = $trackingMissed;
+        $this->fieldbook = $fieldbook;
     }
 
     /**
@@ -317,17 +316,33 @@ class OdkCcsMonitoring
     /**
      * @return mixed
      */
-    public function getAdvocacy()
+    public function getCampPerform()
     {
-        return $this->advocacy;
+        return $this->campPerform;
     }
 
     /**
-     * @param mixed $advocacy
+     * @param mixed $campPerform
      */
-    public function setAdvocacy($advocacy)
+    public function setCampPerform($campPerform)
     {
-        $this->advocacy = $advocacy;
+        $this->campPerform = $campPerform;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCatchupPerform()
+    {
+        return $this->catchupPerform;
+    }
+
+    /**
+     * @param mixed $catchupPerform
+     */
+    public function setCatchupPerform($catchupPerform)
+    {
+        $this->catchupPerform = $catchupPerform;
     }
 
     /**
@@ -339,27 +354,11 @@ class OdkCcsMonitoring
     }
 
     /**
-     * @param mixed iecMaterial
+     * @param mixed $iecMaterial
      */
     public function setIecMaterial($iecMaterial)
     {
         $this->iecMaterial = $iecMaterial;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHigherSupv()
-    {
-        return $this->higherSupv;
-    }
-
-    /**
-     * @param mixed $higherSupv
-     */
-    public function setHigherSupv($higherSupv)
-    {
-        $this->higherSupv = $higherSupv;
     }
 
     /**
@@ -381,6 +380,54 @@ class OdkCcsMonitoring
     /**
      * @return mixed
      */
+    public function getHigherSupv()
+    {
+        return $this->higherSupv;
+    }
+
+    /**
+     * @param mixed $higherSupv
+     */
+    public function setHigherSupv($higherSupv)
+    {
+        $this->higherSupv = $higherSupv;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComSupport()
+    {
+        return $this->comSupport;
+    }
+
+    /**
+     * @param mixed $comSupport
+     */
+    public function setComSupport($comSupport)
+    {
+        $this->comSupport = $comSupport;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColdchain()
+    {
+        return $this->coldchain;
+    }
+
+    /**
+     * @param mixed $coldchain
+     */
+    public function setColdchain($coldchain)
+    {
+        $this->coldchain = $coldchain;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getAccessChallenge()
     {
         return $this->accessChallenge;
@@ -393,6 +440,23 @@ class OdkCcsMonitoring
     {
         $this->accessChallenge = $accessChallenge;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOverallPerform()
+    {
+        return $this->overallPerform;
+    }
+
+    /**
+     * @param mixed $overallPerform
+     */
+    public function setOverallPerform($overallPerform)
+    {
+        $this->overallPerform = $overallPerform;
+    }
+
 
     /**
      * @return mixed
@@ -424,8 +488,7 @@ class OdkCcsMonitoring
      * Set district
      *
      * @param \AppBundle\Entity\District $district
-     *
-     * @return OdkCcsMonitoring
+     * @return $this
      */
     public function setDistrict(\AppBundle\Entity\District $district = null)
     {

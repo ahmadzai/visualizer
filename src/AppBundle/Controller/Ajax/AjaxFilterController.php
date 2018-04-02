@@ -97,7 +97,9 @@ class AjaxFilterController extends Controller
 
         $months = $settings->getMonths($source);
 
-        $selectedMonth = $months[0]['monthYear']."-".$months[0]['monthNo'];
+        $selectedMonth = date('Y-m');
+        if(count($months) > 0)
+            $selectedMonth = $months[0]['monthYear']."-".$months[0]['monthNo'];
 
         $provinces = $settings->selectProvinceBySource($source);
 

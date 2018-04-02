@@ -11,7 +11,7 @@ namespace AppBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 
-class OdkCcsRepository extends EntityRepository {
+class IntOdkCcsRepository extends EntityRepository {
 
     /**
      * @param $function
@@ -28,14 +28,17 @@ class OdkCcsRepository extends EntityRepository {
                                 avg(ccs.profile) as profile, 
                                 avg(ccs.preparedness) as preparedness, 
                                 avg(ccs.mentoring) as mentoring, 
-                                avg(ccs.trackingMissed) as trackingMissed, 
-                                avg(ccs.planningReview) as planningReview, 
+                                avg(ccs.fieldbook) as fieldbook,
                                 avg(ccs.mobilization) as mobilization, 
-                                avg(ccs.advocacy) as advocacy, 
+                                avg(ccs.campPerform) as campPerform, 
+                                avg(ccs.catchupPerform) as catchupPerform, 
                                 avg(ccs.iecMaterial) as iecMaterial,
-                                avg(ccs.higherSupv) as higherSup,
                                 avg(ccs.refusalChallenge) as refusalChallenge,
-                                avg(ccs.accessChallenge) as accessChallenge ";
+                                avg(ccs.higherSupv) as higherSup,
+                                avg(ccs.comSupport) as comSupport,
+                                avg(ccs.coldchain) as coldchain,
+                                avg(ccs.accessChallenge) as accessChallenge,
+                                avg(ccs.overallPerform) as overallPerform ";
 
     /**
      * @param $districts
@@ -50,7 +53,7 @@ class OdkCcsRepository extends EntityRepository {
             ->createQuery(
                 "SELECT p.id as pcode,
                 d.id as dcode, d.districtName, ccs.cluster as clusterNo
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND ccs.district IN (:dist)
@@ -77,7 +80,7 @@ class OdkCcsRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (ccs.monitoringDate Between :startDate AND :endDate)
                  AND p.provinceRegion IN (:region)
                 GROUP BY p.id, mdate ORDER BY p.id, ccs.monitoringDate DESC
@@ -102,7 +105,7 @@ class OdkCcsRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                 GROUP BY p.id ORDER BY p.id
@@ -126,7 +129,7 @@ class OdkCcsRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND p.provinceRegion IN (:region)
@@ -152,7 +155,7 @@ class OdkCcsRepository extends EntityRepository {
                 d.id as dcode, d.districtName as districtName, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND d.province IN (:prov)
@@ -180,7 +183,7 @@ class OdkCcsRepository extends EntityRepository {
                 ccs.campaignPhase, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND ccs.district IN (:dist)
@@ -210,7 +213,7 @@ class OdkCcsRepository extends EntityRepository {
                 ccs.campaignPhase, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND ccs.district IN (:dist)
@@ -236,7 +239,7 @@ class OdkCcsRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                 GROUP BY p.id, mdate ORDER BY p.id, ccs.monitoringDate DESC
@@ -261,7 +264,7 @@ class OdkCcsRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND p.provinceRegion IN (:region)
@@ -287,7 +290,7 @@ class OdkCcsRepository extends EntityRepository {
                 d.id as dcode, d.districtName as districtName, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND d.province IN (:prov)
@@ -315,7 +318,7 @@ class OdkCcsRepository extends EntityRepository {
                 ccs.campaignPhase, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND ccs.district IN (:dist)
@@ -345,7 +348,7 @@ class OdkCcsRepository extends EntityRepository {
                 ccs.campaignPhase, 
                 ".self::$DQL.", Month(ccs.monitoringDate) as mdate, 
                 CONCAT(MonthName(ccs.monitoringDate),'-', YEAR(ccs.monitoringDate)) as mName
-                FROM AppBundle:OdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
+                FROM AppBundle:IntOdkCcsMonitoring ccs JOIN ccs.district d JOIN d.province p
                 WHERE (YEAR(ccs.monitoringDate) IN (:year))
                  AND (MONTH(ccs.monitoringDate) IN (:month))
                  AND ccs.district IN (:dist)
@@ -364,7 +367,7 @@ class OdkCcsRepository extends EntityRepository {
     private function getLastDate() {
 
         $data = $this->getEntityManager()->createQuery(
-            "SELECT max(tbl.monitoringDate) as lastDate FROM AppBundle:OdkCcsMonitoring tbl"
+            "SELECT max(tbl.monitoringDate) as lastDate FROM AppBundle:IntOdkCcsMonitoring tbl"
         )
             ->getResult(Query::HYDRATE_SCALAR);
 

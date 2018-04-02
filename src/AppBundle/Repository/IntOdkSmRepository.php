@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 use Doctrine\ORM\Query;
 
-class OdkSmRepository extends EntityRepository {
+class IntOdkSmRepository extends EntityRepository {
 
     /**
      * @param $function
@@ -28,14 +28,16 @@ class OdkSmRepository extends EntityRepository {
                                 avg(sm.attendance) as attendance, 
                                 avg(sm.profile) as profile, 
                                 avg(sm.preparedness) as preparedness, 
-                                avg(sm.trackingMissed) as trackingMissed, 
-                                avg(sm.tallying) as tallying, 
+                                avg(sm.fieldbook) as fieldbook, 
                                 avg(sm.mobilization) as mobilization, 
-                                avg(sm.advocacy) as advocacy, 
-                                avg(sm.iecMaterial) as iecMaterial,
-                                avg(sm.higherSupv) as higherSup,
+                                avg(sm.campPerform) as campPerform, 
+                                avg(sm.catchupPerform) as catchupPerform, 
                                 avg(sm.refusalChallenge) as refusalChallenge,
-                                avg(sm.accessChallenge) as accessChallenge ";
+                                avg(sm.higherSupv) as higherSup,
+                                avg(sm.comSupport) as comSupport,
+                                avg(sm.coldchain) as coldchain,
+                                avg(sm.accessChallenge) as accessChallenge,
+                                avg(sm.overallPerform) as overallPerform ";
 
     /**
      * @param $districts
@@ -50,7 +52,7 @@ class OdkSmRepository extends EntityRepository {
             ->createQuery(
                 "SELECT p.id as pcode,
                 d.id as dcode, d.districtName, sm.cluster as clusterNo
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND sm.district IN (:dist)
@@ -76,7 +78,7 @@ class OdkSmRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate,
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (sm.monitoringDate Between :startDate AND :endDate)
                  AND p.provinceRegion IN (:region)
                 GROUP BY p.id, mdate ORDER BY p.id, sm.monitoringDate DESC
@@ -100,7 +102,7 @@ class OdkSmRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                 GROUP BY p.id ORDER BY p.id
@@ -124,7 +126,7 @@ class OdkSmRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND p.provinceRegion IN (:region)
@@ -150,7 +152,7 @@ class OdkSmRepository extends EntityRepository {
                 d.id as dcode, d.districtName as districtName, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND d.province IN (:prov)
@@ -178,7 +180,7 @@ class OdkSmRepository extends EntityRepository {
                 sm.campaignPhase, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND sm.district IN (:dist)
@@ -209,7 +211,7 @@ class OdkSmRepository extends EntityRepository {
                 sm.campaignPhase, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND sm.district IN (:dist)
@@ -234,7 +236,7 @@ class OdkSmRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                 GROUP BY p.id, mdate ORDER BY p.id, sm.monitoringDate DESC
@@ -258,7 +260,7 @@ class OdkSmRepository extends EntityRepository {
                 "SELECT p.id as pcode, p.provinceRegion as region, p.provinceName as provinceName,
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND p.provinceRegion IN (:region)
@@ -284,7 +286,7 @@ class OdkSmRepository extends EntityRepository {
                 d.id as dcode, d.districtName as districtName, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND d.province IN (:prov)
@@ -312,7 +314,7 @@ class OdkSmRepository extends EntityRepository {
                 sm.campaignPhase, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND sm.district IN (:dist)
@@ -344,7 +346,7 @@ class OdkSmRepository extends EntityRepository {
                 sm.campaignPhase, 
                 ".self::$DQL.", Month(sm.monitoringDate) as mdate, 
                 CONCAT(MonthName(sm.monitoringDate),'-', YEAR(sm.monitoringDate)) as mName
-                FROM AppBundle:OdkSmMonitoring sm JOIN sm.district d JOIN d.province p
+                FROM AppBundle:IntOdkSmMonitoring sm JOIN sm.district d JOIN d.province p
                 WHERE (YEAR(sm.monitoringDate) IN (:year))
                  AND (MONTH(sm.monitoringDate) IN (:month))
                  AND sm.district IN (:dist)
@@ -363,7 +365,7 @@ class OdkSmRepository extends EntityRepository {
     private function getLastDate() {
 
         $data = $this->getEntityManager()->createQuery(
-            "SELECT max(tbl.monitoringDate) as lastDate FROM AppBundle:OdkSmMonitoring tbl"
+            "SELECT max(tbl.monitoringDate) as lastDate FROM AppBundle:IntOdkSmMonitoring tbl"
         )
             ->getResult(Query::HYDRATE_SCALAR);
 

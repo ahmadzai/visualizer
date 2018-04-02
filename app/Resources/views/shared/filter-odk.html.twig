@@ -17,23 +17,6 @@
     </div>
 </li>
 
-{#<li style="padding-top: 8px; padding-bottom: 8px;">#}
-    {#<div class="dropdown">#}
-        {#<label class="col-md-1 control-label" style="color: #ffffff;">Region:</label>#}
-        {#<div class="col-md-10">#}
-            {#<select multiple="multiple" class="multiselect" name="filterRegion" id="filterRegion">#}
-                {#{% for region in regions %}#}
-                    {#<option value="{{ region['provinceRegion'] }}"#}
-
-                            {#{% if app.session.has(region['provinceRegion']) %} selected {% endif %}#}
-
-                    {#>{{ region['provinceRegion'] }}</option>#}
-                {#{% endfor %}#}
-            {#</select>#}
-        {#</div>#}
-    {#</div>#}
-{#</li>#}
-
 <li style="padding: 8px 0px;">
     <div class="dropdown">
         {#<label class="col-md-1 control-label" style="color: #ffffff;">Region:</label>#}
@@ -82,41 +65,7 @@
             numberDisplayed: 2,
             maxHeight: 250
         });
-        // $('#filterRegion').multiselect({
-        //     nonSelectedText: 'Region',
-        //     includeSelectAllOption: true,
-        //     onSelectAll: function() {
-        //         $('#filterDistrict').multiselect('dataprovider', []);
-        //         var region = $('#filterRegion option:selected');
-        //         var selectedRegions = [];
-        //         $(region).each(function (index, region) {
-        //             selectedRegions.push([$(this).val()]);
-        //         });
-        //
-        //         if(selectedRegions.length > 0) {
-        //             var data = {"region": selectedRegions};
-        //             ajaxRequest('filter_province', data, 'filterProvince');
-        //         }
-        //     },
-        //     onDeselectAll: function () {
-        //         //alert('Deselect is called');
-        //         $('#filterDistrict').multiselect('dataprovider', []);
-        //         $('#filterProvince').multiselect('dataprovider', []);
-        //     },
-        //     onChange: function(element, checked) {
-        //         $('#filterDistrict').multiselect('dataprovider', []);
-        //         var region = $('#filterRegion option:selected');
-        //         var selectedRegions = [];
-        //         $(region).each(function (index, region) {
-        //             selectedRegions.push([$(this).val()]);
-        //         });
-        //
-        //         if(selectedRegions.length > 0) {
-        //             var data = {"region": selectedRegions};
-        //             ajaxRequest('filter_province', data, 'filterProvince');
-        //         }
-        //     }
-        // });
+
         $('#filterProvince').multiselect({
             nonSelectedText: 'Province',
             numberDisplayed: 2,

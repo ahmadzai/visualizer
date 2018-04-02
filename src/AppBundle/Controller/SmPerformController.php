@@ -38,7 +38,9 @@ class SmPerformController extends Controller
     public function indexAction(Charts $charts, Settings $settings) {
 
         $months = $settings->getMonths('OdkSmMonitoring');
-        $month = $months[0]['monthYear']."-".$months[0]['monthNo'];
+        $month = date('Y-m');
+        if(count($months) > 0)
+            $month = $months[0]['monthYear']."-".$months[0]['monthNo'];
         $source = $charts->chartData('OdkSmMonitoring', 'aggByRegionMonth', [$month]);
         $xAxises = [
             ['col'=>'mName', 'label'=>'Month', 'calc'=>'none'],
@@ -57,9 +59,64 @@ class SmPerformController extends Controller
          ];
 
         $table = HtmlTable::tableODK($source, $xAxises);
-        return $this->render("pages/icn/index.html.twig",
+        return $this->render("pages/icn/icn_tpm.html.twig",
                                   ['table'=>$table, 'url'=>'ajax_icn_monitoring_sm',
                                    'source'=>'OdkSmMonitoring']);
+    }
+
+    /**
+     * @param Charts $charts
+     * @param Settings $settings
+     * @return Response
+     * @Route("/int_icn_monitoring/sm", name="int_icn_monitoring_sm")
+     */
+    public function internalIndexAction(Charts $charts, Settings $settings) {
+
+        $months = $settings->getMonths('IntOdkSmMonitoring');
+        $month = date('Y-m');
+        if(count($months) > 0)
+            $month = $months[0]['monthYear']."-".$months[0]['monthNo'];
+        $source = $charts->chartData('IntOdkSmMonitoring', 'aggByRegionMonth', [$month]);
+        $xAxises = [
+            ['col'=>'mName', 'label'=>'Month', 'calc'=>'none'],
+            ['col'=>'provinceName', 'label'=>'Prov', 'calc'=>'none'],
+            ['col'=>'attendance', 'label'=>'Attend', 'calc'=>'normal'],
+            ['col'=>'profile', 'label'=>'Profile', 'calc'=>'normal'],
+            ['col'=>'preparedness', 'label'=>'Prepared', 'calc'=>'normal'],
+            ['col'=>'fieldbook', 'label'=>'FB', 'calc'=>'normal'],
+            ['col'=>'mobilization', 'label'=>'Mobiliz', 'calc'=>'normal'],
+            ['col'=>'campPerform', 'label'=>'Camp', 'calc'=>'normal'],
+            ['col'=>'catchupPerform', 'label'=>'Catchup', 'calc'=>'normal'],
+            ['col'=>'refusalChallenge', 'label'=>'Refusal', 'calc'=>'rev'],
+            ['col'=>'higherSup', 'label'=>'Super', 'calc'=>'none'],
+            ['col'=>'comSupport', 'label'=>'Community', 'calc'=>'normal'],
+            ['col'=>'coldchain', 'label'=>'Coldchian', 'calc'=>'normal'],
+            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
+            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'rev'],
+        ];
+
+        $table = HtmlTable::tableODK($source, $xAxises);
+        return $this->render("pages/icn/icn_tpm.html.twig",
+            ['table'=>$table, 'url'=>'int_ajax_icn_monitoring_sm',
+                'source'=>'IntOdkSmMonitoring']);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("icn_monitoring/import", name="import_data_odk")
+     * @return Response
+     */
+    public function importSmCcsDataAction(Request $request) {
+        return $this->render("pages/icn/import.html.twig", []);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("icn_monitoring/import", name="int_import_data_odk")
+     * @return Response
+     */
+    public function internalImportSmCcsDataAction(Request $request) {
+        return $this->render("pages/icn/int_import.html.twig", []);
     }
 
 

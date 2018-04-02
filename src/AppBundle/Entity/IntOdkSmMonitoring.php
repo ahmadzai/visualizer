@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminData
  *
- * @ORM\Table(name="odk_sm_monitoring")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OdkSmRepository")
+ * @ORM\Table(name="int_odk_sm_monitoring")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\IntOdkSmRepository")
  */
-class OdkSmMonitoring
+class IntOdkSmMonitoring
 {
 
     /**
@@ -72,14 +72,9 @@ class OdkSmMonitoring
     private $preparedness;
 
     /**
-     * @ORM\Column(type="integer", name="tracking_missed")
+     * @ORM\Column(type="integer", name="fieldbook")
      */
-    private $trackingMissed;
-
-    /**
-     * @ORM\Column(type="integer", name="tallying")
-     */
-    private $tallying;
+    private $fieldbook;
 
     /**
      * @ORM\Column(type="integer", name="mobilization")
@@ -87,19 +82,14 @@ class OdkSmMonitoring
     private $mobilization;
 
     /**
-     * @ORM\Column(type="integer", name="advocacy")
+     * @ORM\Column(type="integer", name="camp_perform")
      */
-    private $advocacy;
+    private $campPerform;
 
     /**
-     * @ORM\Column(type="integer", name="iec_material")
+     * @ORM\Column(type="integer", name="catchup_perform")
      */
-    private $iecMaterial;
-
-    /**
-     * @ORM\Column(type="integer", name="higher_supv")
-     */
-    private $higherSupv;
+    private $catchupPerform;
 
     /**
      * @ORM\Column(type="integer", name="refusal_challenge")
@@ -107,9 +97,29 @@ class OdkSmMonitoring
     private $refusalChallenge;
 
     /**
+     * @ORM\Column(type="integer", name="higher_supv")
+     */
+    private $higherSupv;
+
+    /**
+     * @ORM\Column(type="integer", name="com_support")
+     */
+    private $comSupport;
+
+    /**
+     * @ORM\Column(type="integer", name="coldchain")
+     */
+    private $coldchain;
+
+    /**
      * @ORM\Column(type="integer", name="access_challenge")
      */
     private $accessChallenge;
+
+    /**
+     * @ORM\Column(type="integer", name="overall_perform")
+     */
+    private $overallPerform;
 
     /**
      * @ORM\Column(type="date", name="monitoring_date")
@@ -247,36 +257,18 @@ class OdkSmMonitoring
     /**
      * @return mixed
      */
-    public function getTrackingMissed()
+    public function getFieldbook()
     {
-        return $this->trackingMissed;
+        return $this->fieldbook;
     }
 
     /**
-     * @param mixed $trackingMissed
+     * @param mixed $fieldbook
      */
-    public function setTrackingMissed($trackingMissed)
+    public function setFieldbook($fieldbook)
     {
-        $this->trackingMissed = $trackingMissed;
+        $this->fieldbook = $fieldbook;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getTallying()
-    {
-        return $this->tallying;
-    }
-
-    /**
-     * @param mixed $tallying
-     */
-    public function setTallying($tallying)
-    {
-        $this->tallying = $tallying;
-    }
-
-
 
     /**
      * @return mixed
@@ -297,49 +289,33 @@ class OdkSmMonitoring
     /**
      * @return mixed
      */
-    public function getAdvocacy()
+    public function getCampPerform()
     {
-        return $this->advocacy;
+        return $this->campPerform;
     }
 
     /**
-     * @param mixed $advocacy
+     * @param mixed $campPerform
      */
-    public function setAdvocacy($advocacy)
+    public function setCampPerform($campPerform)
     {
-        $this->advocacy = $advocacy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIecMaterial()
-    {
-        return $this->iecMaterial;
-    }
-
-    /**
-     * @param mixed $iecMaterial
-     */
-    public function setIecMaterial($iecMaterial)
-    {
-        $this->iecMaterial = $iecMaterial;
+        $this->campPerform = $campPerform;
     }
 
     /**
      * @return mixed
      */
-    public function getHigherSupv()
+    public function getCatchupPerform()
     {
-        return $this->higherSupv;
+        return $this->catchupPerform;
     }
 
     /**
-     * @param mixed $higherSupv
+     * @param mixed $catchupPerform
      */
-    public function setHigherSupv($higherSupv)
+    public function setCatchupPerform($catchupPerform)
     {
-        $this->higherSupv = $higherSupv;
+        $this->catchupPerform = $catchupPerform;
     }
 
     /**
@@ -361,6 +337,54 @@ class OdkSmMonitoring
     /**
      * @return mixed
      */
+    public function getHigherSupv()
+    {
+        return $this->higherSupv;
+    }
+
+    /**
+     * @param mixed $higherSupv
+     */
+    public function setHigherSupv($higherSupv)
+    {
+        $this->higherSupv = $higherSupv;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComSupport()
+    {
+        return $this->comSupport;
+    }
+
+    /**
+     * @param mixed $comSupport
+     */
+    public function setComSupport($comSupport)
+    {
+        $this->comSupport = $comSupport;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColdchain()
+    {
+        return $this->coldchain;
+    }
+
+    /**
+     * @param mixed $coldchain
+     */
+    public function setColdchain($coldchain)
+    {
+        $this->coldchain = $coldchain;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getAccessChallenge()
     {
         return $this->accessChallenge;
@@ -373,6 +397,23 @@ class OdkSmMonitoring
     {
         $this->accessChallenge = $accessChallenge;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOverallPerform()
+    {
+        return $this->overallPerform;
+    }
+
+    /**
+     * @param mixed $overallPerform
+     */
+    public function setOverallPerform($overallPerform)
+    {
+        $this->overallPerform = $overallPerform;
+    }
+
 
     /**
      * @return mixed
@@ -405,7 +446,7 @@ class OdkSmMonitoring
      *
      * @param \AppBundle\Entity\District $district
      *
-     * @return OdkSmMonitoring
+     * @return $this
      */
     public function setDistrict(\AppBundle\Entity\District $district = null)
     {
