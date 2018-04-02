@@ -1,0 +1,73 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default bg-gray">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <a href="{{ path('import_data', {'entity':'odk_sm_monitoring'}) }}"
+                                           class="btn btn-lg btn-info pull-right">
+                                            SM Monitoring
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="{{ path('import_data', {'entity':'odk_ccs_monitoring'}) }}"
+                                           class="btn btn-lg btn-info pull-left">
+                                            CCS Monitoring
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{#{% block title %}ICN Performance Dashboard{% endblock %}#}
+{#{% block header %}#}
+    {#{% embed 'shared/header.html.twig' %}#}
+        {#{% block filter %}#}
+            {#{{ render(controller(#}
+            {#'AppBundle:Ajax/AjaxFilter:odkFilter',#}
+                {#{ 'source': source }#}
+            {#))#}
+            {#}}#}
+        {#{% endblock %}#}
+    {#{% endembed %}#}
+{#{% endblock %}#}
+
+{#{% block css %}#}
+    {#{{ parent() }}#}
+    {#<link rel="stylesheet" href="{{ asset('custom_js_css/custom-style.css') }}">#}
+    {#<link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">#}
+{#{% endblock %}#}
+{#{% block js_head %}#}
+    {#{{ parent() }}#}
+    {#<script src="{{ asset('template/bower_components/jquery/dist/jquery.min.js')}}"></script>#}
+    {#<!-- Bootstrap 3.3.7 -->#}
+    {#<script src="{{ asset('template/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>#}
+
+    {#<script  src="{{ asset('template/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>#}
+    {#<!-- AdminLTE App -->#}
+    {#<script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>#}
+
+    {#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
+    {#<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>#}
+
+    {#<script src="{{ asset('template/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>#}
+    {#<script src="{{ asset('template/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>#}
+
+{#{% endblock %}#}
+{#{% block js %}#}
+    {#<script src="{{ asset('custom_js_css/common-dash.js') }}"></script>#}
+    {#<script src="{{ asset('custom_js_css/config-icn-tpm.js') }}"></script>#}
+{#{% endblock %}#}
