@@ -3,6 +3,8 @@ $(function () {
     $('.loading').hide();
 
     $('#tbl-odk-data').dataTable({
+        'pageLength': 15,
+        'scrollX': true
     });
 
     $('#filterButton').click(function () {

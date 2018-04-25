@@ -135,8 +135,8 @@ class SmPerformAjaxController extends Controller
             ['col'=>'higherSup', 'label'=>'Super', 'calc'=>'none'],
             ['col'=>'comSupport', 'label'=>'Community', 'calc'=>'normal'],
             ['col'=>'coldchain', 'label'=>'Coldchian', 'calc'=>'normal'],
-            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
-            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'rev'],
+            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'normal'],
+            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'normal'],
         ];
 
         //$function = "aggByRegionMonth";

@@ -340,7 +340,7 @@ function myChart(settings) {
     // =========================================================================
     // set the dynamic title
     options['title'] = {text: dataObj.title, marginBottom:5, style: {fontSize:'100%'}};
-    options['subtitle'] = {text: dataObj.subTitle, y:20, style: {fontSize:'80%'}};
+    options['subtitle'] = {text: dataObj.subTitle, verticalAlign:'bottom', style: {fontSize:'80%'}};
     // set the dynamic categories
     if(dataObj.categories === null || dataObj.categories === undefined) {
         options.xAxis.categories = [];
@@ -505,7 +505,7 @@ function myPieChart(settings) {
     // =========================================================================
     // set the dynamic title
     options['title'] = {text: dataObj.title, style: {fontSize:'100%'}};
-    options['subtitle'] = {text: dataObj.subTitle, y:20, style: {fontSize:'80%'}};
+    options['subtitle'] = {text: dataObj.subTitle, verticalAlign:'bottom', style: {fontSize:'80%'}};
     // set the data/series
     if(dataObj.series === null || dataObj.series === undefined) {
         options.series = [];

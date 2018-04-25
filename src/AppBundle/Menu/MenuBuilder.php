@@ -122,7 +122,7 @@ class MenuBuilder implements ContainerAwareInterface
             $menu['ICN Monitoring TPM']['Upload']->setAttribute('icon', 'fa-upload');
         }
 
-        /*------------------------------------------------------- ICN Data Internal ---------------------------------------
+        /*------------------------------------------------------- ICN Data Internal ---------------------------------------*/
         $menu->addChild("ICN Monitoring", array('uri'=>'#'))->setExtra('info', 'Internal ICN Monitoring Report');
         $menu['ICN Monitoring']->setAttribute('icon','fa-database');
         $menu['ICN Monitoring']->setAttribute('sub_menu_icon', 'fa-angle-left');
@@ -149,7 +149,7 @@ class MenuBuilder implements ContainerAwareInterface
                 ->setExtra('info', 'ICN Data by Internal ODK');
             $menu['ICN Monitoring']['Upload']->setAttribute('icon', 'fa-upload');
         }
-        */
+
 
         // ------------------------------------------------------- End of ICN Data --------------------------------
         if($adminRole)

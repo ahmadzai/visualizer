@@ -91,8 +91,8 @@ class SmPerformController extends Controller
             ['col'=>'higherSup', 'label'=>'Super', 'calc'=>'none'],
             ['col'=>'comSupport', 'label'=>'Community', 'calc'=>'normal'],
             ['col'=>'coldchain', 'label'=>'Coldchian', 'calc'=>'normal'],
-            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
-            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'rev'],
+            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'normal'],
+            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'normal'],
         ];
 
         $table = HtmlTable::tableODK($source, $xAxises);
@@ -112,7 +112,7 @@ class SmPerformController extends Controller
 
     /**
      * @param Request $request
-     * @Route("icn_monitoring/import", name="int_import_data_odk")
+     * @Route("int_icn_monitoring/import", name="int_import_data_odk")
      * @return Response
      */
     public function internalImportSmCcsDataAction(Request $request) {

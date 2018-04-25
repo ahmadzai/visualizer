@@ -94,9 +94,9 @@ class CcsPerformController extends Controller
             ['col'=>'iecMaterial', 'label'=>'IEC', 'calc'=>'normal'],
             ['col'=>'refusalChallenge', 'label'=>'Refusal', 'calc'=>'normal'],
             ['col'=>'higherSup', 'label'=>'Super', 'calc'=>'none'],
-            ['col'=>'comSupport', 'label'=>'Community', 'calc'=>'rev'],
-            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'rev'],
-            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'rev'],
+            ['col'=>'comSupport', 'label'=>'Community', 'calc'=>'normal'],
+            ['col'=>'accessChallenge', 'label'=>'Access', 'calc'=>'normal'],
+            ['col'=>'overallPerform', 'label'=>'Overall', 'calc'=>'normal'],
         ];
 
 
