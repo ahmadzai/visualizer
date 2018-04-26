@@ -209,7 +209,7 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByProvince($campaigns, $province) {
         return $this->getEntityManager()
-            ->createQuery("SELECT concat(cmp.id,p.id) as joinkey,
+            ->createQuery("SELECT cmp.id as joinkey,
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -228,7 +228,7 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByDistrict($campaigns, $district) {
         return $this->getEntityManager()
-            ->createQuery("SELECT concat(cmp.id,d.id) as joinkey,
+            ->createQuery("SELECT cmp.id as joinkey,
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -248,7 +248,7 @@ class CatchupDataRepository extends EntityRepository {
         $prov = $risk['province'];
         $risk = $risk['risk'];
         return $this->getEntityManager()
-            ->createQuery("SELECT concat(cmp.id,d.id) as joinkey,
+            ->createQuery("SELECT cmp.id as joinkey,
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
@@ -270,7 +270,7 @@ class CatchupDataRepository extends EntityRepository {
         $prov = $risk['province'];
         $risk = $risk['risk'];
         return $this->getEntityManager()
-            ->createQuery("SELECT concat(cmp.id, d.id) as joinkey,
+            ->createQuery("SELECT cmp.id as joinkey,
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,

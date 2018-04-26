@@ -71,10 +71,16 @@ class MainController extends Controller
 
         $source = $settings->getMonths("OdkSmMonitoring");
 
+        $tenCampCatchupData = $charts->chartData("CatchupData",
+            'campaignsStatisticsByProvince', [24], [12, 26]);
+
+        $tenCampCatchupData = $charts->chartData("CoverageData",
+            'campaignsStatisticsByProvince', [24], [12, 26]);
+
         //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
 
 
-        return new Response(json_encode($source));
+        return new Response(json_encode($tenCampCatchupData));
 
 //        return $this->render("pages/test.html.twig",
 //            ['testData' => json_encode([])]);
