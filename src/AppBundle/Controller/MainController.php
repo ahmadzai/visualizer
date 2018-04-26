@@ -72,10 +72,10 @@ class MainController extends Controller
         $source = $settings->getMonths("OdkSmMonitoring");
 
         $tenCampCatchupData = $charts->chartData("CatchupData",
-            'campaignsStatisticsByProvince', [24], [12, 26]);
+            'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
 
-        $tenCampCatchupData = $charts->chartData("CoverageData",
-            'campaignsStatisticsByProvince', [24], [12, 26]);
+        //$tenCampCatchupData = $charts->chartData("CoverageData",
+            //'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
 
         //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
 

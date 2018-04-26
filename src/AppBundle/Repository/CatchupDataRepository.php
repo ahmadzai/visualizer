@@ -190,7 +190,7 @@ class CatchupDataRepository extends EntityRepository {
      */
     public function campaignsStatisticsByRegion($campaigns, $regions) {
         return $this->getEntityManager()
-            ->createQuery("SELECT concat(cmp.id,p.provinceRegion) as joinkey, 
+            ->createQuery("SELECT cmp.id as joinkey, 
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName, p.provinceRegion as Region, 
