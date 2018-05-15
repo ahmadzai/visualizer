@@ -282,7 +282,7 @@ class Charts
 
             $top_cat = array_unique($tmp_top_cat);
             if($sortCategories) {
-                sort($top_cat);
+                natsort($top_cat);
             }
             $r_data = array();
             //$cat = array();
@@ -566,10 +566,13 @@ class Charts
      * @param array $filterBy
      * @param array $clusters
      * @param array $calcType ['type' => 'number|percent', 'column'=>'columnName']
+     * @param $resultType (heatmap|table)
      * @param bool $sort
      * @return array
      */
-    function clusterDataForHeatMap($array, $indicator, $filterBy, $clusters = array(), $calcType = ['type'=>'number'], $sort = true) {
+    function clusterDataForHeatMap($array, $indicator, $filterBy,
+                                   $clusters = array(), $calcType = ['type'=>'number'],
+                                   $resultType = 'heatmap', $sort = true) {
         if(is_array($array)) {
             $tmp_top_cat = array();
             foreach($array as $temp_d) {
@@ -581,7 +584,6 @@ class Charts
                 sort($filters);
             }
             $data = array();
-            $yAxis = array();
 
             foreach ($filters as $filter) {
                 $c_data = array();
@@ -604,74 +606,33 @@ class Charts
 
                         $d[$index] = [$indicator=>$index_data];
                         $c_data = $d;
-                        //$yAxis[] = $index;
                     }
                 }
                 $data[$filter] = $c_data;
             }
 
+            natsort($clusters);
+
+
 //            dump($data);
+//            dump($filters);
+//            dump($clusters);
+//
 //            die;
-            $newRows = array();
-            $r = 0;
-            //Reverse the clusters, just to make heatmap from top-to-bottom aligned
-            $rClusters = array_reverse($clusters);
-            foreach($rClusters as $cluster) {
 
-                $newRow = array();
 
-                foreach($filters as $filter) {
-
-                    $c = 0;
-                    foreach($data as $datum) {
-
-                        if(array_key_exists($cluster, $datum)) {
-                            $newRow[] = [$c, $r, ($datum[$cluster][$indicator]=== null)? null :
-                                                            $calcType['type']=='percent'?$datum[$cluster][$indicator]:
-                                                                (int)$datum[$cluster][$indicator]];
-                        }
-                        else
-                            $newRow[] = [$c, $r, null];
-
-                        $c++;
-                    }
-                    break;
-                }
-                $newRows[] = $newRow;
-                $r++;
-
-            }
-
-            // making data for heatmap as a one array
-            $heatMapData = array();
-
-            foreach($newRows as $row) {
-                foreach ($row as $ro)
-                    $heatMapData[] = $ro;
-            }
-
+            $heatMapData = $this->formatData4HeatMap($data, $filters, $clusters, $calcType, $indicator);
             // replacing filter column with substitute
-            $xAxis = array();
-            foreach ($filters as $filter) {
-                foreach ($array as $item) {
-                    if($filter == $item[$filterBy['column']]) {
-                        if($filterBy['substitute'] === 'shortName') {
-                            $xAxis[] = $item['CType']."-".$this->shortMonth($item['CMonth'])."-".$this->shortYear($item['CYear']);
-                        }
-                        else
-                            $xAxis[] = $item[$filterBy['substitute']];
-                        break;
-                    }
-                }
-            }
+            $xAxis = $this->shortenNames($filters, $array, $filterBy);
 
-            // yAxis, used reverse array of the clusters
-            foreach($rClusters as $cluster) {
-                $yAxis[] = str_replace("|", "-", $cluster);
-            }
+            if($resultType == 'table') {
+                $colsA = $this->shortenNames($filters, $array, $filterBy, true);
 
-            //$heatMapDataReverse = array_reverse($heatMapData);
-            //$yAxisReverse = array_reverse($yAxis);
+                $heatMapData = $this->formatData4Table($data, $colsA, $clusters, $indicator);
+            }
+            // replace | in the subdistrict and cluster name with -
+            $yAxis = $this->myStrReplace(array_reverse($clusters), "-", "|");
+
             $final_data = array('yAxis'=>$yAxis, 'xAxis'=>$xAxis, 'data'=>$heatMapData);
             //$final_data = array('yAxis'=>$yAxisReverse, 'xAxis'=>$xAxis, 'data'=>$heatMapDataReverse);
             return $final_data;
@@ -764,6 +725,143 @@ class Charts
             return array('yAxis'=>array_values($yAxises), 'xAxis'=> $xAxises, 'data'=> $heatMapData);
 
         }
+    }
+
+    /**
+     * @param $data
+     * @param $filters
+     * @param $clusters
+     * @param $calcType
+     * @param $indicator
+     * @return array
+     */
+    private function formatData4HeatMap($data, $filters, $clusters, $calcType, $indicator) {
+
+        $newRows = array();
+        $r = 0;
+        //Reverse the clusters, just to make heatmap from top-to-bottom aligned
+        $rClusters = array_reverse($clusters);
+        foreach($rClusters as $cluster) {
+
+            $newRow = array();
+
+            foreach($filters as $filter) {
+
+                $c = 0;
+                foreach($data as $datum) {
+
+                    if(array_key_exists($cluster, $datum)) {
+                        $newRow[] = [$c, $r, ($datum[$cluster][$indicator]=== null)? null :
+                            $calcType['type']=='percent'?$datum[$cluster][$indicator]:
+                                (int)$datum[$cluster][$indicator]];
+                    }
+                    else
+                        $newRow[] = [$c, $r, null];
+
+                    $c++;
+                }
+                break;
+            }
+            $newRows[] = $newRow;
+            $r++;
+
+        }
+
+        // making data for heatmap as a one array
+        $heatMapData = array();
+
+        foreach($newRows as $row) {
+            foreach ($row as $ro)
+                $heatMapData[] = $ro;
+        }
+
+        return $heatMapData;
+
+    }
+
+    /**
+     * @param $filters
+     * @param $array
+     * @param $filterBy
+     * @return array
+     */
+    private function shortenNames($filters, $array, $filterBy, $asoc=false) {
+
+        // replacing filter column with substitute
+        $xAxis = array();
+        if($asoc === true) {
+            foreach ($filters as $filter) {
+                foreach ($array as $item) {
+                    if ($filter == $item[$filterBy['column']]) {
+                        if ($filterBy['substitute'] === 'shortName') {
+                            $index = $item['CType'] . "-" .
+                                $this->shortMonth($item['CMonth']) . "-" .
+                                $this->shortYear($item['CYear']);
+                            $xAxis[$index] = $filter;
+                        } else {
+                            $index = $item[$filterBy['substitute']];
+                            $xAxis[$index] = $filter;
+                        }
+                        break;
+                    }
+                }
+            }
+        } else {
+            foreach ($filters as $filter) {
+                foreach ($array as $item) {
+                    if ($filter == $item[$filterBy['column']]) {
+                        if ($filterBy['substitute'] === 'shortName') {
+                            $xAxis[] = $item['CType'] . "-" .
+                                $this->shortMonth($item['CMonth']) . "-" .
+                                $this->shortYear($item['CYear']);
+                        } else
+                            $xAxis[] = $item[$filterBy['substitute']];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $xAxis;
+    }
+
+    /**
+     * @param $items
+     * @param $replacement
+     * @param $term
+     * @return array
+     */
+    private function myStrReplace($items, $replacement, $term) {
+        $newItems = array();
+        foreach($items as $item) {
+            $newItems[] = str_replace($term, $replacement, $item);
+        }
+
+        return $newItems;
+    }
+
+    private function formatData4Table($data, $colsAssocArray, $rNames, $indicator = false) {
+        $tableData = array();
+        foreach ($rNames as $rName) {
+            $row = array();
+            $row['rowName'] = str_replace("|", "-", $rName);
+            foreach ($colsAssocArray as $colName=>$col) {
+                $found = false;
+                foreach ($data[$col] as $key=>$val) {
+                    if($rName == $key) {
+                       $found = true;
+                       $row[$colName] = ($indicator === false) ? $val:$val[$indicator];
+                    }
+                }
+
+                if(!$found) {
+                    $row[$colName] = null;
+                }
+            }
+            $tableData[] = $row;
+        }
+
+        return $tableData;
     }
 
 

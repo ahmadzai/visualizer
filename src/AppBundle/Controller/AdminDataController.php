@@ -116,7 +116,11 @@ class AdminDataController extends Controller
      */
     public  function clusterLevelAction($district = null) {
         $data = ['district' => $district===null?0:$district];
-        return $this->render("pages/admin_data/clusters.html.twig",
+        $data['title'] = 'Admin Data Clusters Trends';
+        $data['pageTitle'] = "Coverage Data Trends and Analysis, Cluster Level";
+        $data['source'] = 'CoverageData';
+        $data['ajaxUrl'] = 'admin_data';
+        return $this->render("pages/clusters-table.html.twig",
             $data
         );
 

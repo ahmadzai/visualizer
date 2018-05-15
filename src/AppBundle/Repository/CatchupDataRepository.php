@@ -88,13 +88,14 @@ class CatchupDataRepository extends EntityRepository {
                                 THEN cvr.clusterNo 
                                 ELSE CONCAT(cvr.subDistrict, '|', cvr.clusterNo)
                                 END as cluster,
-                                dist.id, dist.districtName
+                                dist.id, dist.districtName 
                                 FROM AppBundle:CatchupData cvr JOIN cvr.district dist 
                                 WHERE (cvr.district IN (:districts) AND cvr.campaign IN (:campaigns))
                                 ORDER BY cvr.subDistrict DESC ")
             ->setParameters(['districts'=> $districts, 'campaigns' => $campaigns])
             ->getResult(Query::HYDRATE_SCALAR);
     }
+
 
     /**
      * @param $districts
@@ -110,7 +111,7 @@ class CatchupDataRepository extends EntityRepository {
                                 END as cluster
                                 FROM AppBundle:CatchupData cvr JOIN cvr.district dist 
                                 WHERE (cvr.district IN (:districts))
-                                ORDER BY cvr.subDistrict DESC ")
+                                ORDER BY cvr.subDistrict DESC")
             ->setParameters(['districts'=> $districts])
             ->getResult(Query::HYDRATE_SCALAR);
     }

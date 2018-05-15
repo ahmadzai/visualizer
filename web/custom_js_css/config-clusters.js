@@ -14,32 +14,26 @@ $(function () {
     // Filter Heatmap
     $(".filter-heatmap").click(function (event){
         event.preventDefault();
-        var target = $(this).data('url');
-        var targetCont = "chart-"+ target;
-        $('.'+target).show();
-        var type = $(this).text();
-        if(type.trim() == "Absent")
-        {
-            makeAjaxRequest('normal', config, 'RemAbsent');
-        }
-        else if(type.trim() == "NSS")
-            makeAjaxRequest('normal', config, 'RemNSS');
-
-        else if(type.trim() == "Refusal")
-            makeAjaxRequest('normal', config, 'RemRefusal');
-           // myHeatMap($("#hidden-total-refusal").val(), 'chart-cluster_heatmap', 'refusal');
-        else if(type.trim() == "All Type")
-            makeAjaxRequest('normal', config, 'TotalRemaining');
-
-
-        $('.'+target).hide();
+        var type = $(this).data('type');
+        var calcType = "normal";
+        if( type.indexOf("Per") !== -1)
+            calcType = "percent";
+        makeAjaxRequest(calcType, config, type);
     });
 
     // load it for first time
     var selectedClusters = $('#filterCluster').val();
     if(selectedClusters.length > 0) {
-        makeAjaxRequest('main', config);
-        makeAjaxRequest('normal', config);
+        // makeAjaxRequest('main', config);
+        // makeAjaxRequest('normal', config);
+        $('.loading, .loading-top').show();
+        $.when(
+            makeAjaxRequest('normal', config),
+            $('.table-loader').hide()
+        ).then(function () {
+            makeAjaxRequest('main', config),
+            $('.bar-loader').hide()
+        });
     }
     // filter heatmap as per type (number/percent)
     $('.filter-heatmap-type').click(function (event) {
@@ -50,11 +44,18 @@ $(function () {
 
     // When filter button is clicked
     $('#filterButton').click(function () {
+        $('.loading, .loading-top').show();
+        $.when(
+            makeAjaxRequest('normal', config),
+            $('.table-loader').hide()
+        ).then(function () {
+            makeAjaxRequest('main', config),
+                $('.bar-loader').hide()
+        });
         // first time call (main),
         // only update the one campaign chart
-        makeAjaxRequest('main', config);
+
         // another call to load the table
-        makeAjaxRequest('normal', config);
     })
 });
 
@@ -82,11 +83,19 @@ function makeAjaxRequest(calcType, config, selectType) {
         'selectType': selectType === undefined ? 'TotalRemaining':selectType,
         'district': selectedDistricts, 'cluster':selectedClusters, 'calcType': calcType};
 
-    $('.loading, .loading-top').toggle();
+    //$('.loading, .loading-top').toggle();
+
+    var ajaxUrl = $('#ajaxUrl').val();
+
+    // if the request was from main dashboard
+    // change the color for the bar chart then
+    if(ajaxUrl == 'main') {
+        config['missed_recovery'].color = ['#B7B3BE', '#FFB32D', '#2DA810', '#45E490', '#048AFF'];
+    }
 
     $.ajax({
 
-        url: Routing.generate('ajax_cluster_admin_data'),
+        url: Routing.generate('ajax_cluster_' + ajaxUrl),
         data: data,
         type: 'POST',
         success: function (data) {
@@ -110,11 +119,11 @@ function makeAjaxRequest(calcType, config, selectType) {
                 });
             }
 
-            $('.loading, .loading-top').hide();
+            //$('.loading, .loading-top').hide();
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             alert("Something went wrong, while loading charts data, please try again later\n"+errorThrown);
-            $('.loading, .loading-top').hide();
+            //$('.loading, .loading-top').hide();
         },
         cache: false
     });

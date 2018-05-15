@@ -113,17 +113,24 @@ class AdminDataAjaxController extends Controller
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {
 
+        /*
+        this function will return two kind of response
+        a table, or a json, if the callType was main then
+        it will return JSON otherwise a table.
+        */
         $selectedCampaignIds = $request->get('campaign');
         $clusters = $request->get('cluster');
-        $provinces = $request->get('province');
         $districts = $request->get('district');
+        $selectType = $request->get('selectType');
 
+        // important key
         $calcType = $request->get('calcType');
+
+        $dataSource = "CoverageData";
+
         $calcTypeArray = ['type'=>'number'];
-        $dbIndicatorPostfix = "";
         if($calcType === 'percent') {
             $calcTypeArray = ['type'=>'percent', 'column'=>'CalcTarget'];
-            $dbIndicatorPostfix = "Per";
         }
 
         $clusterArray = array();
@@ -144,115 +151,107 @@ class AdminDataAjaxController extends Controller
             $subDistrictArray = array_unique($subDistrictArray);
 
         $data = array();
-        $campaignIds = $selectedCampaignIds;
-        if(count($districts) > 0) {
-            // get last 6 campaigns if the selected campaigns are <2
-            if(count($campaignIds) <= 1)
-                $campaignIds = $settings->lastFewCampaigns('CoverageData', $settings::NUM_CAMP_CLUSTERS);
+        $em = $this->getDoctrine()->getManager();
+        // if the request was only for one chart
+        if($calcType === 'main') {
+            $lastCampaignId = $selectedCampaignIds;
+            $lastCampaign = $settings->latestCampaign($dataSource);
+            if (count($lastCampaignId) > 1) {
 
-            $em = $this->getDoctrine()->getManager();
+                $lastCampaignId = $lastCampaign[0]['id'];
+            }
 
-            // generating data for the heatmap
-            $heatMapData = array();
-            // in case there was any sub district of a district
-            if(count($subDistrictArray) > 0) {
-                foreach($subDistrictArray as $item) {
+            $lastCampClustersData = array();
+            if (count($subDistrictArray) > 0) {
+                foreach ($subDistrictArray as $item) {
                     // find the clusters data
-                    $heatMapData[] = $em->getRepository('AppBundle:CoverageData')
-                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
+                    $lastCampClustersData[] = $em->getRepository('AppBundle:CoverageData')
+                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
                 }
 
                 // merge the data of all sub districts
-                $heatMapData = array_merge(...$heatMapData);
+                $lastCampClustersData = array_merge(...$lastCampClustersData);
             }
 
             // if there's no sub district
-            if(count($subDistrictArray) <= 0 || $subDistrictArray === null){
-                $heatMapData = $em->getRepository('AppBundle:CoverageData')
-                    ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
+            if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
+                $lastCampClustersData = $em->getRepository('AppBundle:CoverageData')
+                    ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
             }
 
-            //return new Response(json_encode($heatMapData));
+            $lastCampBarChart = $charts->chartData1Category(['column' => 'Cluster'],
+                [
+                    'RemAbsent' => 'Absent',
+                    'RemNSS' => 'NSS',
+                    'RemRefusal' => 'Refusal',
+                    'TotalVac' => 'Vaccinated',
+                ],
+                $lastCampClustersData, true);
+            $campaign = "No data for this campaign as per current filter";
+            if(count($lastCampClustersData) > 0)
+                $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
+            $lastCampBarChart['title'] = $campaign;
+            $data['lastCampBarChart'] = $lastCampBarChart;
+            return new Response(json_encode($data));
+        }
+        // if the request was for table data
+        else {
 
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataTotalRemaining = $charts->clusterDataForHeatMap($heatMapData, 'TotalRemaining',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRemaining['title'] = 'Trends of total remaining children after campaign';
-            $heatMapDataTotalRemaining['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'TotalRemaining'.$dbIndicatorPostfix);
-            $data['heatMapTotalRemaining'] = $heatMapDataTotalRemaining;
+            $campaignIds = $selectedCampaignIds;
+            if (count($districts) > 0) {
+                // get last 6 campaigns if the selected campaigns are <2
+                if (count($campaignIds) <= 1)
+                    $campaignIds = $settings->lastFewCampaigns($dataSource, $settings::NUM_CAMP_CLUSTERS);
 
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataTotalAbsent = $charts->clusterDataForHeatMap($heatMapData, 'RemAbsent',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after campaign';
-            $heatMapDataTotalAbsent['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemAbsent'.$dbIndicatorPostfix);
-            $data['heatMapTotalAbsent'] = $heatMapDataTotalAbsent;
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapTotalNSS = $charts->clusterDataForHeatMap($heatMapData, 'RemNSS',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapTotalNSS['title'] = 'Tends of total NSS children after campaign';
-            $heatMapTotalNSS['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemNSS'.$dbIndicatorPostfix);
-            $data['heatMapTotalNSS'] = $heatMapTotalNSS;
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataTotalRefusal = $charts->clusterDataForHeatMap($heatMapData, 'RemRefusal',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after campaign';
-            $heatMapDataTotalRefusal['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('CoverageData', 'RemRefusal'.$dbIndicatorPostfix);
-            $data['heatMapTotalRefusal'] = $heatMapDataTotalRefusal;
-
-            //------------------------------- Last Campaign Bar Chart Filter ---------------------------------
-            // check if the ajax request are coming from the calculation type method
-
-            if($calcType !== 'percent') {
-                $lastCampaignId = $selectedCampaignIds;
-                $lastCampaign = $settings->latestCampaign("CoverageData");
-                if (count($lastCampaignId) > 1) {
-
-                    $lastCampaignId = $lastCampaign[0]['id'];
-                }
-
-                $lastCampClustersData = array();
+                // generating data for the heatmap
+                $heatMapData = array();
+                // in case there was any sub district of a district
                 if (count($subDistrictArray) > 0) {
                     foreach ($subDistrictArray as $item) {
                         // find the clusters data
-                        $lastCampClustersData[] = $em->getRepository('AppBundle:CoverageData')
-                            ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
+                        $heatMapData[] = $em->getRepository('AppBundle:'.$dataSource)
+                            ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
                     }
 
                     // merge the data of all sub districts
-                    $lastCampClustersData = array_merge(...$lastCampClustersData);
+                    $heatMapData = array_merge(...$heatMapData);
                 }
 
                 // if there's no sub district
                 if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
-                    $lastCampClustersData = $em->getRepository('AppBundle:CoverageData')
-                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
+                    $heatMapData = $em->getRepository('AppBundle:CoverageData')
+                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
                 }
 
-                $lastCampBarChart = $charts->chartData1Category(['column' => 'Cluster'],
-                    [
-                        'RemAbsent' => 'Absent',
-                        'RemNSS' => 'NSS',
-                        'RemRefusal' => 'Refusal',
-                        'TotalVac' => 'Vaccinated',
-                    ],
-                    $lastCampClustersData, false);
-                $campaign = "No data for this campaign as per current filter";
-                if(count($lastCampClustersData) > 0)
-                    $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
-                $lastCampBarChart['title'] = $campaign;
-                $data['lastCampBarChart'] = $lastCampBarChart;
-            }
-            // ------------------------------------------------------------------------------------------------------
-        }
+                //return new Response(json_encode($heatMapData));
 
-        return new Response(json_encode($data));
+                // covert the database data into heatmap array for a given indicator
+                // used str_replace to remove Per from the indicator,
+                // because it's not part of the database result fields
+                $rawData = $charts->clusterDataForHeatMap($heatMapData, str_replace("Per", "", $selectType),
+                    ['column' => 'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray, 'table');
+                $stops= $em->getRepository("AppBundle:HeatmapBenchmark")
+                    ->findOne($dataSource, $selectType);
+
+                // new code start here
+                $cols = array(['col' => 'rowName', 'label' => 'Cluster', 'calc' => 'none']);
+                foreach ($rawData['xAxis'] as $axi) {
+                    $cols[] = ['col' => $axi, 'label' => $axi, 'calc' => 'rev'];
+                }
+//            $cols = array_splice($cols, 0, 0,
+//                [['col'=>'rowName', 'label'=>'Cluster', 'calc'=>'none']]);
+                //dump($cols);
+                $table = HtmlTable::heatMapTable($rawData['data'],
+                    $cols, HtmlTable::heatMapTableHeader($selectType),
+                    $stops['minValue'],
+                    $stops['maxValue']);
+
+                return new Response($table);
+                // and end here
+
+            }
+
+        }
     }
 
     /**

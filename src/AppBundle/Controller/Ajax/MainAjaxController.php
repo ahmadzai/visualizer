@@ -10,6 +10,7 @@ namespace AppBundle\Controller\Ajax;
 
 
 use AppBundle\Service\Charts;
+use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Triangle;
 use AppBundle\Service\Settings;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -218,17 +219,24 @@ class MainAjaxController extends Controller
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {
 
+        /*
+        this function will return two kind of response
+        a table, or a json, if the callType was main then
+        it will return JSON otherwise a table.
+        */
         $selectedCampaignIds = $request->get('campaign');
         $clusters = $request->get('cluster');
-        $provinces = $request->get('province');
         $districts = $request->get('district');
+        $selectType = $request->get('selectType');
 
+        // important key
         $calcType = $request->get('calcType');
+
+        $dataSource = "CoverageData";
+
         $calcTypeArray = ['type'=>'number'];
-        $dbIndicatorPostfix = "";
         if($calcType === 'percent') {
             $calcTypeArray = ['type'=>'percent', 'column'=>'CalcTarget'];
-            $dbIndicatorPostfix = "Per";
         }
 
         $clusterArray = array();
@@ -249,135 +257,25 @@ class MainAjaxController extends Controller
             $subDistrictArray = array_unique($subDistrictArray);
 
         $data = array();
-        $campaignIds = $selectedCampaignIds;
-        if(count($districts) > 0) {
-            // get last 6 campaigns if the selected campaigns are <2
-            if(count($campaignIds) <= 1)
-                $campaignIds = $settings->lastFewCampaigns('CoverageData', $settings::NUM_CAMP_CLUSTERS);
+        $em = $this->getDoctrine()->getManager();
+        // if the request was only for one chart
+        if($calcType === 'main') {
+            $lastCampaignId = $selectedCampaignIds;
+            $lastCampaign = $settings->latestCampaign($dataSource);
+            if (count($lastCampaignId) > 1) {
 
-            $em = $this->getDoctrine()->getManager();
+                $lastCampaignId = $lastCampaign[0]['id'];
+            }
 
-            // generating data for the heatmap
-            $heatMapData = array();
-            // in case there was any sub district of a district
-            if(count($subDistrictArray) > 0) {
-                foreach($subDistrictArray as $item) {
+            $lastCampClustersData = array();
+            if (count($subDistrictArray) > 0) {
+                foreach ($subDistrictArray as $item) {
                     // find the clusters data
-
-                    $adminData = $em->getRepository('AppBundle:CoverageData')
-                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
-                    $catchupData = $em->getRepository('AppBundle:CatchupData')
-                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
-                    $heatMapData[] = Triangle::triangulateCustom([
-                        $adminData,
-                        ['data'=>$catchupData,
-                            'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
-                                'RegAbsent', 'VacAbsent',
-                                'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
-                            'prefix'=>'c']
-                    ], 'joinkey');
-                }
-
-                // merge the data of all sub districts
-                $heatMapData = array_merge(...$heatMapData);
-
-            }
-
-            // if there's no sub district
-            if(count($subDistrictArray) <= 0 || $subDistrictArray === null){
-                $adminData = $em->getRepository('AppBundle:CoverageData')
-                    ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
-                $catchupData = $em->getRepository('AppBundle:CatchupData')
-                    ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
-
-                $heatMapData = Triangle::triangulateCustom([
-                    $adminData,
-                    ['data'=>$catchupData,
-                        'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
-                            'RegAbsent', 'VacAbsent',
-                            'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
-                        'prefix'=>'c']
-                ], 'joinkey');
-            }
-
-            //return new Response(json_encode($heatMapData));
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataCalc = Triangle::mathOps($heatMapData, ['TotalRemaining', 'cTotalRecovered'], '-', 'FinalTotalRemaining');
-            $heatMapDataTotalRemaining = $charts->clusterDataForHeatMap($heatMapDataCalc, 'FinalTotalRemaining',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRemaining['title'] = 'Trends of total remaining children after catchup';
-            $heatMapDataTotalRemaining['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('TriangleData', 'TotalRemaining'.$dbIndicatorPostfix);
-            $data['heatMapTotalRemaining'] = $heatMapDataTotalRemaining;
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataCalc = Triangle::mathOps($heatMapData, ['RemAbsent', 'cVacAbsent'], '-', 'FinalTotalAbsent');
-            $heatMapDataTotalAbsent = $charts->clusterDataForHeatMap($heatMapDataCalc, 'FinalTotalAbsent',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalAbsent['title'] = 'Tends of total absent children after catchup';
-            $heatMapDataTotalAbsent['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('TriangleData', 'RemAbsent'.$dbIndicatorPostfix);
-            $data['heatMapTotalAbsent'] = $heatMapDataTotalAbsent;
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataCalc = Triangle::mathOps($heatMapData, ['RemNSS', 'cVacNSS'], '-', 'FinalTotalNSS');
-            $heatMapTotalNSS = $charts->clusterDataForHeatMap($heatMapDataCalc, 'FinalTotalNSS',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapTotalNSS['title'] = 'Tends of total NSS children after catchup';
-            $heatMapTotalNSS['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('TriangleData', 'RemNSS'.$dbIndicatorPostfix);
-            $data['heatMapTotalNSS'] = $heatMapTotalNSS;
-
-            // covert the database data into heatmap array for a give indicator
-            $heatMapDataCalc = Triangle::mathOps($heatMapData, ['RemRefusal', 'cVacRefusal'], '-', 'FinalTotalRefusal');
-            $heatMapDataTotalRefusal = $charts->clusterDataForHeatMap($heatMapDataCalc, 'FinalTotalRefusal',
-                ['column'=>'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray);
-            $heatMapDataTotalRefusal['title'] = 'Tends of total refusal children after catchup';
-            $heatMapDataTotalRefusal['stops'] = $em->getRepository("AppBundle:HeatmapBenchmark")
-                ->findOne('TriangleData', 'RemRefusal'.$dbIndicatorPostfix);
-            $data['heatMapTotalRefusal'] = $heatMapDataTotalRefusal;
-
-            //------------------------------- Last Campaign Bar Chart Filter ---------------------------------
-            // check if the ajax request are coming from the calculation type method
-
-            if($calcType !== 'percent') {
-                $lastCampaignId = $selectedCampaignIds;
-                $lastCampaign = $settings->latestCampaign("CoverageData");
-                if (count($lastCampaignId) > 1) {
-
-                    $lastCampaignId = $lastCampaign[0]['id'];
-                }
-
-                $lastCampClustersData = array();
-                if (count($subDistrictArray) > 0) {
-                    foreach ($subDistrictArray as $item) {
-                        // find the clusters data
-                        $lastAdm = $em->getRepository('AppBundle:CoverageData')
-                            ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
-                        $lastCtp = $em->getRepository('AppBundle:CatchupData')
-                            ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
-                        $lastCampClustersData[] = Triangle::triangulateCustom([
-                            $lastAdm,
-                            ['data'=>$lastCtp,
-                                'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
-                                    'RegAbsent', 'VacAbsent',
-                                    'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
-                                'prefix'=>'c']
-                        ], 'joinkey');
-                    }
-
-                    // merge the data of all sub districts
-                    $lastCampClustersData = array_merge(...$lastCampClustersData);
-                }
-
-                // if there's no sub district
-                if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
                     $lastAdm = $em->getRepository('AppBundle:CoverageData')
-                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
+                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
                     $lastCtp = $em->getRepository('AppBundle:CatchupData')
-                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
-                    $lastCampClustersData = Triangle::triangulateCustom([
+                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
+                    $lastCampClustersData[] = Triangle::triangulateCustom([
                         $lastAdm,
                         ['data'=>$lastCtp,
                             'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
@@ -387,33 +285,126 @@ class MainAjaxController extends Controller
                     ], 'joinkey');
                 }
 
-//                $lastCampCltrCalc = Triangle::mathOps($lastCampClustersData, ['cTotalRecovered', 'cRegMissed'], '/', 'cPerRec');
-//                $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['cPerRec', 'TotalRemaining'], '*', 'CatchupRecovered');
-//                $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['TotalRemaining', 'CatchupRecovered'], '-', 'FinalTotalRemaining');
-
-                $lastCampCltrCalc = Triangle::mathOps($lastCampClustersData, ['TotalRemaining', 'cRegMissed'], '-', 'cDisc');
-                $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['TotalRemaining', 'cTotalRecovered'], '-', 'RemTotal');
-                $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
-                $lastCampBarChart = $charts->chartData1Category(['column'=>'Cluster'],
-                    [
-                        'cDisc' => 'Discrep',
-                        'FinalTotalRemaining'=>'Remaining',
-                        'cTotalRecovered'=>'Catchup',
-                        'RecoveredDay4'=>'Day5',
-                        'Recovered3Days'=>'3Days'
-                    ],
-                    $lastCampCltrCalc, false);
-
-                $campaign = "No data for this campaign as per current filter";
-                if(count($lastCampaign) > 0)
-                    $campaign = $lastCampaign[0]['campaignName']." Missed Children Recovery Camp/Revisit/Catchup";
-                $lastCampBarChart['title'] = $campaign;
-                $data['lastCampBarChart'] = $lastCampBarChart;
+                // merge the data of all sub districts
+                $lastCampClustersData = array_merge(...$lastCampClustersData);
             }
-            // ------------------------------------------------------------------------------------------------------
-        }
 
-        return new Response(json_encode($data));
+            // if there's no sub district
+            if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
+                $lastAdm = $em->getRepository('AppBundle:CoverageData')
+                    ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
+                $lastCtp = $em->getRepository('AppBundle:CatchupData')
+                    ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
+                $lastCampClustersData = Triangle::triangulateCustom([
+                    $lastAdm,
+                    ['data'=>$lastCtp,
+                        'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
+                            'RegAbsent', 'VacAbsent',
+                            'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
+                        'prefix'=>'c']
+                ], 'joinkey');
+            }
+
+            $lastCampCltrCalc = Triangle::mathOps($lastCampClustersData, ['TotalRemaining', 'cRegMissed'], '-', 'cDisc');
+            $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['TotalRemaining', 'cTotalRecovered'], '-', 'RemTotal');
+            $lastCampCltrCalc = Triangle::mathOps($lastCampCltrCalc, ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
+            $lastCampBarChart = $charts->chartData1Category(['column'=>'Cluster'],
+                [
+                    'cDisc' => 'Discrep',
+                    'FinalTotalRemaining'=>'Remaining',
+                    'cTotalRecovered'=>'Catchup',
+                    'RecoveredDay4'=>'Day5',
+                    'Recovered3Days'=>'3Days'
+                ],
+                $lastCampCltrCalc, true);
+            $campaign = "No data for this campaign as per current filter";
+            if(count($lastCampClustersData) > 0)
+                $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
+            $lastCampBarChart['title'] = $campaign;
+            $data['lastCampBarChart'] = $lastCampBarChart;
+            return new Response(json_encode($data));
+        }
+        // if the request was for table data
+        else {
+
+            $campaignIds = $selectedCampaignIds;
+            if (count($districts) > 0) {
+                // get last 6 campaigns if the selected campaigns are <2
+                if (count($campaignIds) <= 1)
+                    $campaignIds = $settings->lastFewCampaigns($dataSource, $settings::NUM_CAMP_CLUSTERS);
+
+                // generating data for the heatmap
+                $heatMapData = array();
+                // in case there was any sub district of a district
+                if (count($subDistrictArray) > 0) {
+                    foreach ($subDistrictArray as $item) {
+                        // find the clusters data
+                        $adminData = $em->getRepository('AppBundle:CoverageData')
+                            ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
+                        $catchupData = $em->getRepository('AppBundle:CatchupData')
+                            ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
+                        $heatMapData[] = Triangle::triangulateCustom([
+                            $adminData,
+                            ['data'=>$catchupData,
+                                'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
+                                    'RegAbsent', 'VacAbsent',
+                                    'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
+                                'prefix'=>'c']
+                        ], 'joinkey');
+                    }
+
+                    // merge the data of all sub districts
+                    $heatMapData = array_merge(...$heatMapData);
+                }
+
+                // if there's no sub district
+                if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
+                    $adminData = $em->getRepository('AppBundle:CoverageData')
+                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
+                    $catchupData = $em->getRepository('AppBundle:CatchupData')
+                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
+
+                    $heatMapData = Triangle::triangulateCustom([
+                        $adminData,
+                        ['data'=>$catchupData,
+                            'indexes'=>['RegMissed', 'TotalRecovered', 'TotalVac',
+                                'RegAbsent', 'VacAbsent',
+                                'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'],
+                            'prefix'=>'c']
+                    ], 'joinkey');
+                }
+
+                //return new Response(json_encode($heatMapData));
+
+                // covert the database data into heatmap array for a given indicator
+                // used str_replace to remove Per from the indicator,
+                // because it's not part of the database result fields
+                $newIndicator = Triangle::trIndicators($selectType);
+                $heatMapDataCalc = Triangle::mathOps($heatMapData,
+                    [str_replace("Per", "", $selectType), $newIndicator['cIndicator']],
+                    '-', $newIndicator['fIndicator']);
+                $rawData = $charts->clusterDataForHeatMap($heatMapDataCalc, $newIndicator['fIndicator'],
+                    ['column' => 'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray, 'table');
+                $stops= $em->getRepository("AppBundle:HeatmapBenchmark")
+                    ->findOne("TriangleData", $selectType);
+
+                // new code start here
+                $cols = array(['col' => 'rowName', 'label' => 'Cluster', 'calc' => 'none']);
+                foreach ($rawData['xAxis'] as $axi) {
+                    $cols[] = ['col' => $axi, 'label' => $axi, 'calc' => 'rev'];
+                }
+
+                $table = HtmlTable::heatMapTable($rawData['data'],
+                    $cols, HtmlTable::heatMapTableHeader($selectType),
+                    $stops['minValue'],
+                    $stops['maxValue']);
+
+                return new Response($table);
+                // and end here
+
+            }
+
+        }
     }
 
     /**

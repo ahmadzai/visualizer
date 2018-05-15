@@ -115,15 +115,25 @@ class CatchupDataAjaxController extends Controller
 
         $selectedCampaignIds = $request->get('campaign');
         $clusters = $request->get('cluster');
-        $provinces = $request->get('province');
         $districts = $request->get('district');
+        $selectType = $request->get('selectType');
 
         $calcType = $request->get('calcType');
+
+        $dataSource = 'CatchupData';
+
         $calcTypeArray = ['type'=>'number'];
-        $dbIndicatorPostfix = "";
+
         if($calcType === 'percent') {
-            $calcTypeArray = ['type'=>'percent', 'column'=>'RegMissed'];
-            $dbIndicatorPostfix = "Per";
+            $col = 'RegMissed';
+            if($selectType == 'RemAbsentPer')
+                $col = 'RegAbsent';
+            elseif($selectType == 'RemNSSPer')
+                $col = 'RegNSS';
+            elseif($selectType == 'RemRefusalPer')
+                $col = 'RegRefusal';
+
+            $calcTypeArray = ['type'=>'percent', 'column'=>$col];
         }
 
         $clusterArray = array();
@@ -142,7 +152,112 @@ class CatchupDataAjaxController extends Controller
 
         if(count($subDistrictArray) > 0)
             $subDistrictArray = array_unique($subDistrictArray);
+        $data = array();
+        $em = $this->getDoctrine()->getManager();
+        // if the request was only for one chart
+        if($calcType === 'main') {
+            $lastCampaignId = $selectedCampaignIds;
+            $lastCampaign = $settings->latestCampaign($dataSource);
+            if (count($lastCampaignId) > 1) {
 
+                $lastCampaignId = $lastCampaign[0]['id'];
+            }
+
+            $lastCampClustersData = array();
+            if (count($subDistrictArray) > 0) {
+                foreach ($subDistrictArray as $item) {
+                    // find the clusters data
+                    $lastCampClustersData[] = $em->getRepository('AppBundle:'.$dataSource)
+                        ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray, $item);
+                }
+
+                // merge the data of all sub districts
+                $lastCampClustersData = array_merge(...$lastCampClustersData);
+            }
+
+            // if there's no sub district
+            if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
+                $lastCampClustersData = $em->getRepository('AppBundle:'.$dataSource)
+                    ->clusterAggBySubDistrictCluster([$lastCampaignId], $districts, $clusterArray);
+            }
+
+            $lastCampBarChart = $charts->chartData1Category(['column' => 'Cluster'],
+                [
+                    'RemAbsent' => 'Absent',
+                    'RemNSS' => 'NSS',
+                    'RemRefusal' => 'Refusal',
+                    'TotalRecovered' => 'Recovered',
+                ],
+                $lastCampClustersData, true);
+            $campaign = "No data for this campaign as per current filter";
+            if(count($lastCampClustersData) > 0)
+                $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
+            $lastCampBarChart['title'] = $campaign;
+            $data['lastCampBarChart'] = $lastCampBarChart;
+            return new Response(json_encode($data));
+        }
+        // if the request was for table data
+        else {
+
+            $campaignIds = $selectedCampaignIds;
+            if (count($districts) > 0) {
+                // get last 6 campaigns if the selected campaigns are <2
+                if (count($campaignIds) <= 1)
+                    $campaignIds = $settings->lastFewCampaigns($dataSource, $settings::NUM_CAMP_CLUSTERS);
+
+                // generating data for the heatmap
+                $heatMapData = array();
+                // in case there was any sub district of a district
+                if (count($subDistrictArray) > 0) {
+                    foreach ($subDistrictArray as $item) {
+                        // find the clusters data
+                        $heatMapData[] = $em->getRepository('AppBundle:'.$dataSource)
+                            ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray, $item);
+                    }
+
+                    // merge the data of all sub districts
+                    $heatMapData = array_merge(...$heatMapData);
+                }
+
+                // if there's no sub district
+                if (count($subDistrictArray) <= 0 || $subDistrictArray === null) {
+                    $heatMapData = $em->getRepository('AppBundle:'.$dataSource)
+                        ->clusterAggBySubDistrictCluster($campaignIds, $districts, $clusterArray);
+                }
+
+                //return new Response(json_encode($heatMapData));
+
+                // covert the database data into heatmap array for a given indicator
+                // used str_replace to remove Per from the indicator,
+                // because it's not part of the database result fields
+                //dump($heatMapData);
+                //die;
+                $rawData = $charts->clusterDataForHeatMap($heatMapData, str_replace("Per", "", $selectType),
+                    ['column' => 'CID', 'substitute' => 'shortName'], $clusters, $calcTypeArray, 'table');
+                $stops= $em->getRepository("AppBundle:HeatmapBenchmark")
+                    ->findOne($dataSource, $selectType);
+
+                // new code start here
+                $cols = array(['col' => 'rowName', 'label' => 'Cluster', 'calc' => 'none']);
+                foreach ($rawData['xAxis'] as $axi) {
+                    $cols[] = ['col' => $axi, 'label' => $axi, 'calc' => 'rev'];
+                }
+//            $cols = array_splice($cols, 0, 0,
+//                [['col'=>'rowName', 'label'=>'Cluster', 'calc'=>'none']]);
+                //dump($cols);
+                $table = HtmlTable::heatMapTable($rawData['data'],
+                    $cols, HtmlTable::heatMapTableHeader($selectType),
+                    $stops['minValue'],
+                    $stops['maxValue']);
+
+                return new Response($table);
+                // and end here
+
+            }
+
+        }
+
+        /*
         $data = array();
         $campaignIds = $selectedCampaignIds;
         if(count($districts) > 0) {
@@ -245,7 +360,7 @@ class CatchupDataAjaxController extends Controller
                         'RemRefusal' => 'Refusal',
                         'TotalRecovered' => 'Recovered',
                     ],
-                    $lastCampClustersData, false);
+                    $lastCampClustersData, true);
                 $campaign = "No data for this campaign as per current filter";
                 if(count($lastCampClustersData) > 0)
                     $campaign = $lastCampClustersData[0]['CName']." Recovered and Remaining Children";
@@ -256,6 +371,7 @@ class CatchupDataAjaxController extends Controller
         }
 
         return new Response(json_encode($data));
+        */
     }
 
     /**

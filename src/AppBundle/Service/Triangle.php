@@ -181,4 +181,33 @@ class Triangle
         return $resultArray;
     }
 
+    /**
+     * @param $indicator
+     * @return string
+     */
+    public static function trIndicators($indicator) {
+
+        $nIdicator['cIndicator'] = 'cTotalRecovered';
+        $nIdicator['fIndicator'] = 'fTotalRemaining';
+        switch ($indicator) {
+            case "RemAbsent":
+            case "RemAbsentPer":
+                $nIdicator['cIndicator'] = 'cVacAbsent';
+                $nIdicator['fIndicator'] = 'fTotalAbsent';
+                break;
+            case "RemNSS":
+            case "RemNSSPer":
+                $nIdicator['cIndicator'] = 'cVacNSS';
+                $nIdicator['fIndicator'] = 'fTotalNSS';
+                break;
+            case "RemRefusal":
+            case "RemRefusalPer":
+                $nIdicator['cIndicator'] = 'cVacRefusal';
+                $nIdicator['fIndicator'] = 'fTotalRefusal';
+                break;
+        }
+
+        return $nIdicator;
+    }
+
 }

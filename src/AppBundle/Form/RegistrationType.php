@@ -46,7 +46,8 @@ class RegistrationType extends AbstractType
             ->add('roles', ChoiceType::class, array('choices' => array(
                 'Admin'=>'ROLE_ADMIN',
                 'Editor'=>'ROLE_EDITOR',
-                'Viewer'=>'ROLE_VIEWER'
+                'Viewer'=>'ROLE_NORMAL_USER',
+                'Partner' => 'ROLE_PARTNER'
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))
             ->add('level', ChoiceType::class, array('choices' => array(
                 'National' => 'National', 'Region' => 'Region', 'Province' => 'Province'),

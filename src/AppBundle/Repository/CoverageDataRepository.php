@@ -17,6 +17,7 @@ class CoverageDataRepository extends EntityRepository {
     protected static $DQL = " sum(cvr.vialsReceived) as RVials, sum(cvr.vialsUsed) as UVials,
                    ((COALESCE(sum(cvr.vialsUsed), 0)*20 -
                    (COALESCE(sum(cvr.noChildInHouseVac), 0) +COALESCE(sum(cvr.noChildOutsideVac), 0)+
+                    COALESCE(sum(cvr.noChildVacByTT), 0) + COALESCE(sum(cvr.noVacNomad), 0) +
                     COALESCE(sum(cvr.noAbsentSameDayFoundVac), 0)+ COALESCE(sum(cvr.noAbsentSameDayVacByTeam), 0) +
                     COALESCE(sum(cvr.noAbsentNotSameDayFoundVac), 0) + COALESCE(sum(cvr.noAbsentNotSameDayVacByTeam), 0) +
                     COALESCE(sum(cvr.noNSSFoundVac), 0) + COALESCE(sum(cvr.noNSSVacByTeam),0) +
@@ -35,7 +36,8 @@ class CoverageDataRepository extends EntityRepository {
                         ELSE 0
                     end)
                     ) as CalcTarget,
-                  (COALESCE(sum(cvr.noChildInHouseVac),0)+COALESCE(sum(cvr.noChildOutsideVac),0)+
+                  (COALESCE(sum(cvr.noChildVacByTT), 0) + COALESCE(sum(cvr.noVacNomad), 0) +
+                    COALESCE(sum(cvr.noChildInHouseVac),0)+COALESCE(sum(cvr.noChildOutsideVac),0)+
                     COALESCE(sum(cvr.noAbsentSameDayFoundVac),0) +
                     COALESCE(sum(cvr.noAbsentSameDayVacByTeam),0)+ COALESCE(sum(cvr.noAbsentNotSameDayFoundVac),0) + 
                     COALESCE(sum(cvr.noAbsentNotSameDayVacByTeam),0) + COALESCE(sum(cvr.noNSSFoundVac),0) + 
@@ -565,7 +567,7 @@ class CoverageDataRepository extends EntityRepository {
                   FROM AppBundle:CoverageData cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND cvr.district in (:dist))
                   GROUP BY cvr.campaign, cvr.district, cvr.subDistrict, cvr.clusterNo
-                  ORDER BY cvr.subDistrict, cvr.clusterNo"
+                  ORDER BY cvr.subDistrict, TotalRemaining DESC, cvr.clusterNo"
             ) -> setParameters(['camp'=>$campaigns, 'dist'=>$district])
             ->getResult(Query::HYDRATE_SCALAR);
     }
@@ -603,7 +605,7 @@ class CoverageDataRepository extends EntityRepository {
                   AND (cvr.subDistrict IS NULL OR cvr.subDistrict = :subDist)
                   AND cvr.clusterNo IN (:clusters))
                   GROUP BY cvr.campaign, cvr.district, cvr.subDistrict, cvr.clusterNo
-                  ORDER BY cvr.subDistrict, cvr.clusterNo"
+                  ORDER BY cvr.subDistrict, TotalRemaining DESC, cvr.clusterNo"
             ) -> setParameters(['camp'=>$campaigns, 'dist'=>$district, 'subDist' => $subDistrict, 'clusters' => $clusters])
             ->getResult(Query::HYDRATE_SCALAR);
     }

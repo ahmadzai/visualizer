@@ -5,6 +5,13 @@
     position: absolute !important;
 }
 
+.dropdown-filter {
+    z-index: 1000 !important;
+    left:8px !important;
+    top:8px !important;
+    position: absolute !important;
+}
+
 .chart-menu {
     z-index: 1000 !important;
     left:24px !important;
@@ -89,4 +96,15 @@
     display: block;
     font-weight: bold;
     font-size: 110%;
+}
+
+.less-padding td {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 100%;
+}
+
+.less-padding th {
+    font-size: 80%;
+    font-weight: bold;
 }

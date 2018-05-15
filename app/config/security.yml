@@ -11,9 +11,11 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_USER:  ROLE_VIEWER
-        ROLE_EDITOR:  ROLE_USER
+        ROLE_PARTNER: PARTIAL_VIEWER
+        ROLE_NORMAL_USER:  ROLE_VIEWER
+        ROLE_EDITOR:  ROLE_NORMAL_USER
         ROLE_ADMIN: ROLE_EDITOR, ROLE_SUPER_ADMIN
+
 
     providers:
         fos_userbundle:

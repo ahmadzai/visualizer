@@ -36,6 +36,7 @@ class MenuBuilder implements ContainerAwareInterface
 //        die;
         $adminRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
         $editRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_EDITOR');
+        $partnerRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_PARTNER');
 
         $menu = $factory->createItem('Home');
         $menu->setChildrenAttributes(array('class'=>'sidebar-menu', 'data-widget'=>'tree'));
@@ -94,25 +95,27 @@ class MenuBuilder implements ContainerAwareInterface
             $menu['Catchup Data']['Data Entry']->setAttribute('icon', 'fa-table');
         }
 
-        //------------------------------------------------------- ICN Data TPM ---------------------------------------
-        $menu->addChild("ICN Monitoring TPM", array('uri'=>'#'))->setExtra('info', 'ICN Monitoring Report');
-        $menu['ICN Monitoring TPM']->setAttribute('icon','fa-database');
-        $menu['ICN Monitoring TPM']->setAttribute('sub_menu_icon', 'fa-angle-left');
+        if(!$partnerRole) {
+            //------------------------------------------------------- ICN Data TPM ---------------------------------------
+            $menu->addChild("ICN Monitoring TPM", array('uri' => '#'))->setExtra('info', 'ICN Monitoring Report');
+            $menu['ICN Monitoring TPM']->setAttribute('icon', 'fa-database');
+            $menu['ICN Monitoring TPM']->setAttribute('sub_menu_icon', 'fa-angle-left');
 
-        // Sub menu (child of Catchup Data
-        // SMs Performance
-        $menu['ICN Monitoring TPM']->addChild("SMs Performance", array('route'=>'icn_monitoring_sm',
-                                                                       'extras'=>['route'=>'cluster_icn_monitoring_sm']
-                                                                      ))->setExtra('info', 'Report');
-        $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        $menu['ICN Monitoring TPM']['SMs Performance']->setAttribute('icon',' fa-bar-chart');
+            // Sub menu (child of Catchup Data
+            // SMs Performance
+            $menu['ICN Monitoring TPM']->addChild("SMs Performance", array('route' => 'icn_monitoring_sm',
+                'extras' => ['route' => 'cluster_icn_monitoring_sm']
+            ))->setExtra('info', 'Report');
+            $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            $menu['ICN Monitoring TPM']['SMs Performance']->setAttribute('icon', ' fa-bar-chart');
 
-        // CCSs Performance
-        $menu['ICN Monitoring TPM']->addChild("CCSs Performance", array('route'=>'icn_monitoring_ccs',
-                                                                        'extras'=>['route'=>'cluster_icn_monitoring_ccs']
-                                                                        ))->setExtra('info', 'Report');
-        $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        $menu['ICN Monitoring TPM']['CCSs Performance']->setAttribute('icon',' fa-bar-chart');
+            // CCSs Performance
+            $menu['ICN Monitoring TPM']->addChild("CCSs Performance", array('route' => 'icn_monitoring_ccs',
+                'extras' => ['route' => 'cluster_icn_monitoring_ccs']
+            ))->setExtra('info', 'Report');
+            $menu['ICN Monitoring TPM']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            $menu['ICN Monitoring TPM']['CCSs Performance']->setAttribute('icon', ' fa-bar-chart');
+        }
 
         // TPM SM/CCS Upload Option
         if($editRole) {
@@ -123,24 +126,26 @@ class MenuBuilder implements ContainerAwareInterface
         }
 
         /*------------------------------------------------------- ICN Data Internal ---------------------------------------*/
-        $menu->addChild("ICN Monitoring", array('uri'=>'#'))->setExtra('info', 'Internal ICN Monitoring Report');
-        $menu['ICN Monitoring']->setAttribute('icon','fa-database');
-        $menu['ICN Monitoring']->setAttribute('sub_menu_icon', 'fa-angle-left');
+        if(!$partnerRole) {
+            $menu->addChild("ICN Monitoring", array('uri' => '#'))->setExtra('info', 'Internal ICN Monitoring Report');
+            $menu['ICN Monitoring']->setAttribute('icon', 'fa-database');
+            $menu['ICN Monitoring']->setAttribute('sub_menu_icon', 'fa-angle-left');
 
-        // Sub menu (child of Catchup Data
-        // SMs Performance
-        $menu['ICN Monitoring']->addChild("SMs Performance", array('route'=>'int_icn_monitoring_sm',
-            'extras'=>['route'=>'cluster_icn_monitoring_sm']
-        ))->setExtra('info', 'Report (internal ODK)');
-        $menu['ICN Monitoring']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        $menu['ICN Monitoring']['SMs Performance']->setAttribute('icon',' fa-bar-chart');
+            // Sub menu (child of Catchup Data
+            // SMs Performance
+            $menu['ICN Monitoring']->addChild("SMs Performance", array('route' => 'int_icn_monitoring_sm',
+                'extras' => ['route' => 'cluster_icn_monitoring_sm']
+            ))->setExtra('info', 'Report (internal ODK)');
+            $menu['ICN Monitoring']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            $menu['ICN Monitoring']['SMs Performance']->setAttribute('icon', ' fa-bar-chart');
 
-        // CCSs Performance
-        $menu['ICN Monitoring']->addChild("CCSs Performance", array('route'=>'int_icn_monitoring_ccs',
-            'extras'=>['route'=>'cluster_icn_monitoring_ccs']
-        ))->setExtra('info', 'Report (internal ODK)');
-        $menu['ICN Monitoring']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        $menu['ICN Monitoring']['CCSs Performance']->setAttribute('icon',' fa-bar-chart');
+            // CCSs Performance
+            $menu['ICN Monitoring']->addChild("CCSs Performance", array('route' => 'int_icn_monitoring_ccs',
+                'extras' => ['route' => 'cluster_icn_monitoring_ccs']
+            ))->setExtra('info', 'Report (internal ODK)');
+            $menu['ICN Monitoring']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            $menu['ICN Monitoring']['CCSs Performance']->setAttribute('icon', ' fa-bar-chart');
+        }
 
         // TPM SM/CCS Upload Option
         if($editRole) {

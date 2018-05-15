@@ -48,8 +48,13 @@ class MainController extends Controller
      * @Route("/main/clusters/{district}", name="cluster_main", options={"expose"=true})
      */
     public  function clusterLevelAction(Request $request, $district = null) {
+
         $data = ['district' => $district===null?0:$district];
-        return $this->render("pages/clusters.html.twig",
+        $data['title'] = 'Triangulated Clusters Trends';
+        $data['pageTitle'] = "Triangulated Data (Admin, Catchup) Trends By Clusters";
+        $data['source'] = 'CoverageData';
+        $data['ajaxUrl'] = 'main';
+        return $this->render("pages/clusters-table.html.twig",
             $data
         );
 
@@ -58,9 +63,11 @@ class MainController extends Controller
 
     /**
      * @Route("/test", name="testing")
-     * @param $var
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Security("has_role('ROLE_ADMIN')")
+     * @param Request $request
+     * @param Charts $charts
+     * @param Settings $settings
+     * @param Triangle $triangle
+     * @return \Symfony\Component\HttpFoundation\Response* @Security("has_role('ROLE_ADMIN')")
      */
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 

@@ -44,8 +44,13 @@ class CatchupDataController extends Controller
      * @Route("/catchup_data/clusters/{district}", name="cluster_catchup_data", options={"expose"=true})
      */
     public  function clusterLevelAction($district = null) {
+
         $data = ['district' => $district===null?0:$district];
-        return $this->render("pages/fieldbook/clusters.html.twig",
+        $data['title'] = 'Catchup Data Clusters Trends';
+        $data['pageTitle'] = "Catchup Data Trends and Analysis, Cluster Level";
+        $data['source'] = 'CatchupData';
+        $data['ajaxUrl'] = 'catchup_data';
+        return $this->render("pages/clusters-table.html.twig",
             $data
         );
 
@@ -58,6 +63,7 @@ class CatchupDataController extends Controller
      * @Method("GET")
      * @return Response
      * @Security("has_role('ROLE_EDITOR')")
+     * @throws \Exception
      */
     public function downloadAction(Request $request, $type='all') {
 

@@ -351,9 +351,11 @@ class HtmlTable
     /**
      * @param $data
      * @param $headerVars (col, label, calc)
+     * @param $min (min color (0-1))
+     * @param $max (max color (0-1))
      * @return string
      */
-    public static function tableODK($data, $headerVars) {
+    public static function tableODK($data, $headerVars, $min = null, $max = null) {
         $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped table-responsive\" 
                          style=\"width:100%\" '>";
         $th = "<thead>";
@@ -374,10 +376,10 @@ class HtmlTable
                 $finalValue = is_numeric($value) ? $value.'%': $value;
 
                 if($calc === 'normal') {
-                    $color = self::numToColor($datum[$index], 0, 1);
+                    $color = ColorMgr::numToColor($datum[$index], $min===null?0:$min, $max===null?1:$max);
                 } else if($calc === 'rev') {
                     $colorValue = abs((1-$datum[$index]));
-                    $color = self::numToColor($colorValue, 0.5, 1);
+                    $color = ColorMgr::numToColor($colorValue, $min===null?0.5:$min, $max===null?1:$max);
                 } else if($calc === 'none') {
                     $value = is_numeric($value) ? round($value/100, 0): $value;
                     $finalValue = $value;
@@ -397,52 +399,109 @@ class HtmlTable
         return $table.$th.$rows."</table>";
     }
 
-    public static function hslToRgb($h, $s, $l){
-        $r = $b = $g = null;
-        if($s == 0) {
-            $r = $g = $b = $l; // achromatic
-        } else {
-            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
-            $p = 2 * $l - $q;
-            $r = self::hue2rgb($p, $q, $h + 1/3);
-            $g = self::hue2rgb($p, $q, $h);
-            $b = self::hue2rgb($p, $q, $h - 1/3);
+    /**
+     * @param $data
+     * @param $headerVars (col, label, calc)
+     * @param $min (min color (0-1))
+     * @param $max (max color (0-1))
+     * @param $type (number type (number|percent))
+     * @param $title (null|text)
+     * @return string
+     */
+    public static function heatMapTable($data, $headerVars, $title = null,  $min = null, $max = null, $type='normal') {
+
+        $table = "<div>
+                   <table id='tbl-data' class=\"table table-bordered table-striped table-responsive less-padding\" 
+                         style=\"width:100%\" '>";
+        if($title !== null) {
+            $table .= "<caption>".$title."</caption>";
         }
 
-        return [floor($r * 255), floor($g * 255), floor($b * 255)];
-    }
+        $th = "<thead>";
+        foreach ($headerVars as $var) {
+            $header = array_key_exists('label', $var) ? $var['label'] : ucfirst($var);
+            $th .= "<th>" . $header . "</th>";
+        }
+        $th .="</thead>";
 
-    public static function numToColor($i, $min, $max) {
-        $ratio = $i;
-        if ($min> 0 || $max < 1) {
-            if ($i < $min) {
-                $ratio = 0;
-            } else if ($i > $max) {
-                $ratio = 1;
-            } else {
-                $range = $max - $min;
-                $ratio = ($i-$min) / $range;
+        $rows = "<tbody>";
+        foreach($data as $datum) {
+            $tr = "<tr>";
+            foreach ($headerVars as $headerVar) {
+                $index = array_key_exists('col', $headerVar) ? $headerVar['col'] : $headerVar;
+                $calc = array_key_exists('calc', $headerVar) ? $headerVar['calc'] : 'normal';
+                $value = $datum[$index];
+                $color = '#CCCCCC';
+                $finalValue = is_numeric($value) && $type == 'percent'  ? $value.'%': $value;
+                if($calc === 'normal') {
+                    $color = ColorMgr::numberToColor($datum[$index], $min===null?20:$min, $max===null?50:$max);
+                } else if($calc === 'rev') {
+                    $color = ColorMgr::numberToColor($datum[$index], $min===null?20:$min,
+                        $max===null?50:$max, null, true);
+                } else if($calc === 'none') {
+                    $value = $datum[$index];
+                    $finalValue = $value;
+                }
+
+                $align = is_numeric($value) ? 'text-align:center' : '';
+                $color = $value === null ? '#CCCCCC' : $color;
+
+                $tr .= "<td style=\"background-color: $color; $align\">" . $finalValue . "</td>";
             }
+            $tr .= "</tr>";
+            $rows .= $tr;
         }
 
-        // as the function expects a value between 0 and 1, and red = 0° and green = 120°
-        // we convert the input to the appropriate hue value
-        $hue = $ratio * 1.2 / 3.60;
+        $rows .= "</tbody>";
 
-        // we convert hsl to rgb (saturation 100%, lightness 50%)
-        $rgb = self::hslToRgb($hue, 1, .5);
-        // we format to css value and return
-        return 'rgb('.$rgb[0].','.$rgb[1].','.$rgb[2].')';
+        $info = "<div class='col-sm-12' style='padding-left:0'><a name='benchmark'>BenchMark:</a> <span class='btn btn-sm' 
+                     style='background-color:".
+                     ColorMgr::numberToColor($min, $min, $max, null, true)."'>Min: $min</span> 
+                     <span class='btn btn-sm' 
+                     style='background-color:".
+            ColorMgr::numberToColor($max, $min, $max, null, true)."'>Max: $max</span>
+                     </div>";
+        return $table.$th.$rows."</table></div>".$info;
     }
 
-    public static function hue2rgb($p, $q, $t){
-        if($t < 0) $t += 1;
-        if($t > 1) $t -= 1;
-        if($t < 1/6) return $p + ($q - $p) * 6 * $t;
-        if($t < 1/2) return $q;
-        if($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
-        return $p;
+    /**
+     * @param $indicator
+     * @return string
+     */
+    public static function heatMapTableHeader($indicator) {
+
+        $title = "";
+        switch ($indicator) {
+            case "RemAbsent":
+                $title = "Trends of Remaining Absent Children";
+                break;
+            case "RemNSS":
+                $title = "Trends of Remaining NSS Children";
+                break;
+            case "RemRefusal":
+                $title = "Trends of Remaining Refusal Children";
+                break;
+            case "TotalRemaining":
+                $title = "Trends of Total Remaining Children (all reasons)";
+                break;
+            case "RemAbsentPer":
+                $title = "Trends of Remaining Absent Children in Percentage";
+                break;
+            case "RemNSSPer":
+                $title = "Trends of Remaining NSS Children in Percentage";
+                break;
+            case "RemRefusalPer":
+                $title = "Trends of Remaining Refusal Children in Percentage";
+                break;
+            case "TotalRemainingPer":
+                $title = "Trends of Total Remaining Children (all reasons) in Percentage";
+                break;
+        }
+
+        return $title;
     }
+
+
 
 
 }
