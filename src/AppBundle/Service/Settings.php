@@ -17,6 +17,10 @@ class Settings
     const NUM_CAMP_CHARTS = 10;
     const NUM_CAMP_LIMIT = 10;
 
+    // ONA API_KEY and URL
+    const ONA_API = "ab777ce3248651d18a0447ecc39fdb30def50a10";
+    const ONA_BASE_URL = "https://api.ona.io/api/v1";
+
     protected $em;
 
     public function __construct(EntityManagerInterface $entityManager)

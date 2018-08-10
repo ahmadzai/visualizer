@@ -43,9 +43,9 @@ class Province
     /**
      * @var string
      *
-     * @ORM\Column(name="province_rhizome_code", type="string", length=45, nullable=true)
+     * @ORM\Column(name="geo", type="json", nullable=true)
      */
-    private $provinceRhizomeCode;
+    private $geo;
 
     /**
      * @var \DateTime
@@ -162,27 +162,27 @@ class Province
     }
 
     /**
-     * Set provinceRhizomeCode
+     * Set Geo
      *
-     * @param string $provinceRhizomeCode
+     * @param string $geo
      *
      * @return Province
      */
-    public function setProvinceRhizomeCode($provinceRhizomeCode)
+    public function setGeo($geo)
     {
-        $this->provinceRhizomeCode = $provinceRhizomeCode;
+        $this->geo = $geo;
 
         return $this;
     }
 
     /**
-     * Get provinceRhizomeCode
+     * Get $geo
      *
      * @return string
      */
-    public function getProvinceRhizomeCode()
+    public function getGeo()
     {
-        return $this->provinceRhizomeCode;
+        return $this->geo;
     }
 
     /**

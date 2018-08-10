@@ -906,7 +906,7 @@ function secondChart(sData, sOptions, sColors) {
                 }
                 newData.push(Math.round(avg / arrLength));
             }
-        } else if(sOptions.method == 'sum') {
+        } else if(sOptions.method === 'sum') {
             //newData = null;
             var sum = 0;
             for (var i = 0; i < arrLength; i++) {
@@ -921,7 +921,7 @@ function secondChart(sData, sOptions, sColors) {
         }
         var lineChart = {
             type: 'spline',
-            name: sOptions.method == 'sum'? 'Total': 'Average',
+            name: sOptions.method === 'sum'? 'Total': 'Average',
             data: newData,
             marker: {
                 lineWidth: 2,

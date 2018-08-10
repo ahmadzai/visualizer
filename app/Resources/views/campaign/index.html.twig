@@ -116,7 +116,8 @@
             //Initialize Select2 Elements
             $('#campaigns').dataTable({
                 "pageLength": 15,
-                "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ]
+                "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ],
+                "order": [[ 0, "desc" ]]
             });
         })
     </script>

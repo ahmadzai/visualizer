@@ -108,9 +108,9 @@ function loadData(config) {
         data: data,
         type: 'POST',
         success: function (data) {
-            //console.log(data);
-            var jsonData = JSON.parse(data);
 
+            var jsonData = JSON.parse(data);
+            // console.log(jsonData);
             // set new title for the row
             $('.campaign-title').html(jsonData.campaign + " Campaign Data");
 
@@ -133,6 +133,8 @@ function loadData(config) {
                 config['recovered_nss'].color, null, 'halfpie');
             myPieChartWrapper('chart-recovered_refusal', JSON.stringify(jsonData.recoveredRefusal), true,
                 config['recovered_refusal'].color, null, 'halfpie');
+            myChartWrapper({'type':"column", 'stacking':'normal'}, "chart-missed_by_loc", JSON.stringify(jsonData.missedByLoc),
+                {'yTitle':null, 'xTitle':null}, null, config['missed_type_10camp'].color);
 
             // Last 10 campaign trends
             myChartWrapper({'type':"column"}, "chart-vac_child_10camp", JSON.stringify(jsonData.chartVacChild10Camp),

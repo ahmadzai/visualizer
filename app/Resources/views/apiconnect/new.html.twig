@@ -5,7 +5,7 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add a new province!</h3>
+                    <h3 class="box-title">Add a new service!</h3>
                 </div>
 
                 {{ form_start(form) }}
@@ -35,32 +35,37 @@
                     <div class="row">
                         <div class="col-md-6">
 
-                            <div class="form-group {{ form_errors(form.provinceName)|length > 0 ? 'has-error' : '' }}">
-                                {{ form_label(form.provinceName) }}
-                                {{ form_widget(form.provinceName, {'attr':{'tabindex':1}}) }}
+                            <div class="form-group {{ form_errors(form.apiServiceName)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiServiceName) }}
+                                {{ form_widget(form.apiServiceName, {'attr':{'tabindex':1}}) }}
                             </div>
 
 
-                            <div class="form-group {{ form_errors(form.provinceNamePashtu)|length > 0 ? 'has-error' : '' }}">
-                                {{ form_label(form.provinceNamePashtu) }}
-                                {{ form_widget(form.provinceNamePashtu, {'attr':{'tabindex':2}}) }}
+                            <div class="form-group {{ form_errors(form.apiServiceUrl)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiServiceUrl) }}
+                                {{ form_widget(form.apiServiceUrl, {'attr':{'tabindex':2}}) }}
                             </div>
 
 
-                            <div class="form-group {{ form_errors(form.provinceNameDari)|length > 0 ? 'has-error' : '' }}">
-                                {{ form_label(form.provinceNameDari) }}
-                                {{ form_widget(form.provinceNameDari, {'attr':{'tabindex':3}}) }}
+                            <div class="form-group {{ form_errors(form.apiKey)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiKey) }}
+                                {{ form_widget(form.apiKey, {'attr':{'tabindex':3}}) }}
                             </div>
 
 
-                            {#<div class="form-group {{ form_errors(form.geo)|length > 0 ? 'has-error' : '' }}">#}
-                                {#{{ form_label(form.geo) }}#}
-                                {#{{ form_widget(form.geo, {'attr':{'tabindex':4}}) }}#}
-                            {#</div>#}
+                            <div class="form-group {{ form_errors(form.apiUser)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiUser) }}
+                                {{ form_widget(form.apiUser, {'attr':{'tabindex':4}}) }}
+                            </div>
 
-                            <div class="form-group {{ form_errors(form.provinceRegion)|length > 0 ? 'has-error' : '' }}">
-                                {{ form_label(form.provinceRegion) }}
-                                {{ form_widget(form.provinceRegion,{'attr':{'tabindex':5, 'style':'width:100%'}}) }}
+                            <div class="form-group {{ form_errors(form.apiPass)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiPass) }}
+                                {{ form_widget(form.apiPass,{'attr':{'tabindex':5, 'style':'width:100%'}}) }}
+                            </div>
+
+                            <div class="form-group {{ form_errors(form.apiLoginType)|length > 0 ? 'has-error' : '' }}">
+                                {{ form_label(form.apiLoginType) }}
+                                {{ form_widget(form.apiLoginType,{'attr':{'tabindex':5, 'style':'width:100%'}}) }}
                             </div>
                             <!-- /.form-group -->
                         </div>
@@ -70,7 +75,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <input type="submit" tabindex="13" class="btn btn-info" value="Create" />
-                            <a href="{{ path('province_index') }}" class="btn btn-default">
+                            <a href="{{ path('apiconnect_index') }}" class="btn btn-default">
                                 <i class="fa fa-mail-reply"></i> Go Back!
                             </a>
                         </div>
@@ -83,3 +88,4 @@
         </div>
     </div>
 {% endblock %}
+

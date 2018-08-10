@@ -71,26 +71,42 @@ class MainController extends Controller
      */
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 
-        //$source = $charts->chartData('OdkSmMonitoring', 'aggByProvince', ['SR']);
 
-        $xAxises = ['attendance', 'profile', 'tallying'];
-        $yAxis = ['col'=>'pcode', 'label'=>'provinceName'];
+//        $regionState = $charts->chartData('CatchupData', 'campaignsStatisticsByRegion',
+//            [22, 21], ['SR']);
+//        $regionData = $charts->chartData('CatchupData', 'regionAggByCampaignRegion',
+//            [22], ['SR']);
+//
+//        return new Response(json_encode(['statistics'=>$regionState,
+//            'region'=>$regionData]));
 
-        $source = $settings->getMonths("OdkSmMonitoring");
+//
+//        $xAxises = ['attendance', 'profile', 'tallying'];
+//        $yAxis = ['col'=>'pcode', 'label'=>'provinceName'];
+//
+//        $source = $settings->getMonths("OdkSmMonitoring");
+//
+//        $tenCampCatchupData = $charts->chartData("CatchupData",
+//            'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
+//
+        $tenCampCatchupData = $charts->chartData("CoverageData",
+            'campaignsStatisticsByRegion', [24, 23, 22], ['SR']);
 
-        $tenCampCatchupData = $charts->chartData("CatchupData",
-            'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
+        $lastCampStackChart = $charts->chartData1Category(['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']],
+            ['RemAbsent' => 'Absent',
+                'RemNSS' => 'NSS',
+                'RemRefusal' => 'Refusal'], $tenCampCatchupData);
+        $lastCampStackChart['title'] = 'Missed Children By Campaign';
+        $lastCampStackChart['subTitle'] = null;
+//
+//        //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
+//
+//
+//        return new Response(json_encode($tenCampCatchupData));
 
-        //$tenCampCatchupData = $charts->chartData("CoverageData",
-            //'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
 
-        //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
-
-
-        return new Response(json_encode($tenCampCatchupData));
-
-//        return $this->render("pages/test.html.twig",
-//            ['testData' => json_encode([])]);
+        return $this->render("pages/js-test.html.twig",
+            ['data' => json_encode($lastCampStackChart)]);
 
     }
 

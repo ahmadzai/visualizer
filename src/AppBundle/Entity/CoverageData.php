@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoverageData
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CoverageDataRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AdminRepository")
  *
  */
 class CoverageData

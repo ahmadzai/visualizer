@@ -1,69 +1,31 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: wakhan
- * Date: 10/13/2017
- * Time: 10:05 PM
+ * User: Awesome
+ * Date: 8/10/2018
+ * Time: 9:37 AM
  */
 
 namespace AppBundle\Repository;
 
+
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping;
 use Doctrine\ORM\Query;
 
-class CatchupDataRepository extends EntityRepository {
+class ChartRepo extends EntityRepository
+{
+    protected $DQL;
+    protected $entity;
 
+    public function setDQL($DQL) {
+        $this->DQL = $DQL;
+    }
 
-    protected static $DQL = " (SUM(COALESCE(cvr.regAbsent, 0)) + 
-                               SUM(COALESCE(cvr.regNSS, 0)) + 
-                               SUM(COALESCE(cvr.regRefusal,0))
-                               ) AS RegMissed, 
-                              SUM(COALESCE(cvr.regAbsent, 0)) as RegAbsent,
-                              SUM(COALESCE(cvr.vacAbsent, 0)) as VacAbsent,
-                              (SUM(COALESCE(cvr.regAbsent, 0)) - 
-                               SUM(COALESCE(cvr.vacAbsent, 0))
-                               ) as RemAbsent,
-                              (SUM(COALESCE(cvr.vacAbsent, 0))/
-                               SUM(COALESCE(cvr.regAbsent, 0))*100
-                               ) as PerVacAbsent,
-                              SUM(COALESCE(cvr.regNSS, 0)) as RegNSS,
-                              SUM(COALESCE(cvr.vacNSS, 0)) as VacNSS,
-                              (SUM(COALESCE(cvr.regNSS, 0)) -
-                               SUM(COALESCE(cvr.vacNSS, 0))
-                               )as RemNSS,
-                              (SUM(COALESCE(cvr.vacNSS, 0))/
-                               SUM(COALESCE(cvr.regNSS, 0))*100) as PerVacNSS,
-                              SUM(COALESCE(cvr.regRefusal, 0)) as RegRefusal,
-                              SUM(COALESCE(cvr.vacRefusal, 0)) as VacRefusal,
-                              SUM(COALESCE(cvr.regRefusal, 0)) - SUM(COALESCE(cvr.vacRefusal, 0)) as RemRefusal,
-                              (SUM(COALESCE(cvr.vacRefusal, 0))/SUM(COALESCE(cvr.regRefusal, 0))*100) as PerVacRefusal,
-                              SUM(COALESCE(cvr.unRecorded, 0)) as UnRecorded,
-                              SUM(COALESCE(cvr.vacUnRecorded, 0)) as VacUnRecorded,
-                              SUM(COALESCE(cvr.unRecorded, 0)) - SUM(COALESCE(cvr.vacUnRecorded, 0)) as RemUnRecorded,
-                              SUM(COALESCE(cvr.vacGuest, 0)) as VacGuest,
-                              SUM(COALESCE(cvr.vacAbsent, 0)) + SUM(COALESCE(cvr.vacNSS, 0)) + SUM(COALESCE(cvr.vacRefusal, 0)) AS
-                              TotalRecovered,
-                              ((SUM(COALESCE(cvr.regAbsent, 0)) + 
-                               SUM(COALESCE(cvr.regNSS, 0)) + 
-                               SUM(COALESCE(cvr.regRefusal,0))
-                               ) - (SUM(COALESCE(cvr.vacAbsent, 0)) + 
-                                    SUM(COALESCE(cvr.vacNSS, 0)) + 
-                                    SUM(COALESCE(cvr.vacRefusal, 0)))
-                               ) As TotalRemaining,     
-                              (SUM(COALESCE(cvr.vacAbsent, 0)) + 
-                               SUM(COALESCE(cvr.vacNSS, 0)) + 
-                               SUM(COALESCE(cvr.vacRefusal, 0)) +
-                               SUM(COALESCE(cvr.vacUnRecorded, 0)) + 
-                               SUM(COALESCE(cvr.vacGuest, 0))
-                               ) AS TotalVac,
-                              ((SUM(COALESCE(cvr.vacAbsent, 0)) + 
-                                SUM(COALESCE(cvr.vacNSS, 0)) + 
-                                SUM(COALESCE(cvr.vacRefusal, 0)))/
-                                (SUM(COALESCE(cvr.regAbsent, 0)) + 
-                                 SUM(COALESCE(cvr.regNSS, 0)) + 
-                                 SUM(COALESCE(cvr.regRefusal, 0))) * 100)
-                               AS PerRecovered
-                            ";
+    public function setEntity($entity) {
+        $this->entity = $entity;
+    }
 
     /**
      * @param $function the function must be pre-defined
@@ -89,7 +51,7 @@ class CatchupDataRepository extends EntityRepository {
                                 ELSE CONCAT(cvr.subDistrict, '|', cvr.clusterNo)
                                 END as cluster,
                                 dist.id, dist.districtName 
-                                FROM AppBundle:CatchupData cvr JOIN cvr.district dist 
+                                FROM AppBundle:".$this->entity." cvr JOIN cvr.district dist 
                                 WHERE (cvr.district IN (:districts) AND cvr.campaign IN (:campaigns))
                                 ORDER BY cvr.subDistrict DESC ")
             ->setParameters(['districts'=> $districts, 'campaigns' => $campaigns])
@@ -109,7 +71,7 @@ class CatchupDataRepository extends EntityRepository {
                                 THEN cvr.clusterNo 
                                 ELSE CONCAT(cvr.subDistrict, '|', cvr.clusterNo)
                                 END as cluster
-                                FROM AppBundle:CatchupData cvr JOIN cvr.district dist 
+                                FROM AppBundle:".$this->entity." cvr JOIN cvr.district dist 
                                 WHERE (cvr.district IN (:districts))
                                 ORDER BY cvr.subDistrict DESC")
             ->setParameters(['districts'=> $districts])
@@ -124,7 +86,7 @@ class CatchupDataRepository extends EntityRepository {
     public function subDistrictByDistrict($district, $campaigns) {
         return $this->getEntityManager()
             ->createQuery("SELECT DISTINCT cvr.subDistrict, dist.id, dist.districtName
-                                FROM AppBundle:CatchupData cvr JOIN cvr.district dist 
+                                FROM AppBundle:".$this->entity." cvr JOIN cvr.district dist 
                                 WHERE (cvr.district IN (:district) AND cvr.campaign IN (:campaigns))
                                 ORDER BY cvr.subDistrict DESC ")
             ->setParameters(['district'=> $district, 'campaigns' => $campaigns])
@@ -140,8 +102,8 @@ class CatchupDataRepository extends EntityRepository {
             ->createQuery("SELECT cmp.id as joinkey, cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   WHERE(cvr.campaign=:camp)") ->setParameter('camp', $campaign)
             ->getResult(Query::HYDRATE_SCALAR);
     }
@@ -169,8 +131,8 @@ class CatchupDataRepository extends EntityRepository {
         $dq = $em->createQuery("SELECT cmp.id as joinkey, cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p
                   WHERE(cvr.campaign IN (:camps) $condition)
                   GROUP BY cvr.campaign");
@@ -195,8 +157,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName, p.provinceRegion as Region, 
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p  
                   WHERE(cvr.campaign IN (:camps) AND p.provinceRegion IN (:regions))
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'regions'=>$regions])
@@ -214,8 +176,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p  
                   WHERE(cvr.campaign IN (:camps) AND p.id in (:province))
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'province'=>$province])
@@ -233,8 +195,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp JOIN cvr.district d
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp JOIN cvr.district d
                   WHERE(cvr.campaign IN (:camps) AND cvr.district IN (:district))
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'district'=>$district])
             ->getResult(Query::HYDRATE_SCALAR);
@@ -253,8 +215,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign IN (:camps) AND p.id in (:province) AND d.districtRiskStatus in (:risk) )
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'province'=>$prov, 'risk' => $risk])
@@ -275,8 +237,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign IN (:camps) AND p.id in (:province) AND d.districtRiskStatus IS NULL )
                   GROUP BY cvr.campaign") ->setParameters(['camps'=>$campaigns, 'province'=>$prov])
@@ -309,8 +271,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p
                   WHERE(cvr.campaign IN (:camps) AND cmp.campaignType IN (:campType) $condition)
                   GROUP BY cvr.campaign");
@@ -348,8 +310,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p
                   $condition
                   GROUP BY cvr.campaign");
@@ -390,8 +352,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.id as CID, cmp.campaignStartDate as CDate,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp 
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp 
                   JOIN cvr.district d JOIN d.province p
                   WHERE(cmp.campaignType IN (:campType) $condition)
                   GROUP BY cvr.campaign");
@@ -431,8 +393,8 @@ class CatchupDataRepository extends EntityRepository {
                     THEN cvr.clusterNo 
                     ELSE CONCAT(cvr.subDistrict, '-', cvr.clusterNo)
                   END as Cluster,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND cvr.district in (:dist))
                   GROUP BY cvr.campaign, cvr.district, cvr.subDistrict, cvr.clusterNo
                   ORDER BY cvr.subDistrict, cvr.clusterNo"
@@ -465,8 +427,8 @@ class CatchupDataRepository extends EntityRepository {
                     THEN cvr.clusterNo 
                     ELSE CONCAT(cvr.subDistrict, '-', cvr.clusterNo)
                   END as Cluster, 
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign in (:camp) 
                   AND cvr.district in (:dist)
@@ -490,8 +452,8 @@ class CatchupDataRepository extends EntityRepository {
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp))
                   GROUP BY p.id, cvr.district, cvr.campaign"
             )-> setParameters(['camp'=>$campaign])
@@ -511,8 +473,8 @@ class CatchupDataRepository extends EntityRepository {
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign in (:camp) AND p.id IN (:prov))
                   GROUP BY p.id, cvr.district, cvr.campaign"
@@ -533,8 +495,8 @@ class CatchupDataRepository extends EntityRepository {
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND cvr.district in (:dist))
                   GROUP BY p.id, cvr.district, cvr.campaign"
             )-> setParameters(['camp'=>$campaign, 'dist'=>$district])
@@ -550,8 +512,8 @@ class CatchupDataRepository extends EntityRepository {
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.id in (:prov) 
                   AND (d.districtRiskStatus in (:risk)))
                   GROUP BY p.id, cvr.district, cvr.campaign"
@@ -568,8 +530,8 @@ class CatchupDataRepository extends EntityRepository {
                   d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.id in (:prov)
                   AND (d.districtRiskStatus in (:risk) OR d.districtRiskStatus IS NULL))
                   GROUP BY p.id, cvr.district, cvr.campaign"
@@ -589,8 +551,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp))
                   GROUP BY p.id, cvr.campaign"
             )-> setParameters(['camp'=>$campaign])
@@ -610,8 +572,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign in (:camp) AND p.provinceRegion IN (:region))
                   GROUP BY p.id, cvr.campaign"
@@ -632,8 +594,8 @@ class CatchupDataRepository extends EntityRepository {
                   cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.id in (:prov))
                   GROUP BY p.id, cvr.campaign"
             )-> setParameters(['camp'=>$campaign, 'prov'=>$province])
@@ -650,8 +612,8 @@ class CatchupDataRepository extends EntityRepository {
                   p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp))
                   GROUP BY p.provinceRegion, cvr.campaign"
             )-> setParameters(['camp'=>$campaign])
@@ -670,8 +632,8 @@ class CatchupDataRepository extends EntityRepository {
                   p.provinceRegion as Region, cmp.campaignStartDate as CDate, cmp.id as CID,
                   cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
                   cmp.campaignName as CName,
-                  ".self::$DQL."
-                  FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
                   JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.provinceRegion in (:region))
                   GROUP BY p.provinceRegion, cvr.campaign"
             )-> setParameters(['camp'=>$campaign, 'region'=>$region])
@@ -695,8 +657,8 @@ class CatchupDataRepository extends EntityRepository {
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,
               cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-              ".self::$DQL."
-              FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+              ".$this->DQL."
+              FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
               JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.provinceRegion in (:region))
               GROUP BY cvr.clusterNo, p.provinceRegion, cmp.id"
             )-> setParameters(['camp'=>$campaign, 'region' => $region])
@@ -718,8 +680,8 @@ class CatchupDataRepository extends EntityRepository {
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,
               cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-              ".self::$DQL."
-              FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+              ".$this->DQL."
+              FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
               JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND p.id in (:prov))
               GROUP BY cvr.clusterNo, p.id, cmp.id"
             )-> setParameters(['camp'=>$campaign, 'prov' => $province])
@@ -741,8 +703,8 @@ class CatchupDataRepository extends EntityRepository {
               cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
               cmp.campaignName as CName,
               cvr.clusterName as ClusterName, cvr.clusterNo as ClusterNo,
-              ".self::$DQL."
-              FROM AppBundle:CatchupData cvr JOIN cvr.campaign cmp
+              ".$this->DQL."
+              FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
               JOIN cvr.district d JOIN d.province p WHERE(cvr.campaign in (:camp) AND d.id in (:dist))
               GROUP BY cvr.clusterNo, d.id, cmp.id"
             )-> setParameters(['camp'=>$campaign, 'dist' => $district])

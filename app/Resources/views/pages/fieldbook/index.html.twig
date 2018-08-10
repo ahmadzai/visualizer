@@ -25,50 +25,53 @@
 
                     <!-- Start of First Row --->
                     <div class="row">
-                    <div class="col-md-9">
-                        <div class="row info-row">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-primary">
-                                     <div class="box-body table-campaign-info">
-                                         <span class="loading" title="Applying filter" style="left: 40%; top: 20px;">
-                                            <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                         </span>
-                                     </div>
+                        <div class="col-md-9">
+                            <!-- The information row with widgets -->
+                            <div class="row info-row">
+                            </div>
+                            <!-- The table part of the dashboard -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                         <div class="box-body table-campaign-info">
+                                             <span class="loading" title="Applying filter" style="left: 40%; top: 20px;">
+                                                <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                             </span>
+                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <!-- Left sidebar -->
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <span class="filter-loading loading" title="Applying filter">
+                                            <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                        </span>
+                                         <div class="box-body" style="padding: 1px;">
+                                            <div id="chart-remaining_by_reason" style="height: 200px; max-height: 250px;" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
 
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-primary">
-                                    <span class="filter-loading loading" title="Applying filter">
-                                        <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                    </span>
-                                     <div class="box-body" style="padding: 1px;">
-                                        <div id="chart-remaining_by_reason" style="height: 200px; max-height: 250px;" >
+                                    <div class="box box-primary">
+                                        <span class="filter-loading loading" title="Applying filter">
+                                            <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                        </span>
+                                        <div class="box-body" style="padding: 1px;">
+                                            <div id="chart-remaining_all" style="height: 200px; max-height: 250px;"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div class="box box-primary">
-                                    <span class="filter-loading loading" title="Applying filter">
-                                        <img src='{{ asset('ajax-loader-arrow.gif')}}' />
-                                    </span>
-                                    <div class="box-body" style="padding: 1px;">
-                                        <div id="chart-remaining_all" style="height: 200px; max-height: 250px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- End of left side bar -->
                     </div>
                     <!-- End of First Row --->
                     <!-- Second Row --->
@@ -118,6 +121,21 @@
                         </div>
                     </div>
                     <!-- End of second row -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-warning">
+                                <span class="filter-loading loading" title="Applying filter">
+                                    <img src='{{ asset('ajax-loader-arrow.gif')}}' />
+                                </span>
+                                <div class="box-body" style="padding: 1px">
+                                    <div id="chart-missed_by_loc" style="height: 350px; "></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
