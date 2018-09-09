@@ -1,0 +1,23 @@
+{
+  "build/layout.js": "/visualizer/web/build/layout.js",
+  "build/layout.css": "/visualizer/web/build/layout.css",
+  "build/main-filter.js": "/visualizer/web/build/main-filter.js",
+  "build/cluster-filter.js": "/visualizer/web/build/cluster-filter.js",
+  "build/ccs-sm-filter.js": "/visualizer/web/build/ccs-sm-filter.js",
+  "build/manifest.js": "/visualizer/web/build/manifest.js",
+  "build/images/filtering.gif": "/visualizer/web/build/images/filtering.d26253dd.gif",
+  "build/fonts/fontawesome-webfont.eot?v=4.7.0": "/visualizer/web/build/fonts/fontawesome-webfont.674f50d2.eot",
+  "build/fonts/fontawesome-webfont.ttf?v=4.7.0": "/visualizer/web/build/fonts/fontawesome-webfont.b06871f2.ttf",
+  "build/fonts/fontawesome-webfont.woff2?v=4.7.0": "/visualizer/web/build/fonts/fontawesome-webfont.af7ae505.woff2",
+  "build/fonts/fontawesome-webfont.woff?v=4.7.0": "/visualizer/web/build/fonts/fontawesome-webfont.fee66e71.woff",
+  "build/fonts/glyphicons-halflings-regular.eot": "/visualizer/web/build/fonts/glyphicons-halflings-regular.f4769f9b.eot",
+  "build/images/glyphicons-halflings-regular.svg": "/visualizer/web/build/images/glyphicons-halflings-regular.89889688.svg",
+  "build/fonts/glyphicons-halflings-regular.ttf": "/visualizer/web/build/fonts/glyphicons-halflings-regular.e18bbf61.ttf",
+  "build/fonts/glyphicons-halflings-regular.woff": "/visualizer/web/build/fonts/glyphicons-halflings-regular.fa277232.woff",
+  "build/fonts/glyphicons-halflings-regular.woff2": "/visualizer/web/build/fonts/glyphicons-halflings-regular.448c34a5.woff2",
+  "build/images/fontawesome-webfont.svg?v=4.7.0": "/visualizer/web/build/images/fontawesome-webfont.912ec66d.svg",
+  "build/fonts/ionicons.eot?v=2.0.0": "/visualizer/web/build/fonts/ionicons.2c2ae068.eot",
+  "build/images/ionicons.svg?v=2.0.0": "/visualizer/web/build/images/ionicons.621bd386.svg",
+  "build/fonts/ionicons.ttf?v=2.0.0": "/visualizer/web/build/fonts/ionicons.24712f6c.ttf",
+  "build/fonts/ionicons.woff?v=2.0.0": "/visualizer/web/build/fonts/ionicons.05acfdb5.woff"
+}

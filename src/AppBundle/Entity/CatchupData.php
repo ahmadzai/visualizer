@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CatchupData
  *
  * @ORM\Table(name="catchup_data", indexes={@ORM\Index(name="campaign_catchup_idx", columns={"campaign"}), @ORM\Index(name="district_catchup_idx", columns={"district"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CatchupRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CoverageCatchup\CatchupRepository")
  */
 class CatchupData
 {

@@ -225,7 +225,7 @@ class AjaxFilterController extends Controller
                 $moreOptions[] = array('label' => 'HR districts', 'value' => 'HR');
             }
             if (count($response) > 0 && ($flag_hr || $flag_vhr)) {
-                $moreOptions[] = array('label' => 'Non-V/HR districts', 'value' => null);
+                $moreOptions[] = array('label' => 'Non-V/HR districts', 'value' => 'None');
 
                 $newResponse = array_merge($moreOptions, $response);
             }

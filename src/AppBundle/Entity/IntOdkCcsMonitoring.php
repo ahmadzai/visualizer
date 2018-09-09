@@ -9,7 +9,7 @@ use \DateTime;
  * AdminData
  *
  * @ORM\Table(name="int_odk_ccs_monitoring")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\IntOdkCcsRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Odk\IntCcsRepo")
  */
 class IntOdkCcsMonitoring
 {

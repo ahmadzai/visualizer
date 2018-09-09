@@ -22,7 +22,8 @@
                         {% endfor %}
                     {% endfor %}
 
-                    <table id="api-services" class="table table-bordered table-striped">
+                    <table id="api-services" class="table table-bordered table-striped dash-dataTable"
+                           data-setting="{% if tableSetting is defined %}{{ tableSetting }}{% endif %}">
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -98,23 +99,4 @@
         {% endif %}
 
     </ol>
-{% endblock %}
-{% block css %}
-
-    <link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    {{ parent() }}
-{% endblock %}
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('template/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('template/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-    <script>
-        $(function () {
-            //Initialize Select2 Elements
-            $('#api-services').dataTable({
-                "pageLength": 15,
-                "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ]
-            });
-        })
-    </script>
 {% endblock %}

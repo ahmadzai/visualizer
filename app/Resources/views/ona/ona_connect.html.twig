@@ -20,7 +20,9 @@
                         {% endfor %}
                     {% endfor %}
 
-                    <table id="ona-connect-tbl" class="table table-bordered table-striped">
+                    <table id="ona-connect-tbl" class="table table-bordered table-striped dash-dataTable" data-setting="{
+                                    'pageLength': 10,
+                                    'lengthMenu': [ [10, 25, 50, -1], [10, 25, 50, 'All'] ] }">
                         <thead>
                         <tr>
                             <th>Project ID</th>

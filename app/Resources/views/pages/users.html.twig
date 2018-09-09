@@ -10,14 +10,7 @@
                         <i class="fa fa-plus"></i> New User
                     </a>
                 </div>
-                <!-- /.box-header -->
-                {#{% for label, messages in app.flashes %}#}
-                    {#{% for message in messages %}#}
 
-                        {#{{ message }}#}
-
-                    {#{% endfor %}#}
-                {#{% endfor %}#}
                 <div class="box-body">
 
                     {% for label, messages in app.flashes %}
@@ -30,7 +23,8 @@
                         {% endfor %}
                     {% endfor %}
 
-                    <table id="users" class="table table-bordered table-striped">
+                    <table id="users" class="table table-bordered table-striped dash-dataTable"
+                           data-setting="{% if tableSetting is defined %}{{ tableSetting }}{% endif %}">
                         <thead>
                         <tr>
                             <th>Username</th>
@@ -60,15 +54,6 @@
                         {% endfor %}
 
                         </tbody>
-                        {#<tfoot>#}
-                        {#<tr>#}
-                            {#<th>Rendering engine</th>#}
-                            {#<th>Browser</th>#}
-                            {#<th>Platform(s)</th>#}
-                            {#<th>Engine version</th>#}
-                            {#<th>CSS grade</th>#}
-                        {#</tr>#}
-                        {#</tfoot>#}
                     </table>
                 </div>
                 <!-- /.box-body -->
@@ -86,11 +71,7 @@
 
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-            {#<li class="active"><i class="fa fa-user"></i>#}
-            {#<a href="{{ path('fos_user_security_logout') }}">#}
-            {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
-            {#</a>#}
-            {#</li>#}
+
             <li>
                 <a href="{{ path('fos_user_security_logout') }}">
                     <i class="fa fa-sign-out"></i>
@@ -108,23 +89,4 @@
         {% endif %}
 
     </ol>
-{% endblock %}
-{% block css %}
-
-    <link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    {{ parent() }}
-{% endblock %}
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('template/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('template/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-    <script>
-        $(function () {
-            //Initialize Select2 Elements
-            $('#users').dataTable({
-                "pageLength": 15,
-                "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ]
-            });
-        })
-    </script>
 {% endblock %}

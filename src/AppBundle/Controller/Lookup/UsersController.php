@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\Service\Settings;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -35,7 +35,10 @@ class UsersController extends Controller
 
         $userManager = $this->container->get('fos_user.user_manager');
         $allUsers = $userManager->findUsers();
-        return $this->render('pages/users.html.twig', ['users'=>$allUsers]);
+        return $this->render('pages/users.html.twig', [
+            'users'=>$allUsers,
+            'tableSetting' => json_encode(Settings::tableSetting())
+        ]);
     }
 
 
@@ -43,7 +46,7 @@ class UsersController extends Controller
      * @param Request $request
      * @param User $user
      * @Route("/users/{id}/edit", name="users_edit")
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, User $user) {
         $editForm = $this->createForm('AppBundle\Form\UserType', $user);

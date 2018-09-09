@@ -55,20 +55,20 @@ class UploadManagerType extends AbstractType
             $form->add('excludedColumns', ChoiceType::class, array(
                 'choices' => $columns,
                 'placeholder' => 'Select Excluded Columns',
-                'attr' => array('class'=>'form-control select2'),
+                'attr' => array('class'=>'form-control'),
                 'multiple' => true
             ))
                 ->add('entityColumns', ChoiceType::class, array(
                 'choices' => $columns,
                 'placeholder' => 'Select Foreign Key Columns',
-                    'attr' => array('class'=>'form-control select2'),
+                    'attr' => array('class'=>'form-control'),
                     'multiple' => true
             ))
                 ->add("uniqueColumns", ChoiceType::class, array(
                     'label' => 'Columns to make a row unique',
                     'choices' => $columns,
                     'placeholder' => 'Select Columns for Unique Records',
-                    'attr' => array('class'=>'form-control select2'),
+                    'attr' => array('class'=>'form-control'),
                     'multiple' => true));
         };
 

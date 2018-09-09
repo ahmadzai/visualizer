@@ -1,8 +1,9 @@
 /**
  * Created by wakhan on 2/28/2018.
  */
-$(function () {
+$(document).ready(function () {
 
+    console.log("This Script is loaded");
     $('.loading, .loading-top').show();
 
     const config = new Array();
@@ -23,6 +24,8 @@ $(function () {
 
     // load it for first time
     var selectedClusters = $('#filterCluster').val();
+    //selectedClusters = JSON.parse(selectedClusters);
+    console.log(selectedClusters);
     if(selectedClusters.length > 0) {
         // makeAjaxRequest('main', config);
         // makeAjaxRequest('normal', config);

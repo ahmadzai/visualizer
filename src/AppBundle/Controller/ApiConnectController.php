@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use AppBundle\Service\Settings;
 
 /**
  * Apiconnect controller.
@@ -31,6 +32,7 @@ class ApiConnectController extends Controller
 
         return $this->render('apiconnect/index.html.twig', array(
             'apiConnects' => $apiConnects,
+            'tableSetting' => json_encode(Settings::tableSetting())
         ));
     }
 

@@ -35,13 +35,17 @@ class CatchupDataController extends Controller
      */
     public function indexAction() {
 
-        return $this->render("pages/fieldbook/index.html.twig", []);
+        return $this->render("pages/catchup_data/index.html.twig", [
+            'source'=>'CatchupData',
+            'url' => 'catchup_data',
+            'urlCluster' => 'catchup_data_cluster'
+        ]);
     }
 
     /**
      * @param null $district
      * @return Response
-     * @Route("/catchup_data/clusters/{district}", name="cluster_catchup_data", options={"expose"=true})
+     * @Route("/catchup_data/clusters/{district}", name="catchup_data_cluster", options={"expose"=true})
      */
     public  function clusterLevelAction($district = null) {
 

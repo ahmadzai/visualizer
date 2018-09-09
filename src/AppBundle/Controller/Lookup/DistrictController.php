@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use AppBundle\Service\Settings;
 
 /**
  * District controller.
@@ -31,6 +32,7 @@ class DistrictController extends Controller
 
         return $this->render('district/index.html.twig', array(
             'districts' => $districts,
+            'tableSetting' => json_encode(Settings::tableSetting())
         ));
     }
 

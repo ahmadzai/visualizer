@@ -108,7 +108,7 @@ class AdminDataAjaxController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/api/clusters/admin_data", name="ajax_cluster_admin_data", options={"expose"=true})
+     * @Route("/api/clusters/admin_data", name="ajax_cluster_admin_data_old", options={"expose"=true})
      * @Method("POST")
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {

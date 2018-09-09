@@ -138,15 +138,21 @@
                         $(html).find('#upload_manager_excludedColumns')
                     );
 
+                    //$('#upload_manager_excludedColumns').select2();
+
                     $('#upload_manager_entityColumns').replaceWith(
                         // ... with the returned one from the AJAX response.
                         $(html).find('#upload_manager_entityColumns')
                     );
 
+                    //$('#upload_manager_entityColumns').select2();
+
                     $('#upload_manager_uniqueColumns').replaceWith(
                         // ... with the returned one from the AJAX response.
                         $(html).find('#upload_manager_uniqueColumns')
                     );
+
+                    //$('#upload_manager_uniqueColumns').select2();
                     // Position field now displays the appropriate positions.
                 }
             });
@@ -162,11 +168,6 @@
 
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-            {#<li class="active"><i class="fa fa-user"></i>#}
-            {#<a href="{{ path('fos_user_security_logout') }}">#}
-            {#{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}#}
-            {#</a>#}
-            {#</li>#}
             <li>
                 <a href="{{ path('fos_user_security_logout') }}">
                     <i class="fa fa-sign-out"></i>

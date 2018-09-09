@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use AppBundle\Service\Settings;
 
 /**
  * Uploadmanager controller.
@@ -31,6 +32,7 @@ class UploadManagerController extends Controller
 
         return $this->render('uploadmanager/index.html.twig', array(
             'uploadManagers' => $uploadManagers,
+            'tableSetting' => json_encode(Settings::tableSetting())
         ));
     }
 

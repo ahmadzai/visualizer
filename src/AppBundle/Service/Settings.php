@@ -23,6 +23,16 @@ class Settings
 
     protected $em;
 
+    public static function tableSetting() {
+        return [
+            'pageLength'=> 15,
+            'lengthMenu' => [
+                [15, 25, 50, -1],
+                [15, 25, 50, 'All']
+            ]
+        ];
+    }
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
@@ -172,7 +182,7 @@ class Settings
         $data = $this->em->createQuery(
             "SELECT YEAR(tbl.$column) AS monthYear, MONTH(tbl.$column) as monthNo, 
                   MONTHNAME(tbl.$column) as monthName FROM AppBundle:$table tbl
-                  GROUP BY monthYear, monthNo ORDER BY tbl.$column DESC "
+                  GROUP BY monthYear, monthNo, monthName ORDER BY monthYear, monthNo DESC "
         )
             ->getResult(Query::HYDRATE_SCALAR);
 

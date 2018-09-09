@@ -108,8 +108,8 @@ class CatchupDataAjaxController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/api/clusters/catchup_data", name="ajax_cluster_catchup_data", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/api/clusters/catchup_data", name="ajax_cluster_catchup_data1", options={"expose"=true})
+     * @Method("GET")
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {
 
@@ -118,6 +118,7 @@ class CatchupDataAjaxController extends Controller
         $districts = $request->get('district');
         $selectType = $request->get('selectType');
 
+        $selectType = $selectType === null || $selectType === "" ? "TotalRemaining" : $selectType;
         $calcType = $request->get('calcType');
 
         $dataSource = 'CatchupData';
@@ -250,7 +251,7 @@ class CatchupDataAjaxController extends Controller
                     $stops['minValue'],
                     $stops['maxValue']);
 
-                return new Response($table);
+                return new Response(json_encode(['cluster_trend'=>$table]));
                 // and end here
 
             }

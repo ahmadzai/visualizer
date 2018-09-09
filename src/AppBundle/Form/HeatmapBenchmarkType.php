@@ -18,9 +18,9 @@ class HeatmapBenchmarkType extends AbstractType
         $builder->add('minValue', NumberType::class, array('label' => 'Minimum', 'attr' => array('class'=>'form-control')))
             ->add('maxValue', NumberType::class, array('label' => 'Maximum', 'attr' => array('class'=>'form-control')))
             ->add('midStop', NumberType::class, array('label' => 'Mid Stop', 'attr' => array('class'=>'form-control')))
-            ->add('minColor', TextType::class, array('label' => 'Min Color', 'attr' => array('class'=>'form-control my-colorpicker1 colorpicker-element')))
-            ->add('maxColor', TextType::class, array('label' => 'Max Color', 'attr' => array('class'=>'form-control my-colorpicker1 colorpicker-element')))
-            ->add('midColor', TextType::class, array('label' => 'Mid Color', 'attr' => array('class'=>'form-control my-colorpicker1 colorpicker-element')))
+            ->add('minColor', TextType::class, array('label' => 'Min Color', 'attr' => array('class'=>'form-control color-picker colorpicker-element')))
+            ->add('maxColor', TextType::class, array('label' => 'Max Color', 'attr' => array('class'=>'form-control color-picker colorpicker-element')))
+            ->add('midColor', TextType::class, array('label' => 'Mid Color', 'attr' => array('class'=>'form-control color-picker colorpicker-element')))
             ->add('dataSource', TextType::class, array('label' => 'Data Source', 'attr' => array('class'=>'form-control')))
             ->add('indicator', TextType::class, array('label' => 'Indicator', 'attr' => array('class'=>'form-control')));
     }

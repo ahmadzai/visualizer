@@ -1,6 +1,5 @@
 /.web-server-pid
 /app/config/parameters.yml
-/build/
 /phpunit.xml
 /var/*
 !/var/cache
@@ -15,15 +14,14 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
-New folder
 features.txt
 phpunit.xml.dist
 Installation-Linode.md
 .idea
 .idea/*
-web/template/pages
-web/template/documentation
-web/maps
-pivot
-dia
-web/data_files/*
+/web/template/*
+/web/maps/*
+/web/data_files/*
+/node_modules/*
+/web/charts/*
+/web/custom_js_css/*

@@ -93,24 +93,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('template/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript">
-        $( document ).ready(function() {
-
-            $('.datepicker').datepicker({
-                autoclose: true,
-                format: 'yyyy-mm-dd'
-            })
-        });
-    </script>
-
-
-{% endblock %}
-
-{% block css %}
-    <link rel="stylesheet" href="{{  asset('template/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
-    {{ parent() }}
-{% endblock %}

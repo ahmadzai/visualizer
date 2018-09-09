@@ -54,102 +54,102 @@
 </li>
 
 <li style="padding:8px 0px;">
-    <button type="button" class="btn btn-primary" id="filterButton"><i class="fa fa-filter"></i> Filter</button>
+    <button type="button" class="btn btn-warning" id="filterButton"><i class="fa fa-filter"></i> Filter</button>
 </li>
 
-<script type="text/javascript">
-    $(document).ready(function () {
+{#<script type="text/javascript">#}
+    {#$(document).ready(function () {#}
 
-        $('#filterCampaign').multiselect({
-            nonSelectedText: 'Months',
-            numberDisplayed: 2,
-            maxHeight: 250
-        });
+        {#$('#filterCampaign').multiselect({#}
+            {#nonSelectedText: 'Months',#}
+            {#numberDisplayed: 2,#}
+            {#maxHeight: 250#}
+        {#});#}
 
-        $('#filterProvince').multiselect({
-            nonSelectedText: 'Province',
-            numberDisplayed: 2,
-            maxHeight: 300,
-            enableClickableOptGroups: true,
-            onChange: function(element, checked) {
-                $('#filterDistrict').multiselect('dataprovider', []);
-                $('#filterCluster').multiselect('dataprovider', []);
-                var province = $('#filterProvince option:selected');
-                var selectedProvinces = [];
-                $(province).each(function (index, province) {
-                    selectedProvinces.push([$(this).val()]);
-                });
-                if(selectedProvinces.length > 0) {
-                    var source = $('#icn-table').data('source');
-                    var data = {"source": source, "province": selectedProvinces, "risk" : false, 'campaign':$('#filterCampaign').val()};
-                    ajaxRequest('filter_district_odk', data, 'filterDistrict');
+        {#$('#filterProvince').multiselect({#}
+            {#nonSelectedText: 'Province',#}
+            {#numberDisplayed: 2,#}
+            {#maxHeight: 300,#}
+            {#enableClickableOptGroups: true,#}
+            {#onChange: function(element, checked) {#}
+                {#$('#filterDistrict').multiselect('dataprovider', []);#}
+                {#$('#filterCluster').multiselect('dataprovider', []);#}
+                {#var province = $('#filterProvince option:selected');#}
+                {#var selectedProvinces = [];#}
+                {#$(province).each(function (index, province) {#}
+                    {#selectedProvinces.push([$(this).val()]);#}
+                {#});#}
+                {#if(selectedProvinces.length > 0) {#}
+                    {#var source = $('#icn-table').data('source');#}
+                    {#var data = {"source": source, "province": selectedProvinces, "risk" : false, 'campaign':$('#filterCampaign').val()};#}
+                    {#ajaxRequest('filter_district_odk', data, 'filterDistrict');#}
 
-                }
-            }
-        });
+                {#}#}
+            {#}#}
+        {#});#}
 
-        $('#filterDistrict').multiselect({
-            nonSelectedText: 'District',
-            numberDisplayed: 2,
-            maxHeight: 300,
-            enableCaseInsensitiveFiltering: true,
-            enableClickableOptGroups: true,
-            onChange: function (element, checked) {
-                var selectedDistricts = [];
-                var district = $('#filterDistrict option:selected');
-                $('#filterCluster').multiselect('dataprovider', []);
-                //console.log(district);
-                //if(district.indexOf('VHR')>-1 || district.indexOf('HR')>-1 || district.indexOf(null)>-1) {
-                $(district).each(function (index, district) {
-                    selectedDistricts.push([$(this).val()]);
-                });
+        {#$('#filterDistrict').multiselect({#}
+            {#nonSelectedText: 'District',#}
+            {#numberDisplayed: 2,#}
+            {#maxHeight: 300,#}
+            {#enableCaseInsensitiveFiltering: true,#}
+            {#enableClickableOptGroups: true,#}
+            {#onChange: function (element, checked) {#}
+                {#var selectedDistricts = [];#}
+                {#var district = $('#filterDistrict option:selected');#}
+                {#$('#filterCluster').multiselect('dataprovider', []);#}
+                {#//console.log(district);#}
+                {#//if(district.indexOf('VHR')>-1 || district.indexOf('HR')>-1 || district.indexOf(null)>-1) {#}
+                {#$(district).each(function (index, district) {#}
+                    {#selectedDistricts.push([$(this).val()]);#}
+                {#});#}
 
-                var districts = selectedDistricts.join(',');
-                districts = districts.split(',');
-                if(districts.length > 1) {
-                    if(districts.indexOf('VHR')>-1 || districts.indexOf('HR')>-1 || districts.indexOf('Non-V/HR districts')>-1) {
-                        $.each(districts, function (index, value) {
-                            if (value !== 'VHR' || value !== 'Non-V/HR districts' || value !== 'HR') {
-                                $('#filterDistrict').multiselect('deselect', value, true);
-                            }
-                        })
-                    }
-                }
+                {#var districts = selectedDistricts.join(',');#}
+                {#districts = districts.split(',');#}
+                {#if(districts.length > 1) {#}
+                    {#if(districts.indexOf('VHR')>-1 || districts.indexOf('HR')>-1 || districts.indexOf('Non-V/HR districts')>-1) {#}
+                        {#$.each(districts, function (index, value) {#}
+                            {#if (value !== 'VHR' || value !== 'Non-V/HR districts' || value !== 'HR') {#}
+                                {#$('#filterDistrict').multiselect('deselect', value, true);#}
+                            {#}#}
+                        {#})#}
+                    {#}#}
+                {#}#}
 
-                if(selectedDistricts.length > 0) {
-                    selectedDistricts = $('#filterDistrict').val();
-                    var campaign = $('#filterCampaign').val();
-                    //console.log(campaign);
-                    var source = $('#icn-table').data('source');
-                    var data = {"district": selectedDistricts, 'campaign': campaign, 'source':source};
-                    ajaxRequest('filter_cluster_odk', data, 'filterCluster');
+                {#if(selectedDistricts.length > 0) {#}
+                    {#selectedDistricts = $('#filterDistrict').val();#}
+                    {#var campaign = $('#filterCampaign').val();#}
+                    {#//console.log(campaign);#}
+                    {#var source = $('#icn-table').data('source');#}
+                    {#var data = {"district": selectedDistricts, 'campaign': campaign, 'source':source};#}
+                    {#ajaxRequest('filter_cluster_odk', data, 'filterCluster');#}
 
-                }
+                {#}#}
 
-            }
-        });
+            {#}#}
+        {#});#}
 
-        $('#filterCluster').multiselect({
-            nonSelectedText: 'Clusters',
-            numberDisplayed: 2,
-            maxHeight: 500,
-            enableCaseInsensitiveFiltering: true,
-            enableClickableOptGroups: true,
-            includeSelectAllOption: true,
-            allSelectedText: 'All'
-        });
+        {#$('#filterCluster').multiselect({#}
+            {#nonSelectedText: 'Clusters',#}
+            {#numberDisplayed: 2,#}
+            {#maxHeight: 500,#}
+            {#enableCaseInsensitiveFiltering: true,#}
+            {#enableClickableOptGroups: true,#}
+            {#includeSelectAllOption: true,#}
+            {#allSelectedText: 'All'#}
+        {#});#}
 
 
-    })
+    {#})#}
 
-    function ajaxRequest(url, postData, target) {
-        $.ajax({
-            url: Routing.generate(url),
-            data: postData,
-            type: 'POST',
-            success: function (data) {
-                $('#'+target).multiselect('dataprovider', JSON.parse(data));
-            }
-        });
-    }
-</script>
+    {#function ajaxRequest(url, postData, target) {#}
+        {#$.ajax({#}
+            {#url: Routing.generate(url),#}
+            {#data: postData,#}
+            {#type: 'POST',#}
+            {#success: function (data) {#}
+                {#$('#'+target).multiselect('dataprovider', JSON.parse(data));#}
+            {#}#}
+        {#});#}
+    {#}#}
+{#</script>#}

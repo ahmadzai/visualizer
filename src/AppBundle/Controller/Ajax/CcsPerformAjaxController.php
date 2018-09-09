@@ -14,6 +14,7 @@ use AppBundle\Service\Charts;
 use AppBundle\Service\HtmlTable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,6 @@ class CcsPerformAjaxController extends Controller
     /**
      * @return Response
      * @Route("api/icn_monitoring/ccs", name="ajax_icn_monitoring_ccs")
-     * @Method("GET")
      */
     public function indexAction(Request $request, Charts $charts) {
 
@@ -104,14 +104,13 @@ class CcsPerformAjaxController extends Controller
 
         $table = HtmlTable::tableODK($source, $xAxises);
 
-        return new Response($table);
+        return new JsonResponse(['icn_table'=>$table]);
         //return $this->render("pages/icn/clusters.html.twig", ['table'=>$table, 'source'=>'OdkCcsMonitoring']);
     }
 
     /**
      * @return Response
      * @Route("api/int_icn_monitoring/ccs", name="int_ajax_icn_monitoring_ccs")
-     * @Method("GET")
      */
     public function internalIndexAction(Request $request, Charts $charts) {
 
@@ -186,7 +185,7 @@ class CcsPerformAjaxController extends Controller
 
         $table = HtmlTable::tableODK($source, $xAxises);
 
-        return new Response($table);
+        return new JsonResponse(['icn_table'=>$table]);
         //return $this->render("pages/icn/clusters.html.twig", ['table'=>$table, 'source'=>'OdkCcsMonitoring']);
     }
 

@@ -6,8 +6,11 @@ $(function () {
     const config = new Array();
 
     // The first row of one campaign
-    config['remaining_by_reason'] = {'color':['#FFFF00', '#C99900', '#FF0000']};
-    config['remaining_all'] = {'chart':{'type':"column"}, 'color':['#FFB32D']};
+    config['remaining_by_reason'] = {'color':['#FFFF00', '#C99900', '#FF0000'],
+        'chartType':{'chart':'halfpie'}, 'legend':true
+    };
+    config['remaining_all'] = {'chart':{'type':"column"}, 'color':['#FFB32D']
+    };
     // Pie charts Row
     config['recovered_all'] = {'color':['#048AFF', '#40C97A', '#FFB32D']};
     config['recovered_absent'] = {'color':['#048AFF', '#40C97A', '#FFFF00']};

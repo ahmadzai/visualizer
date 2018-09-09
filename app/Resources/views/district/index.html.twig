@@ -10,14 +10,7 @@
                     <i class="fa fa-plus"></i> New District
                 </a>
             </div>
-            <!-- /.box-header -->
-            {#{% for label, messages in app.flashes %}#}
-            {#{% for message in messages %}#}
 
-            {#{{ message }}#}
-
-            {#{% endfor %}#}
-            {#{% endfor %}#}
             <div class="box-body">
 
                 {% for label, messages in app.flashes %}
@@ -30,7 +23,8 @@
                     {% endfor %}
                 {% endfor %}
 
-                <table id="districts" class="table table-bordered table-striped">
+                <table id="districts" class="table table-bordered table-striped dash-dataTable"
+                       data-setting="{% if tableSetting is defined %}{{ tableSetting }}{% endif %}">
                     <thead>
                         <tr>
                             <th>Code</th>
@@ -125,23 +119,4 @@
         {% endif %}
 
     </ol>
-{% endblock %}
-{% block css %}
-
-    <link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    {{ parent() }}
-{% endblock %}
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('template/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('template/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-    <script>
-        $(function () {
-            //Initialize Select2 Elements
-            $('#districts').dataTable({
-                "pageLength": 15,
-                "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "All"] ]
-            });
-        })
-    </script>
 {% endblock %}

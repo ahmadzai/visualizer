@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: wakhan
+ * User: Wazir Khan Ahmadzai
  * Date: 2/18/2018
  * Time: 11:09 AM
  */
@@ -18,15 +18,21 @@ class HtmlTable
      * @return string (html table)
      */
     public static function tableForDashboard($data, $type = "Region") {
+        if(count($data) === 0 || $data === null)
+            return self::noDataTable();
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
-                 <th>U5 Children</th>
-                 <th>Coverage %</th>
+                 <th title='Calculated Target, Source Coverage Data'>Target</th>
+                 <th>Vac Campaign</th>
+                 <th title='After Catchup'>Vac Catchup</th>
                  <th>Missed</th>
                  <th style='color: orange'>Absent</th>
                  <th style='color: saddlebrown;'>NSS</th>
                  <th style='color: red'>Refusal</th>
+                 <th style='color: dimgrey' title='Discrepancy between Tallysheet and Register Data'>
+                    Discrepancy
+                 </th>
               </tr>";
 
         $rows = "";
@@ -37,20 +43,20 @@ class HtmlTable
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
             $totalVac = (int) $datum['TotalVac'];
-            $coverage = $target == 0 ? 0: number_format((($totalVac/$target) * 100),
-                2, '.', ',');
+            $totalVac = number_format(($totalVac),
+                0, '.', ',');
 
-            $progress = "<div class=\"progress progress-sm\"
-                            style=\"background-color: #cb4b16\">
-                             <div class=\"progress-bar progress-bar-success\" 
-                                  style=\"width:".$coverage."%\">
-                             </div>
-                         </div>";
-            $tr .= "<td title=\"Coverage: ".$coverage."%\">".$progress."</td>";
-            $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['RemRefusal'], 0, '.', ',')."</td>";
+            $tr .= "<td>".$totalVac."</td>";
+            $cTotalVac = $datum['cTotalVac'] == 0 ? '':
+                         number_format($datum['cTotalVac'], 0, '.', ',');
+            $tr .= "<td>".$cTotalVac."</td>";
+            $tr .= "<td>".number_format($datum['DiscRemaining'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['DiscRemainingAbsent'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['DiscRemainingNSS'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['DiscRemainingRefusal'], 0, '.', ',')."</td>";
+            $disc = $datum['Disc'] == 0 && $cTotalVac == 0 ? '':
+                    number_format($datum['Disc'], 0, '.', ',');
+            $tr .= "<td>".$disc."</td>";
 
             $tr .= "</tr>";
 
@@ -66,6 +72,8 @@ class HtmlTable
      * @return string (html table)
      */
     public static function tableForAdminData($data, $type = "Region") {
+        if(count($data) === 0 || $data === null)
+            return self::noDataTable();
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
@@ -114,6 +122,8 @@ class HtmlTable
      * @return string (html table)
      */
     public static function tableForCatchupData($data, $type = "Region") {
+        if(count($data) === 0 || $data === null)
+            return self::noDataTable();
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
@@ -161,28 +171,30 @@ class HtmlTable
      * @return string (html)
      */
     public static function infoForDashboard($data) {
+        if(count($data) === 0 || $data === null)
+            return "";
         $row = "<div class=\"col-md-3 col-sm-6 col-xs-12\">
+                                <div class=\"c-info-box\">
+                                    <span class=\"c-info-box-icon bg-green\"><i class=\"fa fa-child\"></i></span>
+
+                                    <div class=\"c-info-box-content\">
+                                        <span class=\"c-info-box-text\">Total Vaccinated</span>
+                                        <span class=\"c-info-box-number info-vaccinated-child\">
+                                            ". number_format($data[0]['FinalTotalVac'],0, '.', ',') ."
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
                                     <span class=\"c-info-box-icon bg-aqua\"><i class=\"fa fa-child\"></i></span>
 
                                     <div class=\"c-info-box-content\">
-                                        <span class=\"c-info-box-text\">Child Vaccinated</span>
-                                        <span class=\"c-info-box-number info-vaccinated-child\">
-                                            ". number_format($data[0]['TotalVac'],0, '.', ',') ."
-                                        </span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                                <!-- /.info-box -->
-                            </div>
-                            <div class=\"col-md-3 col-sm-6 col-xs-12\">
-                                <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-yellow\"><i class=\"fa fa-warning\"></i></span>
-
-                                    <div class=\"c-info-box-content\">
-                                        <span class=\"c-info-box-text\">Missed</span>
+                                        <span class=\"c-info-box-text\">Vac Campaign</span>
                                         <span class=\"c-info-box-number info-missed-child\">
-                                            ". number_format($data[0]['TotalRemaining'],0, '.', ',')."
+                                            ". number_format($data[0]['TotalVac'],0, '.', ',')."
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -191,12 +203,12 @@ class HtmlTable
                             </div>
                             <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-maroon\"><i class=\"fa fa-eyedropper\"></i></span>
+                                    <span class=\"c-info-box-icon bg-aqua-active\"><i class=\"fa fa-child\"></i></span>
 
                                     <div class=\"c-info-box-content\">
-                                        <span class=\"c-info-box-text\">Used Vials</span>
+                                        <span class=\"c-info-box-text\">Vac Catchup</span>
                                         <span class=\"c-info-box-number info-used-vials\">
-                                            ".number_format($data[0]['UVials'],0, '.', ',')."
+                                            ".number_format($data[0]['cTotalVac'],0, '.', ',')."
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -205,12 +217,12 @@ class HtmlTable
                             </div>
                             <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-orange\"><i class=\"fa fa-line-chart\"></i></span>
+                                    <span class=\"c-info-box-icon bg-red\"><i class=\"fa fa-child\"></i></span>
 
                                     <div class=\"c-info-box-content\">
-                                        <span class=\"c-info-box-text\">Vac Wastage</span>
+                                        <span class=\"c-info-box-text\">Remaining</span>
                                         <span class=\"c-info-box-number info-coverage\">
-                                            ".number_format($data[0]['VacWastage'],2, '.', ',')."
+                                            ".number_format($data[0]['DiscRemaining'],0, '.', ',')."
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -224,6 +236,8 @@ class HtmlTable
      * @return string (html)
      */
     public static function infoForAdminData($data) {
+        if(count($data) === 0 || $data === null)
+            return "";
         $row = "<div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
                                     <span class=\"c-info-box-icon bg-aqua\"><i class=\"fa fa-child\"></i></span>
@@ -288,6 +302,8 @@ class HtmlTable
      * @return string (html)
      */
     public static function infoForCatchup($data) {
+        if(count($data) === 0 || $data === null)
+            return "";
         $row = "<div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
                                     <span class=\"c-info-box-icon bg-yellow\"><i class=\"fa fa-child\"></i></span>
@@ -408,7 +424,8 @@ class HtmlTable
      * @param $title (null|text)
      * @return string
      */
-    public static function heatMapTable($data, $headerVars, $title = null,  $min = null, $max = null, $type='normal') {
+    public static function heatMapTable($data, $headerVars, $title = null,
+                                        $min = null, $max = null, $type='normal') {
 
         $table = "<div>
                    <table id='tbl-data' class=\"table table-bordered table-striped table-responsive less-padding\" 
@@ -502,6 +519,8 @@ class HtmlTable
     }
 
 
-
+    private function noDataTable() {
+        return "<table><tr><td>No Data for the selected filters</td></tr></table>";
+    }
 
 }

@@ -23,8 +23,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * Note: The Import/Upload Workflow: 1: import(DataTable)Action is called, 2: importDataTable)HandleAction
- * 3: createSyncViewAction is called (just to create the sync view), 4: if the user click the Sync button
+ * Note: The Import/Upload Workflow:
+ * 1: import(DataTable)Action is called,
+ * 2: importDataTable)HandleAction
+ * 3: createSyncViewAction is called (just to create the sync view),
+ * 4: if the user click the Sync button
  * syncDataAction is called, if cancel, then cancelUploadAction() is called
  * @Security("has_role('ROLE_USER')")
  */
@@ -45,7 +48,8 @@ class ImportController extends Controller
          */
         $em = $this->getDoctrine()->getManager();
 
-        $uploadMgr = $em->getRepository("AppBundle:UploadManager")->findOneBy(['tableName'=>$entity]);
+        $uploadMgr = $em->getRepository("AppBundle:UploadManager")
+            ->findOneBy(['tableName'=>$entity]);
         if($uploadMgr !== null) {
             if($uploadMgr->getEnabled()) {
                 $file = new ImportedFiles();
@@ -503,6 +507,7 @@ class ImportController extends Controller
      * @param $entity
      * @param Importer $importer
      * @return mixed
+     * @throws
      */
     public function downloadTemplateAction($entity, Importer $importer)
     {

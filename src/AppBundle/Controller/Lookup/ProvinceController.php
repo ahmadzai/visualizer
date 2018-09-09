@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Lookup;
 
 use AppBundle\Entity\Province;
+use AppBundle\Service\Settings;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,8 +30,10 @@ class ProvinceController extends Controller
 
         $provinces = $em->getRepository('AppBundle:Province')->findAll();
 
+
         return $this->render('province/index.html.twig', array(
             'provinces' => $provinces,
+            'tableSetting' => json_encode(Settings::tableSetting())
         ));
     }
 

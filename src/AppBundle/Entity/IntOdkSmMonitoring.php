@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * AdminData
  *
  * @ORM\Table(name="int_odk_sm_monitoring")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\IntOdkSmRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Odk\IntSmRepo")
  */
 class IntOdkSmMonitoring
 {

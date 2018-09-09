@@ -214,7 +214,7 @@ class MainAjaxController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/api/clusters/main", name="ajax_cluster_main", options={"expose"=true})
+     * @Route("/api/clusters/main", name="ajax_cluster_main_old", options={"expose"=true})
      * @Method("POST")
      */
     public  function ajaxClusterLevelAction(Request $request, Charts $charts, Settings $settings) {

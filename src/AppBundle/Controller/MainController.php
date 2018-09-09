@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Service\Charts;
+use AppBundle\Service\Exporter;
 use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Settings;
 use AppBundle\Entity\AdminData;
@@ -36,7 +37,12 @@ class MainController extends Controller
      * @return Response
      */
     public function indexAction() {
-        return $this->render("pages/index.html.twig",[]
+        return $this->render("pages/index.html.twig",
+            [
+                'source'=>'CoverageData',
+                'url' => 'main_dashboard',
+                'urlCluster' => "main_cluster_dashboard"
+            ]
             );
 
     }
@@ -45,7 +51,7 @@ class MainController extends Controller
      * @param Request $request
      * @param null $district
      * @return Response
-     * @Route("/main/clusters/{district}", name="cluster_main", options={"expose"=true})
+     * @Route("/main/clusters/{district}", name="main_cluster_dashboard", options={"expose"=true})
      */
     public  function clusterLevelAction(Request $request, $district = null) {
 
@@ -53,7 +59,7 @@ class MainController extends Controller
         $data['title'] = 'Triangulated Clusters Trends';
         $data['pageTitle'] = "Triangulated Data (Admin, Catchup) Trends By Clusters";
         $data['source'] = 'CoverageData';
-        $data['ajaxUrl'] = 'main';
+        $data['ajaxUrl'] = 'main_dashboard';
         return $this->render("pages/clusters-table.html.twig",
             $data
         );
@@ -72,8 +78,42 @@ class MainController extends Controller
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 
 
-//        $regionState = $charts->chartData('CatchupData', 'campaignsStatisticsByRegion',
-//            [22, 21], ['SR']);
+        /*
+        //Test for the General campaignStatistics Function
+        $province = ['by' => 'province', 'value' => [33, 6]];
+        $district = ['by' => 'district', 'district' =>
+                        [601, 602, 603]
+                    ];
+        $region = ['by' => 'region', 'value' => ['ER']];
+        //$regionState = $charts->chartData('CoverageData', 'aggByCampaign',
+            //[23], $region);
+        //dump($regionState);
+        //die;
+
+
+
+        // Test for the General aggByCampaign Function
+        $province = ['by' => 'province', 'value' => [33]];
+        $district = ['by' => 'district', 'district' =>
+                        [3301, 3302]
+                    ];
+        $region = ['by' => 'region', 'value' => ['SR']];
+        $regionState = $charts->chartData('CatchupData', 'aggByCampaign',
+            [23, 22], $region);
+        dump($regionState);
+        $aggData = $charts->chartData('CatchupData', 'aggByLocation',
+            [23, 22], $region);
+        dump($aggData);
+        die;
+        */
+
+
+        /*
+        $clusterAgg = $charts->chartData("CatchupData", 'clusterAggByLocation',
+                                         [23, 22], ['district'=>[3302, 3303]]);
+        dump($clusterAgg); die;
+        */
+
 //        $regionData = $charts->chartData('CatchupData', 'regionAggByCampaignRegion',
 //            [22], ['SR']);
 //
@@ -89,15 +129,18 @@ class MainController extends Controller
 //        $tenCampCatchupData = $charts->chartData("CatchupData",
 //            'campaignsStatisticsByRegion', [24, 23, 22], ['SER']);
 //
-        $tenCampCatchupData = $charts->chartData("CoverageData",
-            'campaignsStatisticsByRegion', [24, 23, 22], ['SR']);
 
-        $lastCampStackChart = $charts->chartData1Category(['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']],
-            ['RemAbsent' => 'Absent',
-                'RemNSS' => 'NSS',
-                'RemRefusal' => 'Refusal'], $tenCampCatchupData);
-        $lastCampStackChart['title'] = 'Missed Children By Campaign';
-        $lastCampStackChart['subTitle'] = null;
+
+        $tenCampCatchupData = $charts->chartData("CoverageData",
+            'clusterAggByCampaign', [16, 17, 18, 19, 20, 21], ['district'=>[601, 3301]]);
+
+//        $lastCampStackChart = $charts->chartData1Category(['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']],
+//            ['RemAbsent' => 'Absent',
+//                'RemNSS' => 'NSS',
+//                'RemRefusal' => 'Refusal'], $tenCampCatchupData);
+//        $lastCampStackChart['title'] = 'Missed Children By Campaign';
+//        $lastCampStackChart['subTitle'] = null;
+
 //
 //        //$source = $charts->heatMap($source, $xAxises, $yAxis, 'percent');
 //
@@ -105,8 +148,7 @@ class MainController extends Controller
 //        return new Response(json_encode($tenCampCatchupData));
 
 
-        return $this->render("pages/js-test.html.twig",
-            ['data' => json_encode($lastCampStackChart)]);
+        return Exporter::exportCSV($tenCampCatchupData);
 
     }
 

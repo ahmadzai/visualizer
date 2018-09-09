@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use AppBundle\Service\Settings;
 
 /**
  * Campaign controller.
@@ -29,8 +30,12 @@ class CampaignController extends Controller
 
         $campaigns = $em->getRepository('AppBundle:Campaign')->findBy([], ['id'=>'DESC']);
 
+        $tableSetting = Settings::tableSetting();
+        $tableSetting['order'] = [[ 0, "desc" ]];
+
         return $this->render('campaign/index.html.twig', array(
             'campaigns' => $campaigns,
+            'tableSetting' => json_encode($tableSetting)
         ));
     }
 

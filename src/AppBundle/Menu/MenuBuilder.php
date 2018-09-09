@@ -44,30 +44,32 @@ class MenuBuilder implements ContainerAwareInterface
         $menu->addChild("Home", array('route'=>'home', 'extras'=>['route'=>'cluster_main']))->setExtra('info', 'the main dashboard');
         $menu['Home']->setAttribute('icon','fa-home');
         // ------------------------------------------------ Admin Data ------------------------------------------------
-        $menu->addChild("Admin Data", array('uri'=>'#'))->setExtra('info', 'the main dashboard');
-        $menu['Admin Data']->setAttribute('icon','fa-database');
-        $menu['Admin Data']->setAttribute('sub_menu_icon', 'fa-angle-left');
+        $menu->addChild("Coverage Data", array('uri'=>'#'))->setExtra('info', 'the main dashboard');
+        $menu['Coverage Data']->setAttribute('icon','fa-database');
+        $menu['Coverage Data']->setAttribute('sub_menu_icon', 'fa-angle-left');
 
         // Sub menu (child of Admin Data
         // Dashboard
-        $menu['Admin Data']->addChild("Dashboard", array('route'=>'admin_data', 'extras'=>['route'=>'cluster_admin_data']))->setExtra('info', 'Admin Data');
-        $menu['Admin Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        $menu['Admin Data']['Dashboard']->setAttribute('icon','fa-dashboard');
+        $menu['Coverage Data']->addChild("Dashboard", array('route'=>'coverage_data',
+            'extras'=>['route'=>'coverage_data_cluster']))->setExtra('info', 'Coverage Data');
+        $menu['Coverage Data']->setChildrenAttributes(array('class'=>'treeview-menu'));
+        $menu['Coverage Data']['Dashboard']->setAttribute('icon','fa-dashboard');
         if($editRole) {
             // Data Download
-            $menu['Admin Data']->addChild("Download", array('route'=>'admin_data_download'))->setExtra('info', 'Admin Data');
+            $menu['Coverage Data']->addChild("Download", array('route'=>'coverage_data_download'))
+                ->setExtra('info', 'Coverage Data');
             // if the user had edit role
 
-            $menu['Admin Data']['Download']->setAttribute('icon', 'fa-download');
+            $menu['Coverage Data']['Download']->setAttribute('icon', 'fa-download');
             // Data Upload
             {
-                $menu['Admin Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters' => ['entity' => 'coverage_data'],
-                    'extras' => ['route' => 'import_admin_data_handle']))
-                    ->setExtra('info', 'Admin Data');
-                $menu['Admin Data']['Upload']->setAttribute('icon', 'fa-upload');
+                $menu['Coverage Data']->addChild("Upload", array('route' => 'import_data', 'routeParameters' => ['entity' => 'coverage_data'],
+                    'extras' => ['route' => 'import_coverage_data_handle']))
+                    ->setExtra('info', 'Coverage Data');
+                $menu['Coverage Data']['Upload']->setAttribute('icon', 'fa-upload');
                 // Data Entry
-                $menu['Admin Data']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'of Admin Data');
-                $menu['Admin Data']['Data Entry']->setAttribute('icon', 'fa-table');
+                $menu['Coverage Data']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'of Coverage Data');
+                $menu['Coverage Data']['Data Entry']->setAttribute('icon', 'fa-table');
             }
         }
 

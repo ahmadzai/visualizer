@@ -5,7 +5,9 @@ namespace AppBundle\Controller\Lookup;
 use AppBundle\Entity\HeatmapBenchmark;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\Settings;
 
 /**
  * Heatmapbenchmark controller.
@@ -28,6 +30,7 @@ class HeatmapBenchmarkController extends Controller
 
         return $this->render('heatmapbenchmark/index.html.twig', array(
             'heatmapBenchmarks' => $heatmapBenchmarks,
+            'tableSetting' => json_encode(Settings::tableSetting())
         ));
     }
 

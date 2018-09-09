@@ -49,7 +49,7 @@ class CoverageDataDatatable extends AbstractDatatable
                         'text' => 'Export to CSV',
                         'title_attr' => 'To export all, first select All from the length menu in the left',
                         'button_options' => array(
-                            'title' => 'AdminDataExport-'.date("Y-m-d")
+                            'title' => 'CoverageDataExport-'.date("Y-m-d")
                         )
                     ),
                     array(
@@ -57,7 +57,7 @@ class CoverageDataDatatable extends AbstractDatatable
                         'text' => 'Export to Excel',
                         'title_attr' => 'To export all, first select All from the length menu in the left',
                         'button_options' => array(
-                            'title' => 'AdminDataExport-'.date("Y-m-d")
+                            'title' => 'CoverageDataExport-'.date("Y-m-d")
                         )
                     ),
                 ),
@@ -138,7 +138,7 @@ class CoverageDataDatatable extends AbstractDatatable
                     //'render_actions_to_id' => 'sidebar-multiselect-actions',
                     'actions' => array(
                         array(
-                            'route' => 'admin_data_bulk_delete',
+                            'route' => 'coverage_data_bulk_delete',
                             'icon' => 'glyphicon glyphicon-ok',
                             'label' => 'Delete Data',
                             'attributes' => array(
