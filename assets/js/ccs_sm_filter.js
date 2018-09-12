@@ -20,7 +20,7 @@ $(function () {
     $('.btn-cum-res').hide();
 
     $('#tbl-odk-data').DataTable({
-        'pageLength': 15,
+        "lengthMenu": [[15, 25, 50, 100, -1], [15, 25, 50, 100, "All"]],
         'scrollX': true
     });
 

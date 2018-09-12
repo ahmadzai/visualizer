@@ -5,7 +5,7 @@ const CcsSmSetting = {};
 CcsSmSetting['icn_table'] = {'chartType':{'type':'table'},
     'setting' : {
         "scrollX": true,
-        "pageLength": 15
+        "lengthMenu": [[15, 25, 50, 100, -1], [15, 25, 50, 100, "All"]]
     }
 };
 

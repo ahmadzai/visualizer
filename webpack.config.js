@@ -5,7 +5,7 @@ Encore
 // directory where compiled assets will be stored
     .setOutputPath('web/build/')
     // public path used by the web server to access the output path
-    .setPublicPath('')
+    .setPublicPath('/build')
     .setPublicPath(Encore.isProduction() ? '/build' : '/visualizer/web/build')
     .setManifestKeyPrefix('build')
     .createSharedEntry('layout', './assets/js/layout.js')

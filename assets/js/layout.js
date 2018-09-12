@@ -42,7 +42,7 @@ $(function () {
     let table = $('.dash-dataTable');
     let tableSetting = table.data('setting');
     if(tableSetting === null || tableSetting === undefined) {
-        tableSetting = {};
+        tableSetting = {}
     }
     table.DataTable(tableSetting);
 

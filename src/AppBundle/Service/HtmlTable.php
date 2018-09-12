@@ -372,7 +372,8 @@ class HtmlTable
      * @return string
      */
     public static function tableODK($data, $headerVars, $min = null, $max = null) {
-        $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped table-responsive\" 
+        $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped 
+                                                   table-responsive\" 
                          style=\"width:100%\" '>";
         $th = "<thead>";
         foreach ($headerVars as $var) {

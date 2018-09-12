@@ -60,8 +60,11 @@ class SmPerformController extends Controller
 
         $table = HtmlTable::tableODK($source, $xAxises);
         return $this->render("pages/icn/icn_tpm.html.twig",
-                                  ['table'=>$table, 'url'=>'ajax_icn_monitoring_sm',
-                                   'source'=>'OdkSmMonitoring']);
+                                  [
+                                      'table'=>$table,
+                                      'url'=>'ajax_icn_monitoring_sm',
+                                      'source'=>'OdkSmMonitoring'
+                                  ]);
     }
 
     /**
@@ -97,7 +100,9 @@ class SmPerformController extends Controller
 
         $table = HtmlTable::tableODK($source, $xAxises);
         return $this->render("pages/icn/icn_tpm.html.twig",
-            ['table'=>$table, 'url'=>'int_ajax_icn_monitoring_sm',
+            [
+                'table'=>$table,
+                'url'=>'int_ajax_icn_monitoring_sm',
                 'source'=>'IntOdkSmMonitoring']);
     }
 
