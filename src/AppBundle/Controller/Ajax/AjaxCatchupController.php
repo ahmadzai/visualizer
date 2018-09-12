@@ -174,6 +174,14 @@ class AjaxCatchupController extends CommonDashboardController
         $totalRemaining['subTitle'] = $subTitle;
         $data['total_remaining_1'] = $totalRemaining;
 
+        // ---------------------------- last campaign total missed by region -------------------------------
+        $totalRemaining = $this->chart->chartData1Category(['column'=>$titles['aggType']],
+            ['TotalRecovered'=>'Recovered',
+                'TotalRemaining'=>'Remaining'], $campAgg);
+        $totalRemaining['title'] = 'ICN Reduced Missed Children';
+        $totalRemaining['subTitle'] = $subTitle;
+        $data['total_recovered_remaining_1'] = $totalRemaining;
+
         // ---------------------------- Tabular information of the campaign -------------------------------
         $table = HtmlTable::tableForCatchupData($campAgg, $type);
         $data['info_table'] = $table;
