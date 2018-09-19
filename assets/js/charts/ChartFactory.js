@@ -3,9 +3,11 @@ import $ from "jquery";
 
 import Highcharts from 'highcharts';
 import * as Exporting from 'highcharts/modules/exporting';
+import * as OfflineExport from 'highcharts/modules/offline-exporting';
 import * as Categories from 'highcharts-grouped-categories/grouped-categories';
 Categories(Highcharts);
 Exporting(Highcharts);
+OfflineExport(Highcharts);
 
 import ChartOptions from './ChartHelper';
 
@@ -30,8 +32,9 @@ class ChartFactory {
             ['pie', 'donut', 'halfpie'].indexOf(type) !== -1) {
             options['legend'] = {
                 enabled: settings.legend.hasOwnProperty('enabled') ? settings.legend.enabled : false,
-                align: settings.legend.hasOwnProperty('hAlign') ? settings.legend.position.hAlign : 'center',
-                verticalAlign: settings.legend.hasOwnProperty('vAlign') ? settings.legend.position.vAlign : 'bottom',
+                align: settings.legend.hasOwnProperty('hAlign') ? settings.legend.hAlign : 'center',
+                verticalAlign: settings.legend.hasOwnProperty('vAlign') ? settings.legend.vAlign : 'bottom',
+                layout:settings.legend.hasOwnProperty('layout') ? settings.legend.layout : 'horizontal',
                 itemStyle: {
                     fontWeight: 'normal',
                     fontSize: '100%'
@@ -518,6 +521,7 @@ class ChartFactory {
         return options;
 
     }
+
 
     /**
      * @param sType

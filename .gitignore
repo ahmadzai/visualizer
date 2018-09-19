@@ -25,3 +25,4 @@ Installation-Linode.md
 /node_modules/*
 /web/charts/
 /web/custom_js_css/
+/web/geojson/

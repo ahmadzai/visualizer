@@ -172,12 +172,35 @@ class AjaxCoverageController extends CommonDashboardController
         $recoveredRefusal['subTitle'] = $subTitle;
         $data['recovered_refusal_1'] = $recoveredRefusal;
 
-        // ---------------------------- last campaign total missed by region/province/district -------------
+        // ------------------ last campaign total vaccine wastage by region/province/district -------------
         $vacWastage = $this->chart->chartData1Category(['column'=>$titles['aggType']],
                                                 ['VacWastage'=>'Wastage'], $campAgg);
         $vacWastage['title'] = 'Vaccine wastage';
         $vacWastage['subTitle'] = $subTitle;
         $data['vaccine_wastage_1'] = $vacWastage;
+
+        // ---------------------------- last campaign total missed by location -------------------------------
+        $oneCat = $titles['aggType'] === 'Region' ? true : false;
+        if($oneCat) {
+            $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
+                ['TotalRemaining' => 'Remaining',
+                    'MissedVaccinated' => 'Recovered'], $campAgg);
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Day5';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        } else {
+            $cat1 = ['column' => 'Region'];
+            if($titles['aggType'] === "District")
+                $cat1 = ['column' => 'Province'];
+            $totalRemaining = $this->chart->chartData2Categories(
+                $cat1,
+                ['column' => $titles['aggType']],
+                ['TotalRemaining' => 'Remaining',
+                    'MissedVaccinated' => 'Recovered'], $campAgg);
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Day5';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        }
 
         // ---------------------------- Tabular information of the campaign -------------------------------
         $table = HtmlTable::tableForAdminData($campAgg, $type);
@@ -186,6 +209,9 @@ class AjaxCoverageController extends CommonDashboardController
         // ---------------------------- Header Tiles Information of the campaign --------------------------
         $info_header = HtmlTable::infoForAdminData($campInfo);
         $data['info_box'] = $info_header;
+
+        // just for the map data
+        $data['map_data'] = json_encode($campAgg);
 
         // ---------------------------- Title of the one campaign information -----------------------------
         $campaign = "No data for this campaign as per current filter";

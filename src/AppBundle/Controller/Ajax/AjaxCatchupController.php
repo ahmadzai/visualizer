@@ -9,7 +9,9 @@
 namespace AppBundle\Controller\Ajax;
 
 
+use AppBundle\Service\Maps;
 use AppBundle\Service\Settings;
+use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -174,17 +176,35 @@ class AjaxCatchupController extends CommonDashboardController
         $totalRemaining['subTitle'] = $subTitle;
         $data['total_remaining_1'] = $totalRemaining;
 
-        // ---------------------------- last campaign total missed by region -------------------------------
-        $totalRemaining = $this->chart->chartData1Category(['column'=>$titles['aggType']],
-            ['TotalRecovered'=>'Recovered',
-                'TotalRemaining'=>'Remaining'], $campAgg);
-        $totalRemaining['title'] = 'ICN Reduced Missed Children';
-        $totalRemaining['subTitle'] = $subTitle;
-        $data['total_recovered_remaining_1'] = $totalRemaining;
+        // ---------------------------- last campaign total missed by location -------------------------------
+        $oneCat = $titles['aggType'] === 'Region' ? true : false;
+        if($oneCat) {
+            $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
+                ['TotalRemaining' => 'Remaining',
+                    'TotalRecovered' => 'Recovered'], $campAgg);
+            $totalRemaining['title'] = 'ICN Reduced Missed Children';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        } else {
+            $cat1 = ['column' => 'Region'];
+            if($titles['aggType'] === "District")
+                $cat1 = ['column' => 'Province'];
+            $totalRemaining = $this->chart->chartData2Categories(
+                $cat1,
+                ['column' => $titles['aggType']],
+                ['TotalRemaining' => 'Remaining',
+                    'TotalRecovered' => 'Recovered'], $campAgg);
+            $totalRemaining['title'] = 'ICN Reduced Missed Children';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        }
 
         // ---------------------------- Tabular information of the campaign -------------------------------
         $table = HtmlTable::tableForCatchupData($campAgg, $type);
         $data['info_table'] = $table;
+
+        // just for the map data
+        $data['map_data'] = json_encode($campAgg);
 
         // ---------------------------- Header Tiles Information of the campaign --------------------------
         $info_header = HtmlTable::infoForCatchup($campInfo);

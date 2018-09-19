@@ -11,6 +11,9 @@ namespace AppBundle\Controller\Ajax;
 
 use AppBundle\Service\Settings;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Service\Maps;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 abstract class CommonDashboardController extends DashController
 {
@@ -146,6 +149,19 @@ abstract class CommonDashboardController extends DashController
                          ['calcType'=>$calcType, 'selectType'=>$selectType]);
         }
 
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/load/geojson", name="load_geojson",
+     *     options={"expose"=true})
+     */
+    public function mapAction(Request $request) {
+
+        $type = $request->get('geoType');
+        $mapData = Maps::loadGeoJson($this->getParameter('kernel.root_dir'), $type);
+        return new JsonResponse($mapData);
     }
 
     /**

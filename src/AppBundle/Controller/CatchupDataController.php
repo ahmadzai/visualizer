@@ -14,6 +14,7 @@ use AppBundle\Service\Charts;
 use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Settings;
 use AppBundle\Service\Triangle;
+use AppBundle\Service\Maps;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,10 +36,14 @@ class CatchupDataController extends Controller
      */
     public function indexAction() {
 
+        $provinces = $this->getDoctrine()
+            ->getRepository('AppBundle:Province')
+            ->findAll();
+
         return $this->render("pages/catchup_data/index.html.twig", [
             'source'=>'CatchupData',
             'url' => 'catchup_data',
-            'urlCluster' => 'catchup_data_cluster'
+            'urlCluster' => 'catchup_data_cluster',
         ]);
     }
 

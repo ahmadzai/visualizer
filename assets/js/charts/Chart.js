@@ -40,6 +40,12 @@ class Chart {
             case "html":
                 TableHtml.tableHtml(args);
                 break;
+            case "raw":
+                TableHtml.rawData(args);
+                break;
+            case "map":
+                this.mapChart(args);
+                break;
         }
 
     }
@@ -174,6 +180,11 @@ class Chart {
     heatmapChart() {
         //Todo: implement heat map
         alert('This function is not implemented yet\n');
+    }
+
+    mapChart(args) {
+        //console.log(args);
+        this.factory.createChart(args);
     }
 }
 

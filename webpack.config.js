@@ -22,7 +22,10 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
-    .addEntry('main-filter', './assets/js/main_filter.js')
+    // .addEntry('main-filter', './assets/js/main_filter.js')
+    .addEntry('main', './assets/js/main.js')
+    .addEntry('coverage', './assets/js/coverage.js')
+    .addEntry('catchup', './assets/js/catchup.js')
     .addEntry('cluster-filter', './assets/js/cluster_filter.js')
     .addEntry('ccs-sm-filter', './assets/js/ccs_sm_filter.js')
     //.addEntry('page1', './assets/js/page1.js')

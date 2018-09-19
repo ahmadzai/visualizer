@@ -67,7 +67,7 @@
                     </div>
                     <!-- End of First Row --->
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <div class="box box-warning">
                                 <span class="filter-loading loader-small info-loader"></span>
                                 <div class="box-body" style="padding: 1px">
@@ -76,11 +76,27 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="box box-warning">
+                                <input type="hidden" id="map_data" value=""/>
+                                <div class="btn-group dropdown-filter">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-filter"></i></button>
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                            data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" data-type="TotalRemaining" class="filter-map">All Missed</a></li>
+                                        <li><a href="#" data-type="RemAbsent" class="filter-map">Absent</a></li>
+                                        <li><a href="#" data-type="RemNSS" class="filter-map">NSS</a></li>
+                                        <li><a href="#" data-type="RemRefusal" class="filter-map">Refusal</a></li>
+                                        <li><a href="#" data-type="PerRecovered" class="filter-map">Percentage of Recovered</a></li>
+                                    </ul>
+                                </div>
                                 <span class="filter-loading loader-small info-loader"></span>
                                 <div class="box-body" style="padding: 1px">
-                                    <div id="total_remaining_by_type_1" style="height: 350px; max-height: 350px;"></div>
+                                    <div id="map_container_1" style="height: 350px; max-height: 350px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -280,5 +296,5 @@
 {% block js %}
     {{ parent() }}
 
-    <script  src="{{ asset('build/main-filter.js') }}"></script>
+    <script  src="{{ asset('build/catchup.js') }}"></script>
 {% endblock %}

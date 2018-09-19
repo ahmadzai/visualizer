@@ -12,12 +12,14 @@ namespace AppBundle\Controller;
 use AppBundle\Service\Charts;
 use AppBundle\Service\Exporter;
 use AppBundle\Service\HtmlTable;
+use AppBundle\Service\Maps;
 use AppBundle\Service\Settings;
 use AppBundle\Entity\AdminData;
 use AppBundle\Service\Triangle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Service\Importer;
@@ -77,7 +79,6 @@ class MainController extends Controller
      */
     public function testAction(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
 
-
         /*
         //Test for the General campaignStatistics Function
         $province = ['by' => 'province', 'value' => [33, 6]];
@@ -131,8 +132,8 @@ class MainController extends Controller
 //
 
 
-        $tenCampCatchupData = $charts->chartData("CoverageData",
-            'clusterAggByCampaign', [16, 17, 18, 19, 20, 21], ['district'=>[601, 3301]]);
+//        $tenCampCatchupData = $charts->chartData("CoverageData",
+//            'clusterAggByCampaign', [16, 17, 18, 19, 20, 21], ['district'=>[601, 3301]]);
 
 //        $lastCampStackChart = $charts->chartData1Category(['column'=>'CID', 'substitute'=>['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']],
 //            ['RemAbsent' => 'Absent',
@@ -148,7 +149,11 @@ class MainController extends Controller
 //        return new Response(json_encode($tenCampCatchupData));
 
 
-        return Exporter::exportCSV($tenCampCatchupData);
+//        return Exporter::exportCSV($tenCampCatchupData);
+
+
+        $map = Maps::loadGeoJson($this->getParameter('kernel.root_dir'));
+        return new JsonResponse($map);
 
     }
 

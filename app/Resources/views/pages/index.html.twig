@@ -66,6 +66,46 @@
                     </div>
                     <!-- End of First Row and Start of Second one-->
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-warning">
+                                <span class="filter-loading loader-small info-loader"></span>
+                                <div class="box-body" style="padding: 1px">
+                                    <div id="total_recovered_remaining_1" style="height: 350px; max-height: 350px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box box-warning">
+                                <input type="hidden" id="map_data" value=""/>
+                                <div class="btn-group dropdown-filter">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-filter"></i></button>
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                            data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" data-type="DiscRemaining" class="filter-map">All Missed</a></li>
+                                        <li><a href="#" data-type="DiscRemainingAbsent" class="filter-map">Absent</a></li>
+                                        <li><a href="#" data-type="DiscRemainingNSS" class="filter-map">NSS</a></li>
+                                        <li><a href="#" data-type="DiscRemainingRefusal" class="filter-map">Refusal</a></li>
+
+                                        <li><a href="#" data-type="PerRemaining" class="filter-map">% All Missed</a></li>
+                                        <li><a href="#" data-type="PerAbsent" class="filter-map">% Absent</a></li>
+                                        <li><a href="#" data-type="PerNSS" class="filter-map">% NSS</a></li>
+                                        <li><a href="#" data-type="PerRefusal" class="filter-map">% Refusal</a></li>
+                                    </ul>
+                                </div>
+                                <span class="filter-loading loader-small info-loader"></span>
+                                <div class="box-body" style="padding: 1px">
+                                    <div id="map_container_1" style="height: 350px; max-height: 350px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Second Row, Start of Third Row-->
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="box box-warning">
                                 <span class="filter-loading loader-small info-loader"></span>
@@ -207,5 +247,5 @@
 
 {% block js %}
     {{ parent() }}
-    <script  src="{{ asset('build/main-filter.js') }}"></script>
+    <script  src="{{ asset('build/main.js') }}"></script>
 {% endblock %}

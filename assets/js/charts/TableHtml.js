@@ -40,6 +40,13 @@ class TableHtml {
         $('#'+args.renderTo).html(args.data);
     }
 
+    /**
+     * @param args
+     */
+    static rawData(args = {renderTo, data}) {
+        $('#'+args.renderTo).val(args.data);
+    }
+
 }
 
 export default TableHtml;

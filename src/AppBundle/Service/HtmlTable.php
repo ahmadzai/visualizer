@@ -96,13 +96,14 @@ class HtmlTable
             $coverage = $target == 0 ? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
-            $progress = "<div class=\"progress progress-sm\"
-                            style=\"background-color: #cb4b16\">
-                             <div class=\"progress-bar progress-bar-success\" 
-                            style=\"width:".$coverage."%\">
+            $rem = 100 - $coverage;
+            $progress = "<div class=\"progress progress-sm\" title='Remaining $rem%'
+                            style=\"background-color: #FFB32D\">
+                             <div class=\"progress-bar\" title=\"Coverage: ".$coverage."%\"
+                            style=\"background-color:#08beff; width:".$coverage."%\">
                              </div>
                          </div>";
-            $tr .= "<td title=\"Coverage: ".$coverage."%\">".$progress."</td>";
+            $tr .= "<td>".$progress."</td>";
             $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";
@@ -146,13 +147,14 @@ class HtmlTable
             $coverage = $target == 0? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
-            $progress = "<div class=\"progress progress-sm\"
-                            style=\"background-color: #cb8a0c\">
-                             <div class=\"progress-bar progress-bar-success\" 
-                            style=\"width:".$coverage."%\">
+            $rem = 100 - $coverage;
+            $progress = "<div class=\"progress progress-sm\" title='Remaining $rem%'
+                            style=\"background-color: #FFB32D\">
+                             <div class=\"progress-bar\" title=\"Recovered: ".$coverage."%\"
+                            style=\"background-color:#40C97A; width:".$coverage."%\">
                              </div>
                          </div>";
-            $tr .= "<td title=\"Recovered: ".$coverage."%\">".$progress."</td>";
+            $tr .= "<td>".$progress."</td>";
             $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";

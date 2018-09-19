@@ -1,54 +1,133 @@
 import $ from 'jquery';
 import Routing from './Routing';
 import Chart from '../charts/Chart';
-import Alerts from '../common/Alerts';
 
 class AjaxRequest {
 
     constructor() {
         this.chart = new Chart();
     }
-    partiallyUpdate(url, charts, params, loaderClass = null) {
-        let self = this;
-        if(loaderClass !== null)
-            $('.'+loaderClass).show();
 
-        let ajax = this.ajaxPromise(url, params);
+    partiallyUpdate = (url, charts, params,
+        loaderClass = '_', mapSetting=false) => {
+        let self = this;
+        $('.'+loaderClass).show();
+
+        let ajax = this._ajaxPromise(url, params);
 
         ajax.done(data => {
-            for (let key in charts) {
-                if(data.hasOwnProperty(key)) {
-                    charts[key].data = data[key];
-                    charts[key].renderTo = key;
-                    self.chart.visualize(charts[key]);
-                }
+            self._populateDashboard(charts, data);
+
+            if(mapSetting !== false) {
+                self.updateMap(mapSetting);
             }
-            if(loaderClass !== null)
-                $('.'+loaderClass).hide();
+
+            $('.'+loaderClass).hide();
         }).fail(xhr => {
-            Alerts.ajaxError(xhr);
+            console.error(xhr);
         });
 
-    }
+    };
 
-    updateAll(url, charts, param1, param2) {
+    updateAll = (url, container, param1,
+                 param2, mapSetting = false) => {
+        if(mapSetting === false) {
+            this._chainTwoAjax(
+                {url, params:param2, container},
+                {url, params:param1, container}
+                );
 
+        } else {
+            this._chainThreeAjax(
+                {url, params:param2, container},
+                {url, params:param1, container},
+                mapSetting
+            );
+        }
+    };
+
+    updateMap = (mapSetting) => {
+
+        let mapFilter = mapSetting.mapFilter,
+            params = mapSetting.params,
+            url = mapSetting.url,
+            loaderClass = mapSetting.loaderClass === undefined ?
+                '_' : mapSetting.loaderClass;
+
+        // first update the map data
+        this._updateMapData(mapFilter);
+        //console.log(params);
+
+        //console.log(mapFilter.getGeoData(params.geoType));
+
+        //console.log(mapFilter);
+        if(mapFilter.getGeoData(params.geoType) === undefined) {
+
+            let ajax = this._ajaxPromise(url, params);
+
+            ajax.done(data => {
+                mapFilter.setGeoData(data, params.geoType);
+                $('.' + loaderClass).hide();
+                mapFilter.createMap(params.dataType, params.indicator, params.source);
+            }).fail(xhr => {
+                console.error(xhr);
+            });
+        } else {
+            $('.' + loaderClass).hide();
+            mapFilter.createMap(params.dataType, params.indicator, params.source);
+        }
+
+
+    };
+
+    /**
+     * @param req1
+     * @param req2
+     * @private
+     */
+    _chainTwoAjax = (req1 = {url, params, container},
+                     req2 = {url, params, container}) => {
         $('.trend-loader, .info-loader, .loader').show();
         let self = this;
-        let req1 = this.ajaxPromise(url, param2);
-        let req2 = req1.then(function(data){
-            self.populateDashboard({...charts}, data);
+        let ajx1 = this._ajaxPromise(req1.url, req1.params);
+        let ajx2 = ajx1.then(function (data) {
+            self._populateDashboard({...req1.container}, data);
             $('.info-loader').hide();
-            return self.ajaxPromise(url, param1);
+            return self._ajaxPromise(req2.url, req2.params);
         });
 
-        req2.done(function(data) {
-           self.populateDashboard({...charts}, data);
-           $('.trend-loader, .loader').hide();
+        ajx2.done(function (data) {
+            self._populateDashboard({...req2.container}, data);
+            $('.trend-loader, .loader').hide();
         });
-    }
+    };
 
-    populateDashboard (charts, data) {
+    _chainThreeAjax = (req1, req2, req3) => {
+        let self = this;
+
+        $('.trend-loader, .info-loader, .loader').show();
+        let ajx1 = this._ajaxPromise(req1.url, req1.params);
+
+        let ajx2 = ajx1.then(function (ajx1Data) {
+           self._populateDashboard({...req1.container}, ajx1Data);
+           $('.info-loader').hide();
+           return self._ajaxPromise(req2.url, req2.params);
+        });
+
+        ajx2.done(function (ajx2Data) {
+            self._populateDashboard({...req2.container}, ajx2Data);
+            $('.trend-loader, .loader').hide();
+            self.updateMap(req3);
+        });
+
+    };
+
+    /**
+     * @param charts
+     * @param data
+     * @private
+     */
+    _populateDashboard = (charts, data) => {
 
         let self = this;
         $.each(charts, function (index, value) {
@@ -58,16 +137,35 @@ class AjaxRequest {
                 self.chart.visualize(this);
             }
         });
-    }
+    };
 
-    ajaxPromise(url, params) {
-        let req =$.ajax({
+
+    /**
+     * @param url
+     * @param params
+     * @returns {*|{readyState, getResponseHeader,
+     * getAllResponseHeaders, setRequestHeader,
+     * overrideMimeType, statusCode, abort}|boolean}
+     * @private
+     */
+    _ajaxPromise = (url, params) => {
+        return $.ajax({
             url: Routing.generate(url),
             data: params,
             method: 'post'
         });
-        return req;
-    }
+    };
+
+    /**
+     * @param mapFilter
+     * @private
+     */
+    _updateMapData = (mapFilter) => {
+        // if mapDataType was set
+        if(mapFilter !== false) {
+            mapFilter.setMapData($('#map_data').val());
+        }
+    };
 
 
 }

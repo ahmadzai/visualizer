@@ -1,11 +1,14 @@
 'use strict';
-import SettingMain from './MainDash';
-import SettingCoverage from './Coverage';
-import SettingCatchup from './Catchup';
-import CatchupCluster from './CatchupCluster';
-import CoverageCluster from './CoverageCluster';
-import MainCluster from './MainCluster';
-import CcsSmSetting from './CcsSmSetting';
+import SettingMain from './main/MainDash';
+import SettingCoverage from './coverage/Coverage';
+import SettingCatchup from './catchup/Catchup';
+import CatchupCluster from './catchup/CatchupCluster';
+import CoverageCluster from './coverage/CoverageCluster';
+import MainCluster from './main/MainCluster';
+import CcsSmSetting from './odk/CcsSmSetting';
+import CatchupMaps from './catchup/Maps';
+import CoverageMaps from './coverage/Maps';
+import MainMaps from './main/Maps';
 
 export {
     SettingMain,
@@ -15,4 +18,7 @@ export {
     CoverageCluster,
     MainCluster,
     CcsSmSetting,
+    CatchupMaps,
+    CoverageMaps,
+    MainMaps,
 };

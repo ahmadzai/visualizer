@@ -171,7 +171,7 @@ class Triangle
                     $resultArray[$key][$newCol] = 0;
             } elseif($operation === '%') {
                 if($secondOperand !== 0)
-                    $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand), 2);
+                    $resultArray[$key][$newCol] = round(($firstOperand / $secondOperand) * 100, 2);
                 else
                     $resultArray[$key][$newCol] = 0;
             } elseif($operation === '*') {

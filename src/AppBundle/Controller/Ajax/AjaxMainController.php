@@ -181,7 +181,8 @@ class AjaxMainController extends CommonDashboardController
 
         // ---------------------------- one campaign recovered all type -----------------------------------
         $recoveredAllType = $this->chart->pieData(
-            ['Recovered3Days'=>'3Days',
+            [
+                'Recovered3Days'=>'3Days',
                 'RecoveredDay4'=>'Day5',
                 'cTotalRecovered'=>'Catchup',
                 'DiscRemaining'=>'Remaining',
@@ -239,9 +240,47 @@ class AjaxMainController extends CommonDashboardController
         $vacWastage['subTitle'] = $subTitle;
         $data['total_remaining_1'] = $vacWastage;
 
+        // ---------------------------- last campaign total missed by location -------------------------------
+        $oneCat = $titles['aggType'] === 'Region' ? true : false;
+        if($oneCat) {
+            $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
+                [
+                    'Disc' => 'Discrep',
+                    'DiscRemaining'=>'Remaining',
+                    'cTotalRecovered'=>'Catchup',
+                    'RecoveredDay4'=>'Day5',
+                    'Recovered3Days'=>'3Days',
+
+                ], $campAgg);
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        } else {
+            $cat1 = ['column' => 'Region'];
+            if($titles['aggType'] === "District")
+                $cat1 = ['column' => 'Province'];
+            $totalRemaining = $this->chart->chartData2Categories(
+                $cat1,
+                ['column' => $titles['aggType']],
+                [
+                    'Disc' => 'Discrep',
+                    'DiscRemaining'=>'Remaining',
+                    'cTotalRecovered'=>'Catchup',
+                    'RecoveredDay4'=>'Day5',
+                    'Recovered3Days'=>'3Days',
+
+                ], $campAgg);
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
+            $totalRemaining['subTitle'] = $subTitle;
+            $data['total_recovered_remaining_1'] = $totalRemaining;
+        }
+
         // ---------------------------- Tabular information of the campaign -------------------------------
         $table = HtmlTable::tableForDashboard($campAgg, $type);
         $data['info_table'] = $table;
+
+        // just for the map data
+        $data['map_data'] = json_encode($campAgg);
 
         // ---------------------------- Header Tiles Information of the campaign --------------------------
         $info_header = HtmlTable::infoForDashboard($campInfo);
@@ -362,6 +401,20 @@ class AjaxMainController extends CommonDashboardController
             '-', 'DiscRemainingRefusal');
         $data = Triangle::mathOps($data, ['VacRefusal', 'cVacRefusal'], '+',
             'FinalVacRefusal');
+
+        // For Percentage Calculation
+        // Percentage Absent
+        $data = Triangle::mathOps($data, ['DiscRemainingAbsent', 'CalcTarget'],
+            '%', 'PerAbsent');
+        // Percentage NSS
+        $data = Triangle::mathOps($data, ['DiscRemainingNSS', 'CalcTarget'],
+            '%', 'PerNSS');
+        // Percentage Refusal
+        $data = Triangle::mathOps($data, ['DiscRemainingRefusal', 'CalcTarget'],
+            '%', 'PerRefusal');
+        // Percentage Missed
+        $data = Triangle::mathOps($data, ['DiscRemaining', 'CalcTarget'],
+            '%', 'PerRemaining');
 
         return $data;
 

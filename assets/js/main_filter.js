@@ -21,11 +21,18 @@ $(document).ready(function () {
     let  Setting = SettingMain;                             // Dynamic Setting as per loaded page
     if(urlPostFix === "coverage_data")
         Setting = SettingCoverage;
-    else if(urlPostFix === "catchup_data")
+    else if(urlPostFix === "catchup_data") {
         Setting = SettingCatchup;
+        apiCall.updateMap('load_geojson',
+            {'chartType':{'type':"map"},
+               'renderTo': 'total_remaining_by_type_1',
+               'data':{},
+               'legend': false,
+            }, {'map_type':'province'});
+    }
 
     // load for this first time
-    let filterData = listener.listenMain()   ;          // call listener to return filters data
+    let filterData = listener.listenMain()   ;             // call listener to return filters data
     // set filterState
     filterControl.setFilterState({...filterData});
     filterData.loadWhat = 'trend';
