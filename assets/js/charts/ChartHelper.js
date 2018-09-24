@@ -29,10 +29,19 @@ class ChartHelper {
         this.xAxis = {
             categories: [],
             labels: {
-                style: {fontSize: '75%'}
-            }
+                style: {fontSize: '75%'},
+                groupedOptions: [{
+                    style: {color:'#025464'}
+                }, {
+                    rotation: 60, // rotate labels for a 2nd-level
+                    align: 'right'
+                }],
+                //rotation: 0 // 0-level options aren't changed, use them as always
+            },
+            drawHorizontalBorders: false,
         };
         this.yAxis = {
+            min: 0,
             title: {
                 text: 'Chart title'
             },

@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Service\HtmlTable;
+use AppBundle\Service\Triangle;
 
 class AjaxCoverageController extends CommonDashboardController
 {
@@ -211,7 +212,7 @@ class AjaxCoverageController extends CommonDashboardController
         $data['info_box'] = $info_header;
 
         // just for the map data
-        $data['map_data'] = json_encode($campAgg);
+        $data['map_data'] = json_encode($this->allMathOps($campAgg));
 
         // ---------------------------- Title of the one campaign information -----------------------------
         $campaign = "No data for this campaign as per current filter";
@@ -246,6 +247,8 @@ class AjaxCoverageController extends CommonDashboardController
     {
         // fetch the data
         $heatMapData = $this->clustersData($entity, $campaigns, $params);
+
+        $locTrends = $this->clustersData($entity, $controlParams['locTrendIds'], $params);
         // get the clusters from the params as they needed for the table
         $clusters = $params['cluster'];
 
@@ -277,7 +280,58 @@ class AjaxCoverageController extends CommonDashboardController
             $stops['minValue'],
             $stops['maxValue']);
 
-        return new JsonResponse(['cluster_trend'=>$table]);
+        $data['cluster_trend'] = $table;
+        //======================================== New Cluster Level Trends Charts ================
+        $category = [['column'=>'Region'],
+            ['column'=>'CID', 'substitute'=>
+                ['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']
+            ]
+        ];
+        // --------------------------- Loc Trend of Missed Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['TotalRemaining'=>'Remaining', 'MissedVaccinated'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Missed Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_all_type'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Absent Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Absent Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_absent'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of NSS Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced NSS Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_nss'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Refusal Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Refusal Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_refusal'] = $locTrendAllType;
+
+        return new JsonResponse($data);
     }
 
     /**
@@ -293,6 +347,27 @@ class AjaxCoverageController extends CommonDashboardController
         die;
 
         
+
+    }
+
+    private function allMathOps($data) {
+
+        // For Percentage Calculation
+        // Percentage Absent
+        $data = Triangle::mathOps($data, ['RemAbsent', 'CalcTarget'],
+            '%', 'PerAbsent');
+        // Percentage NSS
+        $data = Triangle::mathOps($data, ['RemNSS', 'CalcTarget'],
+            '%', 'PerNSS');
+        // Percentage Refusal
+        $data = Triangle::mathOps($data, ['RemRefusal', 'CalcTarget'],
+            '%', 'PerRefusal');
+        // Percentage Missed
+        $data = Triangle::mathOps($data, ['TotalRemaining', 'CalcTarget'],
+            '%', 'PerRemaining');
+
+        return $data;
+
 
     }
 

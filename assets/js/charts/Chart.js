@@ -127,7 +127,7 @@ class Chart {
      * @param args
      */
     columnBarChart(args = { renderTo, data : [], chartType, combination, colors,
-                   titles, legend, menu , large, yAxisFormatter})
+                   titles, legend, menu , large, yAxisFormatter, scrollbar})
     {
         args.chartType = args.hasOwnProperty('chartType') ? args.chartType : {type:'column'};
         args.combination = args.hasOwnProperty('combination') ? args.combination : [];
@@ -135,6 +135,7 @@ class Chart {
         args.titles = args.hasOwnProperty('titles') ? args.titles : this.dTitles;
         args.legend = args.hasOwnProperty('legend') ? args.legend : this.dLegend;
         args.yAxisFormatter = args.hasOwnProperty('yAxisFormatter') ? args.yAxisFormatter : "";
+        args.scrollbar = args.hasOwnProperty('scrollbar') ? args.scrollbar : false;
 
         this.factory.createChart(args);
 

@@ -138,10 +138,23 @@ class DashController extends Controller
             //$newData['trend'] = $campData;
             $newData['oneCampAgg'] = $this->chart->chartData($entity, "aggByCampaign",
                 $campaigns, $params);
+
             $newData['oneCamp'] = $tempData;
         }
 
         return $newData;
+
+    }
+
+    /**
+     * @param $entity
+     * @param $campaigns
+     * @param null $params
+     * @return array
+     */
+    public function campaignLocationData($entity, $campaigns, $params = null) {
+        //Todo: keep data in the session
+        return $this->chart->chartData($entity, "aggByCampaign", $campaigns, $params);
 
     }
 
@@ -208,19 +221,22 @@ class DashController extends Controller
         if (count($subDistClusters['subDistricts']) > 0) {
             foreach ($subDistClusters['subDistricts'] as $item) {
                 // find the clusters data
-                $campData[] = $this->chart->chartData($entity, 'clusterAggByCampaign',
-                                                        $campaigns, ['district'=>$params['district'],
-                                                         'param' => [
-                                                                        'subdist'=>$item,
-                                                                        'cluster'=> $subDistClusters['clusters']
-                                                                    ]
-                                                        ]);
+                $campData[] = $this->chart->chartData(
+                    $entity, 'clusterAggByCampaign',
+                    $campaigns, ['district'=>
+                        $params['district'],
+                        'param' => [
+                            'subdist'=>$item,
+                            'cluster'=> $subDistClusters['clusters']
+                        ]
+                ]);
             }
             // merge the data of all sub districts
             $campData = array_merge(...$campData);
         } else if (count($subDistClusters['subDistricts']) <= 0 ||
             $subDistClusters['subDistricts'] === null) {
-            $campData = $campData[] = $this->chart->chartData($entity, 'clusterAggByCampaign',
+            $campData = $campData[] = $this->chart->chartData(
+                $entity, 'clusterAggByCampaign',
                 $campaigns, ['district'=>$params['district'],
                     'param' => ['cluster'=> $subDistClusters['clusters']
                     ]
@@ -248,6 +264,7 @@ class DashController extends Controller
         return $sesData;
     }
 
+
     /**
      * @param $entity
      * @return mixed
@@ -263,6 +280,9 @@ class DashController extends Controller
      * @return bool
      */
     private function searchArray($keys, $search) {
+
+        if(!is_array($search) || count($search) === 0) return false;
+
         $flag = true;
         foreach ($search as $srch) {
             if(!in_array($srch, $keys)) {

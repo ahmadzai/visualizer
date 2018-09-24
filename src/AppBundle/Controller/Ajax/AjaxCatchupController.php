@@ -44,7 +44,12 @@ class AjaxCatchupController extends CommonDashboardController
 
     protected function trendAction($entity, $campaigns, $params, $titles)
     {
+
+        // location trends, default for three campaigns
+        $locTrends = $this->campaignLocationData($entity, $titles['locTrendIds'], $params);
+
         $trends =  $this->campaignsData($entity, $campaigns, $params);
+
         $trends = $trends['trend']; // it comes in the array index = trend
         $category = [['column'=>'Region'], 
                      ['column'=>'CID', 'substitute'=>
@@ -53,6 +58,51 @@ class AjaxCatchupController extends CommonDashboardController
                     ];
         $subTitle = $titles['subTitle'];
         $during = $titles['midTitle'];
+
+        // --------------------------- Loc Trend of Missed Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+                ['column'=>$titles['aggType']],
+                $category[1],
+                ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+                $locTrends
+            );
+        $locTrendAllType['title'] = 'ICN Reduced Missed Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_all_type'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Absent Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Absent Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_absent'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of NSS Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced NSS Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_nss'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Refusal Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Refusal Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_refusal'] = $locTrendAllType;
+
 
         // --------------------------- Trend of Vaccinated Children --------------------------------
         $vacChildTrend = $this->chart->chartData1Category($category[1], 
@@ -243,6 +293,9 @@ class AjaxCatchupController extends CommonDashboardController
     {
         // fetch the data
         $heatMapData = $this->clustersData($entity, $campaigns, $params);
+
+        $locTrends = $this->clustersData($entity, $controlParams['locTrendIds'], $params);
+
         // get the clusters from the params as they needed for the table
         $clusters = $params['cluster'];
 
@@ -283,9 +336,63 @@ class AjaxCatchupController extends CommonDashboardController
             $stops['minValue'],
             $stops['maxValue']);
 
+        $data['cluster_trend'] = $table;
+
+        //======================================== New Cluster Level Trends Charts ================
+        $category = [['column'=>'Region'],
+            ['column'=>'CID', 'substitute'=>
+                ['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']
+            ]
+        ];
+        // --------------------------- Loc Trend of Missed Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Missed Children Recovery';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_all_type'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Absent Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Absent Children Recovery';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_absent'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of NSS Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'NSS Children Recovery';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_nss'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Refusal Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Refusal Children Recovery';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_refusal'] = $locTrendAllType;
+
+
         //return new Response($table);
-        return new JsonResponse(['cluster_trend'=>$table]);
+        return new JsonResponse($data);
     }
+
 
 
 }

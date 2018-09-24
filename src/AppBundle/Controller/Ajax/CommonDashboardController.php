@@ -106,8 +106,12 @@ abstract class CommonDashboardController extends DashController
         if(count($campaignIds) > 1 || $loadWhat === 'trend') {
             $campaignIds = count($campaignIds) > 1 ? $campaignIds :
                 $settings->lastFewCampaigns($entity, Settings::NUM_CAMP_CHARTS);
+
+            // campaign ids for the location trends
+            $locTrendCampIds = count($campaignIds) >= 10 ? $settings->lastFewCampaigns($entity) : $campaignIds;
+
             return $this->trendAction($entity, $campaignIds, $params,
-                ['midTitle' => $during, 'subTitle' => $subTitle]);
+                ['midTitle' => $during, 'subTitle' => $subTitle, 'locTrendIds' => $locTrendCampIds, 'aggType'=>$aggType]);
         }
         // if one campaign was selected, means update one campaign information
         if(count($campaignIds) === 1 || $loadWhat === 'info') {
@@ -139,14 +143,18 @@ abstract class CommonDashboardController extends DashController
         $entity = $request->get('entity');
 
         if($calcType === "info") {
+            // check if multiple campaigns were selected
+            $campaigns = count($campaigns) > 1 ? $settings->lastFewCampaigns($entity, 1) : $campaigns;
             return $this->clustersInfoAction($entity, $campaigns,
                 ['district'=>$districts, 'cluster'=>$clusters]);
         } else {
             $campaigns = count($campaigns) > 1 ? $campaigns :
                          $settings->lastFewCampaigns($entity, Settings::NUM_CAMP_CLUSTERS);
+            $locTrendCampIds = count($campaigns) >= 6 ? $settings->lastFewCampaigns($entity) : $campaigns;
             return $this->clustersTrendAction($entity, $campaigns,
                          ['district'=>$districts, 'cluster'=>$clusters],
-                         ['calcType'=>$calcType, 'selectType'=>$selectType]);
+                         ['calcType'=>$calcType, 'selectType'=>$selectType,
+                             'locTrendIds' => $locTrendCampIds]);
         }
 
     }

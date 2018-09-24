@@ -359,7 +359,65 @@ class AjaxMainController extends CommonDashboardController
             $stops['minValue'],
             $stops['maxValue']);
 
-        return new JsonResponse(['cluster_trend'=>$table]);
+        $data['cluster_trend'] = $table;
+        //==================================== Clusters Trend Charts ===========================
+        $locTrends = $this->combineClustersData(
+            'both',
+            $controlParams['locTrendIds'], $params
+        );
+
+        $locTrends = $this->allMathOps($locTrends);
+
+        $category = [['column'=>'Region'],
+            ['column'=>'CID', 'substitute'=>
+                ['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']
+            ]
+        ];
+        // --------------------------- Loc Trend of Missed Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['DiscRemaining'=>'Remaining', 'FinalTotalVac'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Missed Children Recovery';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_all_type'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Absent Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['DiscRemainingAbsent'=>'Remaining', 'FinalVacAbsent'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Absent Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_absent'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of NSS Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemNSS'=>'Remaining', 'FinalVacNSS'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced NSS Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_nss'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Refusal Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>'Cluster'],
+            $category[1],
+            ['RemRefusal'=>'Remaining', 'FinalVacRefusal'=>'Recovered'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'ICN Reduced Refusal Children';
+        $locTrendAllType['subTitle'] = null;
+        $data['loc_trend_refusal'] = $locTrendAllType;
+
+        return new JsonResponse($data);
     }
 
     private function allMathOps($data) {

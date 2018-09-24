@@ -59,7 +59,7 @@ class CatchupDataController extends Controller
         $data['pageTitle'] = "Catchup Data Trends and Analysis, Cluster Level";
         $data['source'] = 'CatchupData';
         $data['ajaxUrl'] = 'catchup_data';
-        return $this->render("pages/clusters-table.html.twig",
+        return $this->render("pages/catchup_data/clusters-table.html.twig",
             $data
         );
 

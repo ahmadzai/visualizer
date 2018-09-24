@@ -42,6 +42,39 @@ CatchupChartsSetting['recovered_refusal_1'] = {'colors':[colors.RECOVERED_CATCHU
     'chartType':{'type':'halfpie'}, 'legend':true
 };
 
+// 3 (default) campaigns location trends
+// 10 Campaign absent percent stack chartType
+CatchupChartsSetting['loc_trend_all_type'] = {
+    'colors': [colors.REM_MISSED, colors.RECOVERED_CATCHUP],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}]
+};
+// absent loc trends
+CatchupChartsSetting['loc_trend_absent'] = {
+    'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}]
+};
+// nss loc trends
+CatchupChartsSetting['loc_trend_nss'] = {
+    'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}]
+};
+// refusal loc trends
+CatchupChartsSetting['loc_trend_refusal'] = {
+    'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}]
+};
 
 // 10 campaign vaccinated children column chartType
 CatchupChartsSetting['vac_child_trend'] = {'chartType':{'type':"column"}, 'colors':[colors.VACCINATED]};
@@ -79,7 +112,10 @@ CatchupChartsSetting['refusal_recovered_trend'] = {
 // 10 campaign missed recovery area percent chartType
 CatchupChartsSetting['missed_child_recovery_trend'] = {
     'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
-    'chartType':{'type':"area", 'stacking':'percent'}};
+    'chartType':{'type':"area", 'stacking':'percent'},
+    'menu':[{chart:'line', title:'Line Chart'},
+        {chart: 'percent_area', title:'Area Chart'}]
+};
 
 
 

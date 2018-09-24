@@ -44,7 +44,6 @@ class FilterMap {
 
         data = JSON.parse(data);
         this.data = data;
-        console.log(data);
 
     };
 
@@ -117,6 +116,7 @@ class FilterMap {
 
     _prepareMapOptions= (mapData, vars) => {
         let source = vars.source;
+
         // see which setting should be loaded
         let mapPage = MainMaps;
         if(source === "coverage_data")

@@ -52,7 +52,9 @@ class AjaxRequest {
             params = mapSetting.params,
             url = mapSetting.url,
             loaderClass = mapSetting.loaderClass === undefined ?
-                '_' : mapSetting.loaderClass;
+                'map-loader' : mapSetting.loaderClass;
+
+        $('.' + loaderClass).show();
 
         // first update the map data
         this._updateMapData(mapFilter);
@@ -129,6 +131,7 @@ class AjaxRequest {
      */
     _populateDashboard = (charts, data) => {
 
+        console.log(data);
         let self = this;
         $.each(charts, function (index, value) {
             if(data.hasOwnProperty(index)) {

@@ -59,15 +59,15 @@ $(document).ready(function () {
     $('#filterButton').click(function () {
 
         // these vars used for controlling map geo data and legend data
-        let geoType = {'geoType':'province', 'dataType':'region', 'indicator':'TotalRemaining'};
+        let geoType = {...mapSetting};
 
         let filterData = listener.listenMain();
         // check if districts were selected
         if(filterData.district.length > 0) {
-            geoType.geoType = "district";
-            geoType.dataType = "district";
+            geoType.params.geoType = "district";
+            geoType.params.dataType = "district";
         } else if(filterData.province.length > 0)
-            geoType.dataType = "province";
+            geoType.params.dataType = "province";
 
         //console.log(filterData);
         if(filterData.campaign.length === 0)
@@ -80,11 +80,10 @@ $(document).ready(function () {
                 // three conditions there
                 if(checkFilter === 'both') {
                     apiCall.updateAll(url, Setting, {...filterData, loadWhat: 'trend'},
-                        {...filterData, loadWhat: 'info'}, {...mapSetting, 'params':geoType});
+                        {...filterData, loadWhat: 'info'}, geoType);
 
                 } else {
-                    let mapOptions = checkFilter === 'trend' ? false :
-                        {...mapSetting, 'params':geoType};
+                    let mapOptions = checkFilter === 'trend' ? false : geoType;
                     apiCall.partiallyUpdate(url, Setting, filterData,
                         checkFilter + '-loader', mapOptions);
                 }

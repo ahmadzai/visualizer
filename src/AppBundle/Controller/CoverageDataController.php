@@ -129,7 +129,7 @@ class CoverageDataController extends Controller
         $data['pageTitle'] = "Coverage Data Trends and Analysis, Cluster Level";
         $data['source'] = 'CoverageData';
         $data['ajaxUrl'] = 'coverage_data';
-        return $this->render("pages/clusters-table.html.twig",
+        return $this->render("pages/coverage_data/clusters-table.html.twig",
             $data
         );
 

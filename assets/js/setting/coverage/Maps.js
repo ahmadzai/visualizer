@@ -1,5 +1,5 @@
 /**
- * Setting for Maps (Coverage Data) are defined here
+ * Setting for Maps (Coverage Data Dashboard) are defined here
  */
 
 import colors from './../colors';
@@ -25,6 +25,28 @@ export default {
     TotalRemaining: {
         name: 'Total Remaining',
         title: 'Total Remaining',
+        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+    },
+
+    // Percentage Benchmark
+    PerRefusal: {
+        name: '% Refusal',
+        title: '% of Remaining Refusal',
+        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+    },
+    PerAbsent: {
+        name: '% Absent',
+        title: '% of Remaining Absent',
+        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+    },
+    PerNSS: {
+        name: '% New Born/Sick/Sleep',
+        title: '% of Remaining NSS',
+        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+    },
+    PerRemaining: {
+        name: '% Total Remaining',
+        title: '% of Total Remaining',
         colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
     },
 
@@ -71,15 +93,47 @@ export default {
 
         },
 
-        PerRecovered: {
+        PerRefusal: {
             classes: [
-                {to: 20},
-                {from: 20, to: 40},
-                {from: 40, to: 60},
-                {from: 60, to: 80},
-                {from: 80}
+                {to: 0},
+                {from: 0, to: 0.25},
+                {from: 0.25, to: 0.50},
+                {from: 0.50, to: 0.75},
+                {from: 0.75}
             ]
-        }
+        },
+
+        PerAbsent: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+        },
+
+        PerNSS: {
+            classes: [
+                {to: 0.1},
+                {from: 0.1, to: 0.2},
+                {from: 0.2, to: 0.3},
+                {from: 0.3, to: 0.75},
+                {from: 0.75}
+            ]
+        },
+
+        PerRemaining: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+
+        },
+
     },
 
     province: {
@@ -124,15 +178,46 @@ export default {
 
         },
 
-        PerRecovered: {
+        PerRefusal: {
             classes: [
-                {to: 55},
-                {from: 55, to: 65},
-                {from: 65, to: 75},
-                {from: 75, to: 85},
-                {from: 85}
+                {to: 0},
+                {from: 0, to: 0.25},
+                {from: 0.25, to: 0.50},
+                {from: 0.50, to: 0.75},
+                {from: 0.75}
             ]
-        }
+        },
+
+        PerAbsent: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+        },
+
+        PerNSS: {
+            classes: [
+                {to: 0},
+                {from: 0, to: 0.25},
+                {from: 0.25, to: 0.50},
+                {from: 0.50, to: 0.75},
+                {from: 0.75}
+            ]
+        },
+
+        PerRemaining: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+
+        },
     },
 
     district: {
@@ -177,15 +262,46 @@ export default {
 
         },
 
-        PerRecovered: {
+        PerRefusal: {
             classes: [
-                {to: 55},
-                {from: 55, to: 65},
-                {from: 65, to: 75},
-                {from: 75, to: 85},
-                {from: 85}
+                {to: 0},
+                {from: 0, to: 0.25},
+                {from: 0.25, to: 0.50},
+                {from: 0.50, to: 0.75},
+                {from: 0.75}
             ]
-        }
+        },
+
+        PerAbsent: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+        },
+
+        PerNSS: {
+            classes: [
+                {to: 0},
+                {from: 0, to: 0.25},
+                {from: 0.25, to: 0.50},
+                {from: 0.50, to: 0.75},
+                {from: 0.75}
+            ]
+        },
+
+        PerRemaining: {
+            classes: [
+                {to: 0.50},
+                {from: 0.50, to: 1},
+                {from: 1, to: 1.5},
+                {from: 1.5, to: 2},
+                {from: 2}
+            ]
+
+        },
     }
 
 }

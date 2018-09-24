@@ -1,7 +1,7 @@
 'use strict';
 import $ from "jquery";
 
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/highstock';
 import * as Exporting from 'highcharts/modules/exporting';
 import * as OfflineExport from 'highcharts/modules/offline-exporting';
 import * as Categories from 'highcharts-grouped-categories/grouped-categories';
@@ -104,9 +104,11 @@ class ChartFactory {
                     enabled: settings.legend !== true,
                     format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                     style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                        fontSize: '90%'
-                    }
+                        fontWeight: 'normal',
+                        fontSize: '80%',
+                        textOutline: '0.4px contrast',
+                    },
+                    color: 'black',
                 },
                 showInLegend: settings.legend,
             }
@@ -119,7 +121,7 @@ class ChartFactory {
             plot.pie.center = ['50%', '75%'];
             plot.pie.dataLabels.distance = -30;
             plot.pie.dataLabels.format = '<b>{point.percentage:.1f}%</b>';
-            options.chart.margin = -20;
+            options.chart.margin = -16; // just to make them a little bigger inside div
             if(settings.legend) {
                 //options.chart.marginRight = 60;
                 options.legend = {
@@ -472,6 +474,7 @@ class ChartFactory {
                 }
             }
         }
+
         options['plotOptions'] = plot;
         // set the yAxis title
         options.yAxis.title.text = settings.titles.yTitle;
@@ -494,6 +497,12 @@ class ChartFactory {
         let categories = data.categories === null || data.categories === undefined ? [] : data.categories;
         let series = data.series === null || data.series === undefined ? [] : data.series;
         options.xAxis.categories = categories;
+        // set scrollbar here
+        if(settings.scrollbar !== false) {
+            options.xAxis.min = settings.scrollbar.min;
+            options.xAxis.max = settings.scrollbar.max;
+            options.xAxis.scrollbar = {enabled:true};
+        }
         options.series = series;
         // change the formatter for yAxis if not empty
         if(settings.yAxisFormatter !== "")
@@ -586,6 +595,14 @@ class ChartFactory {
             }
         } else if(type === 'bar') {
             inverted = true;
+        } else if(type === 'percent_area') {
+            for (let i = 0; i < sLen; i++) {
+
+                s[i].update({
+                    type: 'area',
+                    stacking: 'percent'
+                }, false);
+            }
         } else {
             for (let i = 0; i < sLen; i++) {
 
@@ -620,7 +637,13 @@ class ChartFactory {
         for(let i =0; i < sLen; i++){
             s[i].update({
                 dataLabels: {
-                    enabled: !s[i].options.dataLabels.enabled
+                    enabled: !s[i].options.dataLabels.enabled,
+                    style: {
+                        fontWeight: 'normal',
+                        fontSize: '80%',
+                        textOutline: '0.4px contrast',
+                    },
+                    color: 'black'
                 }
             }, false);
         }
