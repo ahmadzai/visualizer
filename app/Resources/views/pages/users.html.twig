@@ -34,6 +34,7 @@
                             <th>Position</th>
                             <th>Province</th>
                             <th>Mobile</th>
+                            <th>Last Login</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -47,6 +48,9 @@
                             <td>{{ user.position }}</td>
                             <td>{% if user.province %}{{ user.province.provinceName }} {% endif %}</td>
                             <td>{{ user.mobileNumber }}</td>
+                            <td>{% if user.lastLogin %}
+                                {{ user.lastLogin|date }}{% endif %}
+                            </td>
                             <td>
                                 <a href="{{ path('users_edit', {'id':user.id}) }}" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Edit </a>
                             </td>
