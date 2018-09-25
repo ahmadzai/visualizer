@@ -6,7 +6,7 @@ Encore
     .setOutputPath('web/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    .setPublicPath(Encore.isProduction() ? '/visualizer/web/build' : '/visualizer/web/build')
+    .setPublicPath(Encore.isProduction() ? '/build' : '/visualizer/web/build')
     .setManifestKeyPrefix('build')
     .createSharedEntry('layout', './assets/js/layout.js')
 
