@@ -40,12 +40,6 @@ class Province
      */
     private $provinceNameDari;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="geo", type="json", nullable=true)
-     */
-    private $geo;
 
     /**
      * @var \DateTime
@@ -161,29 +155,6 @@ class Province
         return $this->provinceNameDari;
     }
 
-    /**
-     * Set Geo
-     *
-     * @param string $geo
-     *
-     * @return Province
-     */
-    public function setGeo($geo)
-    {
-        $this->geo = $geo;
-
-        return $this;
-    }
-
-    /**
-     * Get $geo
-     *
-     * @return string
-     */
-    public function getGeo()
-    {
-        return $this->geo;
-    }
 
     /**
      * Set entryDate
