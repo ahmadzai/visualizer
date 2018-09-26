@@ -19,6 +19,7 @@ class AjaxRequest {
             self._populateDashboard(charts, data);
 
             if(mapSetting !== false) {
+                $('.map-loader').show();
                 self.updateMap(mapSetting);
             }
 
@@ -75,8 +76,8 @@ class AjaxRequest {
                 console.error(xhr);
             });
         } else {
-            $('.' + loaderClass).hide();
             mapFilter.createMap(params.dataType, params.indicator, params.source);
+            $('.' + loaderClass).hide();
         }
 
 
@@ -131,7 +132,7 @@ class AjaxRequest {
      */
     _populateDashboard = (charts, data) => {
 
-        console.log(data);
+        //console.log(data);
         let self = this;
         $.each(charts, function (index, value) {
             if(data.hasOwnProperty(index)) {

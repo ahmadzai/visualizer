@@ -583,7 +583,7 @@ class ChartFactory {
         let inverted = false;
         let polar = false;
         if(type === 'pie' || type === 'halfpie' || type === 'donut') {
-            console.log(chart);
+            //console.log(chart);
             //chart.userOptions
         } else if(type === 'percent' || type === 'normal') {
             for(let i =0; i < sLen; i++){

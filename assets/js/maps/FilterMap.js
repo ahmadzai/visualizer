@@ -18,18 +18,23 @@ class FilterMap {
 
     createMap = (mapType, indicator, source = "main") => {
         let data = this.getMapData();
+
         // to control the geo json to be loaded
         let geoType = mapType === "district"?'district':'province';
         // load the geoData based on the geoType
-        let geoData = this.getGeoData(geoType);
+        let geoData = this.getGeoData(mapType);
+
+        // joinBy which is required for mapping data to geodata
+        let joinBy = geoType==="district"?'dcode':'pcode';
 
         // if the requested map was for region
         if(mapType === "region") {
             data = this._regionData(indicator,  data);
-        } else
+
+        } else {
             data = this._prepareData(geoType, indicator, data);
-        // joinBy which is required for mapping data to geodata
-        let joinBy = geoType==="district"?'dcode':'pcode';
+        }
+
         new Maps().createMap(
             this._prepareMapOptions(
                 {geoData, data},
@@ -52,14 +57,21 @@ class FilterMap {
     setGeoData = (data, source) => {
         if (source === 'district')
             this.district = data;
-        else
+        else {
             this.province = data;
+            this.region = this._modifyGeoDataForRegions(
+                JSON.parse(JSON.stringify(data))
+            );
+        }
     };
 
     getGeoData = (source) => {
-        return source === 'district' ?
-            this.district :
-            this.province;
+        if(source === 'district')
+            return this.district;
+        else if(source === 'region')
+            return this.region;
+        else if(source === 'province')
+            return this.province;
     };
 
     _regionData = (indicator, tmpData) => {
@@ -105,7 +117,31 @@ class FilterMap {
 
     };
 
-    _prepareData(mapType, indicator, tmpData) {
+    _modifyGeoDataForRegions = (geoData) => {
+
+        $.each(geoData.features, function (key, province) {
+            if(province.properties.pcode === 1)
+                province.properties.name = "CR";
+            else if(province.properties.pcode === 13)
+                province.properties.name = "ER";
+            else if(province.properties.pcode === 16)
+                province.properties.name = "NER";
+            else if(province.properties.pcode === 18)
+                province.properties.name = "NR";
+            else if(province.properties.pcode === 25)
+                province.properties.name = "SER";
+            else if(province.properties.pcode === 32)
+                province.properties.name = "SR";
+            else if(province.properties.pcode === 30)
+                province.properties.name = "WR";
+            else
+                province.properties.name = "";
+        });
+
+        return {...geoData};
+    };
+
+    _prepareData = (mapType, indicator, tmpData) => {
         let modifiedData = [];
         $.each(tmpData, function (key, item) {
             let pdcode = mapType === "district" ? {dcode:item.DCODE} : {pcode:item.PCODE};

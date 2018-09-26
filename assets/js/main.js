@@ -68,6 +68,8 @@ $(document).ready(function () {
             geoType.params.dataType = "district";
         } else if(filterData.province.length > 0)
             geoType.params.dataType = "province";
+        else
+            geoType.params.dataType = "region";
 
         if(filterData.campaign.length === 0)
             Alerts.error('Please select at least one campaign');

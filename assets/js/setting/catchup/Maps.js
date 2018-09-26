@@ -27,6 +27,11 @@ export default {
         title: 'Total Remaining',
         colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
     },
+    PerRecovered: {
+        name: 'Per Recovered',
+        title: 'Catchup: Per of Recovered',
+        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+    },
 
     // these keys should be same as the indicators from database
     region: {

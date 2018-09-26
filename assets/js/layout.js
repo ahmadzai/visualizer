@@ -17,6 +17,7 @@ import 'admin-lte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colo
 import 'admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
 import 'datatables.net-bs/css/dataTables.bootstrap.min.css';
 import 'datatables.net-buttons-dt/css/buttons.dataTables.min.css';
+import 'admin-lte/plugins/iCheck/square/blue.css';
 import '../css/style.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
