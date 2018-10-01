@@ -182,10 +182,9 @@ class Settings
         $data = $this->em->createQuery(
             "SELECT YEAR(tbl.$column) AS monthYear, MONTH(tbl.$column) as monthNo, 
                   MONTHNAME(tbl.$column) as monthName FROM AppBundle:$table tbl
-                  GROUP BY monthYear, monthNo, monthName ORDER BY monthYear, monthNo DESC "
+                  GROUP BY monthYear, monthNo, monthName ORDER BY monthYear DESC, monthNo DESC "
         )
             ->getResult(Query::HYDRATE_SCALAR);
-
         return $data;
     }
 
