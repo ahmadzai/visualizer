@@ -138,6 +138,11 @@ class IntOdkCcsMonitoring
     private $monitoringDate;
 
     /**
+     * @ORM\Column(name="submission_date", type="date")
+     */
+    private $submissionDate;
+
+    /**
      * @return mixed
      */
     public function getCluster()
@@ -472,6 +477,22 @@ class IntOdkCcsMonitoring
     public function setMonitoringDate($monitoringDate)
     {
         $this->monitoringDate = \DateTimeImmutable::createFromFormat('Y-m-d',$monitoringDate);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubmissionDate()
+    {
+        return \DateTimeImmutable::createFromFormat('Y-m-d',$this->submissionDate);
+    }
+
+    /**
+     * @param mixed $submissionDate
+     */
+    public function setSubmissionDate($submissionDate)
+    {
+        $this->monitoringDate = \DateTimeImmutable::createFromFormat('Y-m-d',$submissionDate);
     }
 
 

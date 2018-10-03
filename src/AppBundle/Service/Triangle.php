@@ -16,8 +16,8 @@ class Triangle
 {
 
     /**
+     * @param $arrays
      * @param string $commonIndex
-     * @param array(sourceArray, moreArrays) $arrays
      * @return array
      */
     public static function triangulate($arrays, $commonIndex) {

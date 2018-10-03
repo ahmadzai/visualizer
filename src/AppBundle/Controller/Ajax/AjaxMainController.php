@@ -399,7 +399,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemNSS'=>'Remaining', 'FinalVacNSS'=>'Recovered'],
+            ['DiscRemainingNSS'=>'Remaining', 'FinalVacNSS'=>'Recovered'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced NSS Children';
@@ -410,7 +410,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemRefusal'=>'Remaining', 'FinalVacRefusal'=>'Recovered'],
+            ['DiscRemainingRefusal'=>'Remaining', 'FinalVacRefusal'=>'Recovered'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Refusal Children';

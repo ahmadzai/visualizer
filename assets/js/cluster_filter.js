@@ -36,11 +36,10 @@ $(function () {
     if(selectedClusters.length > 0) {                       // was selected
         let filterData = listener.listenCluster();          // call listener to return filters data
         filterControl.setFilterState(filterData);
-        filterData.calcType = 'normal';                     // this key is required for the api
+        filterData.calcType = 'trend';                     // this key is required for the api
         filterData.selectType = "";                         // this key is required for the api
-        apiCall.updateAll(url, Setting, filterData, {...filterData, calcType:'main'});
+        apiCall.updateAll(url, Setting, filterData, {...filterData, calcType:'info'});
         // to load the main data as well
-
 
     }
     // Filter Heatmap only table
