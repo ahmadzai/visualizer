@@ -146,10 +146,67 @@
         </div>
     </div>
     <!-- End of Current Campaign Row-->
-    <!-- Start of the 10 Campaign Trends --->
+    <!-- 3 or more campaigns by location trends -->
     <div class="row">
         <div class="col-md-12">
             <div class="box box-default bg-gray-light">
+                <div class="box-header with-border">
+                    <h3 class="box-title last10-campaign-title">Campaigns' Trend By Location</h3>
+                    <span class="badge bg-gray" style="font-weight: normal">Source: Coverage Data</span>
+                </div>
+                <div class="box-body">
+                    <!-- Actual Contents Rows Starts Here -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <span class="filter-loading loader-small trend-loader"></span>
+                                <div class="box-body">
+                                    <div id="loc_trend_all_type" style="height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <span class="filter-loading loader-small trend-loader"></span>
+                                <div class="box-body">
+                                    <div id="loc_trend_absent" style="height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <span class="filter-loading loader-small trend-loader"></span>
+                                <div class="box-body">
+                                    <div id="loc_trend_nss" style="height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <span class="filter-loading loader-small trend-loader"></span>
+                                <div class="box-body">
+                                    <div id="loc_trend_refusal" style="height: 350px; max-width:inherit"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of 3 or more campaigns by location trends -->
+    <!-- Start of the 10 Campaign Trends --->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default bg-gray">
                 <div class="box-header with-border">
                     <h3 class="box-title last10-campaign-title">Last 10 Campaigns' Trend </h3>
                     <span class="badge bg-gray" style="font-weight: normal">Source: Admin Data</span>

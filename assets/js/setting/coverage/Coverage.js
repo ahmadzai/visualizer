@@ -16,7 +16,8 @@ CoverageChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"col
     'colors':[colors.REM_MISSED, colors.RECOVERED_3DAYS],
     'legend':{'enabled':true, 'vAlign':'bottom', 'hAlign': 'center'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:15}
 };
 
 // The first row of one campaign
@@ -46,6 +47,42 @@ CoverageChartsSetting['recovered_refusal_1'] = {
     'chartType':{'type':'halfpie'}, 'legend':true
 };
 
+// missed loc trends
+CoverageChartsSetting['loc_trend_all_type'] = {
+    'colors': [colors.REM_MISSED, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
+};
+// absent loc trends
+CoverageChartsSetting['loc_trend_absent'] = {
+    'colors': [colors.REM_ABSENT, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
+};
+// nss loc trends
+CoverageChartsSetting['loc_trend_nss'] = {
+    'colors': [colors.REM_NSS, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
+};
+// refusal loc trends
+CoverageChartsSetting['loc_trend_refusal'] = {
+    'colors': [colors.REM_REFUSAL, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'chartType':{'type':"column", 'stacking':'normal'},
+    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'menu':[{chart:'normal', title:'Normal Chart'},
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
+};
 
 // 10 campaign vaccinated children column chartType
 CoverageChartsSetting['vac_child_trend'] = {'chartType':{'type':"column"}, 'colors':[colors.VACCINATED]};

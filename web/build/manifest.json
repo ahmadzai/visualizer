@@ -1,9 +1,9 @@
 {
-  "build/layout.js": "/build/layout.js",
-  "build/layout.css": "/build/layout.css",
   "build/main.js": "/build/main.js",
   "build/coverage.js": "/build/coverage.js",
   "build/catchup.js": "/build/catchup.js",
+  "build/layout.js": "/build/layout.js",
+  "build/layout.css": "/build/layout.css",
   "build/cluster-filter.js": "/build/cluster-filter.js",
   "build/ccs-sm-filter.js": "/build/ccs-sm-filter.js",
   "build/login.js": "/build/login.js",

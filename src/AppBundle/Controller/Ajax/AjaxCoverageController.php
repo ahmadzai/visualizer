@@ -42,6 +42,9 @@ class AjaxCoverageController extends CommonDashboardController
 
     protected function trendAction($entity, $campaigns, $params, $titles)
     {
+        // location trends, default for three campaigns
+        $locTrends = $this->campaignLocationData($entity, $titles['locTrendIds'], $params);
+
         $trends =  $this->campaignsData($entity, $campaigns, $params);
         $trends = $trends['trend']; // it comes in the array index = trend
         $category = [['column'=>'Region'], 
@@ -51,6 +54,53 @@ class AjaxCoverageController extends CommonDashboardController
                     ];
         $subTitle = $titles['subTitle'];
         $during = $titles['midTitle'];
+
+        // --------------------------- Loc Trend of Missed Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['TotalRemaining'=>'Remaining',
+                'RecoveredDay4'=>'Day5',
+                'Recovered3Days'=>'3Days' ],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Reduced Missed Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_all_type'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Absent Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day5' , 'VacAbsent3Days'=>'3Days'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Reduced Absent Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_absent'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of NSS Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day5' , 'VacNSS3Days'=>'3Days'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Reduced NSS Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_nss'] = $locTrendAllType;
+
+        // --------------------------- Loc Trend of Refusal Children --------------------------------
+        $locTrendAllType = $this->chart->chartData2Categories(
+            ['column'=>$titles['aggType']],
+            $category[1],
+            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day5' , 'VacRefusal3Days'=>'3Days'],
+            $locTrends
+        );
+        $locTrendAllType['title'] = 'Reduced Refusal Children';
+        $locTrendAllType['subTitle'] = $subTitle;
+        $data['loc_trend_refusal'] = $locTrendAllType;
+
 
         // --------------------------- Trend of Vaccinated Children --------------------------------
         $vacChildTrend = $this->chart->chartData1Category($category[1], 

@@ -30,7 +30,7 @@ export default {
     PerRecovered: {
         name: 'Per Recovered',
         title: 'Catchup: Per of Recovered',
-        colors: [colors.GREEN, colors.LIGHT_BLUE, colors.YELLOW, colors.ORANGE, colors.RED]
+        colors: [colors.RED, colors.ORANGE, colors.YELLOW, colors.LIGHT_BLUE, colors.GREEN]
     },
 
     // these keys should be same as the indicators from database

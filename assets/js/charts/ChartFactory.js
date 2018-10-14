@@ -4,10 +4,13 @@ import $ from "jquery";
 import Highcharts from 'highcharts/highstock';
 import * as Exporting from 'highcharts/modules/exporting';
 import * as OfflineExport from 'highcharts/modules/offline-exporting';
+import * as ExportCSV from 'highcharts/modules/export-data';
+
 import * as Categories from 'highcharts-grouped-categories/grouped-categories';
 Categories(Highcharts);
 Exporting(Highcharts);
 OfflineExport(Highcharts);
+ExportCSV(Highcharts);
 
 import ChartOptions from './ChartHelper';
 
@@ -495,13 +498,16 @@ class ChartFactory {
         let data = settings.data;
         // checking for undefined categories and series
         let categories = data.categories === null || data.categories === undefined ? [] : data.categories;
+        //console.log(categories);
         let series = data.series === null || data.series === undefined ? [] : data.series;
         options.xAxis.categories = categories;
         // set scrollbar here
         if(settings.scrollbar !== false) {
             options.xAxis.min = settings.scrollbar.min;
-            options.xAxis.max = settings.scrollbar.max;
-            options.xAxis.scrollbar = {enabled:true};
+            let countCat = this._countCategories(categories);
+            let max = settings.scrollbar.max;
+            options.xAxis.max =  countCat <= max ? countCat-1 : max;
+            options.xAxis.scrollbar = {enabled:  max < countCat };
         }
         options.series = series;
         // change the formatter for yAxis if not empty
@@ -727,6 +733,21 @@ class ChartFactory {
                 color:Highcharts.getOptions().colors[3]
             }
         }
+    }
+
+    _countCategories(category) {
+        let count = 0;
+        if(category.length > 0) {
+            for(let i = 0; i<category.length; i++) {
+                let typeOf = typeof category[i];
+                if(typeOf === "object") {
+                    count += category[i]['categories'].length;
+                } else
+                    count ++;
+            }
+        }
+
+        return count;
     }
 }
 

@@ -10,6 +10,7 @@ class ChartHelper {
             printChart: 'Print chart',
             downloadPNG: 'Export PNG',
             downloadPDF: 'Export PDF',
+            downloadCSV: 'Export Chart Data',
 
         };
 
@@ -21,7 +22,8 @@ class ChartHelper {
                     menuItems: [
                         'printChart',
                         'downloadPNG',
-                        'downloadPDF'
+                        'downloadPDF',
+                        'downloadCSV',
                     ]
                 }
             }

@@ -58,7 +58,8 @@ MainChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column"
         colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:15}
 };
 
 // The first row of one campaign

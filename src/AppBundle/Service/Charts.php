@@ -134,7 +134,12 @@ class Charts
                             $sub_cat[] = $first_part.$second_part;
                                          //
                             foreach($indicators as $key=>$indicator) {
-                                $data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
+                                $finalValue = $val[$key] == 'null' ? null : (int)$val[$key];
+                                if($finalValue !== null)
+                                    $finalValue = $finalValue < 0 ? 0 : $finalValue;
+                                $data_indicators[$key][] = $finalValue;
+
+                                //$data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
                             }
 
                         }
@@ -236,7 +241,11 @@ class Charts
                                 $sub_cat[] = $first_part . $second_part;
                                 //
                                 foreach ($indicators as $key => $indicator) {
-                                    $data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
+                                    $finalValue = $val[$key] == 'null' ? null : (int)$val[$key];
+                                    if($finalValue !== null)
+                                        $finalValue = $finalValue < 0 ? 0 : $finalValue;
+                                    $data_indicators[$key][] = $finalValue;
+                                    //$data_indicators[$key][] = $val[$key] == 'null' ? null : (int)$val[$key];
                                 }
 
                             }
@@ -311,7 +320,9 @@ class Charts
 
                         foreach($indicators as $key=>$indicator) {
                             $finalValue = $val[$key] == 'null' ? null : (int)$val[$key];
-                            $data_indicators[$key][] = $finalValue < 0 ? 0 : $finalValue;
+                            if($finalValue !== null)
+                                $finalValue = $finalValue < 0 ? 0 : $finalValue;
+                            $data_indicators[$key][] = $finalValue;
                         }
 
                     }

@@ -16,7 +16,8 @@ CatchupChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"colu
     'colors':[colors.REM_MISSED, colors.RECOVERED_CATCHUP],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:15}
 };
 
 // The first row of one campaign
@@ -49,7 +50,8 @@ CatchupChartsSetting['loc_trend_all_type'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
 };
 // absent loc trends
 CatchupChartsSetting['loc_trend_absent'] = {
@@ -57,7 +59,8 @@ CatchupChartsSetting['loc_trend_absent'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
 };
 // nss loc trends
 CatchupChartsSetting['loc_trend_nss'] = {
@@ -65,7 +68,8 @@ CatchupChartsSetting['loc_trend_nss'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
 };
 // refusal loc trends
 CatchupChartsSetting['loc_trend_refusal'] = {
@@ -73,7 +77,8 @@ CatchupChartsSetting['loc_trend_refusal'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
-        {chart: 'percent', title:'Percent Chart'}]
+        {chart: 'percent', title:'Percent Chart'}],
+    'scrollbar': {min:0, max:18}
 };
 
 // 10 campaign vaccinated children column chartType
