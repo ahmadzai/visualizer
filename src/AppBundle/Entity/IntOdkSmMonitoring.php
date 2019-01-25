@@ -32,102 +32,102 @@ class IntOdkSmMonitoring
     private $district;
 
     /**
-     * @ORM\Column(type="string", name="cluster")
+     * @ORM\Column(type="string", name="cluster", nullable=true)
      */
     private $cluster;
 
     /**
-     * @ORM\Column(type="text", name="monitor_name")
+     * @ORM\Column(type="text", name="monitor_name", nullable=true)
      */
     private $monitorName;
 
     /**
-     * @ORM\Column(type="text", name="ccs_name")
+     * @ORM\Column(type="text", name="ccs_name", nullable=true)
      */
     private $ccsName;
 
     /**
-     * @ORM\Column(type="text", name="sm_name")
+     * @ORM\Column(type="text", name="sm_name", nullable=true)
      */
     private $smName;
 
     /**
-     * @ORM\Column(type="string", name="campaign_phase")
+     * @ORM\Column(type="string", name="campaign_phase", nullable=true)
      */
     private $campaignPhase;
 
     /**
-     * @ORM\Column(type="integer", name="attendance")
+     * @ORM\Column(type="integer", name="attendance", nullable=true)
      */
     private $attendance;
 
     /**
-     * @ORM\Column(type="integer", name="profile", length=2)
+     * @ORM\Column(type="integer", name="profile", length=2, nullable=true)
      */
     private $profile;
 
     /**
-     * @ORM\Column(type="integer", name="preparedness")
+     * @ORM\Column(type="integer", name="preparedness", nullable=true)
      */
     private $preparedness;
 
     /**
-     * @ORM\Column(type="integer", name="fieldbook")
+     * @ORM\Column(type="integer", name="fieldbook", nullable=true)
      */
     private $fieldbook;
 
     /**
-     * @ORM\Column(type="integer", name="mobilization")
+     * @ORM\Column(type="integer", name="mobilization", nullable=true)
      */
     private $mobilization;
 
     /**
-     * @ORM\Column(type="integer", name="camp_perform")
+     * @ORM\Column(type="integer", name="camp_perform", nullable=true)
      */
     private $campPerform;
 
     /**
-     * @ORM\Column(type="integer", name="catchup_perform")
+     * @ORM\Column(type="integer", name="catchup_perform", nullable=true)
      */
     private $catchupPerform;
 
     /**
-     * @ORM\Column(type="integer", name="refusal_challenge")
+     * @ORM\Column(type="integer", name="refusal_challenge", nullable=true)
      */
     private $refusalChallenge;
 
     /**
-     * @ORM\Column(type="integer", name="higher_supv")
+     * @ORM\Column(type="integer", name="higher_supv", nullable=true)
      */
     private $higherSupv;
 
     /**
-     * @ORM\Column(type="integer", name="com_support")
+     * @ORM\Column(type="integer", name="com_support", nullable=true)
      */
     private $comSupport;
 
     /**
-     * @ORM\Column(type="integer", name="coldchain")
+     * @ORM\Column(type="integer", name="coldchain", nullable=true)
      */
     private $coldchain;
 
     /**
-     * @ORM\Column(type="integer", name="access_challenge")
+     * @ORM\Column(type="integer", name="access_challenge", nullable=true)
      */
     private $accessChallenge;
 
     /**
-     * @ORM\Column(type="integer", name="overall_perform")
+     * @ORM\Column(type="integer", name="overall_perform", nullable=true)
      */
     private $overallPerform;
 
     /**
-     * @ORM\Column(type="date", name="monitoring_date")
+     * @ORM\Column(type="date", name="monitoring_date", nullable=true)
      */
     private $monitoringDate;
 
     /**
-     * @ORM\Column(type="date", name="submission_date")
+     * @ORM\Column(type="date", name="submission_date", nullable=true)
      */
     private $submissionDate;
 

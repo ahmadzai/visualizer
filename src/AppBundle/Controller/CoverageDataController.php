@@ -63,12 +63,13 @@ class CoverageDataController extends Controller
         $datatable = null;
         if($type == 'all')
             $datatable = $this->get('sg_datatables.factory')->create(CoverageDataDatatable::class);
-        else if($type == 'summary') {
-            $datatable = $this->get('sg_datatables.factory')->create(CoverageDataSummaryDatatable::class);
-            $alink = null;
-            $title = "Coverage (Admin) Data Summary";
-            $info = "Please wait as the summary calculation will take some time!";
-        }
+        //Todo: define a downloader for downloading summary data
+//        else if($type == 'summary') {
+//            $datatable = $this->get('sg_datatables.factory')->create(CoverageDataSummaryDatatable::class);
+//            $alink = null;
+//            $title = "Coverage (Admin) Data Summary";
+//            $info = "Please wait as the summary calculation will take some time!";
+//        }
         $datatable->buildDatatable();
 
 
@@ -91,13 +92,15 @@ class CoverageDataController extends Controller
                 $qb->addOrderBy('coveragedata.clusterNo');
                 $qb->addOrderBy('coveragedata.vacDay');
 
-            } else if($type == 'summary')
-            {
-
-                $qb->addOrderBy('coverageclustersummary.campaign', 'DESC');
-                $qb->addOrderBy('coverageclustersummary.province');
-                $qb->addOrderBy('coverageclustersummary.district');
             }
+            //Part of above todo
+//            else if($type == 'summary')
+//            {
+//
+//                $qb->addOrderBy('coverageclustersummary.campaign', 'DESC');
+//                $qb->addOrderBy('coverageclustersummary.province');
+//                $qb->addOrderBy('coverageclustersummary.district');
+//            }
 
             return $responseService->getResponse();
         }

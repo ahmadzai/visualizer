@@ -30,6 +30,7 @@ class RegistrationType extends AbstractType
                 'class'=>'AppBundle:Province',
                 'choice_label'=>'provinceName',
                 'attr' => array('class'=>'form-control select2'),
+                'required'=>false,
                 'placeholder'=>'Select a Province'))
             ->add('region', ChoiceType::class, array('choices' => array(
                 'CR'=>'CR',
@@ -41,7 +42,8 @@ class RegistrationType extends AbstractType
                 'NER'=>'NER'
             ),
                 'attr' => array('class'=>'form-control select2'),
-                'placeholder'=>'Select a Region'
+                'placeholder'=>'Select a Region',
+                'required'=>false,
             ))
             ->add('roles', ChoiceType::class, array('choices' => array(
                 'Admin'=>'ROLE_ADMIN',
@@ -50,7 +52,10 @@ class RegistrationType extends AbstractType
                 'Partner' => 'ROLE_PARTNER'
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))
             ->add('level', ChoiceType::class, array('choices' => array(
-                'National' => 'National', 'Region' => 'Region', 'Province' => 'Province'),
+                'International' => 'International',
+                'National' => 'National',
+                'Region' => 'Region',
+                'Province' => 'Province'),
                 'attr' => array('class'=>'form-control select2'), 'placeholder'=>'Select a Job level'))
             ->add('position', TextType::class, array('label'=>'Position',
                 'attr' => array('class'=>'form-control')))

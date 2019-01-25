@@ -32,87 +32,87 @@ class OdkSmMonitoring
     private $district;
 
     /**
-     * @ORM\Column(type="string", name="cluster")
+     * @ORM\Column(type="string", name="cluster", nullable=true)
      */
     private $cluster;
 
     /**
-     * @ORM\Column(type="text", name="monitor_name")
+     * @ORM\Column(type="text", name="monitor_name", nullable=true)
      */
     private $monitorName;
 
     /**
-     * @ORM\Column(type="text", name="ccs_name")
+     * @ORM\Column(type="text", name="ccs_name", nullable=true)
      */
     private $ccsName;
 
     /**
-     * @ORM\Column(type="text", name="sm_name")
+     * @ORM\Column(type="text", name="sm_name", nullable=true)
      */
     private $smName;
 
     /**
-     * @ORM\Column(type="string", name="campaign_phase")
+     * @ORM\Column(type="string", name="campaign_phase", nullable=true)
      */
     private $campaignPhase;
 
     /**
-     * @ORM\Column(type="integer", name="attendance")
+     * @ORM\Column(type="integer", name="attendance", nullable=true)
      */
     private $attendance;
 
     /**
-     * @ORM\Column(type="integer", name="profile", length=2)
+     * @ORM\Column(type="integer", name="profile", length=2, nullable=true)
      */
     private $profile;
 
     /**
-     * @ORM\Column(type="integer", name="preparedness")
+     * @ORM\Column(type="integer", name="preparedness", nullable=true)
      */
     private $preparedness;
 
     /**
-     * @ORM\Column(type="integer", name="tracking_missed")
+     * @ORM\Column(type="integer", name="tracking_missed", nullable=true)
      */
     private $trackingMissed;
 
     /**
-     * @ORM\Column(type="integer", name="tallying")
+     * @ORM\Column(type="integer", name="tallying", nullable=true)
      */
     private $tallying;
 
     /**
-     * @ORM\Column(type="integer", name="mobilization")
+     * @ORM\Column(type="integer", name="mobilization", nullable=true)
      */
     private $mobilization;
 
     /**
-     * @ORM\Column(type="integer", name="advocacy")
+     * @ORM\Column(type="integer", name="advocacy", nullable=true)
      */
     private $advocacy;
 
     /**
-     * @ORM\Column(type="integer", name="iec_material")
+     * @ORM\Column(type="integer", name="iec_material", nullable=true)
      */
     private $iecMaterial;
 
     /**
-     * @ORM\Column(type="integer", name="higher_supv")
+     * @ORM\Column(type="integer", name="higher_supv", nullable=true)
      */
     private $higherSupv;
 
     /**
-     * @ORM\Column(type="integer", name="refusal_challenge")
+     * @ORM\Column(type="integer", name="refusal_challenge", nullable=true)
      */
     private $refusalChallenge;
 
     /**
-     * @ORM\Column(type="integer", name="access_challenge")
+     * @ORM\Column(type="integer", name="access_challenge", nullable=true)
      */
     private $accessChallenge;
 
     /**
-     * @ORM\Column(type="date", name="monitoring_date")
+     * @ORM\Column(type="date", name="monitoring_date", nullable=true)
      */
     private $monitoringDate;
 

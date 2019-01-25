@@ -80,6 +80,12 @@ class User extends BaseUser
     protected $mobileNumber;
 
     /**
+     * @var bool
+     * @ORM\Column(name="allow_api_access", type="boolean", options={"default":false})
+     */
+    protected $allowApiAccess = false;
+
+    /**
      * @return mixed
      */
     public function getFirstName()
@@ -197,7 +203,22 @@ class User extends BaseUser
         $this->mobileNumber = $mobileNumber;
     }
 
+    /**
+     * @return bool
+     */
+    public function isAllowApiAccess(): bool
+    {
+        return $this->allowApiAccess;
+    }
+
+    /**
+     * @param bool $allowApiAccess
+     */
+    public function setAllowApiAccess(bool $allowApiAccess)
+    {
+        $this->allowApiAccess = $allowApiAccess;
+    }
+
     
 }
 
- ?>

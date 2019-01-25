@@ -54,13 +54,21 @@ class UserType extends AbstractType
                 'Partner' => 'ROLE_PARTNER'
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))
             ->add('level', ChoiceType::class, array('choices' => array(
-                'National' => 'National', 'Region' => 'Region', 'Province' => 'Province'),
+                'International' => 'International',
+                'National' => 'National',
+                'Region' => 'Region',
+                'Province' => 'Province'),
                 'attr' => array('class'=>'form-control select2'), 'placeholder'=>'Select a Job level', 'required'=>false))
             ->add('position', TextType::class, array('label'=>'Position',
                 'attr' => array('class'=>'form-control'), 'required' => false))
             ->add('mobileNumber', TextType::class, array('label'=>'Mobile No',
                 'attr' => array('class'=>'form-control'), 'required'=>false))
             ->add('enabled', ChoiceType::class, array(
+                'choices' => array(
+                    'Yes' => true,
+                    'No' => false,
+                )))
+            ->add('allowApiAccess', ChoiceType::class, array(
                 'choices' => array(
                     'Yes' => true,
                     'No' => false,
