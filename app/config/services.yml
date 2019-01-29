@@ -79,3 +79,8 @@ services:
 #        arguments: ["@request_stack"]
 #        tags:
 #            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+
+    # JWT authenticator service
+    jwt_token_authenticator:
+            class: AppBundle\Security\JwtAuth
+            autowire: true

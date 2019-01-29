@@ -22,6 +22,14 @@ security:
             id: fos_user.user_provider.username_email
 
     firewalls:
+        # firewall for api authentication
+        api:
+            pattern: ^/api/
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - 'jwt_token_authenticator'
         main:
             pattern: ^/
             form_login:
@@ -39,6 +47,7 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/token, role: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/resetting/request, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/send-email, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/check-email, role: IS_AUTHENTICATED_ANONYMOUSLY }

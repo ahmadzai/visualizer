@@ -48,6 +48,9 @@ class AppKernel extends Kernel
             // Fos JS routing
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
+            // JWT Auth bundle
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
