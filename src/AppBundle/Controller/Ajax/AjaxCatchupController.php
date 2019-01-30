@@ -63,7 +63,10 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
                 ['column'=>$titles['aggType']],
                 $category[1],
-                ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+                [
+                    'TotalRecovered'=>'Recovered',
+                    'TotalRemaining'=>'Remaining',
+                ],
                 $locTrends
             );
         $locTrendAllType['title'] = 'ICN Reduced Missed Children';
@@ -74,7 +77,10 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            [
+                'VacAbsent'=>'Recovered',
+                'RemAbsent'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Absent Children';
@@ -85,7 +91,10 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            [
+                'VacNSS'=>'Recovered',
+                'RemNSS'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced NSS Children';
@@ -96,7 +105,10 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            [
+                'VacRefusal'=>'Recovered',
+                'RemRefusal'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Refusal Children';
@@ -105,9 +117,12 @@ class AjaxCatchupController extends CommonDashboardController
 
 
         // --------------------------- Trend of Vaccinated Children --------------------------------
-        $vacChildTrend = $this->chart->chartData1Category($category[1], 
-                                                           ['TotalRecovered'=>'Recovered Children'], 
-                                                           $trends);
+        $vacChildTrend = $this->chart
+            ->chartData1Category($category[1],
+                                  [
+                                      'TotalRecovered'=>'Recovered Children'
+                                  ],
+                                  $trends);
         $vacChildTrend['title'] = 'Recovered Children '.$during;
         $vacChildTrend['subTitle'] = $subTitle;
         $data['vac_child_trend'] = $vacChildTrend;
@@ -121,14 +136,20 @@ class AjaxCatchupController extends CommonDashboardController
 
         // --------------------------- Trend of Missed Children By Type -----------------------------
         $missedByTypeTrend = $this->chart->chartData1Category($category[1],
-            ['RemAbsent'=>'Absent', 'RemNSS'=>'NSS', 'RemRefusal'=>'Refusal'], $trends);
+            [
+                'RemAbsent'=>'Absent',
+                'RemNSS'=>'NSS',
+                'RemRefusal'=>'Refusal'
+            ], $trends);
         $missedByTypeTrend['title'] = 'Remaining Children By Reason '.$during;
         $missedByTypeTrend['subTitle'] = $subTitle;
         $data['missed_by_type_trend'] = $missedByTypeTrend;
 
         // --------------------------- Trend of Recovering Missed -----------------------------------
         $missedRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+            [
+                'TotalRecovered'=>'Recovered', 'TotalRemaining'=>'Remaining',
+            ],
             $trends);
         $missedRecoveredTrend['title'] = "Missed Children Recovery in Catchup";
         $missedRecoveredTrend['subTitle'] = $subTitle;
@@ -136,7 +157,9 @@ class AjaxCatchupController extends CommonDashboardController
 
         // ----------------------------- Trend of Absent Recovering --------------------------------
         $absentRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            [
+                'VacAbsent'=>'Recovered', 'RemAbsent'=>'Remaining',
+            ],
             $trends);
         $absentRecoveredTrend['title'] = "Absent Children Recovery in Catchup";
         $absentRecoveredTrend['subTitle'] = $subTitle;
@@ -144,14 +167,18 @@ class AjaxCatchupController extends CommonDashboardController
 
         // ----------------------------- Trend of NSS Recovering -----------------------------------
         $nssRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            [
+                'VacNSS'=>'Recovered', 'RemNSS'=>'Remaining',
+            ],
             $trends);
         $nssRecoveredTrend['title'] = "NSS Children Recovery in Catchup";
         $nssRecoveredTrend['subTitle'] = $subTitle;
         $data['nss_recovered_trend'] = $nssRecoveredTrend;
         // ------------------------------ Trend of Refusal Recovering -----------------------------
         $refusalRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            [
+                'VacRefusal'=>'Recovered', 'RemRefusal'=>'Remaining',
+            ],
             $trends);
         $refusalRecoveredTrend['title'] = "Refusal Children Recovery in Catchup";
         $refusalRecoveredTrend['subTitle'] = $subTitle;
@@ -159,10 +186,12 @@ class AjaxCatchupController extends CommonDashboardController
 
         // ------------------------------ Trend of Missed Recovery -------------------------------
         $missedChildRecoveryTrend = $this->chart->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining',
-                'VacAbsent'=>'Recovered Absent',
+            [
+                'VacRefusal'=>'Recovered Refusal',
                 'VacNSS'=>'Recovered NSS',
-                'VacRefusal'=>'Recovered Refusal'],
+                'VacAbsent'=>'Recovered Absent',
+                'TotalRemaining'=>'Remaining',
+            ],
             $trends);
         $missedChildRecoveryTrend['title'] = "Recovering Missed Children By Reason";
         $missedChildRecoveryTrend['subTitle'] = $subTitle;
@@ -230,8 +259,10 @@ class AjaxCatchupController extends CommonDashboardController
         $oneCat = $titles['aggType'] === 'Region' ? true : false;
         if($oneCat) {
             $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
-                ['TotalRemaining' => 'Remaining',
-                    'TotalRecovered' => 'Recovered'], $campAgg);
+                [
+                    'TotalRecovered' => 'Recovered',
+                    'TotalRemaining' => 'Remaining',
+                ], $campAgg);
             $totalRemaining['title'] = 'ICN Reduced Missed Children';
             $totalRemaining['subTitle'] = $subTitle;
             $data['total_recovered_remaining_1'] = $totalRemaining;
@@ -275,10 +306,10 @@ class AjaxCatchupController extends CommonDashboardController
 
         $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
             [
+                'TotalRecovered' => 'Recovered',
                 'RemAbsent' => 'Absent',
                 'RemNSS' => 'NSS',
                 'RemRefusal' => 'Refusal',
-                'TotalRecovered' => 'Recovered',
             ],
             $oneCampData, true);
         $campaign = "No data for this campaign as per current filter";
@@ -348,7 +379,7 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['TotalRemaining'=>'Remaining', 'TotalRecovered'=>'Recovered'],
+            ['TotalRecovered'=>'Recovered', 'TotalRemaining'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'Missed Children Recovery';
@@ -359,7 +390,7 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            ['VacAbsent'=>'Recovered', 'RemAbsent'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'Absent Children Recovery';
@@ -370,7 +401,7 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            ['VacNSS'=>'Recovered', 'RemNSS'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'NSS Children Recovery';
@@ -381,7 +412,7 @@ class AjaxCatchupController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            ['VacRefusal'=>'Recovered', 'RemRefusal'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'Refusal Children Recovery';

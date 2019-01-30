@@ -4,11 +4,11 @@ import colors from './../colors';
 const MainCluster = {};
 MainCluster['missed_recovery_chart_1'] = {
     'colors': [
-        colors.DISCREP,
-        colors.REM_MISSED,
-        colors.RECOVERED_CATCHUP,
+        colors.RECOVERED_3DAYS,
         colors.RECOVERED_DAY5,
-        colors.RECOVERED_3DAYS
+        colors.RECOVERED_CATCHUP,
+        colors.DISCREP,
+        colors.REM_MISSED
     ],
     'chartType':{'type':"bar", 'stacking':'percent'},
     'large':'height'
@@ -28,7 +28,7 @@ MainCluster['cluster_trend'] = {'chartType':{'type':'table'},
 // 3 (default) campaigns location trends
 // 10 Campaign absent percent stack chartType
 MainCluster['loc_trend_all_type'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -37,7 +37,7 @@ MainCluster['loc_trend_all_type'] = {
 };
 // absent loc trends
 MainCluster['loc_trend_absent'] = {
-    'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -46,7 +46,7 @@ MainCluster['loc_trend_absent'] = {
 };
 // nss loc trends
 MainCluster['loc_trend_nss'] = {
-    'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -55,7 +55,7 @@ MainCluster['loc_trend_nss'] = {
 };
 // refusal loc trends
 MainCluster['loc_trend_refusal'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},

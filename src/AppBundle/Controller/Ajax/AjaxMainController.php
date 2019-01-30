@@ -94,11 +94,13 @@ class AjaxMainController extends CommonDashboardController
 
         // --------------------------- Trend of Recovering Missed -----------------------------------
         $missedRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['Disc'=>'Discrip',
-                'DiscRemaining'=>'Remaining',
-                'cTotalRecovered'=>'Catchup',
+            [
+                'Recovered3Days'=>'3Days' ,
                 'RecoveredDay4'=>'Day5',
-                'Recovered3Days'=>'3Days' ],
+                'cTotalRecovered'=>'Catchup',
+                'Disc'=>'Discrip',
+                'DiscRemaining'=>'Remaining',
+                ],
             $trends);
         $missedRecoveredTrend['title'] = "Remaining Children Recovery Camp/Revisit/Catchup";
         $missedRecoveredTrend['subTitle'] = $subTitle;
@@ -106,11 +108,14 @@ class AjaxMainController extends CommonDashboardController
 
         // ----------------------------- Trend of Absent Recovering --------------------------------
         $absentRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['DiscAbsent'=>'Discrip',
+            [
+                'VacAbsent3Days'=>'3Days' ,
+                'VacAbsentDay4'=>'Day5',
+                'cVacAbsent'=>'Catchup',
+                'DiscAbsent'=>'Discrip',
                 'DiscRemainingAbsent'=>'Remaining',
-                'cVacAbsent' => 'Catchup',
-                'VacAbsentDay4'=>'Day5' ,
-                'VacAbsent3Days'=>'3Days'],
+            ],
+
             $trends);
         $absentRecoveredTrend['title'] = "Absent Children Recovery Camp/Revisit/Catchup";
         $absentRecoveredTrend['subTitle'] = $subTitle;
@@ -118,22 +123,27 @@ class AjaxMainController extends CommonDashboardController
 
         // ----------------------------- Trend of NSS Recovering -----------------------------------
         $nssRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['DiscNSS'=>'Discrip',
+            [
+                'VacNSS3Days'=>'3Days' ,
+                'VacNSSDay4'=>'Day5',
+                'cVacNSS'=>'Catchup',
+                'DiscNSS'=>'Discrip',
                 'DiscRemainingNSS'=>'Remaining',
-                'cVacNSS' => 'Catchup',
-                'VacNSSDay4'=>'Day5' ,
-                'VacNSS3Days'=>'3Days'],
+
+                ],
             $trends);
         $nssRecoveredTrend['title'] = "NSS Children Recovery Camp/Revisit/Catchup";
         $nssRecoveredTrend['subTitle'] = $subTitle;
         $data['nss_recovered_trend'] = $nssRecoveredTrend;
         // ------------------------------ Trend of Refusal Recovering -----------------------------
         $refusalRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['DiscRefusal'=>'Discrip',
+            [
+                'VacRefusal3Days'=>'3Days' ,
+                'VacRefusalDay4'=>'Day5',
+                'cVacRefusal'=>'Catchup',
+                'DiscRefusal'=>'Discrip',
                 'DiscRemainingRefusal'=>'Remaining',
-                'cVacRefusal' => 'Catchup',
-                'VacRefusalDay4'=>'Day5' ,
-                'VacRefusal3Days'=>'3Days'],
+                ],
             $trends);
         $refusalRecoveredTrend['title'] = "Refusal Children Recovery Camp/Revisit/Catchup";
         $refusalRecoveredTrend['subTitle'] = $subTitle;
@@ -141,10 +151,12 @@ class AjaxMainController extends CommonDashboardController
 
         // ------------------------------ Trend of Missed Recovery -------------------------------
         $missedChildRecoveryTrend = $this->chart->chartData1Category($category[1],
-            ['DiscRemaining'=>'Remaining',
-                'FinalVacAbsent'=>'Recovered Absent',
+            [
+                'FinalVacRefusal'=>'Recovered Refusal',
                 'FinalVacNSS'=>'Recovered NSS',
-                'FinalVacRefusal'=>'Recovered Refusal'],
+                'FinalVacAbsent'=>'Recovered Absent',
+                'DiscRemaining'=>'Remaining',
+                ],
             $trends);
         $missedChildRecoveryTrend['title'] = "Recovering Missed Children By Reason during ".
                                               $during." and Catchup";
@@ -245,11 +257,11 @@ class AjaxMainController extends CommonDashboardController
         if($oneCat) {
             $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
                 [
+                    'Recovered3Days'=>'3Days',
+                    'RecoveredDay4'=>'Day5',
+                    'cTotalRecovered'=>'Catchup',
                     'Disc' => 'Discrep',
                     'DiscRemaining'=>'Remaining',
-                    'cTotalRecovered'=>'Catchup',
-                    'RecoveredDay4'=>'Day5',
-                    'Recovered3Days'=>'3Days',
 
                 ], $campAgg);
             $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
@@ -263,11 +275,11 @@ class AjaxMainController extends CommonDashboardController
                 $cat1,
                 ['column' => $titles['aggType']],
                 [
+                    'Recovered3Days'=>'3Days',
+                    'RecoveredDay4'=>'Day5',
+                    'cTotalRecovered'=>'Catchup',
                     'Disc' => 'Discrep',
                     'DiscRemaining'=>'Remaining',
-                    'cTotalRecovered'=>'Catchup',
-                    'RecoveredDay4'=>'Day5',
-                    'Recovered3Days'=>'3Days',
 
                 ], $campAgg);
             $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
@@ -306,11 +318,11 @@ class AjaxMainController extends CommonDashboardController
             ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
         $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
             [
+                'Recovered3Days'=>'3Days',
+                'RecoveredDay4'=>'Day5',
+                'cTotalRecovered'=>'Catchup',
                 'cDisc' => 'Discrep',
                 'FinalTotalRemaining'=>'Remaining',
-                'cTotalRecovered'=>'Catchup',
-                'RecoveredDay4'=>'Day5',
-                'Recovered3Days'=>'3Days'
             ],
             $oneCampData, true);
         $campaign = "No data for this campaign as per current filter";
@@ -377,7 +389,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['DiscRemaining'=>'Remaining', 'FinalTotalVac'=>'Recovered'],
+            ['FinalTotalVac'=>'Recovered', 'DiscRemaining'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'Missed Children Recovery';
@@ -388,7 +400,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['DiscRemainingAbsent'=>'Remaining', 'FinalVacAbsent'=>'Recovered'],
+            ['FinalVacAbsent'=>'Recovered', 'DiscRemainingAbsent'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Absent Children';
@@ -399,7 +411,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['DiscRemainingNSS'=>'Remaining', 'FinalVacNSS'=>'Recovered'],
+            ['FinalVacNSS'=>'Recovered', 'DiscRemainingNSS'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced NSS Children';
@@ -410,7 +422,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['DiscRemainingRefusal'=>'Remaining', 'FinalVacRefusal'=>'Recovered'],
+            ['FinalVacRefusal'=>'Recovered', 'DiscRemainingRefusal'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Refusal Children';

@@ -13,7 +13,7 @@ CoverageChartsSetting['vaccine_wastage_1'] = {'chartType':{'type':"column"},
     'colors':[colors.WASTAGE], 'legend':{'enabled':false}};
 
 CoverageChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column", 'stacking': 'normal'},
-    'colors':[colors.REM_MISSED, colors.RECOVERED_3DAYS],
+    'colors':[colors.RECOVERED_3DAYS, colors.REM_MISSED],
     'legend':{'enabled':true, 'vAlign':'bottom', 'hAlign': 'center'},
     'menu':[{chart:'normal', title:'Normal Chart'},
         {chart: 'percent', title:'Percent Chart'}],
@@ -49,7 +49,8 @@ CoverageChartsSetting['recovered_refusal_1'] = {
 
 // missed loc trends
 CoverageChartsSetting['loc_trend_all_type'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_MISSED, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -58,7 +59,8 @@ CoverageChartsSetting['loc_trend_all_type'] = {
 };
 // absent loc trends
 CoverageChartsSetting['loc_trend_absent'] = {
-    'colors': [colors.REM_ABSENT, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_ABSENT, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -67,7 +69,8 @@ CoverageChartsSetting['loc_trend_absent'] = {
 };
 // nss loc trends
 CoverageChartsSetting['loc_trend_nss'] = {
-    'colors': [colors.REM_NSS, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_NSS, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -76,7 +79,8 @@ CoverageChartsSetting['loc_trend_nss'] = {
 };
 // refusal loc trends
 CoverageChartsSetting['loc_trend_refusal'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_REFUSAL, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -93,22 +97,26 @@ CoverageChartsSetting['missed_by_type_trend'] = {'chartType':{'type':"column", '
     'colors':[colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL]};
 // 10 Campaign absent percent stack chartType
 CoverageChartsSetting['absent_recovered_trend'] = {
-    'colors': [colors.REM_ABSENT, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_ABSENT, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'percent'}
 };
 // 10 Campaign nss percent stack chartType
 CoverageChartsSetting['nss_recovered_trend'] = {
-    'colors': [colors.REM_NSS, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_NSS, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'percent'}
 };
 // 10 Campaign refusal percent stack chartType
 CoverageChartsSetting['refusal_recovered_trend'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.REM_REFUSAL, colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'percent'}};
 
 // 10 campaign missed recovery area percent chartType
 CoverageChartsSetting['missed_child_recovery_trend'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    // 'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    'colors': [colors.RECOVERED_REFUSAL, colors.RECOVERED_NSS, colors.RECOVERED_ABSENT, colors.REM_MISSED],
     'chartType':{'type':"area", 'stacking':'percent'}
 };
 

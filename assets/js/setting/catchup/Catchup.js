@@ -13,7 +13,7 @@ CatchupChartsSetting['total_remaining_1'] = {'chartType':{'type':"column"},
     'colors':[colors.REM_MISSED], 'legend':{'enabled':false}};
 
 CatchupChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column", 'stacking': 'normal'},
-    'colors':[colors.REM_MISSED, colors.RECOVERED_CATCHUP],
+    'colors':[colors.RECOVERED_CATCHUP, colors.REM_MISSED],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
         {chart: 'percent', title:'Percent Chart'}],
@@ -46,7 +46,8 @@ CatchupChartsSetting['recovered_refusal_1'] = {'colors':[colors.RECOVERED_CATCHU
 // 3 (default) campaigns location trends
 // 10 Campaign absent percent stack chartType
 CatchupChartsSetting['loc_trend_all_type'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_CATCHUP],
+    // 'colors': [colors.REM_MISSED, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -55,7 +56,8 @@ CatchupChartsSetting['loc_trend_all_type'] = {
 };
 // absent loc trends
 CatchupChartsSetting['loc_trend_absent'] = {
-    'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+    // 'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -64,7 +66,8 @@ CatchupChartsSetting['loc_trend_absent'] = {
 };
 // nss loc trends
 CatchupChartsSetting['loc_trend_nss'] = {
-    'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+    // 'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -73,7 +76,8 @@ CatchupChartsSetting['loc_trend_nss'] = {
 };
 // refusal loc trends
 CatchupChartsSetting['loc_trend_refusal'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    // 'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -94,21 +98,24 @@ CatchupChartsSetting['missed_by_type_trend'] = {
 };
 // 10 Campaign absent percent stack chartType
 CatchupChartsSetting['absent_recovered_trend'] = {
-        'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+        // 'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
+        'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT],
         'chartType':{'type':"column", 'stacking':'percent'},
         'menu':[{chart:'percent', title:'Percent Chart'},
             {chart: 'normal', title:'Normal Chart'}]
 };
 // 10 Campaign nss percent stack chartType
 CatchupChartsSetting['nss_recovered_trend'] = {
-        'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+        // 'colors': [colors.REM_NSS, colors.RECOVERED_CATCHUP],
+        'colors': [colors.RECOVERED_CATCHUP, colors.REM_NSS],
         'chartType':{'type':"column", 'stacking':'percent'},
         'menu':[{chart:'percent', title:'Percent Chart'},
             {chart: 'normal', title:'Normal Chart'}]
 };
 // 10 Campaign refusal percent stack chartType
 CatchupChartsSetting['refusal_recovered_trend'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    // 'colors': [colors.REM_REFUSAL, colors.RECOVERED_CATCHUP],
+    'colors': [colors.RECOVERED_CATCHUP, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
@@ -116,7 +123,8 @@ CatchupChartsSetting['refusal_recovered_trend'] = {
 
 // 10 campaign missed recovery area percent chartType
 CatchupChartsSetting['missed_child_recovery_trend'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    // 'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    'colors': [colors.RECOVERED_REFUSAL, colors.RECOVERED_NSS, colors.RECOVERED_ABSENT, colors.REM_MISSED],
     'chartType':{'type':"area", 'stacking':'percent'},
     'menu':[{chart:'line', title:'Line Chart'},
         {chart: 'percent_area', title:'Area Chart'}]

@@ -59,9 +59,11 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['TotalRemaining'=>'Remaining',
+            [
+                'Recovered3Days'=>'3Days',
                 'RecoveredDay4'=>'Day5',
-                'Recovered3Days'=>'3Days' ],
+                'TotalRemaining'=>'Remaining'
+                ],
             $locTrends
         );
         $locTrendAllType['title'] = 'Reduced Missed Children';
@@ -72,7 +74,11 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day5' , 'VacAbsent3Days'=>'3Days'],
+            [
+                'VacAbsent3Days'=>'3Days',
+                'VacAbsentDay4'=>'Day5' ,
+                'RemAbsent'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'Reduced Absent Children';
@@ -83,7 +89,11 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day5' , 'VacNSS3Days'=>'3Days'],
+            [
+                'VacNSS3Days'=>'3Days',
+                'VacNSSDay4'=>'Day5' ,
+                'RemNSS'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'Reduced NSS Children';
@@ -94,7 +104,11 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>$titles['aggType']],
             $category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day5' , 'VacRefusal3Days'=>'3Days'],
+            [
+                'VacRefusal3Days'=>'3Days',
+                'VacRefusalDay4'=>'Day5' ,
+                'RemRefusal'=>'Remaining',
+            ],
             $locTrends
         );
         $locTrendAllType['title'] = 'Reduced Refusal Children';
@@ -126,9 +140,11 @@ class AjaxCoverageController extends CommonDashboardController
 
         // --------------------------- Trend of Recovering Missed -----------------------------------
         $missedRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining',
+            [
+                'Recovered3Days'=>'3Days',
                 'RecoveredDay4'=>'Day5',
-                'Recovered3Days'=>'3Days' ],
+                'TotalRemaining'=>'Remaining',
+            ],
             $trends);
         $missedRecoveredTrend['title'] = "Remaining Children Recovery Camp/Revisit";
         $missedRecoveredTrend['subTitle'] = $subTitle;
@@ -136,7 +152,11 @@ class AjaxCoverageController extends CommonDashboardController
 
         // ----------------------------- Trend of Absent Recovering --------------------------------
         $absentRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsentDay4'=>'Day5' , 'VacAbsent3Days'=>'3Days'],
+            [
+                'VacAbsent3Days'=>'3Days',
+                'VacAbsentDay4'=>'Day5' ,
+                'RemAbsent'=>'Remaining',
+            ],
             $trends);
         $absentRecoveredTrend['title'] = "Absent Children Recovery Camp/Revisit";
         $absentRecoveredTrend['subTitle'] = $subTitle;
@@ -144,14 +164,22 @@ class AjaxCoverageController extends CommonDashboardController
 
         // ----------------------------- Trend of NSS Recovering -----------------------------------
         $nssRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemNSS'=>'Remaining', 'VacNSSDay4'=>'Day5', 'VacNSS3Days'=>'3Days' ],
+            [
+                'VacNSS3Days'=>'3Days',
+                'VacNSSDay4'=>'Day5',
+                'RemNSS'=>'Remaining',
+            ],
             $trends);
         $nssRecoveredTrend['title'] = "NSS Children Recovery Camp/Revisit";
         $nssRecoveredTrend['subTitle'] = $subTitle;
         $data['nss_recovered_trend'] = $nssRecoveredTrend;
         // ------------------------------ Trend of Refusal Recovering -----------------------------
         $refusalRecoveredTrend = $this->chart->chartData1Category($category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusalDay4'=>'Day5', 'VacRefusal3Days'=>'3Days'],
+            [
+                'VacRefusal3Days'=>'3Days',
+                'VacRefusalDay4'=>'Day5',
+                'RemRefusal'=>'Remaining',
+            ],
             $trends);
         $refusalRecoveredTrend['title'] = "Refusal Children Recovery Camp/Revisit";
         $refusalRecoveredTrend['subTitle'] = $subTitle;
@@ -159,10 +187,12 @@ class AjaxCoverageController extends CommonDashboardController
 
         // ------------------------------ Trend of Missed Recovery -------------------------------
         $missedChildRecoveryTrend = $this->chart->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining',
-                'VacAbsent'=>'Recovered Absent',
+            [
+                'VacRefusal'=>'Recovered Refusal',
                 'VacNSS'=>'Recovered NSS',
-                'VacRefusal'=>'Recovered Refusal'],
+                'VacAbsent'=>'Recovered Absent',
+                'TotalRemaining'=>'Remaining',
+            ],
             $trends);
         $missedChildRecoveryTrend['title'] = "Recovering Missed Children By Reason ".$during;
         $missedChildRecoveryTrend['subTitle'] = $subTitle;
@@ -234,8 +264,11 @@ class AjaxCoverageController extends CommonDashboardController
         $oneCat = $titles['aggType'] === 'Region' ? true : false;
         if($oneCat) {
             $totalRemaining = $this->chart->chartData1Category(['column' => $titles['aggType']],
-                ['TotalRemaining' => 'Remaining',
-                    'MissedVaccinated' => 'Recovered'], $campAgg);
+                [
+                    'MissedVaccinated' => 'Recovered',
+                    'TotalRemaining' => 'Remaining',
+
+                ], $campAgg);
             $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Day5';
             $totalRemaining['subTitle'] = $subTitle;
             $data['total_recovered_remaining_1'] = $totalRemaining;
@@ -246,8 +279,10 @@ class AjaxCoverageController extends CommonDashboardController
             $totalRemaining = $this->chart->chartData2Categories(
                 $cat1,
                 ['column' => $titles['aggType']],
-                ['TotalRemaining' => 'Remaining',
-                    'MissedVaccinated' => 'Recovered'], $campAgg);
+                [
+                    'MissedVaccinated' => 'Recovered',
+                    'TotalRemaining' => 'Remaining',
+                ], $campAgg);
             $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Day5';
             $totalRemaining['subTitle'] = $subTitle;
             $data['total_recovered_remaining_1'] = $totalRemaining;
@@ -279,10 +314,10 @@ class AjaxCoverageController extends CommonDashboardController
 
         $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
             [
+                'MissedVaccinated' => 'Recovered',
                 'RemAbsent' => 'Absent',
                 'RemNSS' => 'NSS',
-                'RemRefusal' => 'Refusal',
-                'MissedVaccinated' => 'Recovered',
+                'RemRefusal' => 'Refusal'
             ],
             $oneCampData, true);
         $campaign = "No data for this campaign as per current filter";
@@ -341,7 +376,7 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['TotalRemaining'=>'Remaining', 'MissedVaccinated'=>'Recovered'],
+            ['MissedVaccinated'=>'Recovered', 'TotalRemaining'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Missed Children';
@@ -352,7 +387,7 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemAbsent'=>'Remaining', 'VacAbsent'=>'Recovered'],
+            ['VacAbsent'=>'Recovered', 'RemAbsent'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Absent Children';
@@ -363,7 +398,7 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemNSS'=>'Remaining', 'VacNSS'=>'Recovered'],
+            ['VacNSS'=>'Recovered', 'RemNSS'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced NSS Children';
@@ -374,7 +409,7 @@ class AjaxCoverageController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['RemRefusal'=>'Remaining', 'VacRefusal'=>'Recovered'],
+            ['VacRefusal'=>'Recovered', 'RemRefusal'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Refusal Children';

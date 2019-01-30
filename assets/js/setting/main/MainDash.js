@@ -54,8 +54,8 @@ MainChartsSetting['total_remaining_1'] = {'chartType':{'type':"column"},
     'colors':[colors.REM_MISSED], 'legend':{'enabled':false}};
 
 MainChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column", 'stacking': 'normal'},
-    'colors': [colors.DISCREP, colors.REM_MISSED, colors.RECOVERED_CATCHUP,
-        colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+        colors.DISCREP, colors.REM_MISSED],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
         {chart: 'percent', title:'Percent Chart'}],
@@ -125,39 +125,48 @@ MainChartsSetting['missed_child_trend'] = {
 // };
 // Ten campaign absent children percent chart
 MainChartsSetting['missed_recovered_trend'] = {
-    'colors': [colors.DISCREP, colors.REM_MISSED, colors.RECOVERED_CATCHUP,
-        colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.DISCREP, colors.REM_MISSED, colors.RECOVERED_CATCHUP,
+    //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+        colors.DISCREP, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
 };
 // Ten campaign absent children percent chart
 MainChartsSetting['absent_recovered_trend'] = {
-    'colors': [colors.DISCREP, colors.REM_ABSENT, colors.RECOVERED_CATCHUP,
-        colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.DISCREP, colors.REM_ABSENT, colors.RECOVERED_CATCHUP,
+    //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+        colors.DISCREP, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
 };
 // Ten campaign nss children percent chart
 MainChartsSetting['nss_recovered_trend'] = {
-    'colors': [colors.DISCREP, colors.REM_NSS, colors.RECOVERED_CATCHUP,
-        colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.DISCREP, colors.REM_NSS, colors.RECOVERED_CATCHUP,
+    //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+        colors.DISCREP, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
 };
 // Ten campaign refusal children percent chart
 MainChartsSetting['refusal_recovered_trend'] = {
-    'colors': [colors.DISCREP, colors.REM_REFUSAL, colors.RECOVERED_CATCHUP,
-        colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    // 'colors': [colors.DISCREP, colors.REM_REFUSAL, colors.RECOVERED_CATCHUP,
+    //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+        colors.DISCREP, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
 };
 // Ten campaign missed recovery area chart
 MainChartsSetting['missed_child_recovery_trend'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    // 'colors': [colors.REM_MISSED, colors.RECOVERED_ABSENT, colors.RECOVERED_NSS, colors.RECOVERED_REFUSAL],
+    'colors': [colors.RECOVERED_REFUSAL, colors.RECOVERED_NSS, colors.RECOVERED_ABSENT, colors.REM_MISSED],
     'chartType':{'type':"area", 'stacking':'percent'}
 };
 

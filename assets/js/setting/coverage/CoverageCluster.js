@@ -3,7 +3,7 @@ import colors from './../colors';
 // ======================================= Clusters Level Dashbaord ===============================
 const CoverageCluster = {};
 CoverageCluster['missed_recovery_chart_1'] = {
-    'colors': [colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL],
     'chartType':{'type':"bar", 'stacking':'percent'},
     'large':'height'
 };
@@ -22,7 +22,7 @@ CoverageCluster['cluster_trend'] = {'chartType':{'type':'table'},
 // 3 (default) campaigns location trends
 // 10 Campaign absent percent stack chartType
 CoverageCluster['loc_trend_all_type'] = {
-    'colors': [colors.REM_MISSED, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -31,7 +31,7 @@ CoverageCluster['loc_trend_all_type'] = {
 };
 // absent loc trends
 CoverageCluster['loc_trend_absent'] = {
-    'colors': [colors.REM_ABSENT, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.REM_ABSENT],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -40,7 +40,7 @@ CoverageCluster['loc_trend_absent'] = {
 };
 // nss loc trends
 CoverageCluster['loc_trend_nss'] = {
-    'colors': [colors.REM_NSS, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.REM_NSS],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -49,7 +49,7 @@ CoverageCluster['loc_trend_nss'] = {
 };
 // refusal loc trends
 CoverageCluster['loc_trend_refusal'] = {
-    'colors': [colors.REM_REFUSAL, colors.RECOVERED_3DAYS],
+    'colors': [colors.RECOVERED_3DAYS, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
