@@ -8,6 +8,30 @@
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
                     {{ pageTitle }}
+
+                    <!-- Help Icon -->
+                    <a data-toggle="popover" data-container="body" class="pull-right btn-sm btn-info"
+                       data-placement="left" type="button" data-html="true"
+                       href="#" id="help">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
+                    <!-- Popover Help Contents -->
+                    <div id="popover-content-help" class="hide">
+                        <div>
+                            <h5>Indicators and calculations descriptions:</h5>
+                            <p> By Default the cluster level trends table shows total missed children in absolute numbers.
+                                The benchmark for the color coding is defined in the bottom of the table. <br>
+                                To see percentage of the missed children out of the target missed children,
+                                filter it in the filter menu in the top-left corner of the table.
+                                For percentage calculation the target is <b style="color:red">"Total Missed Children"</b> in a cluster from ICN Register.
+                                And you can see the color coding benchmark for the percentages in the bottom of the table as well.<br>
+                                This kind of percentage is useful to see how much of the target missed are recovered by ICN, but for the final
+                                picture of a cluster (after catchup), please check it here:
+                                <a href="{{ path("main_cluster_dashboard") }}" target="_blank">Final Clusters Data</a>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="box-body">
                     <div class="row">

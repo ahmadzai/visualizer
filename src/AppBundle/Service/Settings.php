@@ -66,7 +66,8 @@ class Settings
     {
 
         $data = $this->em->createQuery(
-            "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear
+            "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear,
+             ca.campaignName, ca.campaignStartDate, ca.campaignEndDate
              FROM AppBundle:$table a
              JOIN a.campaign ca GROUP BY ca.id ORDER BY ca.id DESC"
         )
@@ -85,7 +86,8 @@ class Settings
 
         if($campaignId === 0 || $campaignId == 0) {
             $data = $this->em->createQuery(
-                "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
+                "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, 
+                ca.campaignName, ca.campaignStartDate, ca.campaignEndDate
                FROM AppBundle:$table a
                JOIN a.campaign ca ORDER BY ca.id DESC"
               ) ->setFirstResult(1)
@@ -96,7 +98,8 @@ class Settings
         }
         else {
           $data = $this->em->createQuery(
-              "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, ca.campaignName
+              "SELECT ca.id, ca.campaignMonth, ca.campaignType, ca.campaignYear, 
+               ca.campaignName, ca.campaignStartDate, ca.campaignEndDate
                FROM AppBundle:$table a
                JOIN a.campaign ca WHERE ca.id =:camp"
           )->setParameter('camp', $campaignId)->getResult(Query::HYDRATE_SCALAR);

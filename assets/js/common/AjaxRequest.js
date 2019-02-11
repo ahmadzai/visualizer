@@ -110,8 +110,9 @@ class AjaxRequest {
 
         $('.trend-loader, .info-loader, .loader').show();
         let ajx1 = this._ajaxPromise(req1.url, req1.params);
-
+        //console.log(ajx1);
         let ajx2 = ajx1.then(function (ajx1Data) {
+           //console.log(ajx1Data);
            self._populateDashboard({...req1.container}, ajx1Data);
            $('.info-loader').hide();
            return self._ajaxPromise(req2.url, req2.params);
@@ -138,6 +139,7 @@ class AjaxRequest {
             if(data.hasOwnProperty(index)) {
                 this.data = data[index];
                 this.renderTo = index;
+                console.log(this);
                 self.chart.visualize(this);
             }
         });

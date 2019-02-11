@@ -16,6 +16,32 @@
                        style="cursor:pointer" target="_blank" href="{{ path(urlCluster) }}">
                         <i class="fa fa-mail-forward"></i> For clusters' data click here!
                     </a>
+
+                    <!-- Help Icon -->
+                    <a data-toggle="popover" data-container="body" class="pull-right btn-sm btn-info"
+                       data-placement="left" type="button" data-html="true"
+                       style="margin-right: 10px"
+                       href="#" id="help">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
+                    <!-- Popover Help Contents -->
+                    <div id="popover-content-help" class="hide">
+                        <div>
+                            <h5>Indicators and calculations descriptions:</h5>
+                            <ul>
+                                <li><span style="color:orange">Target:</span> Total missed children (source: ICN Register Book)
+                                </li>
+                                <li><span style="color:deepskyblue">Recovered:</span> Total Recovered children out of the Target.
+                                </li>
+                                <li><span style="color:gray">Unrecorded:</span>Vaccinated children during catchup that were not recorded as missed</li>
+                                <li><span style="color:forestgreen">Recovered Percentage:</span>
+                                Shows the percentage of the recovered children out of target missed (Recovered / Target Missed * 100)
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
                     <input type="hidden" id="ajaxUrl" value="{{ url }}"
                            data-source="{{ source }}"/>
                 </div>

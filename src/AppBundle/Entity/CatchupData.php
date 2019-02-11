@@ -38,7 +38,7 @@ class CatchupData
     /**
      * @var string
      *
-     * @ORM\Column(name="cluster_no", type="text", length=20, nullable=true)
+     * @ORM\Column(name="cluster_no", type="text", length=50, nullable=true)
      */
     private $clusterNo;
 

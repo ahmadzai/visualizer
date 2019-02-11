@@ -48,6 +48,7 @@ security:
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token, role: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/api_test, role: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/resetting/request, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/send-email, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/check-email, role: IS_AUTHENTICATED_ANONYMOUSLY }

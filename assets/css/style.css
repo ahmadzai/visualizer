@@ -160,3 +160,11 @@
     width: 160px;
     display: inline-block;
 }
+
+.popover{
+    min-width:250px;
+    width:80%;
+    max-width:600px;
+    overflow-wrap:break-word;
+    font-size: 80%
+}

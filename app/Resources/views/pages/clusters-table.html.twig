@@ -8,6 +8,27 @@
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
                     {{ pageTitle }}
+
+                    <!-- Help Icon -->
+                    <a data-toggle="popover" data-container="body" class="pull-right btn-sm btn-info"
+                       data-placement="left" type="button" data-html="true"
+                       href="#" id="help">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
+                    <!-- Popover Help Contents -->
+                    <div id="popover-content-help" class="hide">
+                        <div>
+                            <h5>Indicators and calculations descriptions:</h5>
+                            <p> By Default the cluster level trends table shows total missed children in absolute numbers.
+                                The benchmark for the color coding is defined in the bottom of the table. To see percentage
+                                of the missed children out of the target, filter it in the filter menu in the top-left corner of the table.
+                                For percentage calculation the target is <b style="color:dodgerblue">"vaccinated children + missed children"</b> in a cluster. And you can
+                                see the color coding benchmark for the percentages in the bottom of the table as well. <br>
+                                In the left chart, Discrepancy <span style="color:gray">(gray color)</span>
+                                is the difference of tallysheet data and ICN register book data.
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-body">
                     <div class="row">

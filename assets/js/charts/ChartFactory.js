@@ -163,10 +163,14 @@ class ChartFactory {
 
         let series = settings.data.series === null || settings.data.series === undefined ? [] :
             settings.data.series;
+
         // set the data/series
 
-        if (type === 'halfpie')
-            series[0].innerSize = '50%';
+        if(series.length > 0) {
+
+            if (type === 'halfpie')
+                series[0].innerSize = '50%';
+        }
         options.series = series;
 
         return options;

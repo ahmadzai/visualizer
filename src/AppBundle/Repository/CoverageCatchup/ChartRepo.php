@@ -964,6 +964,8 @@ class ChartRepo extends EntityRepository
                 $cond = "AND d.districtRiskStatus IS NULL";
             } elseif(in_array("HR", $distType) || in_array("VHR", $distType)) {
                 $cond = "AND d.districtRiskStatus IN (:param1) ";
+            } elseif(in_array("all", $distType)) {
+                $cond = " ";
             } else
                 $cond = "AND d.id IN (:param1)";
         }

@@ -164,7 +164,7 @@ class Charts
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
     /***
@@ -272,7 +272,7 @@ class Charts
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
     /***
@@ -344,7 +344,7 @@ class Charts
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
     /***
@@ -400,7 +400,7 @@ class Charts
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
 
@@ -420,14 +420,14 @@ class Charts
                 }
 
 
-            $ser[] = array('type'=>'pie', 'name'=>"Test", 'data' => $data_indicators);
+            $ser[] = array('type'=>'pie', 'name'=>"value", 'data' => $data_indicators);
             $r_data['series'] = $ser;
 
             return $r_data;
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
     /***
@@ -475,7 +475,7 @@ class Charts
         }
 
         else
-            return ['data'=>null];
+            return ['series'=>null];
     }
 
     /**

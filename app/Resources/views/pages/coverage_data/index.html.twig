@@ -16,6 +16,33 @@
                        style="cursor:pointer" target="_blank" href="{{ path(urlCluster) }}">
                         <i class="fa fa-mail-forward"></i> For clusters' data click here!
                     </a>
+
+                    <!-- Help Icon -->
+                    <a data-toggle="popover" data-container="body" class="pull-right btn-sm btn-info"
+                       data-placement="left" type="button" data-html="true"
+                       style="margin-right: 10px"
+                       href="#" id="help">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
+                    <!-- Popover Help Contents -->
+                    <div id="popover-content-help" class="hide">
+                        <div>
+                            <h5>Indicators and calculations descriptions:</h5>
+                            <ul>
+                                <li><span style="color:deepskyblue">Child Vaccinated:</span> Vaccinated in Campaign days (3 days of campaign + revisit day).
+                                    Including children vaccinated in PTTs.
+                                </li>
+                                <li><span style="color:deeppink">Used Vials:</span> Reported in the tally sheet. Aggregated from cluster level.
+                                </li>
+                                <li><span style="color:orange">Vac Wastage:</span>Wastage formula: Children Vaccinated/ (vials * 20) * 100</li>
+                                <li><span>U5 Children:</span>Vaccinated children + missed children (this could be the target U5 children)
+                                </li>
+                                <li><span style="color:deepskyblue">3Days:</span> 3 days of the campaign</li>
+                                <li><span style="color:lightgreen">Day5:</span> Revisit day</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <input type="hidden" id="ajaxUrl" value="{{ url }}"
                            data-source="{{ source }}"/>
                 </div>

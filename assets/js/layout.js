@@ -22,6 +22,7 @@ import '../css/style.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 import 'bootstrap';
+import 'bootstrap/js/popover';
 import 'admin-lte/bower_components/jquery-slimscroll/jquery.slimscroll.min';
 import 'admin-lte/bower_components/select2/dist/js/select2.min';
 import 'admin-lte/bower_components/bootstrap-datepicker/js/bootstrap-datepicker';
@@ -36,6 +37,19 @@ $(function () {
     // enable tooltip for the at the application level
     $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
 
+    // enable bootstrap popover, if there's one in the page
+    $("[data-toggle=popover]").each(function(i, obj) {
+
+        $(this).popover({
+            boundary: 'window',
+            html: true,
+            content: function() {
+                let id = $(this).attr('id');
+                return $('#popover-content-' + id).html();
+            }
+        });
+
+    });
     // initialize select2
     $('.select2').select2();
 
