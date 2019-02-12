@@ -31,14 +31,14 @@ class TestController extends Controller
 //        dump($data); die;
 
         $client = new Client();
-        $res = $client->post("http://localhost/visualizer/web/app_dev.php/api/token", [
-            'auth' => ['wazir', 'berliner']
+        $res = $client->post("http://afg-poliodb.info/api/token", [
+            'auth' => ['rabia.sadat', 'a password']
         ]);
 
         $token = json_decode($res->getBody()->getContents());
 
         // Test below for admin data api
-        $data = $client->get("http://localhost/visualizer/web/app_dev.php/api/admindata/by_district", [
+        $data = $client->get("http://afg-poliodb.info/api/admindata/by_district/30", [
            'headers' => ['Authorization' => 'Bearer '.$token->token]
         ]);
 
