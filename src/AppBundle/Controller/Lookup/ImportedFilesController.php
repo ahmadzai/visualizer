@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * Class ImportedFilesController
  * @package AppBundle\Controller
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_EDITOR')")
  */
 class ImportedFilesController extends Controller
 {

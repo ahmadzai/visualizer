@@ -46,11 +46,6 @@
 
 {% endblock %}
 {% block title %}Download Data{% endblock %}
-{% block css %}
-    <link rel="stylesheet" href="{{ asset('template/bower_components/select2/dist/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    {{ parent() }}
-{% endblock %}
 
 {% block js_head %}
     {{ parent() }}
@@ -61,7 +56,7 @@
     <script src="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script src="https://cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.js"></script>
-    <script src="{{ asset('template/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('staticjs/select2.full.min.js') }}"></script>
 
     <script src="{{ asset('bundles/sgdatatables/js/pipeline.js') }}"></script>
 
@@ -70,7 +65,7 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('staticjs/adminlte.min.js') }}"></script>
     {#<script src="{{ asset('template/dist/js/app.min.js') }}"></script>#}
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the
@@ -102,3 +97,4 @@
         });
     </script>
 {% endblock %}
+

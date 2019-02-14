@@ -29,7 +29,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * 3: createSyncViewAction is called (just to create the sync view),
  * 4: if the user click the Sync button
  * syncDataAction is called, if cancel, then cancelUploadAction() is called
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_EDITOR')")
  */
 class ImportController extends Controller
 {
@@ -39,7 +39,6 @@ class ImportController extends Controller
      * @param Request $request
      * @param EntityName $entity
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Security("has_role('ROLE_EDITOR')")
      */
     public function importDataAction(Request $request, $entity) {
 
@@ -241,7 +240,6 @@ class ImportController extends Controller
      * @param $fileId
      * @param Importer $importer
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Security("has_role('ROLE_EDITOR')")
      */
     public function syncDataAction(Request $request, $entity, $fileId, Importer $importer) {
 
@@ -286,6 +284,8 @@ class ImportController extends Controller
                 // set SQL logger off, for the performance purpose
                 $em->getConnection()->getConfiguration()->setSQLLogger(null);
                 $counter = 0;   // just for the batch counter
+
+                $user = $this->getUser();
                 // loop through the uploaded data to shift to the dest table
                 foreach ($sourceData as $index => $data) {
 
@@ -333,6 +333,9 @@ class ImportController extends Controller
                         }
                         // now set this new data in the target entity
                         $tEntity->$setFunc($newData);
+                        // add user information.
+                        $userId = $em->getRepository("AppBundle:User")->find($user);
+                        $tEntity->setUser($userId);
 
                     }
 

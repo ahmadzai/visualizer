@@ -69,6 +69,16 @@ class Campaign
     private $campaignMonth;
 
     /**
+     * @var \AppBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -269,6 +279,22 @@ class Campaign
     public function getCampaignMonth()
     {
         return $this->campaignMonth;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
     }
 
     /**

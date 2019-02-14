@@ -106,7 +106,7 @@
     </footer>
 
     {% block sidebar_control %}
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_EDITOR') %}
             {% include 'shared/sidebar-control.html.twig' %}
         {% endif %}
     {% endblock %}

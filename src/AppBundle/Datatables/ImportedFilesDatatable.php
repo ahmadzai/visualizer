@@ -115,7 +115,7 @@ class ImportedFilesDatatable extends AbstractDatatable
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'add_if' => function () {
-                    return $this->authorizationChecker->isGranted('ROLE_ADMIN');
+                    return $this->authorizationChecker->isGranted('ROLE_EDITOR');
                 },
                 'actions' => array(
                     array(

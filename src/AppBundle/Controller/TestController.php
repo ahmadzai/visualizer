@@ -32,20 +32,20 @@ class TestController extends Controller
 
         $client = new Client();
         $res = $client->post("http://afg-poliodb.info/api/token", [
-            'auth' => ['rabia.sadat', 'a password']
+            'auth' => ['wazir', 'berliner']
         ]);
 
         $token = json_decode($res->getBody()->getContents());
 
         // Test below for admin data api
-        $data = $client->get("http://afg-poliodb.info/api/admindata/by_district/30", [
-           'headers' => ['Authorization' => 'Bearer '.$token->token]
-        ]);
+//        $data = $client->get("http://afg-poliodb.info/api/admindata/by_district/30", [
+//           'headers' => ['Authorization' => 'Bearer '.$token->token]
+//        ]);
 
         // Test below for campaign api
-//        $data = $client->get("http://localhost/visualizer/web/app_dev.php/api/campaign/all", [
-//            'headers' => ['Authorization' => 'Bearer '.$token->token]
-//        ]);
+        $data = $client->get("http://afg-poliodb.info/api/campaign/all", [
+            'headers' => ['Authorization' => 'Bearer '.$token->token]
+        ]);
 
         // Test below for catchup data api
 //        $data = $client->get("http://localhost/visualizer/web/app_dev.php/api/catchup/by_district", [

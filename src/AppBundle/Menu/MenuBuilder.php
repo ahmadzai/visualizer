@@ -177,57 +177,73 @@ class MenuBuilder implements ContainerAwareInterface
         $menu->setChildrenAttributes(array('class'=>'control-sidebar-menu sidebar-menu', 'data-widget'=>'tree'));
 
         // Campaign Management
-        $menu->addChild("Campaigns Management", array('route'=>'campaign_index'))
-            ->setExtra('info', 'Manage Campaigns');
-        $menu['Campaigns Management']->setAttribute('icon','fa-eyedropper');
-        // Users Management
-        $menu->addChild("User Management", array('route'=>'list_all_users'))
-            ->setExtra('info', 'Manage Users');
-        $menu['User Management']->setAttribute('icon','fa-user');
-        // ------------------------------------------------ Location Mgt ------------------------------------------------
-        $menu->addChild("Location", array('uri'=>'#'))->setExtra('info', 'Manage Locations');
-        $menu['Location']->setAttribute('icon','fa-map');
-        $menu['Location']->setAttribute('sub_menu_icon', 'fa-angle-left');
-        $menu['Location']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        // Sub Menu
-        $menu['Location']->addChild("Provinces", array('route'=>'province_index'))
-            ->setExtra('info', 'Manage Provinces');
-        $menu['Location']['Provinces']->setAttribute('icon','fa-cog');
-        $menu['Location']->addChild("Districts", array('route'=>'district_index'))
-            ->setExtra('info', 'Manage Districts');
-        $menu['Location']['Districts']->setAttribute('icon','fa-cog');
+        if($editRole) {
+            $menu->addChild("Campaigns Management", array('route' => 'campaign_index'))
+                ->setExtra('info', 'Manage Campaigns');
+            $menu['Campaigns Management']->setAttribute('icon', 'fa-eyedropper');
+        }
 
-        // ------------------------------------------------ Upload Mgt ------------------------------------------------
-        $menu->addChild("Upload Mgt", array('uri'=>'#'))->setExtra('info', 'Manage Data Upload');
-        $menu['Upload Mgt']->setAttribute('icon','fa-upload');
-        $menu['Upload Mgt']->setAttribute('sub_menu_icon', 'fa-angle-left');
-        $menu['Upload Mgt']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        // Sub Menu
-        $menu['Upload Mgt']->addChild("Uploader Mgt", array('route'=>'uploadmanager_index'))
-            ->setExtra('info', 'Mange Uploader');
-        $menu['Upload Mgt']['Uploader Mgt']->setAttribute('icon','fa-upload');
-        $menu['Upload Mgt']->addChild("Manage Files", array('route'=>'manage_uploaded_files'))
-            ->setExtra('info', 'Manage Uploaded Files');
-        $menu['Upload Mgt']['Manage Files']->setAttribute('icon','fa-file');
+        if($adminRole) {
+            // Users Management
+            $menu->addChild("User Management", array('route' => 'list_all_users'))
+                ->setExtra('info', 'Manage Users');
+            $menu['User Management']->setAttribute('icon', 'fa-user');
+            // ------------------------------------------------ Location Mgt ------------------------------------------------
+            $menu->addChild("Location", array('uri' => '#'))->setExtra('info', 'Manage Locations');
+            $menu['Location']->setAttribute('icon', 'fa-map');
+            $menu['Location']->setAttribute('sub_menu_icon', 'fa-angle-left');
+            $menu['Location']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            // Sub Menu
+            $menu['Location']->addChild("Provinces", array('route' => 'province_index'))
+                ->setExtra('info', 'Manage Provinces');
+            $menu['Location']['Provinces']->setAttribute('icon', 'fa-cog');
+            $menu['Location']->addChild("Districts", array('route' => 'district_index'))
+                ->setExtra('info', 'Manage Districts');
+            $menu['Location']['Districts']->setAttribute('icon', 'fa-cog');
 
-        // ------------------------------------------------ External Services Mgt ------------------------------------------------
-        $menu->addChild("Ext Services Mgt", array('uri'=>'#'))
-            ->setExtra('info', 'Manage External Services');
-        $menu['Ext Services Mgt']->setAttribute('icon','fa-plug');
-        $menu['Ext Services Mgt']->setAttribute('sub_menu_icon', 'fa-angle-left');
-        $menu['Ext Services Mgt']->setChildrenAttributes(array('class'=>'treeview-menu'));
-        // Sub Menu
-        $menu['Ext Services Mgt']->addChild("Register Service", array('route'=>'apiconnect_index'))
-            ->setExtra('info', 'Service Registration');
-        $menu['Ext Services Mgt']['Register Service']->setAttribute('icon','fa-registered');
-        $menu['Ext Services Mgt']->addChild("Sync ONA Data", array('route'=>'ona_connect'))
-            ->setExtra('info', 'Sync remote data');
-        $menu['Ext Services Mgt']['Sync ONA Data']->setAttribute('icon','fa-retweet');
+        }
+        if($editRole) {
+            // ------------------------------------------------ Upload Mgt ------------------------------------------------
+            $menu->addChild("Upload Mgt", array('uri' => '#'))->setExtra('info', 'Manage Data Upload');
+            $menu['Upload Mgt']->setAttribute('icon', 'fa-upload');
+            $menu['Upload Mgt']->setAttribute('sub_menu_icon', 'fa-angle-left');
+            $menu['Upload Mgt']->setChildrenAttributes(array('class' => 'treeview-menu'));
+        }
 
-        // BenchMark Management
-        $menu->addChild("Heatmap Benchmark", array('route'=>'heatmap_benchmark_index'))
-            ->setExtra('info', 'Manage Heatmap Benchmarks');
-        $menu['Heatmap Benchmark']->setAttribute('icon','fa-table');
+        if($adminRole) {
+            // Sub Menu
+            $menu['Upload Mgt']->addChild("Uploader Mgt", array('route' => 'uploadmanager_index'))
+                ->setExtra('info', 'Mange Uploader');
+            $menu['Upload Mgt']['Uploader Mgt']->setAttribute('icon', 'fa-upload');
+        }
+
+        if($editRole) {
+            $menu['Upload Mgt']->addChild("Manage Files", array('route' => 'manage_uploaded_files'))
+                ->setExtra('info', 'Manage Uploaded Files');
+            $menu['Upload Mgt']['Manage Files']->setAttribute('icon', 'fa-file');
+        }
+
+        if($adminRole) {
+
+            // ------------------------------------------------ External Services Mgt ------------------------------------------------
+            $menu->addChild("Ext Services Mgt", array('uri' => '#'))
+                ->setExtra('info', 'Manage External Services');
+            $menu['Ext Services Mgt']->setAttribute('icon', 'fa-plug');
+            $menu['Ext Services Mgt']->setAttribute('sub_menu_icon', 'fa-angle-left');
+            $menu['Ext Services Mgt']->setChildrenAttributes(array('class' => 'treeview-menu'));
+            // Sub Menu
+            $menu['Ext Services Mgt']->addChild("Register Service", array('route' => 'apiconnect_index'))
+                ->setExtra('info', 'Service Registration');
+            $menu['Ext Services Mgt']['Register Service']->setAttribute('icon', 'fa-registered');
+            $menu['Ext Services Mgt']->addChild("Sync ONA Data", array('route' => 'ona_connect'))
+                ->setExtra('info', 'Sync remote data');
+            $menu['Ext Services Mgt']['Sync ONA Data']->setAttribute('icon', 'fa-retweet');
+
+            // BenchMark Management
+            $menu->addChild("Heatmap Benchmark", array('route' => 'heatmap_benchmark_index'))
+                ->setExtra('info', 'Manage Heatmap Benchmarks');
+            $menu['Heatmap Benchmark']->setAttribute('icon', 'fa-table');
+        }
 
         return $menu;
     }

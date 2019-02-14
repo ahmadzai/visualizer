@@ -248,6 +248,16 @@ class CoverageData
      */
     private $updatedAt;
 
+    /**
+     * @var \AppBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
 
     /**
      * @var integer
@@ -752,6 +762,22 @@ class CoverageData
     public function setNoVacNomad($noVacNomad)
     {
         $this->noVacNomad = $noVacNomad;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
     }
 
 

@@ -14,7 +14,7 @@ use AppBundle\Service\Settings;
  * Campaign controller.
  *
  * @Route("campaign")
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_EDITOR')")
  */
 class CampaignController extends Controller
 {
@@ -48,6 +48,7 @@ class CampaignController extends Controller
     public function newAction(Request $request)
     {
         $campaign = new Campaign();
+        $campaign->setUser($this->getUser());
         $form = $this->createForm('AppBundle\Form\CampaignType', $campaign);
         $form->handleRequest($request);
 
@@ -90,10 +91,12 @@ class CampaignController extends Controller
      *
      * @Route("/{id}/edit", name="campaign_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, Campaign $campaign)
     {
         $deleteForm = $this->createDeleteForm($campaign);
+        $campaign->setUser($this->getUser());
         $editForm = $this->createForm('AppBundle\Form\CampaignType', $campaign);
         $editForm->handleRequest($request);
 
@@ -117,6 +120,7 @@ class CampaignController extends Controller
      *
      * @Route("/{id}", name="campaign_delete")
      * @Method("DELETE")
+     * @Security("has_role('EROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Campaign $campaign)
     {

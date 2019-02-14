@@ -27,3 +27,5 @@ Installation-Linode.md
 /web/custom_js_css/
 /web/geojson/
 composer.phar
+/docs/*
+
