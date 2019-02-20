@@ -52,7 +52,7 @@ abstract class CommonDashboardController extends DashController
 
 
         // set district param
-        $params['district'] = $districts ?? [];
+        $params['district'] = $districts;
         // default by campaign
         $params['by'] = 'campaign';
 

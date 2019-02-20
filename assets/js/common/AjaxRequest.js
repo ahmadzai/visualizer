@@ -139,7 +139,6 @@ class AjaxRequest {
             if(data.hasOwnProperty(index)) {
                 this.data = data[index];
                 this.renderTo = index;
-                console.log(this);
                 self.chart.visualize(this);
             }
         });
