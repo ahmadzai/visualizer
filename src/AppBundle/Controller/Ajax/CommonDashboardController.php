@@ -57,10 +57,12 @@ abstract class CommonDashboardController extends DashController
         $params['by'] = 'campaign';
 
         // flag to know the requested filter is for districts
+        //Todo: make more dynamic
         $byDistrict = (count($districts)>0 &&
                        !in_array("None", $districts) &&
                        !in_array("HR", $districts) &&
-                       !in_array("VHR", $districts)
+                       !in_array("VHR", $districts) &&
+                       !in_array("Focus", $districts)
                        );
         // if the filter was for district
         if($byDistrict) {

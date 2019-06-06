@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\Ajax;
 
 
+use AppBundle\Service\Exporter;
 use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Triangle;
 use AppBundle\Service\Settings;
@@ -489,5 +490,40 @@ class AjaxMainController extends CommonDashboardController
         return $data;
 
 
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @Route("/get_csv/district")
+     */
+    public function csvAction(Request $request) {
+        $campaigns = [34, 33, 32];
+        $params['by'] = 'district';
+        $params['district'] = [3301];
+        $infoAdmin =  $this->chart->chartData("CoverageData", 'aggBySubDistrict', $campaigns, $params);
+        $infoCatch =  $this->chart->chartData("CatchupData", 'aggBySubDistrict', $campaigns, $params);
+
+        $mixData = $this->triangulate($infoAdmin, $infoCatch);
+
+        $finalData = $this->allMathOps($mixData);
+
+        dump($finalData); die;
+        //return Exporter::exportCSV($info);
+    }
+
+    private function triangulate($data, $data1, $index = null) {
+        // required indexes in both sources
+        $indexes = ['RegMissed', 'TotalRecovered', 'TotalVac',
+            'RegAbsent', 'VacAbsent',
+            'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'];
+        return Triangle::triangulateCustom(
+            [
+                $index===null?$data:$data[$index],
+                ['data'=>$index===null?$data1:$data1[$index],
+                    'indexes'=>$indexes,
+                    'prefix'=>'c'
+                ]
+            ], 'joinkey');
     }
 }

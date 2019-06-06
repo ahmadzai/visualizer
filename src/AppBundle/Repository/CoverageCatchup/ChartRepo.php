@@ -786,10 +786,10 @@ class ChartRepo extends EntityRepository
     }
 
     /**
-     * @param $campaignIds
-     * @param $params ['by'=>'campaign', 'district'=>null, 'value'=>[]]
-     * @return mixed
-     */
+ * @param $campaignIds
+ * @param $params ['by'=>'campaign', 'district'=>null, 'value'=>[]]
+ * @return mixed
+ */
     public function aggByLocation($campaignIds, $params = ['by'=>'campaign', 'district'=>null]) {
 
         $joinKey = "p.provinceRegion";
@@ -822,6 +822,61 @@ class ChartRepo extends EntityRepository
                   JOIN cvr.district d JOIN d.province p 
                   WHERE(cvr.campaign in (:campaign) ".$condition.")
                   GROUP BY ".$groupBy);
+        $dq->setParameter('campaign', $campaignIds);
+
+        if(strpos($condition, "param1") !== false)
+            $dq->setParameter("param1", $params['district']);
+        if(strpos($condition, "param2") !== false)
+            $dq->setParameter("param2", $params['value']);
+
+        return $dq->getResult(Query::HYDRATE_SCALAR);
+    }
+
+    /**
+     * @param $campaignIds
+     * @param $params ['by'=>'campaign', 'district'=>null, 'value'=>[]]
+     * @return mixed
+     */
+    public function aggBySubDistrict($campaignIds, $params = ['by'=>'campaign', 'district'=>null]) {
+
+        $joinKey = "cmp.id, p.provinceRegion";
+        $select = ""; // default select has region
+        $groupBy = ", p.provinceRegion";
+        // set the condition
+        $condition = $this->createCondition($params);
+
+        if ($params['by'] === "region") {
+            $condition .= " AND p.provinceRegion IN (:param2)";
+        } elseif ($params['by'] === "province") {
+            $joinKey = "cmp.id, p.id";
+            $select = "p.id as PCODE, p.provinceName as Province, ";
+            $groupBy = " ,p.id";
+            $condition .= " AND p.id IN (:param2)";
+        }
+
+        // check if the district was not null
+        if(isset($params['district'])) {
+            $joinKey = "CASE 
+                            WHEN cvr.subDistrict IS NULL 
+                            THEN Concat(cmp.id, d.id) 
+                            ELSE CONCAT(cmp.id, d.id, cvr.subDistrict)
+                         END";
+            $groupBy = " ,p.id, cvr.district, cvr.subDistrict";
+            $select = "p.provinceName as Province, d.districtName as District, d.id as DCODE, cvr.subDistrict as Subdistrict, ";
+        }
+
+        $em = $this->getEntityManager();
+        $dq = $em->createQuery(
+            "SELECT $joinKey as joinkey, 
+                  p.provinceRegion as Region, ".$select."
+                  cmp.campaignStartDate as CDate, cmp.id as CID,
+                  cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth,
+                  cmp.campaignName as CName,
+                  ".$this->DQL."
+                  FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
+                  JOIN cvr.district d JOIN d.province p 
+                  WHERE(cvr.campaign in (:campaign) ".$condition.")
+                  GROUP BY cvr.campaign".$groupBy);
         $dq->setParameter('campaign', $campaignIds);
 
         if(strpos($condition, "param1") !== false)
@@ -962,7 +1017,9 @@ class ChartRepo extends EntityRepository
             $distType = $param['district'];
             if (in_array("None", $distType)) {
                 $cond = "AND d.districtRiskStatus IS NULL";
-            } elseif(in_array("HR", $distType) || in_array("VHR", $distType)) {
+            }
+            //Todo: make below filter dynamic
+            elseif(in_array("HR", $distType) || in_array("VHR", $distType) || in_array("Focus", $distType)) {
                 $cond = "AND d.districtRiskStatus IN (:param1) ";
             } elseif(in_array("all", $distType)) {
                 $cond = " ";
