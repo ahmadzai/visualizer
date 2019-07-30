@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Datatables\CatchupDataDatatable;
+use AppBundle\Datatables\RefusalCommDatatable;
 use AppBundle\Service\Charts;
 use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Settings;
@@ -27,26 +28,32 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * @package AppBundle\Controller
  * @Security("has_role('ROLE_USER')")
  */
-class CatchupDataController extends Controller
+class RefusalCommitteesController extends Controller
 {
 
     /**
      * @return Response
-     * @Route("/catchup_data", name="catchup_data")
+     * @Route("/ref_committees", name="ref_committees")
      */
     public function indexAction() {
 
-        return $this->render("pages/catchup_data/index.html.twig", [
-            'source'=>'CatchupData',
-            'url' => 'catchup_data',
-            'urlCluster' => 'catchup_data_cluster',
+//        $data = $this->getDoctrine()
+//            ->getRepository('AppBundle:District')
+//            ->selectDistrictBySourceProvinceAndCampaign("CatchupData", [33, 6], [32, 33, 34]);
+//
+//        dump($data); die;
+
+        return $this->render("pages/refusal_comm/index.html.twig", [
+            'source'=>'RefusalComm',
+            'url' => 'ref_committees',
+            'urlCluster' => 'cluster_ref_committees',
         ]);
     }
 
     /**
      * @param null $district
      * @return Response
-     * @Route("/catchup_data/clusters/{district}", name="catchup_data_cluster", options={"expose"=true})
+     * @Route("/ref_committees/clusters/{district}", name="cluster_ref_committees", options={"expose"=true})
      */
     public  function clusterLevelAction($district = null) {
 
@@ -64,13 +71,13 @@ class CatchupDataController extends Controller
     /**
      * @param Request $request
      * @param $type
-     * @Route("/catchup_data/download/{type}", name="catchup_data_download", options={"expose"=true})
+     * @Route("/ref_committees/download", name="ref_committees_data_download", options={"expose"=true})
      * @Method("GET")
      * @return Response
      * @Security("has_role('ROLE_EDITOR')")
      * @throws \Exception
      */
-    public function downloadAction(Request $request, $type='all') {
+    public function downloadAction(Request $request) {
 
         $isAjax = $request->isXmlHttpRequest();
 
@@ -80,8 +87,8 @@ class CatchupDataController extends Controller
 
         // or use the DatatableFactory
         /** @var DatatableInterface $datatable */
-        $datatable = $this->get('sg_datatables.factory')->create(CatchupDataDatatable::class);
-        $datatable->buildDatatable(['type'=>$type]);
+        $datatable = $this->get('sg_datatables.factory')->create(RefusalCommDatatable::class);
+        $datatable->buildDatatable();
 
         if ($isAjax) {
             $responseService = $this->get('sg_datatables.response');
@@ -89,10 +96,7 @@ class CatchupDataController extends Controller
             $dbQueryBuilder = $responseService->getDatatableQueryBuilder();
 
             $qb = $dbQueryBuilder->getQb();
-            if($type != "all") {
-                $qb->where("catchupdata.dataSource = :type");
-                $qb->setParameter('type', $type);
-            }
+
             $qb->addOrderBy('campaign.id', 'DESC');
             $qb->addOrderBy('district.province');
             $qb->addOrderBy('district.id');
@@ -105,7 +109,7 @@ class CatchupDataController extends Controller
             'a' => ['route'=>'#', 'title'=>'New Record', 'class'=>'btn-info'],
         );
         return $this->render('pages/table.html.twig',
-            ['datatable'=>$datatable,'title'=>'Catchup (Fieldbook) Data', 'buttons' => $buttons]);
+            ['datatable'=>$datatable,'title'=>'Refusals Committees Data', 'buttons' => $buttons]);
     }
 
     /**
@@ -113,7 +117,7 @@ class CatchupDataController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/bulk/delete/catchup_data", name="catchup_data_bulk_delete")
+     * @Route("/bulk/delete/ref_committees", name="refusal_committees_bulk_delete")
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      *
@@ -132,7 +136,7 @@ class CatchupDataController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
-            $repository = $em->getRepository('AppBundle:CatchupData');
+            $repository = $em->getRepository('AppBundle:RefusalComm');
 
             foreach ($choices as $choice) {
                 $entity = $repository->find($choice['id']);

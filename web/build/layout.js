@@ -1,4 +1,4 @@
-webpackJsonp([3],{"+GuM":function(t,e,n){var i,o;/*!
+webpackJsonp([6],{"+GuM":function(t,e,n){var i,o;/*!
  * Bootstrap Colorpicker v2.5.2
  * https://itsjavi.com/bootstrap-colorpicker/
  */

@@ -6,7 +6,27 @@ class ClusterFilter {
         $('#filterCampaign').multiselect({
             nonSelectedText: 'Campaigns',
             numberDisplayed: 2,
-            maxHeight: 250
+            maxHeight: 250,
+            onChange: function(element, checked) {
+                //console.log(element[0].value);
+                Filter.resetFilter('filterCluster');
+                Filter.resetFilter('filterDistrict');
+                Filter.resetFilter('filterProvince');
+
+                let campaign = $('#filterCampaign option:selected');
+                let selectedCampaigns = [];
+                $(campaign).each(function (index, region) {
+                    selectedCampaigns.push([$(this).val()]);
+                });
+
+                if(selectedCampaigns.length > 0) {
+                    let data = {
+                        'source': $('#ajaxUrl').data('source'),
+                        'campaign':selectedCampaigns,
+                    };
+                    Filter.ajaxRequest('filter_province_clst', data, 'filterProvince');
+                }
+            }
         });
 
         $('#filterProvince').multiselect({
@@ -27,9 +47,12 @@ class ClusterFilter {
                     selectedProvinces.push([$(this).val()]);
                 });
                 if(selectedProvinces.length > 0) {
-                    var data = {"province": selectedProvinces,
+                    var data = {
+                        "province": selectedProvinces,
                         "risk" : false,
-                        'campaign':$('#filterCampaign').val()};
+                        'campaign':$('#filterCampaign').val(),
+                        'source': $('#ajaxUrl').data('source'),
+                    };
                     Filter.ajaxRequest('filter_district', data, 'filterDistrict');
 
                 }
@@ -69,9 +92,12 @@ class ClusterFilter {
 
                     var campaign = $('#filterCampaign').val();
                     //console.log(campaign);
-                    var data = {"district": selectedDistricts,
+                    var data = {
+                        "district": selectedDistricts,
                         'campaign': campaign,
-                        'source':$('.data-source').data('source')};
+                        'source':$('.data-source').data('source'),
+
+                    };
                     Filter.ajaxRequest('filter_cluster', data, 'filterCluster');
 
                 }

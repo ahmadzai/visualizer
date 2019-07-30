@@ -10,6 +10,10 @@ import CatchupMaps from './catchup/Maps';
 import CoverageMaps from './coverage/Maps';
 import MainMaps from './main/Maps';
 
+import SettingRefComm from './refcomm/RefComm';
+import RefCommCluster from './refcomm/RefCommCluster';
+import RefCommMaps from './refcomm/Maps';
+
 export {
     SettingMain,
     SettingCoverage,
@@ -21,4 +25,7 @@ export {
     CatchupMaps,
     CoverageMaps,
     MainMaps,
+    SettingRefComm,
+    RefCommCluster,
+    RefCommMaps,
 };

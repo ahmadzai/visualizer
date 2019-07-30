@@ -68,21 +68,30 @@ class TestController extends Controller
 
 
         //Test for the General campaignStatistics Function
-        $province = ['by' => 'province', 'value' => [33, 6]];
+        $province = ['by' => 'province', 'value' => [33, 6], 'district'=>['Focus']];
+
+        $condition = ['3301Kandahar City1', '3301Kandahar City2', '3301Dand2', '6011', '6012'];
+        $district2 = ['by' => 'district', 'district'=>[3301, 601], 'extra'=>$condition];
+
+
         $district = ['by' => 'district', 'district' =>
                         [1701,1702,1703,1704,1705,1706,1707]
                     ];
-        $region = ['by' => 'region', 'value' => ['ER']];
-        $regionState = $charts->chartData('CoverageData', 'aggByCampaign',
-            [31], $district);
+        $region = ['by' => 'region', 'value' => ['ER'], 'district'=>null];
+//        $regionState = $charts->chartData('RefusalComm', 'aggBySubDistrict',
+//            [33, 34], $district2);
 
-        $missedByReasonPie = $charts->pieData(['RemAbsent'=>'Absent',
-            'RemNSS'=>'NSS',
-            'RemRefusal'=>'Refusal'], $regionState);
-        $missedByReasonPie['title'] = "Remaining Children By Reason";
-        $data['missed_by_reason_pie_1'] = $missedByReasonPie;
-
+        $data = $charts->chartData('RefusalComm', 'selectClustersByCondition', [33, 34], $province);
         dump($data);
+
+
+//        $missedByReasonPie = $charts->pieData(['RemAbsent'=>'Absent',
+//            'RemNSS'=>'NSS',
+//            'RemRefusal'=>'Refusal'], $regionState);
+//        $missedByReasonPie['title'] = "Remaining Children By Reason";
+//        $data['missed_by_reason_pie_1'] = $missedByReasonPie;
+//
+//        dump($data);
         die;
         /*
 

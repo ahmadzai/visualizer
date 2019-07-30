@@ -37,7 +37,7 @@ class AjaxFilterController extends Controller
 
         $campaigns = $em->getRepository('AppBundle:Campaign')->selectCampaignBySource($source);
 
-        $regions = $em->getRepository('AppBundle:Province')->selectAllRegions();
+        $regions = $em->getRepository('AppBundle:Province')->selectRegionsBySourceAndCampaign($source, $selectedCampaigns);
 
         return $this->render("shared/filter-small.html.twig", ['campaigns' => $campaigns, 'regions' => $regions, 'selectedCampaign' => $selectedCampaigns]);
     }
@@ -61,7 +61,7 @@ class AjaxFilterController extends Controller
 
         $campaigns = $em->getRepository('AppBundle:Campaign')->selectCampaignBySource($source);
 
-        $provinces = $em->getRepository("AppBundle:Province")->findAll();
+        $provinces = $em->getRepository("AppBundle:Province")->selectProvinceBySourceAndCampaign($source, $campaigns);
         $data = [
             'campaigns' => $campaigns,
             'provinces' => $provinces,
@@ -139,13 +139,14 @@ class AjaxFilterController extends Controller
     }
 
     /**
-     * @Route("filter/province", name="filter_province")
+     * @Route("filter/region", name="filter_region")
      * @param Request $request
      * @return Response
      */
-    public function filterProvinceAction(Request $request) {
+    public function filterRegionAction(Request $request) {
 
-        $region = $request->get('region');
+        $campaign = $request->get('campaign');
+        $source = $request->get('source');
         //$requestData = json_decode($content);
 
 
@@ -153,7 +154,39 @@ class AjaxFilterController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $data = $em->getRepository('AppBundle:Province')
-            ->selectProvinceByRegion($region);
+            ->selectRegionsBySourceAndCampaign($source, $campaign);
+
+        $response = array();
+        foreach ($data as $option) {
+
+            $response[] = array('label' => $option['provinceRegion'], 'value' => $option['provinceRegion']);
+
+        }
+
+        return new Response(
+            json_encode($response)
+        );
+
+    }
+
+    /**
+     * @Route("filter/province", name="filter_province")
+     * @param Request $request
+     * @return Response
+     */
+    public function filterProvinceAction(Request $request) {
+
+        $region = $request->get('region');
+        $campaign = $request->get('campaign');
+        $source = $request->get('source');
+        //$requestData = json_decode($content);
+
+
+        //return new Response(var_dump($content));
+
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('AppBundle:Province')
+            ->selectProvinceBySourceRegionAndCampaign($source, $region, $campaign);
 
         $response = array();
 
@@ -166,10 +199,44 @@ class AjaxFilterController extends Controller
                 }
             }
 
-            $response[] = array('label'=>$reg[0], 'children'=>$temp);
+
+            $response[] = array('label'=>count($temp) > 0 ? $reg[0] : 'No Data for '.$reg[0], 'children'=>$temp);
         }
 
 
+
+        return new Response(
+            json_encode($response)
+        );
+
+    }
+
+
+    /**
+     * @Route("filter/clst_province", name="filter_province_clst")
+     * @param Request $request
+     * @return Response
+     */
+    public function filterProvinceClstAction(Request $request) {
+
+        $campaign = $request->get('campaign');
+        $source = $request->get('source');
+        //$requestData = json_decode($content);
+
+
+        //return new Response(var_dump($content));
+
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('AppBundle:Province')
+            ->selectProvinceBySourceAndCampaign($source, $campaign);
+
+        $response = array();
+
+        foreach ($data as $option) {
+
+            $response[] = array('label' => $option['provinceName'], 'value' => $option['id']);
+            //$response .= "<option value='".$option['p_provinceCode']."'>".$option['p_provinceName']."</option>";
+        }
 
         return new Response(
             json_encode($response)
@@ -185,6 +252,9 @@ class AjaxFilterController extends Controller
     public function filterDistrictAction(Request $request) {
 
         $province = $request->get('province');
+        $source = $request->get('source');
+        $campaign = $request->get('campaign');
+
         $isRiskEnable = $request->get("risk");
         //$requestData = json_decode($content);
 
@@ -193,11 +263,13 @@ class AjaxFilterController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $data = $em->getRepository('AppBundle:District')
-            ->selectDistrictByProvince($province);
+            ->selectDistrictBySourceProvinceAndCampaign($source, $province, $campaign);
 
         $response = array();
+        //TODO: Dynamically find-out what categories of districts are returning.
         $flag_vhr = false;
         $flag_hr = false;
+        $flag_focus = false;
         foreach ($province as $prov) {
             $temp = array();
             $pname = '';
@@ -206,6 +278,8 @@ class AjaxFilterController extends Controller
                     $flag_vhr = true;
                 if($option['d_districtRiskStatus'] == "HR")
                     $flag_hr = true;
+                if($option['d_districtRiskStatus'] == "Focus")
+                    $flag_focus = true;
                 if($option['id'] == $prov[0]) {
                     $pname = $option['provinceName'];
                     $temp[] = array('label' => $option['d_districtName'], 'value'=>$option['d_id']);
@@ -221,6 +295,8 @@ class AjaxFilterController extends Controller
         if($isRiskEnable === true || $isRiskEnable === null) {
             if ($flag_vhr)
                 $moreOptions[] = array('label' => 'VHR districts', 'value' => 'VHR');
+            if ($flag_focus)
+                $moreOptions[] = array('label' => 'Focus districts', 'value' => 'Focus');
             if ($flag_hr) {
                 $moreOptions[] = array('label' => 'HR districts', 'value' => 'HR');
             }

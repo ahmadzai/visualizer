@@ -97,7 +97,7 @@ class DashController extends Controller
      */
     protected function campaignsData($entity, $campaigns, $params = null)
     {
-
+        //dump($params); die;
         // if only filter by campaigns was selected
         $campData = $params === null ?
             $this->session->get($entity):

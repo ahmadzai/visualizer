@@ -365,6 +365,72 @@ class HtmlTable
         return$row;
     }
 
+    /**
+     * @param $data
+     * @return string (html)
+     */
+    public static function infoForRefusalComm($data) {
+        if(count($data) === 0 || $data === null)
+            return "";
+        $row = "<div class=\"col-md-3 col-sm-6 col-xs-12\">
+                                <div class=\"c-info-box\">
+                                    <span class=\"c-info-box-icon bg-aqua\"><i class=\"fa fa-eyedropper\"></i></span>
+
+                                    <div class=\"c-info-box-content\">
+                                        <span class=\"c-info-box-text\">Vac By Cluster Committees</span>
+                                        <span class=\"c-info-box-number info-vaccinated-child\">
+                                            ". number_format($data[0]['refusalVacByCRC'],0, '.', ',') ."
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class=\"col-md-3 col-sm-6 col-xs-12\">
+                                <div class=\"c-info-box\">
+                                    <span class=\"c-info-box-icon bg-yellow\"><i class=\"fa fa-eyedropper\"></i></span>
+
+                                    <div class=\"c-info-box-content\">
+                                        <span class=\"c-info-box-text\">Vac By Religious Comm </span>
+                                        <span class=\"c-info-box-number info-missed-child\">
+                                            ". number_format($data[0]['refusalVacByRC'],0, '.', ',')."
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class=\"col-md-3 col-sm-6 col-xs-12\">
+                                <div class=\"c-info-box\">
+                                    <span class=\"c-info-box-icon bg-maroon\"><i class=\"fa fa-eyedropper\"></i></span>
+
+                                    <div class=\"c-info-box-content\">
+                                        <span class=\"c-info-box-text\">Vac By CIP</span>
+                                        <span class=\"c-info-box-number info-used-vials\">
+                                            ".number_format($data[0]['refusalVacByCIP'],0, '.', ',')."
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class=\"col-md-3 col-sm-6 col-xs-12\">
+                                <div class=\"c-info-box\">
+                                    <span class=\"c-info-box-icon bg-orange\"><i class=\"fa fa-eyedropper\"></i></span>
+
+                                    <div class=\"c-info-box-content\">
+                                        <span class=\"c-info-box-text\">Vac By Senior</span>
+                                        <span class=\"c-info-box-number info-coverage\">
+                                            ".number_format($data[0]['refusalVacBySenior'],0, '.', ',')."
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>";
+        return$row;
+    }
+
 
     /**
      * @param $data

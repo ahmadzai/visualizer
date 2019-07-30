@@ -97,6 +97,31 @@ class MenuBuilder implements ContainerAwareInterface
             $menu['Catchup Data']['Data Entry']->setAttribute('icon', 'fa-table');
         }
 
+        //------------------------------------------------------- Refusals Committees Performance Dash-Board --------
+        $menu->addChild("Refusals Committees", array('uri'=>'#'))->setExtra('info', 'refusals committees performance dashboard');
+        $menu['Refusals Committees']->setAttribute('icon','fa-database');
+        $menu['Refusals Committees']->setAttribute('sub_menu_icon', 'fa-angle-left');
+
+        // Sub menu (child of Catchup Data
+        // Dashboard
+        $menu['Refusals Committees']->addChild("Dashboard", array('route'=>'ref_committees', 'extras'=>['route'=>'cluster_ref_committees']))
+            ->setExtra('info', 'Refusals Committees Data');
+        $menu['Refusals Committees']->setChildrenAttributes(array('class'=>'treeview-menu'));
+        $menu['Refusals Committees']['Dashboard']->setAttribute('icon','fa-dashboard');
+        if($editRole) {
+            // Data Download
+            $menu['Refusals Committees']->addChild("Download", array('route' => 'ref_committees_data_download'))->setExtra('info', 'Download Refusals Committees Data');
+            $menu['Refusals Committees']['Download']->setAttribute('icon', 'fa-download');
+            // Data Upload
+            $menu['Refusals Committees']->addChild("Upload", array('route' => 'import_data', 'routeParameters' => ['entity' => 'refusal_comm'],
+                'extras' => ['route' => 'import_ref_committees_data_handle']))
+                ->setExtra('info', 'Catchup Data');
+            $menu['Refusals Committees']['Upload']->setAttribute('icon', 'fa-upload');
+            // Data Entry
+            $menu['Refusals Committees']->addChild("Data Entry", array('uri' => '#'))->setExtra('info', 'Catchup Data');
+            $menu['Refusals Committees']['Data Entry']->setAttribute('icon', 'fa-table');
+        }
+
         if(!$partnerRole) {
             //------------------------------------------------------- ICN Data TPM ---------------------------------------
             $menu->addChild("ICN Monitoring TPM", array('uri' => '#'))->setExtra('info', 'ICN Monitoring Report');

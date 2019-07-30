@@ -36,15 +36,14 @@ class AjaxController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-            //$campaigns = $em->getRepository('AppBundle:Campaign')->findAll();
-            $campaigns = $em->createQuery(
-                "SELECT cmp.id, cmp.campaignName FROM AppBundle:Campaign cmp ORDER BY cmp.id DESC"
-            )
-                ->getResult(Query::HYDRATE_SCALAR);
+            $term = $request->get('q');
+
+            $campaigns = $em->getRepository('AppBundle:Campaign')->searchCampaigns($term);
+
             $result = array();
 
             foreach ($campaigns as $campaign) {
-                $result[$campaign['id']] = $campaign['campaignName'];
+                $result[$campaign->getId()] = $campaign->getCampaignName();
             }
 
             //$result = array_reverse($result, true);
@@ -68,7 +67,8 @@ class AjaxController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-            $districts = $em->getRepository('AppBundle:District')->findAll();
+            $term = $request->get('q');
+            $districts = $em->getRepository('AppBundle:District')->searchDistricts($term);
 
             $result = array();
 
@@ -95,7 +95,10 @@ class AjaxController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-            $provinces = $em->getRepository('AppBundle:Province')->findAll();
+
+            $term = $request->get('q');
+
+            $provinces = $em->getRepository('AppBundle:Province')->searchProvinces($term);
 
             $result = array();
 

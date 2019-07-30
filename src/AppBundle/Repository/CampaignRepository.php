@@ -40,4 +40,16 @@ class CampaignRepository extends EntityRepository {
             ->getResult();
     }
 
+    public function searchCampaigns($term) {
+        $term = $term ? $term : '';
+        return $this->getEntityManager()
+            ->getRepository('AppBundle:Campaign')
+            ->createQueryBuilder('p')
+            ->where('p.campaignName LIKE :term')
+            ->setParameter('term', '%'.$term.'%')
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }
