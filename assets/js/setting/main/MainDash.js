@@ -54,7 +54,7 @@ MainChartsSetting['total_remaining_1'] = {'chartType':{'type':"column"},
     'colors':[colors.REM_MISSED], 'legend':{'enabled':false}};
 
 MainChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column", 'stacking': 'normal'},
-    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
+    'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP, colors.LIME,
         colors.DISCREP, colors.REM_MISSED],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
     'menu':[{chart:'normal', title:'Normal Chart'},
@@ -75,7 +75,7 @@ MainChartsSetting['map_data'] = {'chartType': {'type': 'raw'}};
 // All Type Missed
 MainChartsSetting['recovered_all_type_1'] = {
     'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5,
-        colors.RECOVERED_CATCHUP, colors.REM_MISSED, colors.DISCREP],
+        colors.RECOVERED_CATCHUP, colors.LIME, colors.REM_MISSED, colors.DISCREP],
     'chartType' : {'type': 'halfpie'},
     'legend':true
 };
@@ -96,7 +96,7 @@ MainChartsSetting['recovered_nss_1'] = {
 // Refusal
 MainChartsSetting['recovered_refusal_1'] = {
     'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5,
-        colors.RECOVERED_CATCHUP, colors.REM_REFUSAL, colors.DISCREP],
+        colors.RECOVERED_CATCHUP, colors.LIME, colors.REM_REFUSAL, colors.DISCREP],
     'chartType' : {'type': 'halfpie'},
     'legend':true
 };
@@ -110,7 +110,7 @@ MainChartsSetting['campaign_title'] = {
 
 // Ten campaign vaccinated children
 MainChartsSetting['vac_child_trend'] = {
-    'colors':[colors.VACCINATED, colors.VACCINATED_CATCHUP],
+    'colors':[colors.VACCINATED, colors.VACCINATED_CATCHUP, colors.LIME],
     'chartType':{'type':"column", 'stacking':'normal'}
 };
 // Ten campaign missed children
@@ -128,7 +128,7 @@ MainChartsSetting['missed_recovered_trend'] = {
     // 'colors': [colors.DISCREP, colors.REM_MISSED, colors.RECOVERED_CATCHUP,
     //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
     'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
-        colors.DISCREP, colors.REM_MISSED],
+        colors.LIME, colors.DISCREP, colors.REM_MISSED],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]
@@ -158,7 +158,7 @@ MainChartsSetting['refusal_recovered_trend'] = {
     // 'colors': [colors.DISCREP, colors.REM_REFUSAL, colors.RECOVERED_CATCHUP,
     //     colors.RECOVERED_DAY5, colors.RECOVERED_3DAYS],
     'colors': [colors.RECOVERED_3DAYS, colors.RECOVERED_DAY5, colors.RECOVERED_CATCHUP,
-        colors.DISCREP, colors.REM_REFUSAL],
+        colors.LIME, colors.DISCREP, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'percent'},
     'menu':[{chart:'percent', title:'Percent Chart'},
         {chart: 'normal', title:'Normal Chart'}]

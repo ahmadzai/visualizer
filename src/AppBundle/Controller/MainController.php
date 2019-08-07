@@ -48,7 +48,7 @@ class MainController extends Controller
 
         $data = ['district' => $district===null?0:$district];
         $data['title'] = 'Triangulated Clusters Trends';
-        $data['pageTitle'] = "Triangulated Data (Admin, Catchup) Trends By Clusters";
+        $data['pageTitle'] = "Triangulated Data (Admin, Catchup and Refusals Committees' Data) Trends By Clusters";
         $data['source'] = 'CoverageData';
         $data['ajaxUrl'] = 'main_dashboard';
         return $this->render("pages/clusters-table.html.twig",

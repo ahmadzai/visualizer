@@ -81,6 +81,12 @@ class RefusalComm
     private $campaign;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true, name="campaign_phase", length=100)
+     */
+    private $campaignPhase;
+
+    /**
      * @var District
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District")
@@ -242,6 +248,22 @@ class RefusalComm
     public function setCampaign($campaign)
     {
         $this->campaign = $campaign;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampaignPhase(): string
+    {
+        return $this->campaignPhase;
+    }
+
+    /**
+     * @param string $campaignPhase
+     */
+    public function setCampaignPhase(string $campaignPhase)
+    {
+        $this->campaignPhase = $campaignPhase;
     }
 
     /**

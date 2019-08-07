@@ -187,27 +187,27 @@ class Triangle
      */
     public static function trIndicators($indicator) {
 
-        $nIdicator['cIndicator'] = 'cTotalRecovered';
-        $nIdicator['fIndicator'] = 'fTotalRemaining';
+        $nIndicator['cIndicator'] = 'cTotalRecovered';
+        $nIndicator['fIndicator'] = 'fTotalRemaining';
         switch ($indicator) {
             case "RemAbsent":
             case "RemAbsentPer":
-                $nIdicator['cIndicator'] = 'cVacAbsent';
-                $nIdicator['fIndicator'] = 'fTotalAbsent';
+                $nIndicator['cIndicator'] = 'cVacAbsent';
+                $nIndicator['fIndicator'] = 'fTotalAbsent';
                 break;
             case "RemNSS":
             case "RemNSSPer":
-                $nIdicator['cIndicator'] = 'cVacNSS';
-                $nIdicator['fIndicator'] = 'fTotalNSS';
+                $nIndicator['cIndicator'] = 'cVacNSS';
+                $nIndicator['fIndicator'] = 'fTotalNSS';
                 break;
             case "RemRefusal":
             case "RemRefusalPer":
-                $nIdicator['cIndicator'] = 'cVacRefusal';
-                $nIdicator['fIndicator'] = 'fTotalRefusal';
+                $nIndicator['cIndicator'] = 'cVacRefusal';
+                $nIndicator['fIndicator'] = 'fTotalRefusal';
                 break;
         }
 
-        return $nIdicator;
+        return $nIndicator;
     }
 
 }

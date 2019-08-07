@@ -29,6 +29,14 @@ export default {
     YELLOW: '#fbff5d',
     BLUE: '#08beff',
     LIGHT_BLUE: '#71e4dc',
+    PURPLE: '#8A32E4',
+    LIME: '#B8E405',
+
+    // colors for Refusal Committees
+    CRC: '#4de408',
+    RC: '#c8e409',
+    CIP: '#00DCE4',
+    SENIOR: '#6105e4'
 
 }
 

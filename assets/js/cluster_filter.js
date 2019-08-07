@@ -3,7 +3,7 @@
 import $ from 'jquery';
 import Filter from './filter/ClusterFilter';
 import ApiCall from './common/AjaxRequest';
-import {CatchupCluster, CoverageCluster, MainCluster} from './setting/';
+import {CatchupCluster, CoverageCluster, MainCluster, RefCommCluster} from './setting/';
 import Alerts from './common/Alerts';
 import FilterListener from './filter/FilterListener';
 import FilterControl from './filter/FilterControl';
@@ -22,6 +22,8 @@ $(function () {
         Setting = CoverageCluster;
     else if(urlPostFix === "catchup_data")
         Setting = CatchupCluster;
+    else if(urlPostFix === "ref_committees")
+        Setting = RefCommCluster;
 
     // check if the info window should be opend
     let preLoadedDistrict = $('#ajaxUrl').data('district'); // check pre-loaded district

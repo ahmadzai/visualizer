@@ -52,7 +52,10 @@ class AjaxMainController extends CommonDashboardController
     protected function trendAction($entity, $campaigns, $params, $titles)
     {
         $trends =  $this->combineData("both", $campaigns, $params);
-        $trends = $trends['trend']; // it comes in the array index = trend
+        $refCommInfo = $this->campaignsData("RefusalComm", $campaigns, $params);
+
+        $trends = $this->triangulate($trends, $refCommInfo, "refusalComm", 'trend');
+        //$trends = $trends['trend']; // it comes in the array index = trend
         //dump($trends); die;
 
         $category = [['column'=>'Region'],
@@ -68,18 +71,19 @@ class AjaxMainController extends CommonDashboardController
 
         // --------------------------- Trend of Vaccinated Children --------------------------------
         $vacChildTrend = $this->chart->chartData1Category($category[1],
-            ['TotalVac'=>'Vaccinated Campaign',
-                'cTotalVac'=>'Vaccinated Catchup'],
+            ['TotalVac'=>'Vac Camp',
+                'cTotalVac'=>'Vac Catchup',
+                'rfc_totalRefusalVacByRefComm'=>'Vac By Committees'],
             $trends);
-        $vacChildTrend['title'] = 'Vaccinated Children During '.$during.' And Catchup';
+        $vacChildTrend['title'] = 'Vaccinated Children During '.$during.', Catchup and By Committees';
         $vacChildTrend['subTitle'] = $subTitle;
         $data['vac_child_trend'] = $vacChildTrend;
 
         // --------------------------- Trend of Missed Children -------------------------------------
         $missedChildTrend = $this->chart->chartData1Category($category[1],
-            ['TotalRemaining'=>'Remaining After Campaign',
-                'Remaining' => 'Remaining After Catchup'], $trends);
-        $missedChildTrend['title'] = 'Remaining Children After '.$during.' And Catchup';
+            ['TotalRemaining'=>'Rem After Campaign',
+                'FinalRemaining' => 'Final Remaining After Catchup'], $trends);
+        $missedChildTrend['title'] = 'Remaining Children After '.$during.', Catchup and Committees Work';
         $missedChildTrend['subTitle'] = $subTitle;
         $data['missed_child_trend'] = $missedChildTrend;
 
@@ -88,8 +92,8 @@ class AjaxMainController extends CommonDashboardController
             ['Disc'=>'Discrip',
                 'DiscRemainingAbsent'=>'Absent',
                 'DiscRemainingNSS'=>'NSS',
-                'DiscRemainingRefusal'=>'Refusal'], $trends);
-        $missedByTypeTrend['title'] = 'Remaining Children By Reason After '.$during.' And Catchup';
+                'DiscFinalRemainingRefusal'=>'Refusal'], $trends);
+        $missedByTypeTrend['title'] = 'Remaining Children By Reason After '.$during.', Catchup and Committees';
         $missedByTypeTrend['subTitle'] = $subTitle;
         $data['missed_by_type_trend'] = $missedByTypeTrend;
 
@@ -99,11 +103,12 @@ class AjaxMainController extends CommonDashboardController
                 'Recovered3Days'=>'3Days' ,
                 'RecoveredDay4'=>'Day5',
                 'cTotalRecovered'=>'Catchup',
+                'rfc_totalRefusalVacByRefComm'=>'Committees',
                 'Disc'=>'Discrip',
-                'DiscRemaining'=>'Remaining',
+                'DiscFinalRemaining'=>'Remaining',
                 ],
             $trends);
-        $missedRecoveredTrend['title'] = "Remaining Children Recovery Camp/Revisit/Catchup";
+        $missedRecoveredTrend['title'] = "Remaining Children Recovery Camp/Revisit/Catchup/Committees";
         $missedRecoveredTrend['subTitle'] = $subTitle;
         $data['missed_recovered_trend'] = $missedRecoveredTrend;
 
@@ -142,25 +147,26 @@ class AjaxMainController extends CommonDashboardController
                 'VacRefusal3Days'=>'3Days' ,
                 'VacRefusalDay4'=>'Day5',
                 'cVacRefusal'=>'Catchup',
+                'rfc_totalRefusalVacByRefComm'=>'Committees',
                 'DiscRefusal'=>'Discrip',
-                'DiscRemainingRefusal'=>'Remaining',
+                'DiscFinalRemainingRefusal'=>'Remaining',
                 ],
             $trends);
-        $refusalRecoveredTrend['title'] = "Refusal Children Recovery Camp/Revisit/Catchup";
+        $refusalRecoveredTrend['title'] = "Refusal Children Recovery Camp/Revisit/Catchup/Committees";
         $refusalRecoveredTrend['subTitle'] = $subTitle;
         $data['refusal_recovered_trend'] = $refusalRecoveredTrend;
 
         // ------------------------------ Trend of Missed Recovery -------------------------------
         $missedChildRecoveryTrend = $this->chart->chartData1Category($category[1],
             [
-                'FinalVacRefusal'=>'Recovered Refusal',
+                'FinalVaccinatedRefusal'=>'Recovered Refusal',
                 'FinalVacNSS'=>'Recovered NSS',
                 'FinalVacAbsent'=>'Recovered Absent',
                 'DiscRemaining'=>'Remaining',
                 ],
             $trends);
         $missedChildRecoveryTrend['title'] = "Recovering Missed Children By Reason during ".
-                                              $during." and Catchup";
+                                              $during.", Catchup and by Committees";
         $missedChildRecoveryTrend['subTitle'] = $subTitle;
         $data['missed_child_recovery_trend'] = $missedChildRecoveryTrend;
 
@@ -177,9 +183,13 @@ class AjaxMainController extends CommonDashboardController
     protected function latestInfoAction($entity, $campaigns, $params, $titles)
     {
         $info =  $this->combineData('both', $campaigns, $params);
-        $campInfo = $info['oneCamp']; // it comes in the array index = trend
+
+        $refCommInfo = $this->campaignsData("RefusalComm", $campaigns, $params);
+
+        $campInfo = $this->triangulate($info, $refCommInfo, "refusalComm", 'oneCamp');
+        $campAgg = $this->triangulate($info, $refCommInfo, "refusalComm", 'oneCampAgg');
+
         $campInfo = $this->allMathOps($campInfo);
-        $campAgg = $info['oneCampAgg']; // get the aggregated data
         $campAgg = $this->allMathOps($campAgg);
 
         $subTitle = $titles['subTitle'];
@@ -188,7 +198,7 @@ class AjaxMainController extends CommonDashboardController
         // ---------------------------- Pie Chart one campaign missed by reason ----------------------------
         $missedByReasonPie = $this->chart->pieData(['DiscRemainingAbsent'=>'Absent',
             'DiscRemainingNSS'=>'NSS',
-            'DiscRemainingRefusal'=>'Refusal'], $campInfo);
+            'DiscFinalRemainingRefusal'=>'Refusal'], $campInfo);
         $missedByReasonPie['title'] = "Remaining Children By Reason";
         $data['missed_by_reason_pie_1'] = $missedByReasonPie;
 
@@ -198,11 +208,12 @@ class AjaxMainController extends CommonDashboardController
                 'Recovered3Days'=>'3Days',
                 'RecoveredDay4'=>'Day5',
                 'cTotalRecovered'=>'Catchup',
-                'DiscRemaining'=>'Remaining',
+                'rfc_totalRefusalVacByRefComm'=>'Committees',
+                'DiscFinalRemaining'=>'Remaining',
                 'Disc' => 'Discrep'
             ],
             $campInfo);
-        $recoveredAllType['title'] = "Missed Children Recovery Camp/Revisit/Catchup";
+        $recoveredAllType['title'] = "Missed Children Recovery Camp/Revisit/Catchup/Committees";
         $recoveredAllType['subTitle'] = $subTitle;
         $data['recovered_all_type_1'] = $recoveredAllType;
 
@@ -237,18 +248,19 @@ class AjaxMainController extends CommonDashboardController
             ['VacRefusal3Days'=>'3Days',
             'VacRefusalDay4'=>'Day5',
             'cVacRefusal'=>'Catchup',
-            'DiscRemainingRefusal'=>'Remaining',
+            'rfc_totalRefusalVacByRefComm'=>'Committees',
+            'DiscFinalRemainingRefusal'=>'Remaining',
             'DiscRefusal' => 'Discrep'
             ],
             $campInfo);
-        $recoveredRefusal['title'] = "Refusal Children Recovery Camp/Revisit";
+        $recoveredRefusal['title'] = "Refusal Children Recovery Camp/Revisit/Committees";
         $recoveredRefusal['subTitle'] = $subTitle;
         $data['recovered_refusal_1'] = $recoveredRefusal;
 
         // ---------------------------- last campaign total missed by region -------------------------------
 
         $vacWastage = $this->chart->chartData1Category(['column'=>$titles['aggType']],
-            ['DiscRemaining'=>'Still Remaining'], $campAgg);
+            ['DiscFinalRemaining'=>'Still Remaining'], $campAgg);
         $vacWastage['title'] = 'Remaining children after Camp/Revisit';
         $vacWastage['subTitle'] = $subTitle;
         $data['total_remaining_1'] = $vacWastage;
@@ -261,11 +273,12 @@ class AjaxMainController extends CommonDashboardController
                     'Recovered3Days'=>'3Days',
                     'RecoveredDay4'=>'Day5',
                     'cTotalRecovered'=>'Catchup',
+                    'rfc_totalRefusalVacByRefComm'=>'Committees',
                     'Disc' => 'Discrep',
-                    'DiscRemaining'=>'Remaining',
+                    'DiscFinalRemaining'=>'Remaining',
 
                 ], $campAgg);
-            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign, Catchup and Committees';
             $totalRemaining['subTitle'] = $subTitle;
             $data['total_recovered_remaining_1'] = $totalRemaining;
         } else {
@@ -279,11 +292,12 @@ class AjaxMainController extends CommonDashboardController
                     'Recovered3Days'=>'3Days',
                     'RecoveredDay4'=>'Day5',
                     'cTotalRecovered'=>'Catchup',
+                    'rfc_totalRefusalVacByRefComm'=>'Committees',
                     'Disc' => 'Discrep',
-                    'DiscRemaining'=>'Remaining',
+                    'DiscFinalRemaining'=>'Remaining',
 
                 ], $campAgg);
-            $totalRemaining['title'] = 'Missed Children Recovery During Campaign and Catchup';
+            $totalRemaining['title'] = 'Missed Children Recovery During Campaign, Catchup and Committees';
             $totalRemaining['subTitle'] = $subTitle;
             $data['total_recovered_remaining_1'] = $totalRemaining;
         }
@@ -311,19 +325,19 @@ class AjaxMainController extends CommonDashboardController
     protected function clustersInfoAction($entity, $campaigns, $params, $controlParams = null)
     {
         $oneCampData = $this->combineClustersData('both', $campaigns, $params);
-        $oneCampData = Triangle::mathOps($oneCampData,
-            ['TotalRemaining', 'cRegMissed'], '-', 'cDisc');
-        $oneCampData = Triangle::mathOps($oneCampData,
-            ['TotalRemaining', 'cTotalRecovered'], '-', 'RemTotal');
-        $oneCampData = Triangle::mathOps($oneCampData,
-            ['RemTotal', 'cDisc'], '-', 'FinalTotalRemaining');
+        $refusalCommOneCampData = $this->clustersData("RefusalComm", $campaigns, $params);
+        $oneCampData = $this->triangulate($oneCampData, $refusalCommOneCampData, "refusalComm");
+
+        $oneCampData = $this->allMathOps($oneCampData);
+
         $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
             [
                 'Recovered3Days'=>'3Days',
                 'RecoveredDay4'=>'Day5',
                 'cTotalRecovered'=>'Catchup',
-                'cDisc' => 'Discrep',
-                'FinalTotalRemaining'=>'Remaining',
+                'rfc_totalRefusalVacByRefComm'=>'Committees',
+                'Disc' => 'Discrep',
+                'DiscFinalRemaining'=>'Remaining',
             ],
             $oneCampData, true);
         $campaign = "No data for this campaign as per current filter";
@@ -338,21 +352,21 @@ class AjaxMainController extends CommonDashboardController
     {
         // fetch the data
         $heatMapData = $this->combineClustersData('both', $campaigns, $params);
-        // get the clusters from the params as they needed for the table
+        // load refusal committees clusters data
+        $refusalCommHeatMapData = $this->clustersData("RefusalComm", $campaigns, $params);
+
+        $heatMapData = $this->triangulate($heatMapData, $refusalCommHeatMapData, "refusalComm");
+
+        $heatMapData = $this->allMathOps($heatMapData);
         $clusters = $params['cluster'];
         // set the calcTypeArray
         $calcTypeArray = ['type'=>'number'];
-        if($controlParams['calcType'] === 'percent') {
-            $calcTypeArray = ['type'=>'percent', 'column'=>'CalcTarget'];
-        }
-        // get the selectType from controlParams
-        $selectType = $controlParams["selectType"];
-        $newIndicator = Triangle::trIndicators($selectType);
-        $heatMapDataCalc = Triangle::mathOps($heatMapData,
-            [str_replace("Per", "", $selectType),$newIndicator['cIndicator']],
-                                                   '-', $newIndicator['fIndicator']);
-        $rawData = $this->chart->clusterDataForHeatMap($heatMapDataCalc,
-                                            $newIndicator['fIndicator'],
+
+        $selectType = $controlParams["selectType"] === 'TotalRemaining' ?
+            'FinalRemaining' : $controlParams['selectType'];
+
+        $rawData = $this->chart->clusterDataForHeatMap($heatMapData,
+                                            $selectType,
                                             ['column' => 'CID', 'substitute' => 'shortName'],
                                             $clusters,
                                             $calcTypeArray, 'table');
@@ -370,7 +384,7 @@ class AjaxMainController extends CommonDashboardController
         $table = HtmlTable::heatMapTable($rawData['data'],
             $cols, HtmlTable::heatMapTableHeader($selectType),
             $stops['minValue'],
-            $stops['maxValue']);
+            $stops['maxValue'], "normal", true);
 
         $data['cluster_trend'] = $table;
         //==================================== Clusters Trend Charts ===========================
@@ -378,6 +392,10 @@ class AjaxMainController extends CommonDashboardController
             'both',
             $controlParams['locTrendIds'], $params
         );
+
+        $refusalCommLocTrends = $this->clustersData("RefusalComm", $controlParams['locTrendIds'], $params);
+
+        $locTrends = $this->triangulate($locTrends, $refusalCommLocTrends, "refusalComm");
 
         $locTrends = $this->allMathOps($locTrends);
 
@@ -390,7 +408,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['FinalTotalVac'=>'Recovered', 'DiscRemaining'=>'Remaining'],
+            ['FinalTotalVaccinated'=>'Recovered', 'DiscFinalRemaining'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'Missed Children Recovery';
@@ -423,7 +441,7 @@ class AjaxMainController extends CommonDashboardController
         $locTrendAllType = $this->chart->chartData2Categories(
             ['column'=>'Cluster'],
             $category[1],
-            ['FinalVacRefusal'=>'Recovered', 'DiscRemainingRefusal'=>'Remaining'],
+            ['FinalVaccinatedRefusal'=>'Recovered', 'DiscFinalRemainingRefusal'=>'Remaining'],
             $locTrends
         );
         $locTrendAllType['title'] = 'ICN Reduced Refusal Children';
@@ -443,6 +461,13 @@ class AjaxMainController extends CommonDashboardController
             'DiscRemaining');
         $data = Triangle::mathOps($data, ['TotalVac', 'cTotalVac'], '+',
             'FinalTotalVac');
+        // refusals calculation after refusal committees
+        $data = Triangle::mathOps($data, ['Remaining', 'rfc_totalRefusalVacByRefComm'],
+            "-", "FinalRemaining");
+        $data = Triangle::mathOps($data, ['DiscRemaining', 'rfc_totalRefusalVacByRefComm'],
+            "-", "DiscFinalRemaining");
+        $data = Triangle::mathOps($data, ['FinalTotalVac', 'rfc_totalRefusalVacByRefComm'], '+',
+            'FinalTotalVaccinated');
         // For Absent
         $data = Triangle::mathOps($data, ['RemAbsent', 'cRegAbsent'],
             '-', 'DiscAbsent', 'cRegMissed');
@@ -472,7 +497,13 @@ class AjaxMainController extends CommonDashboardController
             '-', 'DiscRemainingRefusal');
         $data = Triangle::mathOps($data, ['VacRefusal', 'cVacRefusal'], '+',
             'FinalVacRefusal');
-
+        // refusals calculation after refusal committees
+        $data = Triangle::mathOps($data, ['RemainingRefusal', 'rfc_totalRefusalVacByRefComm'],
+            "-", "FinalRemainingRefusal");
+        $data = Triangle::mathOps($data, ['DiscRemainingRefusal', 'rfc_totalRefusalVacByRefComm'],
+            "-", "DiscFinalRemainingRefusal");
+        $data = Triangle::mathOps($data, ['FinalVacRefusal', 'rfc_totalRefusalVacByRefComm'], '+',
+            'FinalVaccinatedRefusal');
         // For Percentage Calculation
         // Percentage Absent
         $data = Triangle::mathOps($data, ['DiscRemainingAbsent', 'CalcTarget'],
@@ -481,14 +512,13 @@ class AjaxMainController extends CommonDashboardController
         $data = Triangle::mathOps($data, ['DiscRemainingNSS', 'CalcTarget'],
             '%', 'PerNSS');
         // Percentage Refusal
-        $data = Triangle::mathOps($data, ['DiscRemainingRefusal', 'CalcTarget'],
+        $data = Triangle::mathOps($data, ['DiscFinalRemainingRefusal', 'CalcTarget'],
             '%', 'PerRefusal');
         // Percentage Missed
-        $data = Triangle::mathOps($data, ['DiscRemaining', 'CalcTarget'],
+        $data = Triangle::mathOps($data, ['DiscFinalRemaining', 'CalcTarget'],
             '%', 'PerRemaining');
 
         return $data;
-
 
     }
 
@@ -512,17 +542,27 @@ class AjaxMainController extends CommonDashboardController
         //return Exporter::exportCSV($info);
     }
 
-    private function triangulate($data, $data1, $index = null) {
+
+    private function triangulate($data, $data1, $source = "catchup", $index = null) {
         // required indexes in both sources
-        $indexes = ['RegMissed', 'TotalRecovered', 'TotalVac',
-            'RegAbsent', 'VacAbsent',
-            'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'];
+        $indexes = [];
+        $prefix = "chp";
+        if($source === "catchup") {
+            $indexes = ['RegMissed', 'TotalRecovered', 'TotalVac',
+                'RegAbsent', 'VacAbsent',
+                'RegNSS', 'VacNSS', 'RegRefusal', 'VacRefusal'];
+        } else if($source === "refusalComm") {
+            $indexes = ['refusalAfterDay5', 'refusalVacByCRC', 'refusalVacByRC',
+                'refusalVacByCIP', 'refusalVacBySenior',
+                'totalRefusalVacByRefComm'];
+            $prefix = "rfc_";
+        }
         return Triangle::triangulateCustom(
             [
                 $index===null?$data:$data[$index],
                 ['data'=>$index===null?$data1:$data1[$index],
                     'indexes'=>$indexes,
-                    'prefix'=>'c'
+                    'prefix'=>$prefix
                 ]
             ], 'joinkey');
     }

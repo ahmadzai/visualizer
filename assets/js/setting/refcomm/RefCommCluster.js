@@ -2,10 +2,27 @@
 import colors from './../colors';
 // ======================================= Clusters Level Dashbaord ===============================
 const RefCommCluster = {};
-RefCommCluster['missed_recovery_chart_1'] = {
-    'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL],
-    'chartType':{'type':"bar", 'stacking':'percent'},
-    'large':'height'
+// RefCommCluster['missed_recovery_chart_1'] = {
+//     'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL],
+//     'chartType':{'type':"bar", 'stacking':'percent'},
+//     'large':'height'
+// };
+
+RefCommCluster['refusal_recovery_table_1'] = {'chartType':{'type':'table'},
+    'setting' : {
+        "scrollX": true,
+        'paging':true,
+        // 'dom': 'lfrtBp',
+        // 'buttons': [
+        //     'copyHtml5', 'csvHtml5'
+        // ],
+        'pageLength': 15,
+        'lengthMenu' : [
+            [15, 25, 50, -1],
+            [15, 25, 50, 'All']
+            ]
+
+    }
 };
 // Table
 RefCommCluster['cluster_trend'] = {'chartType':{'type':'table'},
@@ -19,6 +36,7 @@ RefCommCluster['cluster_trend'] = {'chartType':{'type':'table'},
     }
 };
 
+/*
 // 3 (default) campaigns location trends
 // 10 Campaign absent percent stack chartType
 RefCommCluster['loc_trend_all_type'] = {
@@ -56,5 +74,7 @@ RefCommCluster['loc_trend_refusal'] = {
         {chart: 'percent', title:'Percent Chart'}],
     'scrollbar': {min:0, max:40}
 };
+
+ */
 
 export default RefCommCluster;

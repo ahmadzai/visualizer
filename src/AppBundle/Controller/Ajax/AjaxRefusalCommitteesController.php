@@ -146,68 +146,73 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         //dump($params); die;
         //echo "Catchup Data Class is Called"; die;
         $info =  $this->campaignsData($entity, $campaigns, $params);
-        $campInfo = $info['oneCamp']; // it comes in the array index = trend
-        $campAgg = $info['oneCampAgg']; // get the aggregated data
+        //$campInfo = $info['oneCamp']; // it comes in the array index = trend
+        //$campAgg = $info['oneCampAgg']; // get the aggregated data
+
+        //dump($campInfo);
+
+        $campInfo = $this->loadAndMixData($info, $campaigns, $params, "campaignsData", 'oneCamp');
+        $campAgg = $this->loadAndMixData($info, $campaigns, $params, "campaignsData", 'oneCampAgg');
+
+        $campInfo = $this->allMathOps($campInfo);
+        $campAgg = $this->allMathOps($campAgg);
 
         $subTitle = $titles['subTitle'];
         $type = $titles['aggType'];
 
-        /*
         // ---------------------------- Pie Chart one campaign missed by reason ----------------------------
         $missedByReasonPie = $this->chart->pieData([
-            'TotalRecovered'=>'Catchup',
-            'refusalVacByCRC'=>'CRC',
-            'refusalVacByRC'=>'RC',
-            'refusalVacByCIP'=>'CIP',
-            'refusalVacBySeniorStaff'=>'Senior',
-            'totalRemaining'=>'Remaining'
+            'cmpVacRefusal'=>'Campaign',
+            'chpVacRefusal'=>'Catchup',
+            'totalRefusalVacByRefComm'=>'Committees',
+            'totalRemainingRefusal'=>'Remaining'
         ], $campInfo);
         $missedByReasonPie['title'] = "Refusals Recovery Breakdown";
-        $data['missed_by_reason_pie_1'] = $missedByReasonPie;
+        $data['refusal_recovery_pie_1'] = $missedByReasonPie;
 
         // ---------------------------- one campaign recovered all type by Catchup -------------------------
         $recoveredAllType = $this->chart->pieData([
-            'TotalRecovered'=>'Recovered',
-            'TotalRemaining'=>'Remaining'
+            'totalVacRefusal'=>'Recovered',
+            'totalRemainingRefusal'=>'Remaining'
         ], $campInfo);
-        $recoveredAllType['title'] = "Refusals Recovery";
+        $recoveredAllType['title'] = "Recovered vs Remaining Refusals";
         $recoveredAllType['subTitle'] = $subTitle;
-        $data['recovered_all_type_1'] = $recoveredAllType;
+        $data['refusal_recovered_1'] = $recoveredAllType;
 
         // ---------------------------- last campaign Absent recovered by Catchup  -------------------------
         $recoveredAbsent = $this->chart->pieData([
-            'VacRefusal'=>'Campaign',
-            'TotalRecovered'=>'Catchup',
+            'cmpVacRefusal'=>'Campaign',
+            'chpVacRefusal'=>'Catchup',
             'totalRefusalVacByRefComm'=>'Committees',
-            'totalRemaining'=>'Remaining'
+            'totalRemainingRefusal'=>'Remaining'
         ],
             $campInfo);
         $recoveredAbsent['title'] = "Refusals Recovery in Campaign, Catchup & after Catchup";
         $recoveredAbsent['subTitle'] = $subTitle;
-        $data['recovered_absent_1'] = $recoveredAbsent;
+        $data['refusal_recovered_general_1'] = $recoveredAbsent;
 
         // ---------------------------- last campaign NSS recovered by Catchup -----------------------------
         $recoveredNss = $this->chart->pieData([
-            'VacRefusal'=>'Campaign',
-            'TotalRecovered'=>'Catchup',
+            'cmpVacRefusal'=>'Campaign',
+            'chpVacRefusal'=>'Catchup',
             'refusalVacByCRC'=>'CRC',
             'refusalVacByRC'=>'RC',
             'refusalVacByCIP'=>'CIP',
-            'refusalVacBySeniorStaff'=>'Senior',
-            'totalRemaining'=>'Remaining'
+            'refusalVacBySenior'=>'Senior',
+            'totalRemainingRefusal'=>'Remaining'
         ],
             $campInfo);
         $recoveredNss['title'] = "Refusals Recovery in Campaign, Catchup & By Refusal Committees";
         $recoveredNss['subTitle'] = $subTitle;
-        $data['recovered_nss_1'] = $recoveredNss;
+        $data['refusal_recovered_detail_1'] = $recoveredNss;
 
 
         // ---------------------------- last campaign total missed by region -------------------------------
         $totalRemaining = $this->chart->chartData1Category(['column'=>$titles['aggType']],
-            ['TotalRemaining'=>'Remaining'], $campAgg);
+            ['totalRemainingRefusal'=>'Remaining'], $campAgg);
         $totalRemaining['title'] = 'Final Remaining Refusals';
         $totalRemaining['subTitle'] = $subTitle;
-        $data['total_remaining_1'] = $totalRemaining;
+        $data['total_remaining_refusal_1'] = $totalRemaining;
 
         /*
         // ---------------------------- last campaign total missed by location -------------------------------
@@ -237,13 +242,13 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         */
 
         // ---------------------------- Tabular information of the campaign -------------------------------
-        /*
-        $table = HtmlTable::tableForCatchupData($campAgg, $type);
+
+        $table = HtmlTable::tableForRefusalComm($campAgg, $type);
         $data['info_table'] = $table;
 
         // just for the map data
-        $data['map_data'] = json_encode($campAgg);
-        */
+        //$data['map_data'] = json_encode($campAgg);
+
 
         // ---------------------------- Header Tiles Information of the campaign --------------------------
         $info_header = HtmlTable::infoForRefusalComm($campInfo);
@@ -262,19 +267,40 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
     {
         $oneCampData = $this->clustersData($entity, $campaigns, $params);
 
-        $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
-            [
-                'TotalRecovered' => 'Recovered',
-                'RemAbsent' => 'Absent',
-                'RemNSS' => 'NSS',
-                'RemRefusal' => 'Refusal',
-            ],
-            $oneCampData, true);
+        $oneCampData = $this->loadAndMixData($oneCampData, $campaigns, $params, "clustersData");
+
+        $oneCampData = $this->allMathOps($oneCampData);
+
+        //dump($oneCampData); die;
+        $xAxises = [
+            ['col'=>'Cluster', 'label'=>'Cluster', 'calc'=>'none'],
+            ['col'=>'cmpRemRefusal', 'label'=>'Ref After Camp', 'calc'=>'none'],
+            ['col'=>'refusalAfterDay5', 'label'=>'Ref After Camp (ROC)', 'calc'=>'none'],
+            ['col'=>'chpVacRefusal', 'label'=>'Vac in Catchp', 'calc'=>'none'],
+            ['col'=>'refusalVacInCatchup', 'label'=>'Vac in Catchp (ROC)', 'calc'=>'none'],
+            ['col'=>'refusalVacByCRC', 'label'=>'Vac CRC', 'calc'=>'none'],
+            ['col'=>'refusalVacByRC', 'label'=>'Vac RC', 'calc'=>'none'],
+            ['col'=>'refusalVacByCIP', 'label'=>'Vac CIP', 'calc'=>'none'],
+            ['col'=>'refusalVacBySenior', 'label'=>'Vac Senior', 'calc'=>'none'],
+            ['col'=>'totalRefusalVacByRefComm', 'label'=>'Total Vac', 'calc'=>'none'],
+            ['col'=>'totalRemainingRefusal', 'label'=>'Remaining', 'calc'=>'none'],
+        ];
+
         $campaign = "No data for this campaign as per current filter";
         if(count($oneCampData) > 0)
-            $campaign = $oneCampData[0]['CName']." Recovered and Remaining Children";
-        $oneCampBarChart['title'] = $campaign;
-        $data['missed_recovery_chart_1'] = $oneCampBarChart;
+            $campaign = $oneCampData[0]['CName']." Recovered and Remaining Refusal Children";
+
+        $table = HtmlTable::tableODK($oneCampData, $xAxises, null, null, $campaign);
+
+//        $oneCampBarChart = $this->chart->chartData1Category(['column'=>'Cluster'],
+//            [
+//                'cmpVacRefusal'=>'Campaign',
+//                'chpVacRefusal'=>'Catchup',
+//                'totalRefusalVacByRefComm'=>'Committees',
+//                'totalRemainingRefusal'=>'Remaining'
+//            ],
+//            $oneCampData, true);
+        $data['refusal_recovery_table_1'] = $table;
         return new JsonResponse($data);
     }
 
@@ -283,24 +309,33 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         // fetch the data
         $heatMapData = $this->clustersData($entity, $campaigns, $params);
 
-        $locTrends = $this->clustersData($entity, $controlParams['locTrendIds'], $params);
+        //$locTrends = $this->clustersData($entity, $controlParams['locTrendIds'], $params);
+
+        $heatMapData = $this->loadAndMixData($heatMapData, $campaigns, $params, "clustersData");
+        //$locTrends = $this->loadAndMixData($locTrends, $controlParams['locTrendIds'], $params, "clustersData");
+
+        $heatMapData = $this->allMathOps($heatMapData);
+        //$locTrends = $this->allMathOps($locTrends);
 
         // get the clusters from the params as they needed for the table
         $clusters = $params['cluster'];
 
         // get the selectType from controlParams
-        $selectType = $controlParams["selectType"];
+        $selectType = $controlParams["selectType"] === 'TotalRemaining' ?
+                      'totalRefusalVacByRefComm' : $controlParams['selectType'];
 
         // set the calcTypeArray
         $calcTypeArray = ['type'=>'number'];
         if($controlParams['calcType'] === 'percent') {
-            $col = 'RegMissed';
-            if($selectType == 'RemAbsentPer')
-                $col = 'RegAbsent';
-            elseif($selectType == 'RemNSSPer')
-                $col = 'RegNSS';
-            elseif($selectType == 'RemRefusalPer')
-                $col = 'RegRefusal';
+            $col = '';
+            if($selectType == 'totalRefusalVacByRefCommPer')
+                $col = 'cmpRegRefusal';
+            elseif($selectType == 'chpVacRefusalPer')
+                $col = 'cmpRegRefusal';
+            elseif($selectType == 'totalVacRefusalPer') // here the denominator will be registered refusals in campaign
+                $col = 'cmpRegRefusal'; // because totalVacRefusal includes vaccinated refusals in campaign as well
+            elseif($selectType == 'totalRemainingRefusalPer')
+                $col = 'cmpRegRefusal';
 
             $calcTypeArray = ['type'=>'percent', 'column'=>$col];
         }
@@ -309,7 +344,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
             str_replace("Per", "", $selectType),
             ['column' => 'CID', 'substitute' => 'shortName'],
             $clusters, $calcTypeArray, 'table');
-        // get the entity manager for the benckmarks
+        // get the entity manager for the benchmarks
         $em = $this->getDoctrine()->getManager();
         $stops= $em->getRepository("AppBundle:HeatmapBenchmark")
             ->findOne($entity, $selectType);
@@ -317,16 +352,17 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         // create columns for the table
         $cols = array(['col' => 'rowName', 'label' => 'Cluster', 'calc' => 'none']);
         foreach ($rawData['xAxis'] as $axi) {
-            $cols[] = ['col' => $axi, 'label' => $axi, 'calc' => 'rev'];
+            $cols[] = ['col' => $axi, 'label' => $axi, 'calc' => 'normal'];
         }
 
         $table = HtmlTable::heatMapTable($rawData['data'],
             $cols, HtmlTable::heatMapTableHeader($selectType),
             $stops['minValue'],
-            $stops['maxValue']);
+            $stops['maxValue'], 'normal', false);
 
         $data['cluster_trend'] = $table;
 
+        /*
         //======================================== New Cluster Level Trends Charts ================
         $category = [['column'=>'Region'],
             ['column'=>'CID', 'substitute'=>
@@ -377,6 +413,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         $locTrendAllType['subTitle'] = null;
         $data['loc_trend_refusal'] = $locTrendAllType;
 
+        */
 
         //return new Response($table);
         return new JsonResponse($data);
@@ -391,6 +428,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         //$catchup = $this->combineData("both", $campaigns, $params['extra'] = $clusters);
         $catchup = $this->$method("CatchupData", $campaigns, $params);
         $coverage = $this->$method("CoverageData", $campaigns, $params);
+
 
         // Below indices required from other data sources
         $coverageIndices = ['CalcTarget', 'RegRefusal', 'RemRefusal', 'VacRefusal', 'VacRefusal3Days', 'VacRefusalDay4'];

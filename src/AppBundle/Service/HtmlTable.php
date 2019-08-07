@@ -26,6 +26,7 @@ class HtmlTable
                  <th title='Calculated Target, Source Coverage Data'>Target</th>
                  <th>Vac Campaign</th>
                  <th title='After Catchup'>Vac Catchup</th>
+                 <th title='Vaccinated By Refusals Committees'>Vac Committees</th>
                  <th>Missed</th>
                  <th style='color: orange'>Absent</th>
                  <th style='color: saddlebrown;'>NSS</th>
@@ -50,10 +51,11 @@ class HtmlTable
             $cTotalVac = $datum['cTotalVac'] == 0 ? '':
                          number_format($datum['cTotalVac'], 0, '.', ',');
             $tr .= "<td>".$cTotalVac."</td>";
-            $tr .= "<td>".number_format($datum['DiscRemaining'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['rfc_totalRefusalVacByRefComm'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['DiscFinalRemaining'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['DiscRemainingAbsent'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['DiscRemainingNSS'], 0, '.', ',')."</td>";
-            $tr .= "<td>".number_format($datum['DiscRemainingRefusal'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['DiscFinalRemainingRefusal'], 0, '.', ',')."</td>";
             $disc = $datum['Disc'] == 0 && $cTotalVac == 0 ? '':
                     number_format($datum['Disc'], 0, '.', ',');
             $tr .= "<td>".$disc."</td>";
@@ -167,6 +169,53 @@ class HtmlTable
 
         return $table.$th.$rows."</table>";
     }
+
+    /**
+     * @param $data
+     * @param string $type
+     * @return string (html table)
+     */
+    public static function tableForRefusalComm($data, $type = "Region") {
+        if(count($data) === 0 || $data === null)
+            return self::noDataTable();
+        $table = " <table class=\"table table-bordered\">";
+        $th = "<tr>
+                 <th>".$type."</th>
+                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>Refusal After Revisit<br> <sub style='color:gray'>Source:Admin</sub></th>
+                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>Refusal After Revisit<br> <sub style='color:gray'>Source:ROC</sub></th>
+                 <th title='Refusal Vaccinated in Catchup'>Refusal Vac Catchup<br> <sub style='color:gray'>Source:Catchup</sub></th>
+                 <th title='Refusal Vaccinated in Catchup'>Refusal Vac Catchup<br> <sub style='color:gray'>Source:ROC</sub></th>
+                 <th title='Refusals vaccinated by Cluster Refusal Committees'>Refusal Vac By CRC</th>
+                 <th title='Refusals vaccinated by Religious Committees'>Refusal Vac By RC</th>
+                 <th title='Refusals vaccinated by Community Influencer People'>Refusal Vac By CIP</th>
+                 <th title='Refusals vaccinated by senior polio/health staff'>Refusal Vac By Senior</th>
+                 <th title='Final remaining refusals (RefusalAfterRevisit-(RefusalVaccinated In Catchup + Refusal Vaccinted By Committees))' 
+                 style='color: red'>Remaining Refusals</th>
+              </tr>";
+
+        $rows = "";
+        foreach($data as $datum) {
+            $tr = "<tr>";
+            $tr .= "<td>".$datum[$type]."</td>";
+            $remRefusal = (int) $datum['cmpRemRefusal'];
+            $tr .= "<td>".number_format($remRefusal, 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalAfterDay5'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['chpVacRefusal'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalVacInCatchup'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalVacByCRC'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalVacByRC'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalVacByCIP'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['refusalVacBySenior'], 0, '.', ',')."</td>";
+            $tr .= "<td>".number_format($datum['totalRemainingRefusal'], 0, '.', ',')."</td>";
+
+            $tr .= "</tr>";
+
+            $rows .= $tr;
+        }
+
+        return $table.$th.$rows."</table>";
+    }
+
 
     /**
      * @param $data
@@ -374,7 +423,7 @@ class HtmlTable
             return "";
         $row = "<div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-aqua\"><i class=\"fa fa-eyedropper\"></i></span>
+                                    <span class=\"c-info-box-icon\" style='background-color: #4de408; color:white;'><i class=\"fa fa-eyedropper\"></i></span>
 
                                     <div class=\"c-info-box-content\">
                                         <span class=\"c-info-box-text\">Vac By Cluster Committees</span>
@@ -388,7 +437,7 @@ class HtmlTable
                             </div>
                             <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-yellow\"><i class=\"fa fa-eyedropper\"></i></span>
+                                    <span class=\"c-info-box-icon\" style='background-color: #c8e409; color:white;'><i class=\"fa fa-eyedropper\"></i></span>
 
                                     <div class=\"c-info-box-content\">
                                         <span class=\"c-info-box-text\">Vac By Religious Comm </span>
@@ -402,7 +451,7 @@ class HtmlTable
                             </div>
                             <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-maroon\"><i class=\"fa fa-eyedropper\"></i></span>
+                                    <span class=\"c-info-box-icon\" style='background-color: #00DCE4; color:white;'><i class=\"fa fa-eyedropper\"></i></span>
 
                                     <div class=\"c-info-box-content\">
                                         <span class=\"c-info-box-text\">Vac By CIP</span>
@@ -416,7 +465,7 @@ class HtmlTable
                             </div>
                             <div class=\"col-md-3 col-sm-6 col-xs-12\">
                                 <div class=\"c-info-box\">
-                                    <span class=\"c-info-box-icon bg-orange\"><i class=\"fa fa-eyedropper\"></i></span>
+                                    <span class=\"c-info-box-icon\" style='background-color: #6105e4; color:white;'><i class=\"fa fa-eyedropper\"></i></span>
 
                                     <div class=\"c-info-box-content\">
                                         <span class=\"c-info-box-text\">Vac By Senior</span>
@@ -437,12 +486,16 @@ class HtmlTable
      * @param $headerVars (col, label, calc)
      * @param $min (min color (0-1))
      * @param $max (max color (0-1))
+     * @param null $title
      * @return string
      */
-    public static function tableODK($data, $headerVars, $min = null, $max = null) {
+    public static function tableODK($data, $headerVars, $min = null, $max = null, $title=null) {
         $table = "<table id='tbl-odk-data' class=\"table table-bordered table-striped 
-                                                   table-responsive\" 
+                                                   table-responsive dash-Datatable\" 
                          style=\"width:100%\" '>";
+        if($title !== null) {
+            $table .= "<caption>".$title."</caption>";
+        }
         $th = "<thead>";
         foreach ($headerVars as $var) {
             $header = array_key_exists('label', $var) ? $var['label'] : ucfirst($var);
@@ -487,14 +540,15 @@ class HtmlTable
     /**
      * @param $data
      * @param $headerVars (col, label, calc)
+     * @param $title (null|text)
      * @param $min (min color (0-1))
      * @param $max (max color (0-1))
-     * @param $type (number type (number|percent))
-     * @param $title (null|text)
+     * @param string $type (number type (number|percent))
+     * @param bool $benchMarkOrderInRev
      * @return string
      */
     public static function heatMapTable($data, $headerVars, $title = null,
-                                        $min = null, $max = null, $type='normal') {
+                                        $min = null, $max = null, $type='normal', $benchMarkOrderInRev=true) {
 
         $table = "<div>
                    <table id='tbl-data' class=\"table table-bordered table-striped table-responsive less-padding\" 
@@ -542,10 +596,10 @@ class HtmlTable
 
         $info = "<div class='col-sm-12' style='padding-left:0'><a name='benchmark'>BenchMark:</a> <span class='btn btn-sm' 
                      style='background-color:".
-                     ColorMgr::numberToColor($min, $min, $max, null, true)."'>Min: $min</span> 
+                     ColorMgr::numberToColor($min, $min, $max, null, $benchMarkOrderInRev)."'>Min: $min</span> 
                      <span class='btn btn-sm' 
                      style='background-color:".
-            ColorMgr::numberToColor($max, $min, $max, null, true)."'>Max: $max</span>
+                     ColorMgr::numberToColor($max, $min, $max, null, $benchMarkOrderInRev)."'>Max: $max</span>
                      </div>";
         return $table.$th.$rows."</table></div>".$info;
     }
@@ -559,28 +613,66 @@ class HtmlTable
         $title = "";
         switch ($indicator) {
             case "RemAbsent":
+            case "RemainingAbsent":
                 $title = "Trends of Remaining Absent Children";
                 break;
             case "RemNSS":
+            case "RemainingNSS":
                 $title = "Trends of Remaining NSS Children";
                 break;
             case "RemRefusal":
+            case "FinalRemainingRefusal":
                 $title = "Trends of Remaining Refusal Children";
                 break;
+            case "FinalRemaining":
             case "TotalRemaining":
                 $title = "Trends of Total Remaining Children (all reasons)";
                 break;
             case "RemAbsentPer":
+            case "PerAbsent":
                 $title = "Trends of Remaining Absent Children in Percentage";
                 break;
             case "RemNSSPer":
+            case "PerNSS":
                 $title = "Trends of Remaining NSS Children in Percentage";
                 break;
             case "RemRefusalPer":
+            case "PerRefusal":
                 $title = "Trends of Remaining Refusal Children in Percentage";
                 break;
             case "TotalRemainingPer":
+            case "PerRemaining":
                 $title = "Trends of Total Remaining Children (all reasons) in Percentage";
+                break;
+            case "totalRefusalVacByRefComm":
+                $title = "Trends of Total Vaccinated Refusals By Refusals Committees";
+                break;
+            case "refusalVacByCRC":
+                $title = "Trends of Refusals Vaccinated By Cluster Refusals Committee";
+                break;
+            case "refusalVacByRC":
+                $title = "Trends of Refusals Vaccinated By Religious Committee";
+                break;
+            case "refusalVacByCIP":
+                $title = "Trends of Refusals Vaccinated By CIP";
+                break;
+            case "refusalVacBySenior":
+                $title = "Trends of Refusals Vaccinated By Senior Staff";
+                break;
+            case "totalRemainingRefusal":
+                $title = "Trends of final remaining refusals";
+                break;
+            case "totalRefusalVacByRefCommPer":
+                $title = "Trends of Refusals Vaccinated By Cluster Refusals Committee, In Percentage (Denominator is Registered Refusals in Campaign)";
+                break;
+            case "chpVacRefusalPer":
+                $title = "Trends of Refusals Vaccinated in Catchup, In Percentage (Denominator is Registered Refusals in Campaign)";
+                break;
+            case "totalVacRefusalPer":
+                $title = "Trends of Refusals Vaccinated (in all stages), In Percentage (Denominator is Registered Refusals in Campaign)";
+                break;
+            case "totalRemainingRefusalPer":
+                $title = "Trends of Final Remaining Refusals, In Percentage (Denominator is Registered Refusals in Campaign)";
                 break;
         }
 

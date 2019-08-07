@@ -38,7 +38,7 @@ class ProvinceController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/select", name="province_select")
      * @Method("GET")
      */

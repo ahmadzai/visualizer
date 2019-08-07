@@ -437,7 +437,7 @@ class ChartRepo extends EntityRepository
                 $cond = "AND d.districtRiskStatus IS NULL";
             }
             //Todo: make below filter dynamic
-            elseif(in_array("HR", $distType) || in_array("VHR", $distType) || in_array("Focus", $distType)) {
+            elseif($this->checkHrVhrFocus($distType)) {
                 $cond = "AND d.districtRiskStatus IN (:param1) ";
             } elseif(in_array("all", $distType)) {
                 $cond = " ";
@@ -473,7 +473,7 @@ class ChartRepo extends EntityRepository
                 $condition = " AND d.id IN (:param2) ";
             }
 
-            $condition .= ($paramsArray['district'] !== null) ? " AND d.districtRiskStatus IN (:param3) " : "";
+            $condition .= $this->checkHrVhrFocus($paramsArray['district']) ? " AND d.districtRiskStatus IN (:param3) " : "";
         }
 
         $em = $this->getEntityManager();
@@ -483,8 +483,8 @@ class ChartRepo extends EntityRepository
                       WHERE (s.campaign in (:camp) ".$condition." )");
 
         if(array_key_exists('by', $paramsArray)) {
-            $dql->setParameter('param2', $paramsArray['value']);
-            if($paramsArray['district'] !== null)
+            $dql->setParameter('param2', $paramsArray['by']==='district'?$paramsArray['district']:$paramsArray['value']);
+            if($this->checkHrVhrFocus($paramsArray['district']))
                 $dql->setParameter('param3', $paramsArray['district']);
         }
 
@@ -493,6 +493,17 @@ class ChartRepo extends EntityRepository
         $result = $dql->getScalarResult();
         // we need a flat array one-dimensional
         return array_map('current', $result);
+    }
+
+
+    private function checkHrVhrFocus($paramsArray) {
+
+        return (
+               $paramsArray !== null &&
+               (in_array("HR", $paramsArray) ||
+                in_array("VHR", $paramsArray) ||
+                in_array("Focus", $paramsArray))
+               ) ? true : false;
     }
 
 

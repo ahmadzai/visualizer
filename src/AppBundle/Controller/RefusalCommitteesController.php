@@ -58,11 +58,11 @@ class RefusalCommitteesController extends Controller
     public  function clusterLevelAction($district = null) {
 
         $data = ['district' => $district===null?0:$district];
-        $data['title'] = 'Catchup Data Clusters Trends';
-        $data['pageTitle'] = "Catchup Data Trends and Analysis, Cluster Level";
-        $data['source'] = 'CatchupData';
-        $data['ajaxUrl'] = 'catchup_data';
-        return $this->render("pages/catchup_data/clusters-table.html.twig",
+        $data['title'] = 'Refusals Committees\'s Clusters Level Data';
+        $data['pageTitle'] = "Refusals Committees's Data Trends and Analysis, Cluster Level";
+        $data['source'] = 'RefusalComm';
+        $data['ajaxUrl'] = 'ref_committees';
+        return $this->render("pages/refusal_comm/clusters-table.html.twig",
             $data
         );
 

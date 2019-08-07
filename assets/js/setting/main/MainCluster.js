@@ -7,6 +7,7 @@ MainCluster['missed_recovery_chart_1'] = {
         colors.RECOVERED_3DAYS,
         colors.RECOVERED_DAY5,
         colors.RECOVERED_CATCHUP,
+        colors.LIME,
         colors.DISCREP,
         colors.REM_MISSED
     ],

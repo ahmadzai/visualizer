@@ -56,7 +56,7 @@ class ColorMgr
         $min = 0;
 
         // Calculate distance from min to max in [0,1]
-        $distFromMin = $value / $max;
+        $distFromMin = $max > 0 ? $value / $max : 0;
 
         // Define start and end color
         if (count($gradientColors) == 0) {

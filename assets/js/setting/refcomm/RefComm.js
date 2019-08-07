@@ -4,15 +4,17 @@ import colors from './../colors';
 
 const RefCommChartsSetting = {};
 
-/*
-// The first row of one campaign
-RefCommChartsSetting['missed_by_reason_pie_1'] = {
-    'colors':[colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL],
-    'chartType':{'type':'donut'}, 'legend':false, 'area':'small'
-};
-RefCommChartsSetting['total_remaining_1'] = {'chartType':{'type':"column"},
-    'colors':[colors.REM_MISSED], 'legend':{'enabled':false}};
 
+// The first row of one campaign
+RefCommChartsSetting['refusal_recovery_pie_1'] = {
+    'colors':[colors.BLUE, colors.GREEN, colors.LIME, colors.REM_REFUSAL],
+    'chartType':{'type':'pie'}, 'legend':false, 'area':'small'
+};
+
+
+RefCommChartsSetting['total_remaining_refusal_1'] = {'chartType':{'type':"column"},
+    'colors':[colors.REM_REFUSAL], 'legend':{'enabled':false}};
+/*
 RefCommChartsSetting['total_recovered_remaining_1'] = {'chartType':{'type':"column", 'stacking': 'normal'},
     'colors':[colors.RECOVERED_CATCHUP, colors.REM_MISSED],
     'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
@@ -28,22 +30,24 @@ RefCommChartsSetting['campaign_title'] = {'chartType':{'type':'html'}};
 
 RefCommChartsSetting['info_box'] = {'chartType':{'type':'html'}};
 
-/*
-
 RefCommChartsSetting['info_table'] = {'chartType':{'type':'html'}};
 
-RefCommChartsSetting['map_data'] = {'chartType': {'type': 'raw'}};
+
+//RefCommChartsSetting['map_data'] = {'chartType': {'type': 'raw'}};
 
 // Pie charts Row
-RefCommChartsSetting['recovered_all_type_1'] = {'colors':[colors.RECOVERED_CATCHUP, colors.REM_MISSED],
+RefCommChartsSetting['refusal_recovered_1'] = {'colors':[colors.RECOVERED_CATCHUP, colors.REM_REFUSAL],
     'chartType':{'type':'halfpie'}, 'legend':true
 };
-RefCommChartsSetting['recovered_absent_1'] = {'colors':[colors.RECOVERED_CATCHUP, colors.REM_ABSENT],
+RefCommChartsSetting['refusal_recovered_general_1'] = {
+    'colors':[colors.BLUE, colors.RECOVERED_CATCHUP, colors.LIME, colors.REM_REFUSAL],
     'chartType':{'type':'halfpie'}, 'legend':true
 };
-RefCommChartsSetting['recovered_nss_1'] = {'colors':[colors.RECOVERED_CATCHUP, colors.REM_NSS],
+RefCommChartsSetting['refusal_recovered_detail_1'] = {
+    'colors':[colors.BLUE, colors.RECOVERED_CATCHUP, colors.CRC, colors.RC, colors.CIP, colors.SENIOR, colors.REM_REFUSAL],
     'chartType':{'type':'halfpie'}, 'legend':true
 };
+/*
 RefCommChartsSetting['recovered_refusal_1'] = {'colors':[colors.RECOVERED_CATCHUP, colors.REM_REFUSAL],
     'chartType':{'type':'halfpie'}, 'legend':true
 };
@@ -53,9 +57,9 @@ RefCommChartsSetting['recovered_refusal_1'] = {'colors':[colors.RECOVERED_CATCHU
 // 10 Campaign absent percent stack chartType
 RefCommChartsSetting['loc_trend_general'] = {
     // 'colors': [colors.REM_MISSED, colors.RECOVERED_CATCHUP],
-    'colors': [colors.RECOVERED_CATCHUP, colors.REM_MISSED],
+    'colors': [colors.BLUE, colors.RECOVERED_CATCHUP, colors.LIME, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
-    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'legend':{'enabled':true},
     'menu':[{chart:'normal', title:'Normal Chart'},
         {chart: 'percent', title:'Percent Chart'}],
     'scrollbar': {min:0, max:18}
@@ -63,9 +67,9 @@ RefCommChartsSetting['loc_trend_general'] = {
 // absent loc trends
 RefCommChartsSetting['loc_trend_detail'] = {
     // 'colors': [colors.REM_ABSENT, colors.RECOVERED_CATCHUP],
-    'colors': [colors.RECOVERED_CATCHUP, colors.REM_ABSENT],
+    'colors': [colors.RECOVERED_CATCHUP, colors.CRC, colors.RC, colors.CIP, colors.SENIOR, colors.REM_REFUSAL],
     'chartType':{'type':"column", 'stacking':'normal'},
-    'legend':{'enabled':true, 'vAlign':'center', 'hAlign': 'left'},
+    'legend':{'enabled':true},
     'menu':[{chart:'normal', title:'Normal Chart'},
         {chart: 'percent', title:'Percent Chart'}],
     'scrollbar': {min:0, max:18}
@@ -98,7 +102,7 @@ RefCommChartsSetting['loc_trend_refusal'] = {
 // 10 campaign vaccinated children column chartType
 RefCommChartsSetting['general_refusal_recovery_trend'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
-    'colors':[colors.VACCINATED, colors.RECOVERED_CATCHUP]};
+    'colors':[colors.BLUE, colors.RECOVERED_CATCHUP, colors.LIME, colors.REM_REFUSAL]};
 
 
 // 10 campaign missed children column chartType
@@ -106,7 +110,7 @@ RefCommChartsSetting['general_refusal_recovery_trend'] = {
 // 10 campaign missed by type stack column chartType
 RefCommChartsSetting['detail_refusal_recovery_trend'] = {
     'chartType':{'type':"column", 'stacking':'normal'},
-    'colors':[colors.REM_ABSENT, colors.REM_NSS, colors.REM_REFUSAL],
+    'colors':[colors.BLUE, colors.RECOVERED_CATCHUP, colors.CRC, colors.RC, colors.CIP, colors.SENIOR, colors.REM_REFUSAL],
     'menu':[{chart:'percent', title:'Percent Chart'},
             {chart: 'normal', title:'Normal Chart'}]
 };

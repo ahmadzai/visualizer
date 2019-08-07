@@ -7,8 +7,7 @@
         <div class="col-md-12">
             <div class="box box-default bg-gray">
                 <div class="box-header with-border">
-                    {{ pageTitle }}
-
+                    Refusals Committees' Data by Cluster, Latest/Selected Campaign
                     <!-- Help Icon -->
                     <a data-toggle="popover" data-container="body" class="pull-right btn-sm btn-info"
                        data-placement="left" type="button" data-html="true"
@@ -25,28 +24,46 @@
                                 For percentage calculation the target is <b style="color:dodgerblue">"vaccinated children + missed children"</b> in a cluster. And you can
                                 see the color coding benchmark for the percentages in the bottom of the table as well. <br>
                                 In the left chart, Discrepancy <span style="color:gray">(gray color)</span>
-                                is the difference of tallysheet data and ICN register book data.
+                                is the difference of tally-sheet data and ICN register book data.
                             </p>
                         </div>
                     </div>
+                    <input type="hidden" id="ajaxUrl"
+                           data-district="{{ district }}"
+                           value="{{ ajaxUrl }}"
+                           data-source="{{ source }}"/>
 
                 </div>
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="box-warning box">
+                                    <div class="box-info box">
                                         <div class="box-body">
                                             <span class="filter-loading loader-small info-loader"></span>
-                                            <div id="missed_recovery_chart_1" style="min-height: 400px;">
+                                            <div id="refusal_recovery_table_1" style="min-height: 400px;">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default bg-gray-light">
+                <div class="box-header with-border">
+                    {{ pageTitle }}
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="box-warning box">
@@ -59,15 +76,19 @@
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#" data-type="RemAbsent" class="filter-heatmap">Absent</a></li>
-                                                    <li><a href="#" data-type="RemNSS" class="filter-heatmap">NSS</a></li>
-                                                    <li><a href="#" data-type="RemRefusal" class="filter-heatmap">Refusal</a></li>
-                                                    <li><a href="#" data-type="TotalRemaining" class="filter-heatmap">All Type</a></li>
+                                                    <li><a href="#" data-type="totalRefusalVacByRefComm"
+                                                           class="filter-heatmap">Total Vaccinated Refusals By Committees</a></li>
+                                                    <li><a href="#" data-type="refusalVacByCRC" class="filter-heatmap">Vaccinated By Cluster Refusal Committee</a></li>
+                                                    <li><a href="#" data-type="refusalVacByRC" class="filter-heatmap">Vaccinated By Religious Committee</a></li>
+                                                    <li><a href="#" data-type="refusalVacByCIP" class="filter-heatmap">Vaccinated By CIP</a></li>
+                                                    <li><a href="#" data-type="refusalVacBySenior" class="filter-heatmap">Vaccinated By Senior Staff</a></li>
+                                                    <li><a href="#" data-type="totalRemainingRefusal" class="filter-heatmap">Final Remaining Refusals</a></li>
                                                     <li class="divider"></li>
-                                                    <li><a href="#" data-type="RemAbsentPer" class="filter-heatmap">Percentage Absent</a></li>
-                                                    <li><a href="#" data-type="RemNSSPer" class="filter-heatmap">Percentage NSS</a></li>
-                                                    <li><a href="#" data-type="RemRefusalPer" class="filter-heatmap">Percentage Refusal</a></li>
-                                                    <li><a href="#" data-type="TotalRemainingPer" class="filter-heatmap">Percentage All Type</a></li>
+                                                    <li><a href="#" data-type="totalRefusalVacByRefCommPer"
+                                                           class="filter-heatmap">% Refusals Vaccinated By Refusal Committees</a></li>
+                                                    <li><a href="#" data-type="chpVacRefusalPer" class="filter-heatmap">% Refusals Vaccinated in Catchup</a></li>
+                                                    <li><a href="#" data-type="totalVacRefusalPer" class="filter-heatmap">% of Final Vaccinated Refusals</a></li>
+                                                    <li><a href="#" data-type="totalRemainingRefusalPer" class="filter-heatmap">% of Final Remaining Refusals</a></li>
                                                 </ul>
                                                 <a href="#benchmark" data-toggle="tooltip" title="click here to know about benchmark"
                                                    class="badge bg-blue"
@@ -76,89 +97,17 @@
                                                 </a>
                                             </div>
                                             <span class="filter-loading loader-small trend-loader"></span>
-                                            <div id="cluster_trend" style="min-height: 400px;">
-                                            </div>
-                                            <input type="hidden" id="ajaxUrl"
-                                                   data-district="{{ district }}"
-                                                   value="{{ ajaxUrl }}"
-                                                   data-source="{{ source }}"/>
+                                            <div id="cluster_trend" style="min-height: 400px;"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- end of the first row-->
-                    <!-- start of the next row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="box-warning box">
-                                        <div class="box-body">
-                                            <span class="filter-loading loader-small trend-loader"></span>
-                                            <div id="loc_trend_all_type" style="height: 350px; max-height: 400px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- start of the next row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="box-default box">
-                                        <div class="box-body">
-                                            <span class="filter-loading loader-small trend-loader"></span>
-                                            <div id="loc_trend_absent" style="height: 350px; max-height: 400px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- start of the next row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="box-solid box">
-                                        <div class="box-body">
-                                            <span class="filter-loading loader-small trend-loader"></span>
-                                            <div id="loc_trend_nss" style="height: 350px; max-height: 400px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- start of the next row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="box-danger box">
-                                        <div class="box-body">
-                                            <span class="filter-loading loader-small trend-loader"></span>
-                                            <div id="loc_trend_refusal" style="height: 350px; max-height: 400px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block header %}
