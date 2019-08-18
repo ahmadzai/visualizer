@@ -143,17 +143,14 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
 
     protected function latestInfoAction($entity, $campaigns, $params, $titles)
     {
-        //dump($params); die;
-        //echo "Catchup Data Class is Called"; die;
-        $info =  $this->campaignsData($entity, $campaigns, $params);
-        //$campInfo = $info['oneCamp']; // it comes in the array index = trend
-        //$campAgg = $info['oneCampAgg']; // get the aggregated data
 
-        //dump($campInfo);
+        $info =  $this->campaignsData($entity, $campaigns, $params);
 
         $campInfo = $this->loadAndMixData($info, $campaigns, $params, "campaignsData", 'oneCamp');
+
         $campAgg = $this->loadAndMixData($info, $campaigns, $params, "campaignsData", 'oneCampAgg');
 
+        //dump($campInfo); dump($campAgg); die;
         $campInfo = $this->allMathOps($campInfo);
         $campAgg = $this->allMathOps($campAgg);
 

@@ -8,7 +8,7 @@ const RefCommChartsSetting = {};
 // The first row of one campaign
 RefCommChartsSetting['refusal_recovery_pie_1'] = {
     'colors':[colors.BLUE, colors.GREEN, colors.LIME, colors.REM_REFUSAL],
-    'chartType':{'type':'pie'}, 'legend':false, 'area':'small'
+    'chartType':{'type':'halfpie'}, 'legend':true
 };
 
 

@@ -9,16 +9,16 @@ use Doctrine\ORM\Query;
 class RefusalCommRepository extends ChartRepo
 {
 
-    protected $DQL = " sum(COALESCE(cvr.regRefusal)) as refusalAfterDay5, 
-                       sum(COALESCE(cvr.refusalVacInCatchup)) as refusalVacInCatchup,
-                       sum(COALESCE(cvr.refusalVacByCRC)) as refusalVacByCRC, 
-                       sum(COALESCE(cvr.refusalVacByRC)) as refusalVacByRC,
-                       sum(COALESCE(cvr.refusalVacByCIP)) as refusalVacByCIP, 
-                       sum(COALESCE(cvr.refusalVacBySeniorStaff)) as refusalVacBySenior,
-                       (sum(COALESCE(cvr.refusalVacByCRC)) + 
-                        sum(COALESCE(cvr.refusalVacByRC)) + 
-                        sum(COALESCE(cvr.refusalVacByCIP)) + 
-                        sum(COALESCE(cvr.refusalVacBySeniorStaff))
+    protected $DQL = " sum(COALESCE(cvr.regRefusal, 0)) as refusalAfterDay5, 
+                       sum(COALESCE(cvr.refusalVacInCatchup, 0)) as refusalVacInCatchup,
+                       sum(COALESCE(cvr.refusalVacByCRC, 0)) as refusalVacByCRC, 
+                       sum(COALESCE(cvr.refusalVacByRC, 0)) as refusalVacByRC,
+                       sum(COALESCE(cvr.refusalVacByCIP, 0)) as refusalVacByCIP, 
+                       sum(COALESCE(cvr.refusalVacBySeniorStaff, 0)) as refusalVacBySenior,
+                       sum((COALESCE(cvr.refusalVacByCRC, 0)) + 
+                        (COALESCE(cvr.refusalVacByRC, 0)) + 
+                        (COALESCE(cvr.refusalVacByCIP, 0)) + 
+                        (COALESCE(cvr.refusalVacBySeniorStaff, 0))
                         ) as totalRefusalVacByRefComm
                     ";
 

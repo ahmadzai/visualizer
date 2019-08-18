@@ -77,6 +77,7 @@ class DashController extends Controller
             $newData['oneCampAgg'] = $this->chart->chartData($entity, "aggByCampaign",
                 [$lastCampId], $params);
             $newData['oneCamp'] = $this->extractArray($campData, [$lastCampId]);;
+            //$newData['oneCamp'] = $this->chart->chartData($entity, "campaignStatistics", [$lastCampId], $params);
         } else {
             $newData['trend'] = $campData;
             $newData['oneCampAgg'] = $this->chart->chartData($entity, "aggByCampaign",
@@ -139,7 +140,8 @@ class DashController extends Controller
             $newData['oneCampAgg'] = $this->chart->chartData($entity, "aggByCampaign",
                 $campaigns, $params);
 
-            $newData['oneCamp'] = $tempData;
+            $newData['oneCamp'] = $this->chart->chartData($entity, "campaignStatistics",
+                $campaigns, $params);;
         }
 
         return $newData;

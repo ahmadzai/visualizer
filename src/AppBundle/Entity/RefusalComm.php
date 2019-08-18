@@ -149,7 +149,7 @@ class RefusalComm
     /**
      * @param int $regRefusal
      */
-    public function setRegRefusal(int $regRefusal)
+    public function setRegRefusal($regRefusal)
     {
         $this->regRefusal = $regRefusal;
     }
@@ -165,7 +165,7 @@ class RefusalComm
     /**
      * @param int $refusalVacInCatchup
      */
-    public function setRefusalVacInCatchup(int $refusalVacInCatchup)
+    public function setRefusalVacInCatchup($refusalVacInCatchup)
     {
         $this->refusalVacInCatchup = $refusalVacInCatchup;
     }
@@ -261,7 +261,7 @@ class RefusalComm
     /**
      * @param string $campaignPhase
      */
-    public function setCampaignPhase(string $campaignPhase)
+    public function setCampaignPhase($campaignPhase)
     {
         $this->campaignPhase = $campaignPhase;
     }
