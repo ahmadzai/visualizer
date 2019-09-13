@@ -125,7 +125,7 @@ export default {
     },
 
     province: {
-        DiscRemainingRefusal: {
+        DiscFinalRemainingRefusal: {
             classes: [
                 {from:0, to: 1000},
                 {from: 1000, to: 2500},
@@ -152,7 +152,7 @@ export default {
             ]
         },
 
-        DiscRemaining: {
+        DiscFinalRemaining: {
             classes: [
                 {from:0, to: 5000},
                 {from: 5000, to: 10000},
