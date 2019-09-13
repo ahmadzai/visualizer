@@ -62,7 +62,8 @@ abstract class CommonDashboardController extends DashController
                        !in_array("None", $districts) &&
                        !in_array("HR", $districts) &&
                        !in_array("VHR", $districts) &&
-                       !in_array("Focus", $districts)
+                       !in_array("Focus", $districts) &&
+                       !in_array("All", $districts)
                        );
         // if the filter was for district
         if($byDistrict) {
@@ -91,6 +92,8 @@ abstract class CommonDashboardController extends DashController
                 $subTitle .= "' HRDs";
             else if (in_array("VHR", $districts))
                 $subTitle .= "' VHRDs";
+            else if (in_array("Focus", $districts))
+                $subTitle .= "' Focus districts";
         }
 
         // set params to null if this was first request

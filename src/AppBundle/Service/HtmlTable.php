@@ -23,16 +23,25 @@ class HtmlTable
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
-                 <th title='Calculated Target, Source Coverage Data'>Target</th>
-                 <th>Vac Campaign</th>
+                 <th title='Calculated Target (Vaccinated + Missed), excluding nomads and PTTs vaccinated'>
+                 Target <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Vaccinated children in house and outside'>
+                 Vac Campaign <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Vaccinated children in PTTs and Nomads'>
+                 PTT & Nomad <span class='bg-blue badge pull-right'>?</span>
+                 </th>
                  <th title='After Catchup'>Vac Catchup</th>
-                 <th title='Vaccinated By Refusals Committees'>Vac Committees</th>
+                 <th title='Vaccinated By Refusals Committees'>
+                 Vac Committees <span class='bg-blue badge pull-right'>?</span>
+                 </th>
                  <th>Missed</th>
                  <th style='color: orange'>Absent</th>
                  <th style='color: saddlebrown;'>NSS</th>
                  <th style='color: red'>Refusal</th>
-                 <th style='color: dimgrey' title='Discrepancy between Tallysheet and Register Data'>
-                    Discrepancy
+                 <th style='color: dimgrey' title='Discrepancy between Tally-sheet and Register Data'>
+                    Discrepancy <span class='bg-blue badge pull-right'>?</span>
                  </th>
               </tr>";
 
@@ -40,14 +49,16 @@ class HtmlTable
         foreach($data as $datum) {
             $tr = "<tr>";
             $tr .= "<td>".$datum[$type]."</td>";
-            $target = (int) $datum['TotalRemaining'] + (int) $datum['TotalVac'];
+            $target = (int) $datum['CalcTarget'];
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
-            $totalVac = (int) $datum['TotalVac'];
+            $pttAndNomad = (int) ($datum['VacInPTTs'] + $datum['VacNomad']);
+            $totalVac = (int) $datum['TotalVac'] - $pttAndNomad;
             $totalVac = number_format(($totalVac),
                 0, '.', ',');
 
             $tr .= "<td>".$totalVac."</td>";
+            $tr .= "<td>".number_format($pttAndNomad, 0, '.', ',')."</td>";
             $cTotalVac = $datum['cTotalVac'] == 0 ? '':
                          number_format($datum['cTotalVac'], 0, '.', ',');
             $tr .= "<td>".$cTotalVac."</td>";
@@ -79,8 +90,13 @@ class HtmlTable
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
-                 <th>U5 Children</th>
-                 <th>Coverage %</th>
+                 <th title='Calculated Target (Vaccinated + Missed children) excluding nomads & children vaccinated in PTTs'>
+                 U5 Children <span class='bg-blue badge pull-right'>?</span></th>
+                 <th title='Excluding Nomads and Children Vaccinated in PTTs'>
+                 Coverage %<span class='bg-blue badge pull-right'>?</span></th>
+                 <th title='Vaccinated nomads and children vaccinated in PTTs'>
+                 PTTs & Nomads <span class='bg-blue badge pull-right'>?</span>
+                 </th>
                  <th>Missed</th>
                  <th style='color: orange'>Absent</th>
                  <th style='color: saddlebrown;'>NSS</th>
@@ -91,21 +107,26 @@ class HtmlTable
         foreach($data as $datum) {
             $tr = "<tr>";
             $tr .= "<td>".$datum[$type]."</td>";
-            $target = (int) $datum['TotalRemaining'] + (int) $datum['TotalVac'];
+            $target = (int) $datum['CalcTarget'];
             $tr .= "<td>".number_format($target, 0, '.', ',')."</td>";
 
-            $totalVac = (int) $datum['TotalVac'];
+            $pttAndNomad = (int) ($datum['VacInPTTs'] + $datum['VacNomad']);
+            $totalVac = (int) $datum['TotalVac'] - $pttAndNomad;
             $coverage = $target == 0 ? 0: number_format((($totalVac/$target) * 100),
                 2, '.', ',');
 
             $rem = 100 - $coverage;
             $progress = "<div class=\"progress progress-sm\" title='Remaining $rem%'
-                            style=\"background-color: #FFB32D\">
+                            style=\"background-color: #FFB32D; 
+                            height:16px;\">
                              <div class=\"progress-bar\" title=\"Coverage: ".$coverage."%\"
-                            style=\"background-color:#08beff; width:".$coverage."%\">
+                            style=\"background-color:#08beff; text-align: center; vertical-align:middle;
+                            line-height:16px; height:16px; width:".$coverage."%; font-size: 12px;\">
+                                $coverage %
                              </div>
                          </div>";
             $tr .= "<td>".$progress."</td>";
+            $tr .= "<td>".number_format($pttAndNomad, 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['TotalRemaining'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemAbsent'], 0, '.', ',')."</td>";
             $tr .= "<td>".number_format($datum['RemNSS'], 0, '.', ',')."</td>";
@@ -151,9 +172,13 @@ class HtmlTable
 
             $rem = 100 - $coverage;
             $progress = "<div class=\"progress progress-sm\" title='Remaining $rem%'
-                            style=\"background-color: #FFB32D\">
+                            style=\"background-color: #FFB32D; text-align: center; vertical-align:middle;
+                            height: 16px; line-height: 16px; font-size: 12px\">
+                            $rem %
                              <div class=\"progress-bar\" title=\"Recovered: ".$coverage."%\"
-                            style=\"background-color:#40C97A; width:".$coverage."%\">
+                            style=\"background-color:#40C97A; text-align: center; vertical-align:middle;
+                            line-height:16px; height:16px;width:".$coverage."%; font-size: 12px;\">
+                            $coverage %
                              </div>
                          </div>";
             $tr .= "<td>".$progress."</td>";
@@ -181,16 +206,36 @@ class HtmlTable
         $table = " <table class=\"table table-bordered\">";
         $th = "<tr>
                  <th>".$type."</th>
-                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>Refusal After Revisit<br> <sub style='color:gray'>Source:Admin</sub></th>
-                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>Refusal After Revisit<br> <sub style='color:gray'>Source:ROC</sub></th>
-                 <th title='Refusal Vaccinated in Catchup'>Refusal Vac Catchup<br> <sub style='color:gray'>Source:Catchup</sub></th>
-                 <th title='Refusal Vaccinated in Catchup'>Refusal Vac Catchup<br> <sub style='color:gray'>Source:ROC</sub></th>
-                 <th title='Refusals vaccinated by Cluster Refusal Committees'>Refusal Vac By CRC</th>
-                 <th title='Refusals vaccinated by Religious Committees'>Refusal Vac By RC</th>
-                 <th title='Refusals vaccinated by Community Influencer People'>Refusal Vac By CIP</th>
-                 <th title='Refusals vaccinated by senior polio/health staff'>Refusal Vac By Senior</th>
+                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>
+                 Refusal After Revisit<br> <sub style='color:gray'>Source:Admin</sub>
+                  <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Remaining Refusal After Revisit/Day5 of Campaign'>
+                 Refusal After Revisit<br> <sub style='color:gray'>Source:ROC</sub>
+                  <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusal Vaccinated in Catchup'>
+                 Refusal Vac Catchup<br> <sub style='color:gray'>Source:Catchup</sub>
+                  <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusal Vaccinated in Catchup'>
+                 Refusal Vac Catchup<br> <sub style='color:gray'>Source:ROC</sub>
+                  <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusals vaccinated by Cluster Refusal Committees'>
+                 Refusal Vac By CRC <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusals vaccinated by Religious Committees'>
+                 Refusal Vac By RC <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusals vaccinated by Community Influencer People'>
+                 Refusal Vac By CIP <span class='bg-blue badge pull-right'>?</span>
+                 </th>
+                 <th title='Refusals vaccinated by senior polio/health staff'>
+                 Refusal Vac By Senior <span class='bg-blue badge pull-right'>?</span>
+                 </th>
                  <th title='Final remaining refusals (RefusalAfterRevisit-(RefusalVaccinated In Catchup + Refusal Vaccinted By Committees))' 
-                 style='color: red'>Remaining Refusals</th>
+                 style='color: red'>Remaining Refusals <span class='bg-blue badge pull-right'>?</span></th>
               </tr>";
 
         $rows = "";

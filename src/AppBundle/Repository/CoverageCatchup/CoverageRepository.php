@@ -44,6 +44,8 @@ class CoverageRepository extends ChartRepo {
                     COALESCE(sum(cvr.noNSSVacByTeam),0) + COALESCE(sum(cvr.noRefusalFoundVac),0) + 
                     COALESCE(sum(cvr.noRefusalVacByTeam),0)) as TotalVac,  
                   sum(cvr.noChildInHouseVac) as InHouseVac, sum(cvr.noChildOutsideVac) as OutsideVac,
+                  sum(COALESCE(cvr.noVacNomad, 0)) as VacNomad, 
+                  sum(COALESCE(cvr.noChildVacByTT, 0)) as VacInPTTs, 
                   (COALESCE(sum(cvr.noAbsentSameDayFoundVac),0) + COALESCE(sum(cvr.noAbsentSameDayVacByTeam),0)+
                    COALESCE(sum(cvr.noAbsentNotSameDayFoundVac),0) + COALESCE(sum(cvr.noAbsentNotSameDayVacByTeam),0) + 
                    COALESCE(sum(cvr.noNSSFoundVac),0) + COALESCE(sum(cvr.noNSSVacByTeam),0) +

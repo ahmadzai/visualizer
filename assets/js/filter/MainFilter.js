@@ -7,6 +7,7 @@ class MainFilter {
 
         let defaultDistrict =
             [
+                {label: 'All districts', value: 'All'},
                 {label: 'VHR districts', value: 'VHR'},
                 {label: 'Focus districts', value: 'Focus'},
                 {label: 'HR districts', value: 'HR'},
@@ -88,6 +89,7 @@ class MainFilter {
             numberDisplayed: 2,
             maxHeight: 300,
             enableClickableOptGroups: true,
+            includeSelectAllOption: true,
             onChange: function(element, checked) {
                 Filter.resetFilter('filterDistrict', defaultDistrict);
                 let province = $('#filterProvince option:selected');
@@ -113,22 +115,33 @@ class MainFilter {
             maxHeight: 300,
             enableCaseInsensitiveFiltering: true,
             enableClickableOptGroups: true,
+
             onChange: function (element, checked) {
+
+                // if(element.val() === "All") {
+                //     if(checked) {
+                //         // select all
+                //         $("#filterDistrict").multiselect('selectAll');
+                //         $('#filterDistrict').multiselect('deselect', ['HR', 'VHR', 'None', 'Focus']);
+                //     }
+                // }
+
                 let selectedDistricts = [];
                 let district = $('#filterDistrict option:selected');
-                //console.log(district);
-                //if(district.indexOf('VHR')>-1 || district.indexOf('HR')>-1 || district.indexOf(null)>-1) {
                 $(district).each(function (index, district) {
                     selectedDistricts.push([$(this).val()]);
                 });
 
                 let districts = selectedDistricts.join(',');
                 districts = districts.split(',');
+
                 if(districts.length > 1) {
-                    if(districts.indexOf('VHR')>-1 || districts.indexOf('HR')>-1 ||
-                        districts.indexOf('Non-V/HR districts')>-1) {
+                    if(districts.includes('VHR') || districts.includes('HR') ||
+                        districts.includes('None') || districts.includes('Focus') ||
+                        districts.includes('All')) {
                         $.each(districts, function (index, value) {
-                            if (value !== 'VHR' || value !== 'Non-V/HR districts' || value !== 'HR') {
+                            if (value !== 'VHR' || value !== 'None' ||
+                                value !== 'HR' || value !== 'Focus' || value !== 'All') {
                                 $('#filterDistrict').multiselect('deselect', value, true);
                             }
                         })
@@ -137,8 +150,8 @@ class MainFilter {
 
                 let route = $('.btn-cluster').data('route');
                 if(selectedDistricts.length === 1) {
-                    var districtId = $('#filterDistrict').val();
-                    if(districtId[0].indexOf("HR") == -1) {
+                    let districtId = $('#filterDistrict').val();
+                    if(districtId[0].indexOf("HR") == -1 && districtId.includes('All') === false) {
                         let url = Routing.generate(route, {'district': districtId})
                         $('.btn-cluster').html("<i class='fa fa-mail-forward'></i> Clusters' data for " +
                             $('#filterDistrict option:selected').attr('label'));

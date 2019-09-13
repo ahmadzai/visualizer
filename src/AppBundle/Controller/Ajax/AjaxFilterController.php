@@ -291,7 +291,8 @@ class AjaxFilterController extends Controller
         }
 
         $newResponse = array();
-        $moreOptions = array();
+        $moreOptions = array(['label'=> 'All districts', 'value' => 'All']);
+
         if($isRiskEnable === true || $isRiskEnable === null) {
             if ($flag_vhr)
                 $moreOptions[] = array('label' => 'VHR districts', 'value' => 'VHR');

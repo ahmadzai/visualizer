@@ -21,7 +21,7 @@ $(document).ready(function () {
     let mapFilter = new MapFilter();
     let mapSetting = {
         url: 'load_geojson',
-        params: {'geoType':'province', 'dataType':'region', 'indicator':'DiscRemaining'},
+        params: {'geoType':'province', 'dataType':'region', 'indicator':'PerRemaining'},
         mapFilter,
     };
 

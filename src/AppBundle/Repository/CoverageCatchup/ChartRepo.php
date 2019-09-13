@@ -439,7 +439,7 @@ class ChartRepo extends EntityRepository
             //Todo: make below filter dynamic
             elseif($this->checkHrVhrFocus($distType)) {
                 $cond = "AND d.districtRiskStatus IN (:param1) ";
-            } elseif(in_array("all", $distType)) {
+            } elseif(in_array("All", $distType)) {
                 $cond = " ";
             } else
                 $cond = "AND d.id IN (:param1)";

@@ -31,12 +31,13 @@
                         <div>
                             <h5>Indicators and calculations descriptions:</h5>
                             <ul>
-                                <li><span style="color:green">Total Vaccinated:</span>  Vaccinated in Campaign, in Catchup and vaccinated by refusals committees</li>
+                                <li><span style="color:green">Total Vaccinated:</span>  Vaccinated in Campaign (including nomads and children vaccinated in PTTs),
+                                in Catchup and vaccinated by refusals committees</li>
                                 <li><span style="color:deepskyblue">Vac Campaign:</span> Vaccinated in Campaign days (3 days of campaign + revisit day)</li>
                                 <li><span style="color:dodgerblue">Vac Catchup:</span> Vaccinated in Catchup days, which starts on Sunday (the following week of the campaign) </br>
                                 It's normally 2-3 days to recover missed children, it only happens in ICN districts
                                 </li>
-                                <li><span>Target:</span> Vaccinated children + missed children in campaign</li>
+                                <li><span>Target:</span> Vaccinated children + missed children in campaign (excluding nomads and children vaccinated in PTTs)</li>
                                 <li><span style="color:gray">Discrepancy/Discrep:</span>
                                 Difference of missed children (by reason as well) between tallysheet and ICN register book.
                                 You might see more discrepancy in the aggregated dashboard, but if you filter for an ICN district, then there will be no or very less
@@ -116,10 +117,10 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" data-type="DiscRemaining" class="filter-map">All Missed</a></li>
+                                        <li><a href="#" data-type="DiscFinalRemaining" class="filter-map">All Missed</a></li>
                                         <li><a href="#" data-type="DiscRemainingAbsent" class="filter-map">Absent</a></li>
                                         <li><a href="#" data-type="DiscRemainingNSS" class="filter-map">NSS</a></li>
-                                        <li><a href="#" data-type="DiscRemainingRefusal" class="filter-map">Refusal</a></li>
+                                        <li><a href="#" data-type="DiscFinalRemainingRefusal" class="filter-map">Refusal</a></li>
 
                                         <li><a href="#" data-type="PerRemaining" class="filter-map">% All Missed</a></li>
                                         <li><a href="#" data-type="PerAbsent" class="filter-map">% Absent</a></li>
