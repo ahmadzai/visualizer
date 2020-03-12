@@ -13,6 +13,7 @@ use AppBundle\Service\Exporter;
 use AppBundle\Service\HtmlTable;
 use AppBundle\Service\Triangle;
 use AppBundle\Service\Settings;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -526,27 +527,57 @@ class AjaxMainController extends CommonDashboardController
      * @param Request $request
      * @return mixed
      * @Route("/get_csv/district")
+     * @Security("has_role('RROLE_ADMIN')")
      */
     public function csvAction(Request $request) {
-        $campaigns = [34, 33, 32];
-        $params['by'] = 'district';
-        $params['district'] = [3301];
-        $infoAdmin =  $this->chart->chartData("CoverageData", 'aggBySubDistrict', $campaigns, $params);
-        $infoCatch =  $this->chart->chartData("CatchupData", 'aggBySubDistrict', $campaigns, $params);
+        $campaigns = [32, 33, 34, 35, 36, 37, 38, 39];
+        $params['by'] = 'campaign';
+        //$params['value'] = [6, 13, 33, 34, 23, 24, 26, 12, 25];
+//        $infoAdmin =  $this->chart->chartData("CoverageData", 'aggBySubDistrict', $campaigns, $params);
+//        $infoCatch =  $this->chart->chartData("CatchupData", 'aggBySubDistrict', $campaigns, $params);
 
-        $mixData = $this->triangulate($infoAdmin, $infoCatch);
+        /*
+         * Aggregation By Region and Campaign
+         *
+         */
+        $admin = $this->chart->chartData("CoverageData", 'aggByCampaign', $campaigns,$params);
+        $catchup = $this->chart->chartData("CatchupData", 'aggByCampaign', $campaigns,$params);
 
-        $finalData = $this->allMathOps($mixData);
+        $refCommInfo = $this->chart->chartData("RefusalComm", "aggByCampaign", $campaigns, $params);
 
-        dump($finalData); die;
-        //return Exporter::exportCSV($info);
+
+        /*
+         * Aggregation by Campaign
+         *
+        $admin = $this->chart->chartData("CoverageData", 'campaignStatistics', $campaigns,$params);
+        $catchup = $this->chart->chartData("CatchupData", 'campaignStatistics', $campaigns,$params);
+
+        $refCommInfo = $this->chart->chartData("RefusalComm", "campaignStatistics", $campaigns, $params);
+        */
+
+
+//        dump($admin);
+//        dump($catchup);
+//        dump($refCommInfo); die;
+
+        $admin_catchup = $this->triangulate($admin, $catchup);
+        $campAgg = $this->triangulate($admin_catchup, $refCommInfo, "refusalComm");
+
+        $campAgg = $this->allMathOps($campAgg);
+
+//        if(count($campAgg) > 0) {
+//            $keys = array_keys($campAgg[0]);
+//            array_unshift($campAgg, $keys);
+//        }
+
+        return Exporter::exportCSV($campAgg);
     }
 
 
     private function triangulate($data, $data1, $source = "catchup", $index = null) {
         // required indexes in both sources
         $indexes = [];
-        $prefix = "chp";
+        $prefix = "c";
         if($source === "catchup") {
             $indexes = ['RegMissed', 'TotalRecovered', 'TotalVac',
                 'RegAbsent', 'VacAbsent',

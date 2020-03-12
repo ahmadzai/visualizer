@@ -45,7 +45,7 @@ abstract class CommonDashboardController extends DashController
         $subTitle = "";        // set subtitle
         $during = "Last 10 Campaigns";        // set mid title
 
-        if(count($campaignIds)>1) {            // if some campaigns were selected, reset the mid title
+        if(is_array($campaignIds) && count($campaignIds)>1) {            // if some campaigns were selected, reset the mid title
             $subTitle = "for selected campaigns";
             $during = "Selected Campaigns";
         }
@@ -58,7 +58,7 @@ abstract class CommonDashboardController extends DashController
 
         // flag to know the requested filter is for districts
         //Todo: make more dynamic
-        $byDistrict = (count($districts)>0 &&
+        $byDistrict = (is_array($districts) &&
                        !in_array("None", $districts) &&
                        !in_array("HR", $districts) &&
                        !in_array("VHR", $districts) &&
@@ -71,19 +71,19 @@ abstract class CommonDashboardController extends DashController
             $params['by'] = 'district';
             $subTitle = 'for selected districts';
 
-        } elseif(count($provinces) > 0) {               // if district was not set, check for provinces
+        } elseif(is_array($provinces) && count($provinces) > 0) {               // if district was not set, check for provinces
             $subTitle = 'for selected provinces';
             $aggType = "Province";
             $params['by'] = 'province';
             $params['value'] = $provinces;              // set the value index as well
-        } elseif (count($regions) > 0) {                // if provinces were not set, check for regions
+        } elseif (is_array($regions) && count($regions) > 0) {                // if provinces were not set, check for regions
             $subTitle = 'for selected regions';
             $params['by'] = 'region';
             $params['value'] = $regions;
         }
 
         // Just for changing the subtitle in case districts' group was selected
-        if(count($districts) > 0) {
+        if(is_array($districts) && count($districts) > 0) {
             $aggType = "District";
             // just to set subtitle as per filter
             if (in_array("None", $districts))
@@ -97,7 +97,7 @@ abstract class CommonDashboardController extends DashController
         }
 
         // set params to null if this was first request
-        if($params['by'] === 'campaign' && count($districts) < 1)
+        if($params['by'] === 'campaign' && (is_array($districts) && count($districts) < 1))
             $params = null;
 
         // if this request was for info but if the campaignIds>1, 

@@ -48,6 +48,8 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         // location trends, default for three campaigns
         $locTrends = $this->campaignLocationData($entity, $titles['locTrendIds'], $params);
 
+        //var_dump($locTrends); die;
+
         $trends =  $this->campaignsData($entity, $campaigns, $params);
 
         $trends = $this->loadAndMixData($trends, $campaigns, $params, "campaignsData", 'trend');
@@ -56,6 +58,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         $trends = $this->allMathOps($trends);
         $locTrends = $this->allMathOps($locTrends);
 
+        //dump($locTrends); die;
         $category = [['column'=>'Region'],
             ['column'=>'CID', 'substitute'=>
                 ['col1'=>'CMonth', 'col2'=>'CYear', 'short'=>'my']
@@ -63,8 +66,6 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         ];
         $subTitle = $titles['subTitle'];
         $during = $titles['midTitle'];
-
-
 
         // --------------------------- Loc Trend of Missed Children --------------------------------
         $locTrendAllType = $this->chart->chartData2Categories(
@@ -107,10 +108,9 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
             ->chartData1Category($category[1],
                 [
                     'cmpVacRefusal'=>'Campaign',
-                    'refusalVacInCatchup'=>'Catchup',
+                    'chpVacRefusal'=>'Catchup',
                     'totalRefusalVacByRefComm'=>'Committees',
                     'totalRemainingRefusal'=>'Remaining'
-
                 ],
                 $trends);
         $vacChildTrend['title'] = 'Trend of Refusals Recovery '.$during;
@@ -124,12 +124,13 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
             [
 
                 'cmpVacRefusal'=>'Campaign',
-                'refusalVacInCatchup'=>'Catchup',
+                'chpVacRefusal'=>'Catchup',
                 'refusalVacByCRC'=>'CRC',
                 'refusalVacByRC'=>'RC',
                 'refusalVacByCIP'=>'CIP',
                 'refusalVacBySenior'=>'Senior',
                 'totalRemainingRefusal'=>'Remaining'
+
             ], $trends);
         $missedByTypeTrend['title'] = 'Trends of Refusals Recovery By Category '.$during;
         $missedByTypeTrend['subTitle'] = $subTitle;
@@ -425,7 +426,6 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         //$catchup = $this->combineData("both", $campaigns, $params['extra'] = $clusters);
         $catchup = $this->$method("CatchupData", $campaigns, $params);
         $coverage = $this->$method("CoverageData", $campaigns, $params);
-
 
         // Below indices required from other data sources
         $coverageIndices = ['CalcTarget', 'RegRefusal', 'RemRefusal', 'VacRefusal', 'VacRefusal3Days', 'VacRefusalDay4'];

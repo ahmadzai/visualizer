@@ -482,7 +482,7 @@ class ChartRepo extends EntityRepository
                       FROM AppBundle:".$this->entity." s JOIN s.district d JOIN d.province p
                       WHERE (s.campaign in (:camp) ".$condition." )");
 
-        if(array_key_exists('by', $paramsArray)) {
+        if(array_key_exists('by', $paramsArray) && $condition != "") {
             $dql->setParameter('param2', $paramsArray['by']==='district'?$paramsArray['district']:$paramsArray['value']);
             if($this->checkHrVhrFocus($paramsArray['district']))
                 $dql->setParameter('param3', $paramsArray['district']);
@@ -504,6 +504,44 @@ class ChartRepo extends EntityRepository
                 in_array("VHR", $paramsArray) ||
                 in_array("Focus", $paramsArray))
                ) ? true : false;
+    }
+
+
+    /**
+     * @param $campaigns
+     * @return mixed
+     */
+    public function clusterAggByCampaigns($campaigns) {
+
+        $em = $this->getEntityManager();
+        $dq = $em->createQuery(
+            "SELECT CASE 
+                            WHEN cvr.subDistrict IS NULL 
+                            THEN Concat(cmp.id, d.id, cvr.clusterNo) 
+                            ELSE CONCAT(cmp.id, d.id, cvr.subDistrict, cvr.clusterNo)
+                         END as joinkey,
+              p.provinceRegion as Region, p.provinceName as Province, d.districtName as District, 
+              d.id as DCODE, cmp.campaignStartDate as CDate, cmp.id as CID,
+              cmp.campaignType as CType, cmp.campaignYear as CYear, cmp.campaignMonth as CMonth, 
+              cmp.campaignName as CName,
+              cvr.subDistrict as Subdistrict, cvr.clusterNo as ClusterNo,
+              CASE 
+                WHEN cvr.subDistrict IS NULL 
+                THEN cvr.clusterNo 
+                ELSE CONCAT(cvr.subDistrict, '-', cvr.clusterNo)
+              END as Cluster, 
+              ".$this->DQL."
+              FROM AppBundle:".$this->entity." cvr JOIN cvr.campaign cmp
+              JOIN cvr.district d JOIN d.province p 
+              WHERE(cvr.campaign in (:campaign))
+              GROUP BY cvr.campaign, cvr.district, cvr.subDistrict, cvr.clusterNo
+              ORDER BY cvr.subDistrict, cvr.clusterNo"
+        );
+        // setting the campaigns
+        $dq -> setParameter('campaign', $campaigns);
+        // setting the district
+
+        return $dq->getResult(Query::HYDRATE_SCALAR);
     }
 
 

@@ -469,7 +469,7 @@ class Importer
         $this->_em->flush();
         $this->_em->clear();
 
-        if(count($exceptions) == null)
+        if($exceptions == null)
             $exceptions = true;
 
         return $exceptions;

@@ -40,7 +40,7 @@ class ApiMainController extends Controller
         }
         $data = $this->getDoctrine()
             ->getRepository("AppBundle:CoverageData")
-            ->aggByCampaign([$campaign], ['by'=>'district', 'district'=>['all']]);
+            ->aggByCampaign([$campaign], ['by'=>'district', 'district'=>['All']]);
         $data = $this->jsonEncode([
             'campaign'=>$campaign,
             'districts'=>$data
@@ -77,7 +77,6 @@ class ApiMainController extends Controller
      * @return Response
      * @Route("/catchup/by_district/{campaign}")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN')")
      */
     public function getCatchupDataByDistrict(Settings $settings, $campaign = null) {
         if($campaign === null) {
@@ -86,7 +85,29 @@ class ApiMainController extends Controller
         }
         $data = $this->getDoctrine()
             ->getRepository("AppBundle:CatchupData")
-            ->aggByCampaign([$campaign], ['by'=>'district', 'district'=>['all']]);
+            ->aggByCampaign([$campaign], ['by'=>'district', 'district'=>['All']]);
+        $data = $this->jsonEncode([
+            'campaign'=>$campaign,
+            'districts'=>$data
+        ]);
+        return new Response($data, 200);
+    }
+
+    /**
+     * @param Settings $settings
+     * @param null $campaign
+     * @return Response
+     * @Route("/roc_data/by_district/{campaign}")
+     * @Method("GET")
+     */
+    public function getROCDataByDistrict(Settings $settings, $campaign = null) {
+        if($campaign === null) {
+            $campaign = $campaign ?? $settings->latestCampaign("RefusalComm");
+            $campaign = $campaign[0]['id'];
+        }
+        $data = $this->getDoctrine()
+            ->getRepository("AppBundle:RefusalComm")
+            ->aggByCampaign([$campaign], ['by'=>'district', 'district'=>['All']]);
         $data = $this->jsonEncode([
             'campaign'=>$campaign,
             'districts'=>$data

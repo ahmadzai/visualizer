@@ -365,7 +365,7 @@ class ImportController extends Controller
 
                 $this->addFlash("success", "In total " . $inserted . " rows inserted and " . $updated . " have updated as they were already existed");
 
-                if (count($errors) > 0) {
+                if (is_array($errors) && ($errors) > 0) {
                     $message = "<ul>";
                     $message .= "<li>" . count($errors) . " rows (see below) has been escaped due to wrong types or other reasons </li>";
                     foreach ($errors as $error) {

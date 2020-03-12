@@ -9,7 +9,8 @@ use Doctrine\ORM\Query;
 class RefusalCommRepository extends ChartRepo
 {
 
-    protected $DQL = " sum(COALESCE(cvr.regRefusal, 0)) as refusalAfterDay5, 
+    protected $DQL = " cvr.campaignPhase as Campaign_Phase,
+                        sum(COALESCE(cvr.regRefusal, 0)) as refusalAfterDay5, 
                        sum(COALESCE(cvr.refusalVacInCatchup, 0)) as refusalVacInCatchup,
                        sum(COALESCE(cvr.refusalVacByCRC, 0)) as refusalVacByCRC, 
                        sum(COALESCE(cvr.refusalVacByRC, 0)) as refusalVacByRC,

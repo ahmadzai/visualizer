@@ -4,12 +4,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Service\Settings;
 use GuzzleHttp\Client;
+use PhpCollection\Set;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\Charts;
 use AppBundle\Service\Triangle;
+use AppBundle\Service\Exporter;
 
 class TestController extends Controller
 {
@@ -31,8 +34,8 @@ class TestController extends Controller
 //        dump($data); die;
 
         $client = new Client();
-        $res = $client->post("http://afg-poliodb.info/api/token", [
-            'auth' => ['wazir', 'berliner']
+        $res = $client->post("http://localhost/visualizer/web/app_dev.php/api/token", [
+            'auth' => ['wazir', '']
         ]);
 
         $token = json_decode($res->getBody()->getContents());
@@ -43,7 +46,7 @@ class TestController extends Controller
 //        ]);
 
         // Test below for campaign api
-        $data = $client->get("http://afg-poliodb.info/api/campaign/all", [
+        $data = $client->get("http://localhost/visualizer/web/app_dev.php/api/roc_data/by_district/39", [
             'headers' => ['Authorization' => 'Bearer '.$token->token]
         ]);
 
@@ -56,6 +59,25 @@ class TestController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @param Charts $charts
+     * @param Settings $settings
+     * @param Triangle $triangle
+     * @return mixed
+     * @Route("/export", name="data-export")
+     */
+    public function exportData(Request $request, Charts $charts, Settings $settings, Triangle $triangle) {
+        $campaigns = [37, 38, 39];
+        $entity = "CatchupData";
+        $method = "aggBySubDistrict";
+        $by = ['by' => 'district', 'district'=>[101]];
+
+        $data = $charts->chartData($entity, $method, $campaigns, $by);
+
+        return Exporter::exportCSV($data);
+        //return new JsonResponse($data);
+    }
     /**
      * @Route("/test", name="testing")
      * @param Request $request
