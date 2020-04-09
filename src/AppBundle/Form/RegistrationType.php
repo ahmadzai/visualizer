@@ -48,6 +48,7 @@ class RegistrationType extends AbstractType
             ->add('roles', ChoiceType::class, array('choices' => array(
                 'Admin'=>'ROLE_ADMIN',
                 'Editor'=>'ROLE_EDITOR',
+                'COVID19Editor' => 'ROLE_COVID19_EDITOR',
                 'Viewer'=>'ROLE_NORMAL_USER',
                 'Partner' => 'ROLE_PARTNER'
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))

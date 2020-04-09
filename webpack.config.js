@@ -29,6 +29,7 @@ Encore
     .addEntry('cluster-filter', './assets/js/cluster_filter.js')
     .addEntry('ccs-sm-filter', './assets/js/ccs_sm_filter.js')
     .addEntry('ref_committee', './assets/js/ref_committee.js')
+    .addEntry('covid19', './assets/js/covid19.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

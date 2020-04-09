@@ -13,6 +13,7 @@ web_profiler:
 
 twig:
     cache: false
+    auto_reload: true
 
 monolog:
     handlers:

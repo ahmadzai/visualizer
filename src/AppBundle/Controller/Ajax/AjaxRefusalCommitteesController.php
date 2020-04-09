@@ -20,6 +20,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AjaxRefusalCommitteesController extends CommonDashboardController
 {
     /**
+     * @Route("/refusal_comm/test")
+     */
+    public function testTrend() {
+        $titles = ['midTitle' => "mid title", 'subTitle' => "sub title", 'locTrendIds' => [40, 39], 'aggType'=>'Region'];
+        $data = $this->trendAction("RefusalComm", [40, 39], null, $titles);
+        //dump($data); die;
+        return $data;
+        //dump($data); die;
+    }
+    /**
      * @param Request $request
      * @param Settings $settings
      * @return mixed
@@ -53,6 +63,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         $trends =  $this->campaignsData($entity, $campaigns, $params);
 
         $trends = $this->loadAndMixData($trends, $campaigns, $params, "campaignsData", 'trend');
+
         $locTrends = $this->loadAndMixData($locTrends, $campaigns, $params, "campaignLocationData", null);
 
         $trends = $this->allMathOps($trends);
@@ -154,7 +165,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
         //dump($campInfo); dump($campAgg); die;
         $campInfo = $this->allMathOps($campInfo);
         $campAgg = $this->allMathOps($campAgg);
-
+        //return $campAgg;
         $subTitle = $titles['subTitle'];
         $type = $titles['aggType'];
 
@@ -421,7 +432,7 @@ class AjaxRefusalCommitteesController extends CommonDashboardController
 
         // clusters needed for extracting catchup and coverage data
         $clusters = $this->chart->chartData("RefusalComm", 'selectClustersByCondition', $campaigns, $params);
-
+        //Todo: For multiple campaigns, the result is wrong
         $params['extra'] = $clusters;
         //$catchup = $this->combineData("both", $campaigns, $params['extra'] = $clusters);
         $catchup = $this->$method("CatchupData", $campaigns, $params);

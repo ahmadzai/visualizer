@@ -9,10 +9,12 @@ import CcsSmSetting from './odk/CcsSmSetting';
 import CatchupMaps from './catchup/Maps';
 import CoverageMaps from './coverage/Maps';
 import MainMaps from './main/Maps';
+import Covid19CasesMap from './covid19/Maps';
 
 import SettingRefComm from './refcomm/RefComm';
 import RefCommCluster from './refcomm/RefCommCluster';
 import RefCommMaps from './refcomm/Maps';
+import Covid19CasesSetting from "./covid19/Covid19Cases";
 
 export {
     SettingMain,
@@ -28,4 +30,7 @@ export {
     SettingRefComm,
     RefCommCluster,
     RefCommMaps,
+    Covid19CasesMap,
+    Covid19CasesSetting,
+
 };

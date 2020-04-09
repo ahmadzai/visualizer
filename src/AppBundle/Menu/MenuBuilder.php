@@ -273,5 +273,25 @@ class MenuBuilder implements ContainerAwareInterface
         return $menu;
     }
 
+    public function covid19Menu(FactoryInterface $factory, array $options) {
+        $adminRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $editRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_EDITOR');
+        $partnerRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_PARTNER');
+
+        $menu = $factory->createItem('Covid19Menu');
+        $menu->setChildrenAttributes(array('class'=>'nav navbar-nav', 'data-widget'=>''));
+
+        $menu->addChild("Cases", array('route' => 'covid19_cases'))
+            ->setExtra('info', 'COVID-19 Cases in Afghanistan');
+//        $menu->addChild("Cases", array('route' => 'covid19_cases'))
+//            ->setExtra('info', 'COVID-19 Cases in Afghanistan');
+//        $menu->addChild("Response: Supplies", array('route' => 'covid19_supplies'))
+//            ->setExtra('info', 'Supplies response by UNICEF Polio Team');
+//        $menu->addChild("Response: C4D", array('route' => 'covid19_c4d'))
+//            ->setExtra('info', 'C4D response by UNICEF Polio Team');
+
+        return $menu;
+    }
+
 
 }

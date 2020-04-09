@@ -34,8 +34,8 @@ class TestController extends Controller
 //        dump($data); die;
 
         $client = new Client();
-        $res = $client->post("http://localhost/visualizer/web/app_dev.php/api/token", [
-            'auth' => ['wazir', '']
+        $res = $client->post("http://afg-poliodb.info/api/token", [
+            'auth' => ['apms_api_user', '@p!Connec7']
         ]);
 
         $token = json_decode($res->getBody()->getContents());
@@ -46,7 +46,7 @@ class TestController extends Controller
 //        ]);
 
         // Test below for campaign api
-        $data = $client->get("http://localhost/visualizer/web/app_dev.php/api/roc_data/by_district/39", [
+        $data = $client->get("http://afg-poliodb.info/api/roc_data/by_district", [
             'headers' => ['Authorization' => 'Bearer '.$token->token]
         ]);
 

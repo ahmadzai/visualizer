@@ -16,6 +16,7 @@ class AjaxRequest {
         let ajax = this._ajaxPromise(url, params);
 
         ajax.done(data => {
+
             self._populateDashboard(charts, data);
 
             if(mapSetting !== false) {
@@ -62,7 +63,6 @@ class AjaxRequest {
         //console.log(params);
 
         //console.log(mapFilter.getGeoData(params.geoType));
-
         //console.log(mapFilter);
         if(mapFilter.getGeoData(params.geoType) === undefined) {
 
@@ -112,7 +112,6 @@ class AjaxRequest {
         let ajx1 = this._ajaxPromise(req1.url, req1.params);
         //console.log(ajx1);
         let ajx2 = ajx1.then(function (ajx1Data) {
-           //console.log(ajx1Data);
            self._populateDashboard({...req1.container}, ajx1Data);
            $('.info-loader').hide();
            return self._ajaxPromise(req2.url, req2.params);
@@ -136,6 +135,7 @@ class AjaxRequest {
         //console.log(data);
         let self = this;
         $.each(charts, function (index, value) {
+
             if(data.hasOwnProperty(index)) {
                 this.data = data[index];
                 this.renderTo = index;

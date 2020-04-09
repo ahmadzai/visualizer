@@ -13,6 +13,7 @@ import 'admin-lte/bower_components/Ionicons/css/ionicons.min.css';
 import 'bootstrap-multiselect/dist/css/bootstrap-multiselect.css';
 import 'admin-lte/dist/css/AdminLTE.min.css';
 import 'admin-lte/dist/css/skins/skin-blue.min.css';
+import 'admin-lte/dist/css/skins/skin-yellow-light.min.css';
 import 'admin-lte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css';
 import 'admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
 import 'datatables.net-bs/css/dataTables.bootstrap.min.css';

@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import Maps from './Maps';
-import {CatchupMaps, CoverageMaps, MainMaps} from '../setting/';
+import {CatchupMaps, CoverageMaps, MainMaps, Covid19CasesMap} from '../setting/';
 
 
 class FilterMap {
@@ -46,7 +46,6 @@ class FilterMap {
     };
 
     setMapData = (data) => {
-
         data = JSON.parse(data);
         this.data = data;
 
@@ -159,8 +158,12 @@ class FilterMap {
             mapPage = CoverageMaps;
         else if(source === "catchup_data")
             mapPage = CatchupMaps;
+        else if(source === "covid19_cases")
+            mapPage = Covid19CasesMap;
         let setting = mapPage[vars.mapType];
-
+        let mapTitle = "Map of " + mapPage[vars.indicator].title + " Children";
+        if(source === "covid19_cases")
+            mapTitle = "Map of " + mapPage[vars.indicator].title;
         return {
             data: {
                 geoJson: mapData.geoData,
@@ -172,7 +175,8 @@ class FilterMap {
                 classes: setting[vars.indicator].classes
 
             },
-            title: "Map of the " + mapPage[vars.indicator].title + " Children",
+            title: mapTitle,
+
             colors: mapPage[vars.indicator].colors,
             legend: {title:mapPage[vars.indicator].name},
             renderTo: 'map_container_1'
