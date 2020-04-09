@@ -40,6 +40,10 @@ class MenuBuilder implements ContainerAwareInterface
 
         $menu = $factory->createItem('Home');
         $menu->setChildrenAttributes(array('class'=>'sidebar-menu', 'data-widget'=>'tree'));
+        // ---------------------------------------------- COVID 19 Link ------------------------------------------
+        $menu->addChild('COVID-19', array('route'=>'covid19_cases'));
+        $menu['COVID-19']->setAttribute('icon','fa-warning text-red');
+        // ----------------------------------------------- End of COVID 19 Link ----------------------------------
 
         $menu->addChild("Home", array('route'=>'home', 'extras'=>['route'=>'cluster_main']))->setExtra('info', 'the main dashboard');
         $menu['Home']->setAttribute('icon','fa-home');
