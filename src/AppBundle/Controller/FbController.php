@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class MainController
  * @package AppBundle\Controller
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_NORMAL_USER')")
  */
 class FbController extends Controller
 {

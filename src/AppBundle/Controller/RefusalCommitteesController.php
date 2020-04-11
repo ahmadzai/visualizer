@@ -26,7 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * Class CatchupDataController
  * @package AppBundle\Controller
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_NORMAL_USER')")
  */
 class RefusalCommitteesController extends Controller
 {

@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * Poliocase controller.
  *
  * @Route("poliocases")
+ * @Security("has_role('ROLE_NORMAL_USER')")
  */
 class PolioCasesController extends Controller
 {

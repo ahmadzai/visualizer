@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class MainController
  * @package AppBundle\Controller
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_NORMAL_USER') or has_role('ROLE_PARTNER')")
  */
 class MainController extends Controller
 {

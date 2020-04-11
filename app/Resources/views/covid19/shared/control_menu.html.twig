@@ -42,9 +42,11 @@
                 {% endif %}
                 <!-- Menu Footer-->
                 <li class="user-footer">
+                    {% if(not is_granted("ROLE_COVID19_VIEWER")) %}
                     <div class="pull-left">
                         <a href="{{ path('home') }}" class="btn btn-default btn-flat">Go to Polio DB</a>
                     </div>
+                    {% endif %}
                     <div class="pull-right">
                         <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat">Sign out</a>
                     </div>

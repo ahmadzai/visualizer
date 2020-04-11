@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("covid-19")
- * @Security("has_role('ROLE_PARTNER') or has_role('ROLE_NORMAL_USER')")
+ * @Security("has_role('ROLE_PARTNER') or has_role('ROLE_NORMAL_USER') or has_role('ROLE_COVID19_VIEWER')")
  */
 class CasesController extends Controller
 {

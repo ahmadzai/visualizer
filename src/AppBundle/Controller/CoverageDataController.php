@@ -25,7 +25,7 @@ use AppBundle\Service\HtmlTable;
 
 
 /**
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_NORMAL_USER') or has_role('ROLE_PARTNER')")
  */
 class CoverageDataController extends Controller
 {

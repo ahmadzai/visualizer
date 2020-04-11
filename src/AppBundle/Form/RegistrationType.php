@@ -50,7 +50,8 @@ class RegistrationType extends AbstractType
                 'Editor'=>'ROLE_EDITOR',
                 'COVID19Editor' => 'ROLE_COVID19_EDITOR',
                 'Viewer'=>'ROLE_NORMAL_USER',
-                'Partner' => 'ROLE_PARTNER'
+                'Partner' => 'ROLE_PARTNER',
+                'COVID19Viewer' => 'ROLE_COVID19_VIEWER'
             ), 'multiple'=> true, 'attr' => array('class'=>'form-control select2')))
             ->add('level', ChoiceType::class, array('choices' => array(
                 'International' => 'International',

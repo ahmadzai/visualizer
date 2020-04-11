@@ -25,7 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * Class CatchupDataController
  * @package AppBundle\Controller
- * @Security("has_role('ROLE_USER')")
+ * @Security("has_role('ROLE_NORMAL_USER') or has_role('ROLE_PARTNER')")
  */
 class CatchupDataController extends Controller
 {

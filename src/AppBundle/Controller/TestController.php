@@ -6,6 +6,7 @@ use AppBundle\Service\Settings;
 use GuzzleHttp\Client;
 use PhpCollection\Set;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,11 @@ use AppBundle\Service\Charts;
 use AppBundle\Service\Triangle;
 use AppBundle\Service\Exporter;
 
+/**
+ * Class TestController
+ * @package AppBundle\Controller
+ * @Security("has_role('RROLE_ADMIN')")
+ */
 class TestController extends Controller
 {
 
