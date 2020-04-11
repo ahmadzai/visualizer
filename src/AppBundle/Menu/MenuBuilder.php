@@ -34,9 +34,12 @@ class MenuBuilder implements ContainerAwareInterface
 //        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 //        dump($user);
 //        die;
+
         $adminRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
         $editRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_EDITOR');
         $partnerRole = $this->container->get('security.authorization_checker')->isGranted('ROLE_PARTNER');
+
+        //dump($adminRole); dump($editRole); dump($partnerRole); die;
 
         $menu = $factory->createItem('Home');
         $menu->setChildrenAttributes(array('class'=>'sidebar-menu', 'data-widget'=>'tree'));
